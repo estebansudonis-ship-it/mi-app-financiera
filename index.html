@@ -2,102 +2,123 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V21.0</title>
+    <title>Mi App Financiera Cloud Pro - V22.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* VARIABLES DINÁMICAS - MODO CLARO POR DEFECTO */
         :root {
+            --bg-main: #f8fafc; 
+            --sidebar-bg: #ffffff; 
+            --card-bg: #ffffff;
+            --text-main: #0f172a; 
+            --text-muted: #64748b; 
+            --border-color: #e2e8f0;
+            --chart-panel-bg: #f1f5f9;
+            --primary: #4f46e5; 
+            --primary-hover: #4338ca; 
+            --success: #10b981; 
+            --danger: #ef4444; 
+            --warning: #f59e0b; 
+            --teal: #0d9488;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.05);
+        }
+
+        /* CONFIGURACIÓN MODO OSCURO */
+        [data-theme="dark"] {
             --bg-main: #0f172a; 
             --sidebar-bg: #1e293b; 
             --card-bg: #1e293b;
             --text-main: #f8fafc; 
             --text-muted: #94a3b8; 
             --border-color: #334155;
-            --primary: #6366f1; 
-            --primary-hover: #4f46e5; 
-            --success: #10b981; 
-            --danger: #ef4444; 
-            --warning: #f59e0b; 
-            --teal: #14b8a6;
+            --chart-panel-bg: #0f172a;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
         }
         
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
-        /* MENÚ LATERAL */
+        /* MENÚ LATERAL LIMPIO (SIN LOGO INVASIVO) */
         .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; }
-        .logo-area { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 800; color: var(--primary); }
-        .nav-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 30px; flex-grow: 1; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; color: var(--text-muted); font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; transition: 0.2s; }
-        .nav-item:hover, .nav-item.active { background-color: #334155; color: var(--primary); font-weight: 600; }
-        .cloud-badge { background: #112240; border: 1px solid #1e3a8a; padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: #60a5fa; font-weight: 600; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; color: var(--text-muted); font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background-color: var(--bg-main); color: var(--primary); font-weight: 600; box-shadow: var(--shadow-sm); }
+        
+        /* SWITCH DE MODO CLARO/OSCURO */
+        .theme-switch-box { border-top: 1px solid var(--border-color); padding-top: 16px; margin-bottom: 14px; }
+        .btn-theme-toggle { background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 10px; border-radius: 10px; cursor: pointer; width: 100%; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-sm); }
+        .btn-theme-toggle:hover { background: var(--border-color); }
 
-        /* CONTENEDOR PRINCIPAL OPTIMIZADO PARA ZOOM 100% */
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; scroll-behavior: smooth; background-color: var(--bg-main); }
-        .dashboard-grid { padding: 30px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; min-width: 1100px; box-sizing: border-box; }
+        .cloud-badge { background: var(--bg-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: var(--text-muted); font-weight: 600; }
+
+        /* CONTENEDOR PRINCIPAL - OPTIMIZADO ZOOM 100% */
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; background-color: var(--bg-main); }
+        .dashboard-grid { padding: 30px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; min-width: 1150px; box-sizing: border-box; }
         .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
         
-        /* TARJETAS */
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); width: 100%; position: relative; }
+        /* TARJETAS ESTILO PREMIUM DASHBOARD */
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); width: 100%; position: relative; }
         .card-header { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         .header-controls { display: flex; align-items: center; gap: 12px; }
         
-        /* INPUTS INLINE DE TARJETAS */
         .card-inline-month { background-color: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-family: inherit; font-weight: 600; outline: none; }
 
-        /* BLOQUES DE MÉTRICAS */
+        /* MÉTRICAS */
         .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        .kpi-box { background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+        .kpi-box { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-sm); }
         .kpi-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .kpi-data { display: flex; flex-direction: column; }
         .kpi-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-value { font-size: 17px; font-weight: 700; margin-top: 2px; }
+        .kpi-value { font-size: 18px; font-weight: 700; margin-top: 2px; }
 
         /* FORMULARIOS */
         .form-group { margin-bottom: 14px; }
         .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
         .form-row > div { flex: 1; }
         label { font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; }
-        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 13px; color: var(--text-main); background-color: #0f172a; outline: none; }
+        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 13px; color: var(--text-main); background-color: var(--bg-main); outline: none; }
         input:focus, select:focus { border-color: var(--primary); }
-        button.btn-action { background-color: var(--primary); color: white; border: none; padding: 11px 16px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
+        button.btn-action { background-color: var(--primary); color: white; border: none; padding: 11px 16px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
         button.btn-action:hover { background-color: var(--primary-hover); }
         .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
-        /* LISTADOS Y TABLAS */
+        /* TABLAS Y LISTAS */
         ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
-        ul.records-list li { background: #0f172a; border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        ul.records-list li { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background-color: #0f172a; color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); text-align: left; }
-        td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: #1e293b; }
+        th { background-color: var(--bg-main); color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); text-align: left; }
+        td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: var(--card-bg); }
 
-        /* GRÁFICO DE BARRAS */
-        .bars-chart-box { display: flex; align-items: flex-end; justify-content: space-around; height: 260px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 10px 10px 10px; margin-top: 10px; width: 100%; }
+        /* GRÁFICO DE BARRAS MEJORADO */
+        .bars-chart-box { display: flex; align-items: flex-end; justify-content: space-around; height: 260px; background: var(--chart-panel-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 10px 10px 10px; margin-top: 10px; width: 100%; }
         .bar-col { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; }
-        .bar-stack { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 6px; overflow: hidden; margin-bottom: 8px; background-color: #1e293b; }
+        .bar-stack { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background-color: var(--card-bg); border: 1px solid var(--border-color); }
         .bar-segment { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
-        .bar-txt { color: white; font-size: 9px; font-weight: 700; text-shadow: 0 1px 1px rgba(0,0,0,0.8); }
+        .bar-txt { color: white; font-size: 9px; font-weight: 700; text-shadow: 0 1px 1px rgba(0,0,0,0.5); }
         .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 4px; }
         .bar-top-val { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
 
-        /* CONTENEDORES DE GRÁFICOS SVG REESTILIZADOS EXCLUSIVOS */
-        .vector-chart-container { width: 100%; height: 260px; margin-top: 10px; background: #0f172a; border-radius: 14px; border: 1px solid var(--border-color); padding: 20px; position: relative; overflow: hidden; }
+        /* CONTENEDORES SVG */
+        .vector-chart-container { width: 100%; height: 260px; margin-top: 10px; background: var(--chart-panel-bg); border-radius: 14px; border: 1px solid var(--border-color); padding: 20px; position: relative; overflow: hidden; }
 
         /* IA INTERFAZ */
-        .ai-chat-container { display: flex; flex-direction: column; height: 300px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-top: 12px; }
+        .ai-chat-container { display: flex; flex-direction: column; height: 300px; background: var(--chart-panel-bg); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-top: 12px; }
         .ai-messages-wall { flex-grow: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         .ai-bubble { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
         .bubble-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .bubble-ai { background: #1e293b; color: var(--text-main); border: 1px solid var(--border-color); align-self: flex-start; border-bottom-left-radius: 2px; }
-        .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: #1e293b; padding: 10px; gap: 8px; }
-        .ai-input-bar input { flex-grow: 1; background: #0f172a; border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; color: white; }
+        .bubble-ai { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: var(--card-bg); padding: 10px; gap: 8px; }
+        .ai-input-bar input { flex-grow: 1; background: var(--bg-main); border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; color: var(--text-main); }
 
-        /* PANTALLA ACCESO */
+        /* PANTALLAS ACCESO Y MODAL */
         #auth_screen { position: fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-main); display:flex; justify-content:center; align-items:center; z-index:99999; }
-        .auth-card { background: var(--sidebar-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
-        .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: white; padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; }
+        .auth-card { background: var(--sidebar-bg); padding: 40px; border-radius: 20px; box-shadow: var(--shadow-md); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
+        .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; }
     </style>
 </head>
 <body>
@@ -106,7 +127,7 @@
 
     <div id="editModal" class="modal">
         <div class="modal-content">
-            <div style="font-size:16px; font-weight:700; margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:12px; display:flex; justify-content:between; align-items:center;">
+            <div style="font-size:16px; font-weight:700; margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
                 <span id="modalTitle">✏️ Editar Registro</span>
                 <span style="cursor:pointer; font-size:20px;" onclick="cerrarModal()">&times;</span>
             </div>
@@ -130,22 +151,26 @@
     <div id="app_content" style="display:none; width:100%; height:100vh;">
         
         <div class="sidebar">
-            <div>
-                <div class="logo-area"><span>📊</span> Control Pro</div>
-                <div class="nav-menu">
-                    <div class="nav-item active" onclick="navegarA('panel_finanzas')">📈 Flujo de Caja</div>
-                    <div class="nav-item" onclick="navegarA('seccion_ingresos')">💵 Ingresos</div>
-                    <div class="nav-item" onclick="navegarA('seccion_gastos')">🛒 Gastos Básicos</div>
-                    <div class="nav-item" onclick="navegarA('seccion_tarjetas')">💳 Tarjetas Maestro</div>
-                    <div class="nav-item" onclick="navegarA('seccion_plazos')">🛍️ Amortizaciones</div>
-                    <div class="nav-item" onclick="navegarA('panel_mish')">📉 Gráfica MISH</div>
-                    <div class="nav-item" onclick="navegarA('panel_ahorros')">🏦 Plan Ahorros</div>
-                    <div class="nav-item" onclick="navegarA('seccion_ia')">🤖 Inteligencia IA</div>
-                </div>
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="navegarA('panel_finanzas')">📈 Flujo de Caja</div>
+                <div class="nav-item" onclick="navegarA('seccion_ingresos')">💵 Ingresos</div>
+                <div class="nav-item" onclick="navegarA('seccion_gastos')">🛒 Gastos Básicos</div>
+                <div class="nav-item" onclick="navegarA('seccion_tarjetas')">💳 Tarjetas Maestro</div>
+                <div class="nav-item" onclick="navegarA('seccion_plazos')">🛍️ Amortizaciones</div>
+                <div class="nav-item" onclick="navegarA('panel_mish')">📉 Gráfica MISH</div>
+                <div class="nav-item" onclick="navegarA('panel_ahorros')">🏦 Plan Ahorros</div>
+                <div class="nav-item" onclick="navegarA('seccion_ia')">🤖 Inteligencia IA</div>
             </div>
-            <div class="cloud-badge">
-                🌐 Base de Datos Activa<br>
-                <button onclick="ejecutarLogout()" style="background:none; border:none; color:var(--danger); font-size:11px; font-weight:700; margin-top:8px; cursor:pointer; width:100%;">🚪 Cerrar Sesión</button>
+            <div>
+                <div class="theme-switch-box">
+                    <button class="btn-theme-toggle" onclick="alternarTemaVisual()">
+                        <span id="theme_icon">🌙</span> <span id="theme_text">Modo Oscuro</span>
+                    </button>
+                </div>
+                <div class="cloud-badge">
+                    🌐 Base de Datos Activa<br>
+                    <button onclick="ejecutarLogout()" style="background:none; border:none; color:var(--danger); font-size:11px; font-weight:700; margin-top:8px; cursor:pointer; width:100%;">🚪 Cerrar Sesión</button>
+                </div>
             </div>
         </div>
 
@@ -156,7 +181,7 @@
                     <div class="card-header">
                         <span>📊 1. Finanzas (Flujo de Caja Real)</span>
                         <div class="header-controls">
-                            <select id="filtro_tipo_grafico" style="background:var(--bg-main); color:white; border:1px solid var(--border-color); width:150px; padding:4px; font-size:12px;" onchange="actualizarFinanzas()">
+                            <select id="filtro_tipo_grafico" style="width:140px; padding:4px; font-size:12px;" onchange="actualizarFinanzas()">
                                 <option value="all">Ver Todo</option>
                                 <option value="ingresos">Solo Ingresos</option>
                                 <option value="fijo">Gastos Fijos</option>
@@ -168,10 +193,10 @@
                     </div>
                     
                     <div class="kpi-row">
-                        <div class="kpi-box"><div class="kpi-icon" style="background:#1e3a8a; color:#60a5fa;">💵</div><div class="kpi-data"><span class="kpi-title">Ingresos</span><span class="kpi-value" style="color:var(--success);" id="dashIngresos">Q 0.00</span></div></div>
-                        <div class="kpi-box"><div class="kpi-icon" style="background:#881337; color:#f43f5e;">🛒</div><div class="kpi-data"><span class="kpi-title">Gastos Efectivo</span><span class="kpi-value" id="dashGastosEfec">Q 0.00</span></div></div>
-                        <div class="kpi-box"><div class="kpi-icon" style="background:#311042; color:#d946ef;">💳</div><div class="kpi-data"><span class="kpi-title">Pago Tarjetas</span><span class="kpi-value" id="dashTarjetas">Q 0.00</span></div></div>
-                        <div class="kpi-box" style="border:1px solid var(--success);"><div class="kpi-icon" style="background:#064e3b; color:#34d399;">💰</div><div class="kpi-data"><span class="kpi-title">Remanente</span><span class="kpi-value" style="color:var(--success);" id="dashDisponible">Q 0.00</span></div></div>
+                        <div class="kpi-box"><div class="kpi-icon" style="background:rgba(16,185,129,0.15); color:var(--success);">💵</div><div class="kpi-data"><span class="kpi-title">Ingresos</span><span class="kpi-value" style="color:var(--success);" id="dashIngresos">Q 0.00</span></div></div>
+                        <div class="kpi-box"><div class="kpi-icon" style="background:rgba(239,68,68,0.15); color:var(--danger);">🛒</div><div class="kpi-data"><span class="kpi-title">Gastos Efectivo</span><span class="kpi-value" id="dashGastosEfec">Q 0.00</span></div></div>
+                        <div class="kpi-box"><div class="kpi-icon" style="background:rgba(79,70,229,0.15); color:var(--primary);">💳</div><div class="kpi-data"><span class="kpi-title">Pago Tarjetas</span><span class="kpi-value" id="dashTarjetas">Q 0.00</span></div></div>
+                        <div class="kpi-box" style="border:1px solid var(--success);"><div class="kpi-icon" style="background:rgba(16,185,129,0.2); color:var(--success);">💰</div><div class="kpi-data"><span class="kpi-title">Remanente</span><span class="kpi-value" style="color:var(--success);" id="dashDisponible">Q 0.00</span></div></div>
                     </div>
                     
                     <div class="bars-chart-box" id="chartPresupuesto"></div>
@@ -199,7 +224,7 @@
                     </div>
 
                     <div class="card" id="seccion_gastos">
-                        <div class="card-header">📤 Registro de Gastos Básicos</div>
+                        <div class="card-header">📤 Registro de Gastos</div>
                         <div class="form-row">
                             <div style="flex:2;"><label>Concepto</label><input type="text" id="g_nombre" placeholder="Luz / Internet"></div>
                             <div><label>Monto</label><input type="number" id="g_monto"></div>
@@ -257,10 +282,10 @@
 
                 <div class="card" id="panel_mish">
                     <div class="card-header">
-                        <span style="color:var(--primary);">📈 2. Mish - Curva de Capacidad Crediticia (6 Meses Acumulativo)</span>
+                        <span style="color:var(--primary);">📈 2. Mish - Curva de Capacidad Crediticia (6 Meses)</span>
                         <div class="header-controls">
-                            <select id="p_line_tarjeta" style="background:var(--bg-main); color:white; width:130px; padding:4px;" onchange="actualizarMish()"></select>
-                            <select id="p_line_tipo" style="background:var(--bg-main); color:white; width:130px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select>
+                            <select id="p_line_tarjeta" style="width:130px; padding:4px;" onchange="actualizarMish()"></select>
+                            <select id="p_line_tipo" style="width:130px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select>
                             <input type="month" id="mes_mish" class="card-inline-month" value="2026-06" onchange="actualizarMish()">
                         </div>
                     </div>
@@ -304,10 +329,10 @@
                     </div>
                     <div class="ai-chat-container">
                         <div class="ai-messages-wall" id="chat_grid">
-                            <div class="ai-bubble bubble-ai">Entorno optimizado a resolución limpia 100% Zoom. Gráficas corregidas e independientes con cuadrículas y etiquetas de mes reales. ¿Qué balance estratégico deseas calcular hoy?</div>
+                            <div class="ai-bubble bubble-ai">Entorno Premium adaptivo calibrado a Zoom 100% y con soporte nativo de Modo Claro/Oscuro. ¿Qué balance estratégico deseas calcular hoy?</div>
                         </div>
                         <div class="ai-input-bar">
-                            <input type="text" id="chat_user_input" placeholder="Pregúntale a la IA sobre tus gastos y deudas de la nube..." onkeypress="if(event.key==='Enter') enviarMensajeIA()">
+                            <input type="text" id="chat_user_input" placeholder="Pregúntale a la IA sobre tus finanzas..." onkeypress="if(event.key==='Enter') enviarMensajeIA()">
                             <button class="btn-action" style="width:auto; padding:0 20px;" onclick="enviarMensajeIA()">Preguntar</button>
                         </div>
                     </div>
@@ -326,17 +351,39 @@
         let ingresos = []; let ahorros = []; let tarjetas = []; let gastos = []; let compras = [];
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
+        // CONTROL DEL TEMA VISUAL (LIGHT / DARK)
+        function alternarTemaVisual() {
+            const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme_preference", newTheme);
+            
+            document.getElementById("theme_icon").innerText = newTheme === "light" ? "🌙" : "☀️";
+            document.getElementById("theme_text").innerText = newTheme === "light" ? "Modo Oscuro" : "Modo Claro";
+            
+            // Re-renderizar gráficos vectoriales para adaptar colores de cajas flotantes
+            actualizarMish();
+            actualizarAhorrosModulo();
+        }
+
+        function cargarTemaPreferido() {
+            const preferido = localStorage.getItem("theme_preference") || "light";
+            document.documentElement.setAttribute("data-theme", preferido);
+            document.getElementById("theme_icon").innerText = preferido === "light" ? "🌙" : "☀️";
+            document.getElementById("theme_text").innerText = preferido === "light" ? "Modo Oscuro" : "Modo Claro";
+        }
+
         function navegarA(idElemento) {
             let el = document.getElementById(idElemento);
             let contenedor = document.getElementById('contenedor_scroll');
-            if(el && contenedor) {
-                contenedor.scrollTop = el.offsetTop - 20;
-            }
+            if(el && contenedor) contenedor.scrollTop = el.offsetTop - 20;
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
         }
 
         async function verificarSesion() {
+            cargarTemaPreferido();
             const { data: { session } } = await _supabase.auth.getSession();
             if (session) {
                 activeUser = session.user;
@@ -362,7 +409,7 @@
             let email = document.getElementById('auth_email').value; let pass = document.getElementById('auth_password').value;
             const { data, error } = await _supabase.auth.signUp({ email, password: pass });
             if(error) document.getElementById('auth_error').innerText = error.message;
-            else alert('Cuenta creada. Ya puedes iniciar sesión.');
+            else alert('Cuenta creada de manera exitosa.');
         }
 
         async function ejecutarLogout() { await _supabase.auth.signOut(); location.reload(); }
@@ -376,7 +423,7 @@
             let rCom = await _supabase.from('compras').select('*'); compras = rCom.data || [];
 
             renderIngresos(); renderTarjetas(); renderGastos(); renderCompras(); renderAhorros();
-            actualizarTodoLosModulos();
+            actualizarFinanzas(); actualizarMish(); actualizarAhorrosModulo();
         }
 
         function formatMoney(num) { return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
@@ -384,28 +431,19 @@
         function getTasa() { return parseFloat(document.getElementById('tasaCambio').value) || 7.8; }
         function obtenerEnGTQ(monto, moneda) { return moneda === 'USD' ? monto * getTasa() : monto; }
         function toggleVisibilidad(id) { let el = document.getElementById(id); el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
-        function guardarApiKey() { localStorage.setItem('gemini_key', document.getElementById('gemini_api_key').value); alert('Clave Almacenada.'); }
+        function guardarApiKey() { localStorage.setItem('gemini_key', document.getElementById('gemini_api_key').value); alert('Llave guardada.'); }
         function guardarBaseAhorro() { localStorage.setItem('db_a_base', document.getElementById('a_base').value); localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); actualizarAhorrosModulo(); }
 
-        function actualizarTodoLosModulos() {
-            actualizarFinanzas();
-            actualizarMish();
-            actualizarAhorrosModulo();
-        }
-
-        // --- EDICIÓN MODAL ---
+        // EDICIÓN MODAL
         function abrirModalEdicion(tabla, id) {
             registroEdicionActual = { tabla, id };
             let body = document.getElementById('modalBody'); body.innerHTML = "";
             document.getElementById('editModal').style.display = "flex";
             let r = (tabla==='ingresos')?ingresos.find(x=>x.id===id):(tabla==='gastos')?gastos.find(x=>x.id===id):tarjetas.find(x=>x.id===id);
             if(!r && tabla==='ahorros') r = ahorros.find(x=>x.id===id);
-            
             body.innerHTML = `
-                <div style="margin-bottom:12px;"><label>Concepto / Nombre</label><input type="text" id="m_nombre" value="${r.nombre||r.concepto}"></div>
-                <div class="form-row">
-                    <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto||0}"></div>
-                </div>`;
+                <div style="margin-bottom:12px;"><label>Concepto</label><input type="text" id="m_nombre" value="${r.nombre||r.concepto}"></div>
+                <div class="form-row"><div><label>Monto</label><input type="number" id="m_monto" value="${r.monto||0}"></div></div>`;
         }
         function cerrarModal() { document.getElementById('editModal').style.display = "none"; }
         async function ejecutarActualizacionCloud() {
@@ -415,13 +453,12 @@
             await _supabase.from(t).update(pack).eq('id', id); cerrarModal(); await pullCloudData();
         }
 
-        // --- CONTROLES FORMULARIOS ---
+        // CONTROLERS DE FORMULARIOS
         async function guardarIngreso() {
             let n = document.getElementById('i_nombre').value; let m = parseFloat(document.getElementById('i_monto').value);
             let mo = document.getElementById('i_moneda').value; let t = document.getElementById('i_tipo').value;
             let fF = document.getElementById('i_fecha_factura').value; let fM = document.getElementById('i_mes_fondear').value;
-            if(!n || isNaN(m)) return alert('Campos incompletos');
-            let p = fM.split('-');
+            if(!n || isNaN(m)) return alert('Campos incompletos'); let p = fM.split('-');
             await _supabase.from('ingresos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_fact: fF, fecha_fond: fM }]);
             if(document.getElementById('i_iva').checked) {
                 let pFact = fF.split('-'); let mm = parseInt(pFact[1])+1; let aa = parseInt(pFact[0]); if(mm>12) { mm=1; aa++; }
@@ -432,21 +469,20 @@
         async function borrarIngreso(id) { await _supabase.from('ingresos').delete().eq('id', id); await pullCloudData(); }
         function renderIngresos() {
             let ul = document.getElementById('listaIngresos'); ul.innerHTML = "";
-            ingresos.forEach(i => { ul.innerHTML += `<li><span><b>${i.nombre}</b> - ${i.moneda} ${formatMoney(i.monto)} (${i.fecha_fond})</span><div><button onclick="abrirModalEdicion('ingresos',${i.id})">✏️</button><button style="color:var(--danger);" onclick="borrarIngreso(${i.id})">🗑/button></div></li>`; });
+            ingresos.forEach(i => { ul.innerHTML += `<li><span><b>${i.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(i.monto, i.moneda))}</span><div><button onclick="abrirModalEdicion('ingresos',${i.id})">✏️</button><button style="color:var(--danger);" onclick="borrarIngreso(${i.id})">🗑</button></div></li>`; });
         }
 
         async function guardarGasto() {
             let n = document.getElementById('g_nombre').value; let m = parseFloat(document.getElementById('g_monto').value);
             let mo = document.getElementById('g_moneda').value; let t = document.getElementById('g_tipo').value;
-            let f = document.getElementById('g_fecha').value;
-            if(!n || isNaN(m)) return alert('Datos vacíos'); let p = f.split('-');
+            let f = document.getElementById('g_fecha').value; if(!n || isNaN(m)) return alert('Datos vacíos'); let p = f.split('-');
             await _supabase.from('gastos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, medio_pago: 'efectivo', anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
             await pullCloudData();
         }
         async function borrarGasto(id) { await _supabase.from('gastos').delete().eq('id', id); await pullCloudData(); }
         function renderGastos() {
             let ul = document.getElementById('listaGastos'); ul.innerHTML = "";
-            gastos.forEach(g => { ul.innerHTML += `<li><span><b>${g.nombre}</b> - ${g.moneda} ${formatMoney(g.monto)}</span><div><button onclick="abrirModalEdicion('gastos',${g.id})">✏️</button><button style="color:var(--danger);" onclick="borrarGasto(${g.id})">🗑</button></div></li>`; });
+            gastos.forEach(g => { ul.innerHTML += `<li><span><b>${g.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(g.monto, g.moneda))}</span><div><button onclick="abrirModalEdicion('gastos',${g.id})">✏️</button><button style="color:var(--danger);" onclick="borrarGasto(${g.id})">🗑</button></div></li>`; });
         }
 
         async function guardarTarjeta() {
@@ -461,7 +497,7 @@
             let ul = document.getElementById('listaMaestroTarjetas'); let sC = document.getElementById('c_tarjeta'); let sP = document.getElementById('p_line_tarjeta');
             ul.innerHTML = ""; sC.innerHTML = ""; sP.innerHTML = "";
             tarjetas.forEach(t => {
-                ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b> (Cupo Contado: Q${formatMoney(t.lim_contado)})</span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`;
+                ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`;
                 sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`;
             });
         }
@@ -469,9 +505,8 @@
         async function guardarCompra() {
             let tId = document.getElementById('c_tarjeta').value; let n = document.getElementById('c_concepto').value;
             let m = parseFloat(document.getElementById('c_monto').value); let f = document.getElementById('c_fecha').value;
-            let cu = parseInt(document.getElementById('c_cuotas').value);
-            let p = f.split('-'); let aA = parseInt(p[0]); let mA = parseInt(p[1]);
-            let fIn = `${aA}-${String(mA).padStart(2,'0')}`;
+            let cu = parseInt(document.getElementById('c_cuotas').value); if(!tId || !n || isNaN(m)) return alert('Faltan datos');
+            let p = f.split('-'); let aA = parseInt(p[0]); let mA = parseInt(p[1]); let fIn = `${aA}-${String(mA).padStart(2,'0')}`;
             let mFin = mA + cu - 1; let aFin = aA; while(mFin > 12) { mFin -= 12; aFin++; }
             let fFi = `${aFin}-${String(mFin).padStart(2,'0')}`;
             await _supabase.from('compras').insert([{ id: Date.now(), user_id: activeUser.id, tarjeta_id: tId, concepto: n, monto: m, moneda: 'GTQ', fecha_orig: f, cuotas: cu, pago_mensual: m/cu, fecha_inicio: fIn, fecha_fin: fFi }]);
@@ -482,7 +517,7 @@
             let tb = document.getElementById('bodyCompras'); tb.innerHTML = "";
             compras.forEach(c => {
                 let t = tarjetas.find(x => x.id == c.tarjeta_id);
-                tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small>${t?t.nombre:"N/A"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} al ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none;" onclick="borrarCompra(${c.id})">🗑</button></td></tr>`;
+                tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small>${t?t.nombre:"Tarjeta"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} a ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none;" onclick="borrarCompra(${c.id})">🗑</button></td></tr>`;
             });
         }
 
@@ -496,10 +531,10 @@
         async function borrarAhorro(id) { await _supabase.from('ahorros').delete().eq('id', id); await pullCloudData(); }
         function renderAhorros() {
             let ul = document.getElementById('listaAhorros'); ul.innerHTML = "";
-            ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: ${a.moneda} ${formatMoney(a.monto)}</span><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></li>`; });
+            ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></li>`; });
         }
 
-        // --- CÁLCULO INDEPENDIENTE MODULO 1: FINANZAS ---
+        // --- CÁLCULO MÓDULO 1: FINANZAS ---
         function actualizarFinanzas() {
             let fMes = document.getElementById('mes_finanzas').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
@@ -513,13 +548,12 @@
                 return (aAn*12 + mAn) >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && (aAn*12 + mAn) <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
             }).reduce((a, b) => a + b.pago_mensual, 0);
 
-            let totTarjetas = sT_cuotas;
-            let pAh = ahorros.filter(a => a.anio === aAn && a.mes === mAn).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-            let disp = ing - (sF + sV + totTarjetas + pAh); if(disp<0) disp=0;
+            let totEgresos = sF + sV + sT_cuotas;
+            let disp = ing - totEgresos; if(disp < 0) disp = 0;
 
             document.getElementById('dashIngresos').innerText = "Q " + formatMoney(ing);
             document.getElementById('dashGastosEfec').innerText = "Q " + formatMoney(sF + sV);
-            document.getElementById('dashTarjetas').innerText = "Q " + formatMoney(totTarjetas);
+            document.getElementById('dashTarjetas').innerText = "Q " + formatMoney(sT_cuotas);
             document.getElementById('dashDisponible').innerText = "Q " + formatMoney(disp);
             
             dibujarGraficoBarrasFinanzas(mAn, aAn);
@@ -554,7 +588,7 @@
                 let vistaVal = d.ingresos;
 
                 if (filtro === 'all') {
-                    if (d.disponible > 0) pila += `<div class="bar-segment" style="height:${(d.disponible/maxAlt)*100}%; background-color:var(--success); flex-grow:1;"><span class="bar-txt">Q${formatMoneyCorto(d.disponible)}</span></div>`;
+                    if (d.disponible > 0) pila += `<div class="bar-segment" style="height:${(d.disponible/maxAlt)*100}%; background-color:var(--success);"><span class="bar-txt">Q${formatMoneyCorto(d.disponible)}</span></div>`;
                     if (d.tarjeta > 0) pila += `<div class="bar-segment" style="height:${(d.tarjeta/maxAlt)*100}%; background-color:var(--primary);"><span class="bar-txt">Q${formatMoneyCorto(d.tarjeta)}</span></div>`;
                     if (d.variable > 0) pila += `<div class="bar-segment" style="height:${(d.variable/maxAlt)*100}%; background-color:var(--warning);"><span class="bar-txt">Q${formatMoneyCorto(d.variable)}</span></div>`;
                     if (d.fijo > 0) pila += `<div class="bar-segment" style="height:${(d.fijo/maxAlt)*100}%; background-color:var(--danger);"><span class="bar-txt">Q${formatMoneyCorto(d.fijo)}</span></div>`;
@@ -572,7 +606,7 @@
             });
         }
 
-        // --- CÁLCULO INDEPENDIENTE MODULO 2: MISH ---
+        // --- CÁLCULO MÓDULO 2: MISH ---
         function actualizarMish() {
             let tId = document.getElementById('p_line_tarjeta').value;
             let cont = document.getElementById('chartLineasContenedor');
@@ -580,7 +614,7 @@
             let fMes = document.getElementById('mes_mish').value;
             
             if(!tId || !fMes) {
-                cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px;">⚠️ Inscribe y selecciona una tarjeta de crédito.</div>`;
+                cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta activa en este bloque.</div>`;
                 return;
             }
 
@@ -590,14 +624,15 @@
 
             let coordsDeuda = []; let coordsDisp = [];
             let puntosHtml = ""; let labelsHtml = "";
+            let theme = document.documentElement.getAttribute("data-theme") || "light";
+            let textFill = theme === 'light' ? '#0f172a' : '#f8fafc';
 
             for(let i=0; i<6; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
                 
                 let deudaViva = compras.filter(c => {
                     let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
-                    let cv = tA*12 + tM;
-                    return c.tarjeta_id == tId && cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
+                    let cv = tA*12 + tM; return c.tarjeta_id == tId && cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
                 }).reduce((a, c) => {
                     let pIni = c.fecha_inicio.split('-');
                     let transcurridos = (tA*12 + tM) - (parseInt(pIni[0])*12 + parseInt(pIni[1]));
@@ -613,15 +648,13 @@
                 coordsDeuda.push(`${x},${yDeuda}`); coordsDisp.push(`${x},${yDisp}`);
 
                 puntosHtml += `
-                    <circle cx="${x}" cy="${yDeuda}" r="5" fill="var(--danger)" stroke="#0f172a" stroke-width="1.5"/>
-                    <rect x="${x-22}" y="${yDeuda-22}" width="44" height="15" rx="4" fill="#881337" opacity="0.85"/>
-                    <text x="${x}" y="${yDeuda-11}" style="font-size:9px; font-weight:700; fill:white;" text-anchor="middle">Q${formatMoneyCorto(deudaViva)}</text>
+                    <circle cx="${x}" cy="${yDeuda}" r="5" fill="var(--danger)" stroke="var(--card-bg)" stroke-width="2"/>
+                    <text x="${x}" y="${yDeuda-10}" style="font-size:10px; font-weight:800; fill:var(--danger);" text-anchor="middle">Q${formatMoneyCorto(deudaViva)}</text>
                     
-                    <circle cx="${x}" cy="${yDisp}" r="5" fill="var(--success)" stroke="#0f172a" stroke-width="1.5"/>
-                    <rect x="${x-22}" y="${yDisp+8}" width="44" height="15" rx="4" fill="#064e3b" opacity="0.85"/>
-                    <text x="${x}" y="${yDisp+19}" style="font-size:9px; font-weight:700; fill:white;" text-anchor="middle">Q${formatMoneyCorto(disponible)}</text>`;
+                    <circle cx="${x}" cy="${yDisp}" r="5" fill="var(--success)" stroke="var(--card-bg)" stroke-width="2"/>
+                    <text x="${x}" y="${yDisp+16}" style="font-size:10px; font-weight:800; fill:var(--success);" text-anchor="middle">Q${formatMoneyCorto(disponible)}</text>`;
                 
-                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[tM-1]}</text>`;
+                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:700;" text-anchor="middle">${nombresMesesCompleto[tM-1]}</text>`;
             }
 
             cont.innerHTML = `
@@ -630,13 +663,13 @@
                     <line x1="40" y1="115" x2="560" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
                     <line x1="40" y1="180" x2="560" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
                     
-                    <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="3" stroke-dasharray="5 3"/>
+                    <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="3" stroke-dasharray="6 4"/>
                     <path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="3"/>
                     ${puntosHtml} ${labelsHtml}
                 </svg>`;
         }
 
-        // --- CÁLCULO INDEPENDIENTE MODULO 3 Y 4: AHORROS ---
+        // --- CÁLCULO MÓDULOS 3 Y 4: AHORROS ---
         function actualizarAhorrosModulo() {
             let fMes = document.getElementById('mes_ahorros').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
@@ -676,10 +709,9 @@
 
                 coordsAhorro.push(`${x},${y}`);
                 puntosHtml += `
-                    <circle cx="${x}" cy="${y}" r="5.5" fill="var(--teal)" stroke="#0f172a" stroke-width="1.5"/>
-                    <rect x="${x-22}" y="${y-22}" width="44" height="15" rx="4" fill="#0e7490" opacity="0.9"/>
-                    <text x="${x}" y="${y-11}" style="font-size:9px; font-weight:700; fill:white;" text-anchor="middle">Q${formatMoneyCorto(v.total)}</text>`;
-                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[v.m-1]}</text>`;
+                    <circle cx="${x}" cy="${y}" r="6" fill="var(--teal)" stroke="var(--card-bg)" stroke-width="2"/>
+                    <text x="${x}" y="${y-10}" style="font-size:10px; font-weight:800; fill:var(--teal);" text-anchor="middle">Q${formatMoneyCorto(v.total)}</text>`;
+                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:700;" text-anchor="middle">${nombresMesesCompleto[v.m-1]}</text>`;
             });
 
             cont.innerHTML = `
@@ -702,18 +734,18 @@
             let grid = document.getElementById('chat_grid'); grid.innerHTML += `<div class="ai-bubble bubble-user">${txt}</div>`;
             document.getElementById('chat_user_input').value = "";
             let aiId = 'ai_' + Date.now();
-            grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}"><i>Calculando proyecciones...</i></div>`;
+            grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}"><i>Calculando balance contable...</i></div>`;
             grid.scrollTop = grid.scrollHeight;
 
             try {
                 let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Analista Contable. Consulta: "${txt}". Datos: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}. Plazos: ${JSON.stringify(compras)}.` }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `Actúa como analista contable. Consulta: "${txt}". Datos actuales: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}.` }] }] })
                 });
                 let d = await res.json();
                 document.getElementById(aiId).innerHTML = d.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
-            } catch (e) { document.getElementById(aiId).innerText = "Error de conexión o llave API inválida."; }
+            } catch (e) { document.getElementById(aiId).innerText = "Error o API Key inválida."; }
             grid.scrollTop = grid.scrollHeight;
         }
 
