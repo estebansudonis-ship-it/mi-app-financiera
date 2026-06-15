@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud - V16.2</title>
+    <title>Mi App Financiera Cloud - V16.3</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
@@ -51,12 +51,6 @@
         .barra-label { font-size: 12px; margin-top: 5px; text-align: center; color: #9ca3af; font-weight: 500;}
         .barra-total { font-size: 11px; margin-bottom: 5px; font-weight: bold; color: #bdc3c7;}
         .svg-container { width: 100%; height: 250px; background: rgba(0,0,0,0.2); border-radius: 12px; margin-top: 15px; overflow: hidden;}
-        .linea-disponible { stroke: var(--success); stroke-width: 3; fill: none; }
-        .linea-deuda { stroke: var(--danger); stroke-width: 3; fill: none; }
-        .punto-disp { fill: var(--success); stroke: #111827; stroke-width: 2; }
-        .punto-deuda { fill: var(--danger); stroke: #111827; stroke-width: 2; }
-        .svg-text { fill: #f9fafb; font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif;}
-        .svg-grid { stroke: rgba(255,255,255,0.1); stroke-width: 1; }
         .chat-box { display: flex; flex-direction: column; height: 350px; background: rgba(0,0,0,0.2); border-radius: 12px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden;}
         .chat-messages { flex-grow: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;}
         .chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word;}
@@ -118,7 +112,7 @@
                     <div id="wrapIngresos" style="display: none;"><ul id="listaIngresos"></ul></div>
                 </div>
 
-                <!-- MASTER TARJETAS -->
+                <!-- MAESTRO TARJETAS -->
                 <div class="panel">
                     <h2 class="panel-header">💳 Maestro de Tarjetas</h2>
                     <div class="form-row">
@@ -219,16 +213,6 @@
                     </div>
                 </div>
 
-                <!-- PROYECCIÓN LÍNEAS -->
-                <div class="panel dashboard" style="background-color: #1e1b4b;">
-                    <h2 class="panel-header" style="color: #a5b4fc;">📈 Proyección de Deuda vs. Límite</h2>
-                    <div class="form-row" style="margin-bottom: 0;">
-                        <div style="flex: 2;"><label style="color:#818cf8;">Tarjeta a Proyectar (6 meses):</label><select id="p_line_tarjeta" onchange="dibujarGraficoLineas()"><option value="">-- Elige Tarjeta --</option></select></div>
-                        <div><label style="color:#818cf8;">Límite:</label><select id="p_line_tipo" onchange="dibujarGraficoLineas()"><option value="cuotas">Cuotas</option><option value="contado">Contado</option></select></div>
-                    </div>
-                    <div class="svg-container" id="chartLineasContenedor"></div>
-                </div>
-
                 <!-- AHORROS -->
                 <div class="panel dashboard" style="background-color: #064e3b;">
                     <h2 class="panel-header" style="color: #6ee7b7; border-bottom-color: rgba(255,255,255,0.1);">🏦 Dashboard de Ahorros</h2>
@@ -264,7 +248,16 @@
         let ingresos = []; let ahorros = []; let tarjetas = []; let gastos = []; let compras = [];
         const nombresMeses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
+        // ESTABLECER EL MES ACTUAL AUTOMÁTICAMENTE AL CARGAR
+        function configurarMesActual() {
+            const hoy = new Date();
+            const anio = hoy.getFullYear();
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+            document.getElementById('dash_mes').value = `${anio}-${mes}`;
+        }
+
         async function verificarSesion() {
+            configurarMesActual();
             const { data: { session } } = await _supabase.auth.getSession();
             if (session) {
                 activeUser = session.user;
@@ -320,7 +313,7 @@
         function guardarApiKey() { let key = document.getElementById('gemini_api_key').value; if(key) { localStorage.setItem('gemini_key', key); alert('🔑 API Key guardada.'); } }
         function guardarBaseAhorro() { localStorage.setItem('db_a_base', document.getElementById('a_base').value); localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); actualizarTodo(); }
         
-        function actualizarTodo() { actualizarDashboard(); actualizarAhorros(); if(tarjetas.length) dibujarGraficoLineas(); }
+        function actualizarTodo() { actualizarDashboard(); actualizarAhorros(); }
 
         async function guardarIngreso() {
             let n = document.getElementById('i_nombre').value; let m = parseFloat(document.getElementById('i_monto').value); let mo = document.getElementById('i_moneda').value;
@@ -359,11 +352,11 @@
         }
         async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
         function renderTarjetas() {
-            let ul = document.getElementById('listaMaestroTarjetas'); let selC = document.getElementById('c_tarjeta'); let selP = document.getElementById('p_line_tarjeta'); let selG = document.getElementById('g_metodo');
-            ul.innerHTML = ""; selC.innerHTML = '<option value="">-- Elige --</option>'; selP.innerHTML = '<option value="">-- Elige --</option>'; selG.innerHTML = '<option value="efectivo">Efectivo / Transferencia</option>';
+            let ul = document.getElementById('listaMaestroTarjetas'); let selC = document.getElementById('c_tarjeta'); let selG = document.getElementById('g_metodo');
+            ul.innerHTML = ""; selC.innerHTML = '<option value="">-- Elige --</option>'; selG.innerHTML = '<option value="efectivo">Efectivo / Transferencia</option>';
             tarjetas.forEach((t) => {
                 ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b><br><small>Contado: ${t.moneda} ${formatMoney(t.lim_contado)} | Cuotas: ${t.moneda} ${formatMoney(t.lim_cuotas)}</small></span><div class="acciones"><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑️</button></div></li>`;
-                let opt = `<option value="${t.id}">${t.nombre}</option>`; selC.innerHTML += opt; selP.innerHTML += opt; selG.innerHTML += opt;
+                let opt = `<option value="${t.id}">${t.nombre}</option>`; selC.innerHTML += opt; selG.innerHTML += opt;
             });
         }
 
@@ -474,18 +467,15 @@
             data.forEach(d => {
                 let pDisp=(d.disponible/maxAlt)*100; let pTarj=(d.tarjeta/maxAlt)*100; let pVar=(d.variable/maxAlt)*100; let pFijo=(d.fijo/maxAlt)*100;
                 let pila = `<div class="pila">`;
-                if (d.disponible > 0) pila += `<div class="segmento style="height: ${pDisp}%; background:var(--success);">${pDisp>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.disponible)}</span>`:''}</div>`;
-                pila += `<div class="segmento" style="height: ${pTarj}%; background:var(--primary);">${pTarj>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.tarjeta)}</span>`:''}</div>
-                    <div class="segmento" style="height: ${pVar}%; background:var(--warning);">${pVar>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.variable)}</span>`:''}</div>
-                    <div class="segmento" style="height: ${pFijo}%; background:var(--danger);">${pFijo>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.fijo)}</span>`:''}</div></div>`;
+                
+                // CORRECCIÓN: REGRESA LA BARRA DISPONIBLE VERDE CON COLOR DE FONDO ACTIVO Y FLEX-GROW
+                if (d.disponible > 0) pila += `<div class="segmento" style="height: ${pDisp}%; background-color: var(--success); flex-grow: 1;">${pDisp>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.disponible)}</span>`:''}</div>`;
+                
+                pila += `<div class="segmento" style="height: ${pTarj}%; background-color: var(--primary);">${pTarj>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.tarjeta)}</span>`:''}</div>
+                    <div class="segmento" style="height: ${pVar}%; background-color: var(--warning);">${pVar>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.variable)}</span>`:''}</div>
+                    <div class="segmento" style="height: ${pFijo}%; background-color: var(--danger);">${pFijo>8?`<span class="etiqueta-segmento">Q${formatMoneyCorto(d.fijo)}</span>`:''}</div></div>`;
                 let w = document.createElement('div'); w.className = 'barra-wrapper'; w.innerHTML = `<div class="barra-total">Q${formatMoneyCorto(d.techo)}</div>${pila}<div class="barra-label">${d.nombre}</div>`; cont.appendChild(w);
             });
-        }
-
-        function dibujarGraficoLineas() {
-            let tId = document.getElementById('p_line_tarjeta').value; let contenedorSVG = document.getElementById('chartLineasContenedor');
-            if(!tId) { contenedorSVG.innerHTML = '<svg width="100%" height="100%"><text x="300" y="125" text-anchor="middle" fill="#6b7280" font-size="14">Selecciona tarjeta</text></svg>'; return; }
-            contenedorSVG.innerHTML = '<svg width="100%" height="100%"><text x="300" y="125" text-anchor="middle" fill="#10b981" font-size="14">📈 Línea de crédito monitoreada activa</text></svg>';
         }
 
         function actualizarAhorros() {
