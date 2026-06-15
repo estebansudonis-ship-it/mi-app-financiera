@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V22.1</title>
+    <title>Mi App Financiera Cloud Pro - V22.2</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -38,24 +38,29 @@
             --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
         }
         
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.15s, border-color 0.15s, color 0.15s; }
         
-        /* MENÚ LATERAL LIMPIO */
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; z-index: 10; }
+        /* Contenedor Base Estricto para evitar desbordamientos y espacios fantasma */
+        html, body { width: 100%; height: 100vh; overflow: hidden; background-color: var(--bg-main); }
+        body { display: flex; }
+        
+        /* MENÚ LATERAL AJUSTADO */
+        .sidebar { width: 260px; height: 100vh; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; z-index: 10; }
         .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; margin-top: 10px; }
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; color: var(--text-muted); font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background-color: var(--bg-main); color: var(--primary); font-weight: 600; box-shadow: var(--shadow-sm); }
         
-        /* SWITCH DE MODO CLARO/OSCURO */
+        /* SWITCH DE TEMA */
         .theme-switch-box { border-top: 1px solid var(--border-color); padding-top: 16px; margin-bottom: 14px; }
         .btn-theme-toggle { background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 10px; border-radius: 10px; cursor: pointer; width: 100%; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-sm); }
 
         .cloud-badge { background: var(--bg-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: var(--text-muted); font-weight: 600; }
 
-        /* CONTENEDOR PRINCIPAL FLUIDO */
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; background-color: var(--bg-main); }
-        .dashboard-grid { padding: 35px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; min-width: 1150px; box-sizing: border-box; }
+        /* ESPACIO DE TRABAJO PRINCIPAL: ELIMINADA CUALQUIER DISTANCIA SUPERIOR */
+        .main-content { flex-grow: 1; height: 100vh; overflow-y: auto; background-color: var(--bg-main); display: flex; flex-direction: column; }
+        
+        /* Rejilla de contenido forzada al borde superior de la pantalla */
+        .dashboard-grid { padding: 24px 30px; display: flex; flex-direction: column; gap: 24px; width: 100%; min-width: 1150px; box-sizing: border-box; }
         .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
         @media (max-width: 1200px) { .card-row { grid-template-columns: 1fr; } }
         
@@ -64,7 +69,7 @@
         .card-header { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         .header-controls { display: flex; align-items: center; gap: 12px; }
         
-        .card-inline-month { background-color: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-family: inherit; font-weight: 600; outline: none; }
+        .card-inline-month { background-color: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: inherit; font-weight: 600; outline: none; }
 
         /* MÉTRICAS */
         .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
@@ -85,7 +90,7 @@
         button.btn-action:hover { background-color: var(--primary-hover); }
         .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
-        /* RECODS LISTS AND TABLES */
+        /* REGISTROS Y TABLAS */
         ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
         ul.records-list li { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
@@ -102,7 +107,7 @@
         .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 4px; }
         .bar-top-val { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
 
-        /* SVG CONTAINERS */
+        /* CONTENEDORES SVG */
         .vector-chart-container { width: 100%; height: 260px; margin-top: 10px; background: var(--chart-panel-bg); border-radius: 14px; border: 1px solid var(--border-color); padding: 20px; position: relative; overflow: hidden; }
 
         /* IA INTERFAZ */
@@ -149,8 +154,8 @@
         </div>
     </div>
 
-    <!-- ENTORNO DE LA APLICACIÓN -->
-    <div id="app_content" style="display:none; width:100%; height:100vh;">
+    <!-- ENTORNO COMPLETO APP -->
+    <div id="app_content" style="display:none; width:100%; height:100vh; display:flex;">
         
         <div class="sidebar">
             <div class="nav-menu">
@@ -391,7 +396,7 @@
             if (session) {
                 activeUser = session.user;
                 document.getElementById('auth_screen').style.display = 'none';
-                document.getElementById('app_content').style.display = 'block';
+                document.getElementById('app_content').style.display = 'flex';
                 
                 if(localStorage.getItem('db_a_base')) document.getElementById('a_base').value = localStorage.getItem('db_a_base');
                 if(localStorage.getItem('db_a_base_moneda')) document.getElementById('a_base_moneda').value = localStorage.getItem('db_a_base_moneda');
@@ -494,7 +499,7 @@
         async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
         function renderTarjetas() {
             let ul = document.getElementById('listaMaestroTarjetas'); let sC = document.getElementById('c_tarjeta'); let sP = document.getElementById('p_line_tarjeta');
-            if(ul) { ul.innerHTML = ""; sC.innerHTML = ""; sP.innerHTML = ""; tarjetas.forEach(t => { ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`; sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; id_compras_tarjeta = t.id; }); }
+            if(ul) { ul.innerHTML = ""; sC.innerHTML = ""; sP.innerHTML = ""; tarjetas.forEach(t => { ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`; sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; }); }
         }
 
         async function guardarCompra() {
@@ -524,7 +529,6 @@
             let ul = document.getElementById('listaAhorros'); if(ul) { ul.innerHTML = ""; ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></li>`; }); }
         }
 
-        // --- MÓDULO 1: FINANZAS ---
         function actualizarFinanzas() {
             let fMes = document.getElementById('mes_finanzas').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
@@ -569,7 +573,7 @@
                 let disp = pIng - totalEgresos; if(disp<0) disp=0;
                 let techo = pIng > totalEgresos ? pIng : totalEgresos; if(techo > maxAlt) maxAlt = techo;
 
-                data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF, variable: pV, stroke: pTc, tarjeta: pTc, disponible: disp, ingresos: pIng });
+                data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF, variable: pV, tarjeta: pTc, disponible: disp, ingresos: pIng });
             }
             if(maxAlt===0) maxAlt = 1;
 
@@ -595,7 +599,6 @@
             });
         }
 
-        // --- MÓDULO 2: MISH ---
         function actualizarMish() {
             let tId = document.getElementById('p_line_tarjeta').value;
             let cont = document.getElementById('chartLineasContenedor');
@@ -650,7 +653,6 @@
             }
         }
 
-        // --- MÓDULOS 3 Y 4: AHORROS ---
         function actualizarAhorrosModulo() {
             let fMes = document.getElementById('mes_ahorros').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
@@ -718,7 +720,7 @@
                 let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Actúa como analista financiero. Consulta: "${txt}". Datos en quetzales: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}.` }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `Analista. Consulta: "${txt}". Datos: ${JSON.stringify(ingresos)}.` }] }] })
                 });
                 let d = await res.json();
                 document.getElementById(aiId).innerHTML = d.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
