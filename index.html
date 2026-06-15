@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V22.0</title>
+    <title>Mi App Financiera Cloud Pro - V22.1</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -41,25 +41,25 @@
         * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
-        /* MENÚ LATERAL LIMPIO (SIN LOGO INVASIVO) */
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; }
-        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        /* MENÚ LATERAL LIMPIO */
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; z-index: 10; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; margin-top: 10px; }
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; color: var(--text-muted); font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background-color: var(--bg-main); color: var(--primary); font-weight: 600; box-shadow: var(--shadow-sm); }
         
         /* SWITCH DE MODO CLARO/OSCURO */
         .theme-switch-box { border-top: 1px solid var(--border-color); padding-top: 16px; margin-bottom: 14px; }
         .btn-theme-toggle { background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 10px; border-radius: 10px; cursor: pointer; width: 100%; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-sm); }
-        .btn-theme-toggle:hover { background: var(--border-color); }
 
         .cloud-badge { background: var(--bg-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: var(--text-muted); font-weight: 600; }
 
-        /* CONTENEDOR PRINCIPAL - OPTIMIZADO ZOOM 100% */
+        /* CONTENEDOR PRINCIPAL FLUIDO */
         .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; background-color: var(--bg-main); }
-        .dashboard-grid { padding: 30px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; min-width: 1150px; box-sizing: border-box; }
+        .dashboard-grid { padding: 35px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; min-width: 1150px; box-sizing: border-box; }
         .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
+        @media (max-width: 1200px) { .card-row { grid-template-columns: 1fr; } }
         
-        /* TARJETAS ESTILO PREMIUM DASHBOARD */
+        /* TARJETAS */
         .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); width: 100%; position: relative; }
         .card-header { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         .header-controls { display: flex; align-items: center; gap: 12px; }
@@ -85,7 +85,7 @@
         button.btn-action:hover { background-color: var(--primary-hover); }
         .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
-        /* TABLAS Y LISTAS */
+        /* RECODS LISTS AND TABLES */
         ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
         ul.records-list li { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
@@ -93,7 +93,7 @@
         th { background-color: var(--bg-main); color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); text-align: left; }
         td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: var(--card-bg); }
 
-        /* GRÁFICO DE BARRAS MEJORADO */
+        /* GRÁFICO DE BARRAS */
         .bars-chart-box { display: flex; align-items: flex-end; justify-content: space-around; height: 260px; background: var(--chart-panel-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 10px 10px 10px; margin-top: 10px; width: 100%; }
         .bar-col { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; }
         .bar-stack { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background-color: var(--card-bg); border: 1px solid var(--border-color); }
@@ -102,7 +102,7 @@
         .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 4px; }
         .bar-top-val { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
 
-        /* CONTENEDORES SVG */
+        /* SVG CONTAINERS */
         .vector-chart-container { width: 100%; height: 260px; margin-top: 10px; background: var(--chart-panel-bg); border-radius: 14px; border: 1px solid var(--border-color); padding: 20px; position: relative; overflow: hidden; }
 
         /* IA INTERFAZ */
@@ -136,6 +136,7 @@
         </div>
     </div>
 
+    <!-- PANTALLA INICIAL ACCESO -->
     <div id="auth_screen">
         <div class="auth-card">
             <h2 style="margin:0 0 8px 0; color:var(--primary); text-align:center; font-weight:800;">🔒 Sistema Financiero</h2>
@@ -148,6 +149,7 @@
         </div>
     </div>
 
+    <!-- ENTORNO DE LA APLICACIÓN -->
     <div id="app_content" style="display:none; width:100%; height:100vh;">
         
         <div class="sidebar">
@@ -177,6 +179,7 @@
         <div class="main-content" id="contenedor_scroll">
             <div class="dashboard-grid">
                 
+                <!-- MODULE 1: FINANZAS -->
                 <div class="card" id="panel_finanzas">
                     <div class="card-header">
                         <span>📊 1. Finanzas (Flujo de Caja Real)</span>
@@ -202,6 +205,7 @@
                     <div class="bars-chart-box" id="chartPresupuesto"></div>
                 </div>
 
+                <!-- FORMULARIOS -->
                 <div class="card-row">
                     <div class="card" id="seccion_ingresos">
                         <div class="card-header">📥 Registro de Ingresos</div>
@@ -262,6 +266,7 @@
                     </div>
                 </div>
 
+                <!-- AMORTIZACIONES -->
                 <div class="card" id="seccion_plazos">
                     <div class="card-header">🛍️ Consumos a Plazos (Amortizaciones)</div>
                     <div class="form-row">
@@ -280,6 +285,7 @@
                     </div>
                 </div>
 
+                <!-- MODULE 2: MISH -->
                 <div class="card" id="panel_mish">
                     <div class="card-header">
                         <span style="color:var(--primary);">📈 2. Mish - Curva de Capacidad Crediticia (6 Meses)</span>
@@ -292,6 +298,7 @@
                     <div class="vector-chart-container" id="chartLineasContenedor"></div>
                 </div>
 
+                <!-- MODULE 3: PLAN DE AHORROS -->
                 <div class="card" id="panel_ahorros" style="border-left:5px solid var(--success);">
                     <div class="card-header">
                         <span style="color:var(--success);">🏦 3. Plan de Depósitos de Ahorros</span>
@@ -316,11 +323,13 @@
                     </div>
                 </div>
 
+                <!-- MODULE 4: HISTÓRICO DE AHORROS -->
                 <div class="card">
                     <div class="card-header"><span style="color:var(--teal);">📉 4. Histórico de Crecimiento de Ahorro Neto</span></div>
                     <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
                 </div>
 
+                <!-- MODULE 5: IA CONSULTOR -->
                 <div class="card" id="seccion_ia">
                     <div class="card-header" style="color:var(--primary);">🤖 5. Consultor IA Financiero Experto</div>
                     <div class="form-row">
@@ -329,7 +338,7 @@
                     </div>
                     <div class="ai-chat-container">
                         <div class="ai-messages-wall" id="chat_grid">
-                            <div class="ai-bubble bubble-ai">Entorno Premium adaptivo calibrado a Zoom 100% y con soporte nativo de Modo Claro/Oscuro. ¿Qué balance estratégico deseas calcular hoy?</div>
+                            <div class="ai-bubble bubble-ai">Entorno Premium adaptivo calibrado a Zoom 100% y con soporte de Modo Claro/Oscuro dinámico. ¿Qué balance estratégico deseas calcular hoy?</div>
                         </div>
                         <div class="ai-input-bar">
                             <input type="text" id="chat_user_input" placeholder="Pregúntale a la IA sobre tus finanzas..." onkeypress="if(event.key==='Enter') enviarMensajeIA()">
@@ -351,20 +360,14 @@
         let ingresos = []; let ahorros = []; let tarjetas = []; let gastos = []; let compras = [];
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
-        // CONTROL DEL TEMA VISUAL (LIGHT / DARK)
         function alternarTemaVisual() {
             const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
             const newTheme = currentTheme === "light" ? "dark" : "light";
-            
             document.documentElement.setAttribute("data-theme", newTheme);
             localStorage.setItem("theme_preference", newTheme);
-            
             document.getElementById("theme_icon").innerText = newTheme === "light" ? "🌙" : "☀️";
             document.getElementById("theme_text").innerText = newTheme === "light" ? "Modo Oscuro" : "Modo Claro";
-            
-            // Re-renderizar gráficos vectoriales para adaptar colores de cajas flotantes
-            actualizarMish();
-            actualizarAhorrosModulo();
+            actualizarMish(); actualizarAhorrosModulo();
         }
 
         function cargarTemaPreferido() {
@@ -434,7 +437,6 @@
         function guardarApiKey() { localStorage.setItem('gemini_key', document.getElementById('gemini_api_key').value); alert('Llave guardada.'); }
         function guardarBaseAhorro() { localStorage.setItem('db_a_base', document.getElementById('a_base').value); localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); actualizarAhorrosModulo(); }
 
-        // EDICIÓN MODAL
         function abrirModalEdicion(tabla, id) {
             registroEdicionActual = { tabla, id };
             let body = document.getElementById('modalBody'); body.innerHTML = "";
@@ -453,7 +455,6 @@
             await _supabase.from(t).update(pack).eq('id', id); cerrarModal(); await pullCloudData();
         }
 
-        // CONTROLERS DE FORMULARIOS
         async function guardarIngreso() {
             let n = document.getElementById('i_nombre').value; let m = parseFloat(document.getElementById('i_monto').value);
             let mo = document.getElementById('i_moneda').value; let t = document.getElementById('i_tipo').value;
@@ -468,8 +469,7 @@
         }
         async function borrarIngreso(id) { await _supabase.from('ingresos').delete().eq('id', id); await pullCloudData(); }
         function renderIngresos() {
-            let ul = document.getElementById('listaIngresos'); ul.innerHTML = "";
-            ingresos.forEach(i => { ul.innerHTML += `<li><span><b>${i.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(i.monto, i.moneda))}</span><div><button onclick="abrirModalEdicion('ingresos',${i.id})">✏️</button><button style="color:var(--danger);" onclick="borrarIngreso(${i.id})">🗑</button></div></li>`; });
+            let ul = document.getElementById('listaIngresos'); if(ul) { ul.innerHTML = ""; ingresos.forEach(i => { ul.innerHTML += `<li><span><b>${i.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(i.monto, i.moneda))}</span><div><button onclick="abrirModalEdicion('ingresos',${i.id})">✏️</button><button style="color:var(--danger);" onclick="borrarIngreso(${i.id})">🗑</button></div></li>`; }); }
         }
 
         async function guardarGasto() {
@@ -481,8 +481,7 @@
         }
         async function borrarGasto(id) { await _supabase.from('gastos').delete().eq('id', id); await pullCloudData(); }
         function renderGastos() {
-            let ul = document.getElementById('listaGastos'); ul.innerHTML = "";
-            gastos.forEach(g => { ul.innerHTML += `<li><span><b>${g.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(g.monto, g.moneda))}</span><div><button onclick="abrirModalEdicion('gastos',${g.id})">✏️</button><button style="color:var(--danger);" onclick="borrarGasto(${g.id})">🗑</button></div></li>`; });
+            let ul = document.getElementById('listaGastos'); if(ul) { ul.innerHTML = ""; gastos.forEach(g => { ul.innerHTML += `<li><span><b>${g.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(g.monto, g.moneda))}</span><div><button onclick="abrirModalEdicion('gastos',${g.id})">✏️</button><button style="color:var(--danger);" onclick="borrarGasto(${g.id})">🗑</button></div></li>`; }); }
         }
 
         async function guardarTarjeta() {
@@ -495,11 +494,7 @@
         async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
         function renderTarjetas() {
             let ul = document.getElementById('listaMaestroTarjetas'); let sC = document.getElementById('c_tarjeta'); let sP = document.getElementById('p_line_tarjeta');
-            ul.innerHTML = ""; sC.innerHTML = ""; sP.innerHTML = "";
-            tarjetas.forEach(t => {
-                ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`;
-                sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`;
-            });
+            if(ul) { ul.innerHTML = ""; sC.innerHTML = ""; sP.innerHTML = ""; tarjetas.forEach(t => { ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`; sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; id_compras_tarjeta = t.id; }); }
         }
 
         async function guardarCompra() {
@@ -514,11 +509,7 @@
         }
         async function borrarCompra(id) { await _supabase.from('compras').delete().eq('id', id); await pullCloudData(); }
         function renderCompras() {
-            let tb = document.getElementById('bodyCompras'); tb.innerHTML = "";
-            compras.forEach(c => {
-                let t = tarjetas.find(x => x.id == c.tarjeta_id);
-                tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small>${t?t.nombre:"Tarjeta"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} a ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none;" onclick="borrarCompra(${c.id})">🗑</button></td></tr>`;
-            });
+            let tb = document.getElementById('bodyCompras'); if(tb) { tb.innerHTML = ""; compras.forEach(c => { let t = tarjetas.find(x => x.id == c.tarjeta_id); tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small>${t?t.nombre:"Tarjeta"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} a ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none;" onclick="borrarCompra(${c.id})">🗑</button></td></tr>`; }); }
         }
 
         async function guardarAhorro() {
@@ -530,11 +521,10 @@
         }
         async function borrarAhorro(id) { await _supabase.from('ahorros').delete().eq('id', id); await pullCloudData(); }
         function renderAhorros() {
-            let ul = document.getElementById('listaAhorros'); ul.innerHTML = "";
-            ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></li>`; });
+            let ul = document.getElementById('listaAhorros'); if(ul) { ul.innerHTML = ""; ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></li>`; }); }
         }
 
-        // --- CÁLCULO MÓDULO 1: FINANZAS ---
+        // --- MÓDULO 1: FINANZAS ---
         function actualizarFinanzas() {
             let fMes = document.getElementById('mes_finanzas').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
@@ -560,7 +550,7 @@
         }
 
         function dibujarGraficoBarrasFinanzas(mB, aB) {
-            let cont = document.getElementById('chartPresupuesto'); cont.innerHTML = '';
+            let cont = document.getElementById('chartPresupuesto'); if(!cont) return; cont.innerHTML = '';
             let filtro = document.getElementById('filtro_tipo_grafico').value;
             let maxAlt = 0; let data = [];
 
@@ -579,7 +569,7 @@
                 let disp = pIng - totalEgresos; if(disp<0) disp=0;
                 let techo = pIng > totalEgresos ? pIng : totalEgresos; if(techo > maxAlt) maxAlt = techo;
 
-                data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF, variable: pV, tarjeta: pTc, disponible: disp, ingresos: pIng });
+                data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF, variable: pV, stroke: pTc, tarjeta: pTc, disponible: disp, ingresos: pIng });
             }
             if(maxAlt===0) maxAlt = 1;
 
@@ -593,8 +583,7 @@
                     if (d.variable > 0) pila += `<div class="bar-segment" style="height:${(d.variable/maxAlt)*100}%; background-color:var(--warning);"><span class="bar-txt">Q${formatMoneyCorto(d.variable)}</span></div>`;
                     if (d.fijo > 0) pila += `<div class="bar-segment" style="height:${(d.fijo/maxAlt)*100}%; background-color:var(--danger);"><span class="bar-txt">Q${formatMoneyCorto(d.fijo)}</span></div>`;
                 } else {
-                    let v = (filtro==='ingresos')?d.ingresos:(filtro==='fijo')?d.fijo:(filtro==='variable')?d.variable:d.tarjeta;
-                    vistaVal = v;
+                    let v = (filtro==='ingresos')?d.ingresos:(filtro==='fijo')?d.fijo:(filtro==='variable')?d.variable:d.tarjeta; vistaVal = v;
                     let c = (filtro==='ingresos')?'var(--success)':(filtro==='fijo')?'var(--danger)':(filtro==='variable')?'var(--warning)':'var(--primary)';
                     pila += `<div class="bar-segment" style="height:${(v/maxAlt)*100}%; background-color:${c}; flex-grow:1;"><span class="bar-txt">Q${formatMoneyCorto(v)}</span></div>`;
                 }
@@ -606,26 +595,20 @@
             });
         }
 
-        // --- CÁLCULO MÓDULO 2: MISH ---
+        // --- MÓDULO 2: MISH ---
         function actualizarMish() {
             let tId = document.getElementById('p_line_tarjeta').value;
             let cont = document.getElementById('chartLineasContenedor');
             let tipoLim = document.getElementById('p_line_tipo').value;
             let fMes = document.getElementById('mes_mish').value;
             
-            if(!tId || !fMes) {
-                cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta activa en este bloque.</div>`;
-                return;
-            }
-
-            let t = tarjetas.find(x => x.id == tId);
+            if(!tId || !fMes) { if(cont) cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta activa en este bloque.</div>`; return; }
+            let t = tarjetas.find(x => x.id == tId); if(!t) return;
             let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
             let limiteMax = tipoLim === 'cuotas' ? t.lim_cuotas : t.lim_contado;
 
             let coordsDeuda = []; let coordsDisp = [];
             let puntosHtml = ""; let labelsHtml = "";
-            let theme = document.documentElement.getAttribute("data-theme") || "light";
-            let textFill = theme === 'light' ? '#0f172a' : '#f8fafc';
 
             for(let i=0; i<6; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
@@ -640,7 +623,6 @@
                 }, 0);
 
                 let disponible = limiteMax - deudaViva; if(disponible < 0) disponible = 0;
-                
                 let x = 60 + (i * 95);
                 let yDeuda = 180 - (limiteMax > 0 ? (deudaViva / limiteMax) * 130 : 0);
                 let yDisp = 180 - (limiteMax > 0 ? (disponible / limiteMax) * 130 : 0);
@@ -650,26 +632,25 @@
                 puntosHtml += `
                     <circle cx="${x}" cy="${yDeuda}" r="5" fill="var(--danger)" stroke="var(--card-bg)" stroke-width="2"/>
                     <text x="${x}" y="${yDeuda-10}" style="font-size:10px; font-weight:800; fill:var(--danger);" text-anchor="middle">Q${formatMoneyCorto(deudaViva)}</text>
-                    
                     <circle cx="${x}" cy="${yDisp}" r="5" fill="var(--success)" stroke="var(--card-bg)" stroke-width="2"/>
                     <text x="${x}" y="${yDisp+16}" style="font-size:10px; font-weight:800; fill:var(--success);" text-anchor="middle">Q${formatMoneyCorto(disponible)}</text>`;
-                
                 labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:700;" text-anchor="middle">${nombresMesesCompleto[tM-1]}</text>`;
             }
 
-            cont.innerHTML = `
-                <svg width="100%" height="100%" viewBox="0 0 600 240" style="overflow:visible;">
-                    <line x1="40" y1="50" x2="560" y2="50" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="40" y1="115" x2="560" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="40" y1="180" x2="560" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
-                    
-                    <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="3" stroke-dasharray="6 4"/>
-                    <path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="3"/>
-                    ${puntosHtml} ${labelsHtml}
-                </svg>`;
+            if(cont) {
+                cont.innerHTML = `
+                    <svg width="100%" height="100%" viewBox="0 0 600 240" style="overflow:visible;">
+                        <line x1="40" y1="50" x2="560" y2="50" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
+                        <line x1="40" y1="115" x2="560" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
+                        <line x1="40" y1="180" x2="560" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
+                        <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="3" stroke-dasharray="6 4"/>
+                        <path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="3"/>
+                        ${puntosHtml} ${labelsHtml}
+                    </svg>`;
+            }
         }
 
-        // --- CÁLCULO MÓDULOS 3 Y 4: AHORROS ---
+        // --- MÓDULOS 3 Y 4: AHORROS ---
         function actualizarAhorrosModulo() {
             let fMes = document.getElementById('mes_ahorros').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
@@ -689,7 +670,7 @@
         }
 
         function dibujarGraficoEvolucionAhorros(mB, aB, baseEnGTQ) {
-            let cont = document.getElementById('chartAhorroHistoricoContenedor');
+            let cont = document.getElementById('chartAhorroHistoricoContenedor'); if(!cont) return;
             let coordsAhorro = []; let puntosHtml = ""; let labelsHtml = "";
             let valoresMeses = []; let maxAhorro = baseEnGTQ;
 
@@ -704,9 +685,7 @@
             if(maxAhorro === 0) maxAhorro = 1;
 
             valoresMeses.forEach((v, i) => {
-                let x = 60 + (i * 95);
-                let y = 180 - ((v.total / maxAhorro) * 130);
-
+                let x = 60 + (i * 95); let y = 180 - ((v.total / maxAhorro) * 130);
                 coordsAhorro.push(`${x},${y}`);
                 puntosHtml += `
                     <circle cx="${x}" cy="${y}" r="6" fill="var(--teal)" stroke="var(--card-bg)" stroke-width="2"/>
@@ -719,13 +698,11 @@
                     <line x1="40" y1="50" x2="560" y2="50" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
                     <line x1="40" y1="115" x2="560" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
                     <line x1="40" y1="180" x2="560" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
-                    
                     <path d="M ${coordsAhorro.join(' L ')}" fill="none" stroke="var(--teal)" stroke-width="3"/>
                     ${puntosHtml} ${labelsHtml}
                 </svg>`;
         }
 
-        // --- CONSULTOR IA ---
         async function enviarMensajeIA() {
             let key = localStorage.getItem('gemini_key') || document.getElementById('gemini_api_key').value;
             if(!key) return alert('API Key faltante.');
@@ -741,7 +718,7 @@
                 let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Actúa como analista contable. Consulta: "${txt}". Datos actuales: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}.` }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `Actúa como analista financiero. Consulta: "${txt}". Datos en quetzales: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}.` }] }] })
                 });
                 let d = await res.json();
                 document.getElementById(aiId).innerHTML = d.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
