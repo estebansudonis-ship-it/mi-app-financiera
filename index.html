@@ -2,10 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V23.0</title>
+    <title>Mi App Financiera Cloud Pro - V24.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- PASO 1: IMPORTACIÓN DE LA NUEVA FUENTE POPPINS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -41,7 +39,6 @@
             --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
         }
         
-        /* PASO 2: APLICACIÓN GLOBAL DE LA TIPOGRAFÍA POPPINS */
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -50,33 +47,37 @@
             transition: background-color 0.15s, border-color 0.15s, color 0.15s; 
         }
         
-        html, body { width: 100%; height: 100vh; overflow: hidden; background-color: var(--bg-main); }
+        html, body { width: 100%; height: 100vh; overflow: hidden; background-color: var(--bg-main); color: var(--text-main); }
         body { display: flex; }
         
         /* MENÚ LATERAL */
         .sidebar { width: 260px; height: 100vh; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; z-index: 10; }
-        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; margin-top: 10px; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; color: var(--text-muted); font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; margin-top: 10px; overflow-y: auto; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; color: var(--text-muted); font-weight: 500; font-size: 13px; text-decoration: none; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background-color: var(--bg-main); color: var(--primary); font-weight: 600; box-shadow: var(--shadow-sm); }
         
-        /* SWITCH DE TEMA */
-        .theme-switch-box { border-top: 1px solid var(--border-color); padding-top: 16px; margin-bottom: 14px; }
-        .btn-theme-toggle { background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 10px; border-radius: 10px; cursor: pointer; width: 100%; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-sm); }
+        /* CONFIGURACIONES LATERALES */
+        .config-sidebar-panel { display: flex; flex-direction: column; gap: 10px; padding: 12px 0; border-top: 1px solid var(--border-color); }
+        .sidebar-input-box { display: flex; flex-direction: column; gap: 4px; }
+        .sidebar-input-box label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .sidebar-input-box input { padding: 6px 10px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); }
 
-        .cloud-badge { background: var(--bg-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: var(--text-muted); font-weight: 600; }
+        .btn-theme-toggle { background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px; border-radius: 10px; cursor: pointer; width: 100%; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-sm); }
+        .cloud-badge { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px; border-radius: 12px; font-size: 11px; text-align: center; color: var(--text-muted); font-weight: 600; }
 
         /* ESPACIO DE TRABAJO PRINCIPAL */
         .main-content { flex-grow: 1; height: 100vh; overflow-y: auto; background-color: var(--bg-main); display: flex; flex-direction: column; }
         .dashboard-grid { padding: 24px 30px; display: flex; flex-direction: column; gap: 24px; width: 100%; min-width: 1150px; box-sizing: border-box; }
+        
+        /* FILAS DE DISTRIBUCIÓN PARALELA */
         .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
-        @media (max-width: 1200px) { .card-row { grid-template-columns: 1fr; } }
+        .card-split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; }
         
         /* TARJETAS */
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); width: 100%; position: relative; }
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); width: 100%; position: relative; display: flex; flex-direction: column; }
         .card-header { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         .header-controls { display: flex; align-items: center; gap: 12px; }
-        
-        .card-inline-month { background-color: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: inherit; font-weight: 600; outline: none; }
+        .card-inline-month { background-color: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none; }
 
         /* MÉTRICAS */
         .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
@@ -84,25 +85,30 @@
         .kpi-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .kpi-data { display: flex; flex-direction: column; }
         .kpi-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-value { font-size: 18px; font-weight: 700; margin-top: 2px; }
+        .kpi-value { font-size: 18px; font-weight: 700; margin-top: 2px; color: var(--text-main); }
 
-        /* FORMULARIOS */
+        /* FORMULARIOS Y ELEMENTOS */
+        .form-row { display: flex; gap: 12px; margin-bottom: 10px; width: 100%; }
+        .form-row > div { flex: 1; display: flex; flex-direction: column; }
         label { font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; }
-        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 13px; color: var(--text-main); background-color: var(--bg-main); outline: none; }
+        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 13px; color: var(--text-main); background-color: var(--bg-main); outline: none; }
         input:focus, select:focus { border-color: var(--primary); }
-        button.btn-action { background-color: var(--primary); color: white; border: none; padding: 11px 16px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; font-family: inherit; }
+        
+        button.btn-action { background-color: var(--primary); color: white; border: none; padding: 11px 16px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
         button.btn-action:hover { background-color: var(--primary-hover); }
-        .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; font-family: inherit; }
+        .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
-        /* RECODS LISTS AND TABLES */
+        /* LISTADOS Y TABLAS (CORRECCIÓN DE CONTRASTE SEGURO) */
         ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
-        ul.records-list li { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-open: space-between; align-items: center; font-size: 13px; }
+        ul.records-list li { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-main); }
+        ul.records-list li button { background: none; border: none; cursor: pointer; font-size: 14px; padding: 2px 6px; }
+        
         .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; color: var(--text-main); }
         th { background-color: var(--bg-main); color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); text-align: left; }
         td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: var(--card-bg); }
 
-        /* GRÁFICO DE BARRAS */
+        /* GRÁFICAS */
         .bars-chart-box { display: flex; align-items: flex-end; justify-content: space-around; height: 260px; background: var(--chart-panel-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 10px 10px 10px; margin-top: 10px; width: 100%; }
         .bar-col { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; }
         .bar-stack { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background-color: var(--card-bg); border: 1px solid var(--border-color); }
@@ -111,11 +117,10 @@
         .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 4px; }
         .bar-top-val { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
 
-        /* SVG CONTAINERS */
         .vector-chart-container { width: 100%; height: 260px; margin-top: 10px; background: var(--chart-panel-bg); border-radius: 14px; border: 1px solid var(--border-color); padding: 20px; position: relative; overflow: hidden; }
 
-        /* IA INTERFAZ */
-        .ai-chat-container { display: flex; flex-direction: column; height: 300px; background: var(--chart-panel-bg); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-top: 12px; }
+        /* PANEL DE INTELIGENCIA ARTIFICIAL */
+        .ai-chat-container { display: flex; flex-direction: column; height: 240px; background: var(--chart-panel-bg); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-top: 12px; }
         .ai-messages-wall { flex-grow: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         .ai-bubble { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
         .bubble-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
@@ -123,61 +128,62 @@
         .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: var(--card-bg); padding: 10px; gap: 8px; }
         .ai-input-bar input { flex-grow: 1; background: var(--bg-main); border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; color: var(--text-main); }
 
-        /* PANTALLAS ACCESO Y MODAL */
+        /* PANTALLAS ACCESO Y MODALES */
         #auth_screen { position: fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-main); display:flex; justify-content:center; align-items:center; z-index:99999; }
         .auth-card { background: var(--sidebar-bg); padding: 40px; border-radius: 20px; box-shadow: var(--shadow-md); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
-        .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; }
+        .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: var(--shadow-md); }
     </style>
 </head>
 <body>
 
-    <input type="hidden" id="tasaCambio" value="7.8">
-
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div style="font-size:16px; font-weight:700; margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                <span id="modalTitle">✏️ Editar Registro</span>
+                <span id="modalTitle">✏️ Editar Registro Completo</span>
                 <span style="cursor:pointer; font-size:20px;" onclick="cerrarModal()">&times;</span>
             </div>
             <div id="modalBody"></div>
-            <button class="btn-action" style="margin-top:15px;" onclick="ejecutarActualizacionCloud()">Guardar Cambios</button>
+            <button class="btn-action" style="margin-top:20px;" onclick="ejecutarActualizacionCloud()">Guardar Cambios en Supabase</button>
         </div>
     </div>
 
-    <!-- PANTALLA INICIAL ACCESO -->
     <div id="auth_screen">
         <div class="auth-card">
             <h2 style="margin:0 0 8px 0; color:var(--primary); text-align:center; font-weight:800;">🔒 Sistema Financiero</h2>
             <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-bottom:24px;">Control de Amortizaciones & Nube</p>
-            <div class="form-group"><label>Correo Electrónico</label><input type="email" id="auth_email" placeholder="nombre@correo.com"></div>
-            <div class="form-group"><label>Contraseña</label><input type="password" id="auth_password" placeholder="••••••••"></div>
+            <div style="margin-bottom:12px;"><label>Correo Electrónico</label><input type="email" id="auth_email" placeholder="nombre@correo.com"></div>
+            <div style="margin-bottom:16px;"><label>Contraseña</label><input type="password" id="auth_password" placeholder="••••••••"></div>
             <button class="btn-action" style="margin-top:10px;" onclick="ejecutarLogin()">Ingresar Seguro</button>
             <button class="btn-action" style="background:none; color:var(--primary); font-size:13px; margin-top:8px;" onclick="ejecutarRegistro()">Crear Nueva Cuenta Cloud</button>
             <div id="auth_error" style="color:var(--danger); font-size:12px; margin-top:12px; text-align:center; font-weight:600;"></div>
         </div>
     </div>
 
-    <!-- ENTORNO DE LA APLICACIÓN -->
     <div id="app_content" style="display:none; width:100%; height:100vh; display:flex;">
         
         <div class="sidebar">
             <div class="nav-menu">
-                <div class="nav-item active" onclick="navegarA('panel_finanzas')">📈 Flujo de Caja</div>
+                <div class="nav-item active" onclick="navegarA('panel_finanzas')">📊 Flujo de Caja</div>
                 <div class="nav-item" onclick="navegarA('seccion_ingresos')">💵 Ingresos</div>
                 <div class="nav-item" onclick="navegarA('seccion_gastos')">🛒 Gastos Básicos</div>
                 <div class="nav-item" onclick="navegarA('seccion_tarjetas')">💳 Tarjetas Maestro</div>
-                <div class="nav-item" onclick="navegarA('seccion_plazos')">🛍️ Amortizaciones</div>
-                <div class="nav-item" onclick="navegarA('panel_mish')">📉 Gráfica MISH</div>
-                <div class="nav-item" onclick="navegarA('panel_ahorros')">🏦 Plan Ahorros</div>
-                <div class="nav-item" onclick="navegarA('seccion_ia')">🤖 Inteligencia IA</div>
+                <div class="nav-item" onclick="navegarA('agrupacion_mish')">🛍️ Plazos & MISH</div>
+                <div class="nav-item" onclick="navegarA('agrupacion_ahorros')">🏦 Plan & Histórico</div>
+                <div class="nav-item" onclick="navegarA('seccion_ia')">🤖 Consultor IA</div>
             </div>
-            <div>
-                <div class="theme-switch-box">
-                    <button class="btn-theme-toggle" onclick="alternarTemaVisual()">
-                        <span id="theme_icon">🌙</span> <span id="theme_text">Modo Oscuro</span>
-                    </button>
+            
+            <div class="config-sidebar-panel">
+                <div class="sidebar-input-box">
+                    <label>Tasa de Cambio (USD/GTQ)</label>
+                    <input type="number" id="tasaCambio" value="7.8" step="0.01" oninput="recalcularPorTasa()">
                 </div>
+                
+                <button class="btn-theme-toggle" onclick="alternarTemaVisual()">
+                    <span id="theme_icon">🌙</span> <span id="theme_text">Modo Oscuro</span>
+                </button>
+                
                 <div class="cloud-badge">
                     🌐 Base de Datos Activa<br>
                     <button onclick="ejecutarLogout()" style="background:none; border:none; color:var(--danger); font-size:11px; font-weight:700; margin-top:8px; cursor:pointer; width:100%;">🚪 Cerrar Sesión</button>
@@ -188,7 +194,6 @@
         <div class="main-content" id="contenedor_scroll">
             <div class="dashboard-grid">
                 
-                <!-- MODULE 1: FINANZAS -->
                 <div class="card" id="panel_finanzas">
                     <div class="card-header">
                         <span>📊 1. Finanzas (Flujo de Caja Real)</span>
@@ -214,7 +219,6 @@
                     <div class="bars-chart-box" id="chartPresupuesto"></div>
                 </div>
 
-                <!-- FORMULARIOS -->
                 <div class="card-row">
                     <div class="card" id="seccion_ingresos">
                         <div class="card-header">📥 Registro de Ingresos</div>
@@ -275,79 +279,78 @@
                     </div>
                 </div>
 
-                <!-- AMORTIZACIONES -->
-                <div class="card" id="seccion_plazos">
-                    <div class="card-header">🛍️ Consumos a Plazos (Amortizaciones)</div>
-                    <div class="form-row">
-                        <div><label>Tarjeta</label><select id="c_tarjeta"></select></div>
-                        <div style="flex:2;"><label>Concepto de la Compra</label><input type="text" id="c_concepto" placeholder="Seguro / Electrodomésticos"></div>
-                    </div>
-                    <div class="form-row">
-                        <div><label>Monto Total</label><input type="number" id="c_monto"></div>
-                        <div><label>Fecha Inicial</label><input type="date" id="c_fecha" value="2026-06-01"></div>
-                        <div><label>Cuotas</label><input type="number" id="c_cuotas" min="1" value="12"></div>
-                    </div>
-                    <button class="btn-action" onclick="guardarCompra()">Inscribir Amortización</button>
-                    <button class="btn-view-details" onclick="toggleVisibilidad('wrapCompras')">👁️ Ver Tabla de Cuotas Activas</button>
-                    <div id="wrapCompras" style="display:none;">
-                        <div class="table-frame"><table><thead><tr><th>Detalle</th><th>Total</th><th>Cuotas</th><th>Plazo</th><th>Acción</th></tr></thead><tbody id="bodyCompras"></tbody></table></div>
-                    </div>
-                </div>
-
-                <!-- MODULE 2: MISH -->
-                <div class="card" id="panel_mish">
-                    <div class="card-header">
-                        <span style="color:var(--primary);">📈 2. Mish - Curva de Capacidad Crediticia (6 Meses)</span>
-                        <div class="header-controls">
-                            <select id="p_line_tarjeta" style="width:130px; padding:4px;" onchange="actualizarMish()"></select>
-                            <select id="p_line_tipo" style="width:130px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select>
-                            <input type="month" id="mes_mish" class="card-inline-month" value="2026-06" onchange="actualizarMish()">
+                <div class="card-split-row" id="agrupacion_mish">
+                    <div class="card" id="seccion_plazos">
+                        <div class="card-header">🛍️ Consumos a Plazos</div>
+                        <div class="form-row">
+                            <div><label>Tarjeta</label><select id="c_tarjeta"></select></div>
+                            <div style="flex:2;"><label>Concepto</label><input type="text" id="c_concepto" placeholder="Seguro / Aparatos"></div>
+                        </div>
+                        <div class="form-row">
+                            <div><label>Monto Total</label><input type="number" id="c_monto"></div>
+                            <div><label>Fecha Inicial</label><input type="date" id="c_fecha" value="2026-06-01"></div>
+                            <div><label>Cuotas</label><input type="number" id="c_cuotas" min="1" value="12"></div>
+                        </div>
+                        <button class="btn-action" onclick="guardarCompra()">Inscribir Amortización</button>
+                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapCompras')">👁️ Ver Tabla de Cuotas Activas</button>
+                        <div id="wrapCompras" style="display:none;">
+                            <div class="table-frame"><table><thead><tr><th>Detalle</th><th>Total</th><th>Cuotas</th><th>Plazo</th><th>Acción</th></tr></thead><tbody id="bodyCompras"></tbody></table></div>
                         </div>
                     </div>
-                    <div class="vector-chart-container" id="chartLineasContenedor"></div>
-                </div>
 
-                <!-- MODULE 3: PLAN DE AHORROS -->
-                <div class="card" id="panel_ahorros" style="border-left:5px solid var(--success);">
-                    <div class="card-header">
-                        <span style="color:var(--success);">🏦 3. Plan de Depósitos de Ahorros</span>
-                        <input type="month" id="mes_ahorros" class="card-inline-month" value="2026-06" onchange="actualizarAhorrosModulo()">
-                    </div>
-                    <div class="form-row">
-                        <div style="flex:2;"><label>Base Histórica Inicial Guardada</label><input type="number" id="a_base" value="0" oninput="guardarBaseAhorro()"></div>
-                        <div><label>Moneda Base</label><select id="a_base_moneda" onchange="guardarBaseAhorro()"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
-                    </div>
-                    <div class="form-row" style="margin-top:15px; border-top:1px dashed var(--border-color); padding-top:15px;">
-                        <div style="flex:2;"><label>Detalle Aporte</label><input type="text" id="a_nombre" placeholder="Fondo Contingencia"></div>
-                        <div><label>Monto</label><input type="number" id="a_monto"></div>
-                        <div><label>Moneda</label><select id="a_moneda"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
-                    </div>
-                    <button class="btn-action" style="background-color:var(--success);" onclick="guardarAhorro()">Registrar Capital</button>
-                    <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver Historial Aportes</button>
-                    <div id="wrapAhorros" style="display:none;"><ul class="records-list" id="listaAhorros"></ul></div>
-                    
-                    <div style="margin-top:20px; display:flex; gap:16px;">
-                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Aporte en Mes Seleccionado</span><span id="ahorroMesGTQ" style="color:var(--success); font-size:18px; font-weight:700;">Q 0.00</span></div></div>
-                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Capital Acumulado Total</span><span id="ahorroTotalGTQ" style="color:var(--success); font-size:18px; font-weight:700;">Q 0.00</span></div></div>
+                    <div class="card" id="panel_mish">
+                        <div class="card-header">
+                            <span style="color:var(--primary);">📈 MISH - Curva Crediticia</span>
+                            <div class="header-controls">
+                                <select id="p_line_tarjeta" style="width:110px; padding:4px;" onchange="actualizarMish()"></select>
+                                <select id="p_line_tipo" style="width:110px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Lím. Cuotas</option><option value="contado">Lím. Contado</option></select>
+                                <input type="month" id="mes_mish" class="card-inline-month" style="width:100px;" value="2026-06" onchange="actualizarMish()">
+                            </div>
+                        </div>
+                        <div class="vector-chart-container" id="chartLineasContenedor"></div>
                     </div>
                 </div>
 
-                <!-- MODULE 4: HISTÓRICO DE AHORROS -->
-                <div class="card">
-                    <div class="card-header"><span style="color:var(--teal);">📉 4. Histórico de Crecimiento de Ahorro Neto</span></div>
-                    <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
+                <div class="card-split-row" id="agrupacion_ahorros">
+                    <div class="card" id="panel_ahorros" style="border-left:5px solid var(--success);">
+                        <div class="card-header">
+                            <span style="color:var(--success);">🏦 Plan de Ahorros</span>
+                            <input type="month" id="mes_ahorros" class="card-inline-month" value="2026-06" onchange="actualizarAhorrosModulo()">
+                        </div>
+                        <div class="form-row">
+                            <div style="flex:2;"><label>Base Histórica Guardada</label><input type="number" id="a_base" value="0" oninput="guardarBaseAhorro()"></div>
+                            <div><label>Moneda Base</label><select id="a_base_moneda" onchange="guardarBaseAhorro()"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
+                        </div>
+                        <div class="form-row" style="margin-top:10px; border-top:1px dashed var(--border-color); padding-top:10px;">
+                            <div style="flex:2;"><label>Detalle Aporte</label><input type="text" id="a_nombre" placeholder="Reserva"></div>
+                            <div><label>Monto</label><input type="number" id="a_monto"></div>
+                            <div><label>Moneda</label><select id="a_moneda"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
+                        </div>
+                        <button class="btn-action" style="background-color:var(--success);" onclick="guardarAhorro()">Registrar Capital</button>
+                        <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver Historial</button>
+                        <div id="wrapAhorros" style="display:none;"><ul class="records-list" id="listaAhorros"></ul></div>
+                        
+                        <div style="margin-top:12px; display:flex; gap:12px;">
+                            <div class="kpi-box" style="flex:1; padding:10px;"><div class="kpi-data"><span class="kpi-title" style="font-size:9px;">En el Mes</span><span id="ahorroMesGTQ" style="color:var(--success); font-size:14px; font-weight:700;">Q 0.00</span></div></div>
+                            <div class="kpi-box" style="flex:1; padding:10px;"><div class="kpi-data"><span class="kpi-title" style="font-size:9px;">Acumulado Neto</span><span id="ahorroTotalGTQ" style="color:var(--success); font-size:14px; font-weight:700;">Q 0.00</span></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"><span style="color:var(--teal);">📉 Histórico de Crecimiento</span></div>
+                        <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
+                    </div>
                 </div>
 
-                <!-- MODULE 5: IA CONSULTOR -->
                 <div class="card" id="seccion_ia">
-                    <div class="card-header" style="color:var(--primary);">🤖 5. Consultor IA Financiero Experto</div>
+                    <div class="card-header" style="color:var(--primary);">🤖 Consultor IA Financiero Experto</div>
                     <div class="form-row">
                         <div style="flex:2;"><label>Gemini API Key</label><input type="password" id="gemini_api_key" placeholder="AIzaSy..."></div>
                         <div><label>&nbsp;</label><button class="btn-action" onclick="guardarApiKey()">💾 Guardar Llave</button></div>
                     </div>
                     <div class="ai-chat-container">
                         <div class="ai-messages-wall" id="chat_grid">
-                            <div class="ai-bubble bubble-ai">Entorno Premium adaptivo calibrado a Zoom 100% y con soporte de Modo Claro/Oscuro dinámico con la nueva fuente Poppins. ¿Qué balance estratégico deseas calcular hoy?</div>
+                            <div class="ai-bubble bubble-ai">Entorno Premium calibrado a Zoom 100% y con soporte de Modo Claro/Oscuro dinámico con tipografía Poppins. ¿Qué balance estratégico deseas calcular hoy?</div>
                         </div>
                         <div class="ai-input-bar">
                             <input type="text" id="chat_user_input" placeholder="Pregúntale a la IA sobre tus finanzas..." onkeypress="if(event.key==='Enter') enviarMensajeIA()">
@@ -376,7 +379,7 @@
             localStorage.setItem("theme_preference", newTheme);
             document.getElementById("theme_icon").innerText = newTheme === "light" ? "🌙" : "☀️";
             document.getElementById("theme_text").innerText = newTheme === "light" ? "Modo Oscuro" : "Modo Claro";
-            actualizarMish(); actualizarAhorrosModulo();
+            actualizarFinanzas(); actualizarMish(); actualizarAhorrosModulo();
         }
 
         function cargarTemaPreferido() {
@@ -405,6 +408,7 @@
                 if(localStorage.getItem('db_a_base')) document.getElementById('a_base').value = localStorage.getItem('db_a_base');
                 if(localStorage.getItem('db_a_base_moneda')) document.getElementById('a_base_moneda').value = localStorage.getItem('db_a_base_moneda');
                 if(localStorage.getItem('gemini_key')) document.getElementById('gemini_api_key').value = localStorage.getItem('gemini_key');
+                if(localStorage.getItem('global_tasa_cambio')) document.getElementById('tasaCambio').value = localStorage.getItem('global_tasa_cambio');
                 
                 await pullCloudData();
             }
@@ -441,26 +445,62 @@
         function formatMoney(num) { return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function formatMoneyCorto(num) { if(isNaN(num) || num <= 0) return "0"; if(num >= 1000) return (num/1000).toFixed(1).replace(/\.0$/, '') + 'k'; return Math.round(num).toString(); }
         function getTasa() { return parseFloat(document.getElementById('tasaCambio').value) || 7.8; }
+        function recalcularPorTasa() { localStorage.setItem('global_tasa_cambio', document.getElementById('tasaCambio').value); actualizarFinanzas(); actualizarMish(); actualizarAhorrosModulo(); }
         function obtenerEnGTQ(monto, moneda) { return moneda === 'USD' ? monto * getTasa() : monto; }
         function toggleVisibilidad(id) { let el = document.getElementById(id); el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
         function guardarApiKey() { localStorage.setItem('gemini_key', document.getElementById('gemini_api_key').value); alert('Llave guardada.'); }
         function guardarBaseAhorro() { localStorage.setItem('db_a_base', document.getElementById('a_base').value); localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); actualizarAhorrosModulo(); }
 
+        /* PUNTO 5: FORMULARIO DE EDICIÓN TOTALMENTE COMPLETO */
         function abrirModalEdicion(tabla, id) {
             registroEdicionActual = { tabla, id };
             let body = document.getElementById('modalBody'); body.innerHTML = "";
             document.getElementById('editModal').style.display = "flex";
+            
             let r = (tabla==='ingresos')?ingresos.find(x=>x.id===id):(tabla==='gastos')?gastos.find(x=>x.id===id):tarjetas.find(x=>x.id===id);
             if(!r && tabla==='ahorros') r = ahorros.find(x=>x.id===id);
-            body.innerHTML = `
-                <div style="margin-bottom:12px;"><label>Concepto</label><input type="text" id="m_nombre" value="${r.nombre||r.concepto}"></div>
-                <div class="form-row"><div><label>Monto</label><input type="number" id="m_monto" value="${r.monto||0}"></div></div>`;
+            
+            if(tabla === 'ingresos' || tabla === 'gastos' || tabla === 'ahorros') {
+                body.innerHTML = `
+                    <div style="margin-bottom:12px;"><label>Concepto / Nombre</label><input type="text" id="m_nombre" value="${r.nombre||''}"></div>
+                    <div class="form-row">
+                        <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto||0}"></div>
+                        <div><label>Moneda</label><select id="m_moneda"><option value="GTQ" ${r.moneda==='GTQ'?'selected':''}>GTQ</option><option value="USD" ${r.moneda==='USD'?'selected':''}>USD</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>Tipo</label><select id="m_tipo"><option value="fijo" ${r.tipo==='fijo'?'selected':''}>Fijo</option><option value="variable" ${r.tipo==='variable'?'selected':''}>Variable</option></select></div>
+                    </div>`;
+            } else if(tabla === 'tarjetas') {
+                body.innerHTML = `
+                    <div style="margin-bottom:12px;"><label>Nombre del Emisor</label><input type="text" id="m_nombre" value="${r.nombre||''}"></div>
+                    <div class="form-row">
+                        <div><label>Límite Contado</label><input type="number" id="m_lim_contado" value="${r.lim_contado||0}"></div>
+                        <div><label>Límite Cuotas</label><input type="number" id="m_lim_cuotas" value="${r.lim_cuotas||0}"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>Día Corte</label><input type="number" id="m_corte" value="${r.corte||1}"></div>
+                        <div><label>Día Pago</label><input type="number" id="m_pago" value="${r.pago||1}"></div>
+                    </div>`;
+            }
         }
+        
         function cerrarModal() { document.getElementById('editModal').style.display = "none"; }
+        
         async function ejecutarActualizacionCloud() {
             let t = registroEdicionActual.tabla; let id = registroEdicionActual.id;
             let pack = { nombre: document.getElementById('m_nombre').value };
+            
             if(document.getElementById('m_monto')) pack.monto = parseFloat(document.getElementById('m_monto').value);
+            if(document.getElementById('m_moneda')) pack.moneda = document.getElementById('m_moneda').value;
+            if(document.getElementById('m_tipo')) pack.tipo = document.getElementById('m_tipo').value;
+            
+            if(t === 'tarjetas') {
+                pack.lim_contado = parseFloat(document.getElementById('m_lim_contado').value);
+                pack.lim_cuotas = parseFloat(document.getElementById('m_lim_cuotas').value);
+                pack.corte = parseInt(document.getElementById('m_corte').value);
+                pack.pago = parseInt(document.getElementById('m_pago').value);
+            }
+            
             await _supabase.from(t).update(pack).eq('id', id); cerrarModal(); await pullCloudData();
         }
 
@@ -501,9 +541,22 @@
             await pullCloudData();
         }
         async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
+        
+        /* PUNTO 1: SOLUCIÓN COMPLETA PARA MISH Y PLAZOS */
         function renderTarjetas() {
-            let ul = document.getElementById('listaMaestroTarjetas'); let sC = document.getElementById('c_tarjeta'); let sP = document.getElementById('p_line_tarjeta');
-            if(ul) { ul.innerHTML = ""; sC.innerHTML = ""; sP.innerHTML = ""; tarjetas.forEach(t => { ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`; sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; }); }
+            let ul = document.getElementById('listaMaestroTarjetas'); 
+            let sC = document.getElementById('c_tarjeta'); 
+            let sP = document.getElementById('p_line_tarjeta');
+            
+            if(ul) ul.innerHTML = ""; 
+            if(sC) sC.innerHTML = ""; 
+            if(sP) sP.innerHTML = ""; 
+            
+            tarjetas.forEach(t => { 
+                if(ul) ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><div><button onclick="abrirModalEdicion('tarjetas',${t.id})">✏️</button><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></div></li>`; 
+                if(sC) sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; 
+                if(sP) sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; 
+            }); 
         }
 
         async function guardarCompra() {
@@ -530,7 +583,7 @@
         }
         async function borrarAhorro(id) { await _supabase.from('ahorros').delete().eq('id', id); await pullCloudData(); }
         function renderAhorros() {
-            let ul = document.getElementById('listaAhorros'); if(ul) { ul.innerHTML = ""; ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></li>`; }); }
+            let ul = document.getElementById('listaAhorros'); if(ul) { ul.innerHTML = ""; ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><div><button onclick="abrirModalEdicion('ahorros',${a.id})">✏️</button><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></div></li>`; }); }
         }
 
         function actualizarFinanzas() {
@@ -609,7 +662,7 @@
             let tipoLim = document.getElementById('p_line_tipo').value;
             let fMes = document.getElementById('mes_mish').value;
             
-            if(!tId || !fMes) { if(cont) cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta activa en este bloque.</div>`; return; }
+            if(!tId || !fMes) { if(cont) cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:12px;">⚠️ Selecciona una tarjeta para proyectar la curva crediticia.</div>`; return; }
             let t = tarjetas.find(x => x.id == tId); if(!t) return;
             let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
             let limiteMax = tipoLim === 'cuotas' ? t.lim_cuotas : t.lim_contado;
