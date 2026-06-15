@@ -2,48 +2,59 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V19.0</title>
+    <title>Mi App Financiera Cloud Pro - V20.0 (Dark Mode)</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #f8fafc; --sidebar-bg: #ffffff; --card-bg: #ffffff;
-            --text-main: #1e293b; --text-muted: #64748b; --border-color: #e2e8f0;
-            --primary: #4f46e5; --primary-hover: #4338ca; --success: #10b981; 
-            --danger: #ef4444; --warning: #f59e0b; --teal: #06b6d4;
+            --bg-main: #0f172a; 
+            --sidebar-bg: #1e293b; 
+            --card-bg: #1e293b;
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8; 
+            --border-color: #334155;
+            --primary: #6366f1; 
+            --primary-hover: #4f46e5; 
+            --success: #10b981; 
+            --danger: #ef4444; 
+            --warning: #f59e0b; 
+            --teal: #14b8a6;
+            --input-bg: #1e293b;
         }
+        
+        * { box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* MENÚ LATERAL UNIFICADO (PROPUSTA IMAGEN 5) */
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; box-sizing: border-box; justify-content: space-between; shrink: 0; }
+        /* MENÚ LATERAL */
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; }
         .logo-area { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 800; color: var(--primary); }
         .nav-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 30px; flex-grow: 1; }
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; color: var(--text-muted); font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; transition: 0.2s; }
-        .nav-item:hover, .nav-item.active { background-color: #f1f5f9; color: var(--primary); font-weight: 600; }
-        .cloud-badge { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: var(--success); font-weight: 600; }
+        .nav-item:hover, .nav-item.active { background-color: #334155; color: var(--primary); font-weight: 600; }
+        .cloud-badge { background: #112240; border: 1px solid #1e3a8a; padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: #60a5fa; font-weight: 600; }
 
-        /* CONTENEDOR PRINCIPAL */
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; }
+        /* CONTENEDOR PRINCIPAL FLUIDO (100% ANCHO) */
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; width: 100%; scroll-behavior: smooth; }
         
-        /* BARRA SUPERIOR CON FILTRO GLOBAL UNIFICADO */
-        .top-navbar { background: #ffffff; border-bottom: 1px solid var(--border-color); padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; sticky: top; z-index: 100; }
+        /* BARRA SUPERIOR CON FILTRO GLOBAL */
+        .top-navbar { background: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .top-navbar h2 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
         .global-controls { display: flex; align-items: center; gap: 16px; }
         .filtro-global-mes { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; font-size: 14px; outline: none; }
         
-        /* MALLA DE CONTENIDO (DISTRIBUCIÓN MODERNA) */
-        .dashboard-grid { padding: 30px 40px; display: flex; flex-direction: column; gap: 30px; max-width: 1400px; }
-        .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        @media (max-width: 1024px) { .card-row { grid-template-columns: 1fr; } }
+        /* MALLA DE CONTENIDO COMPLETA SIN LÍMITE DE ANCHO */
+        .dashboard-grid { padding: 30px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; }
+        .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
+        @media (max-width: 1200px) { .card-row { grid-template-columns: 1fr; } }
         
-        /* TARJETAS ESTILO CLARO Y MINIMALISTA */
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; }
-        .card-header { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* TARJETAS MODO OSCURO */
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); width: 100%; }
+        .card-header { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         /* BLOQUES DE MÉTRICAS */
         .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
         @media (max-width: 768px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
-        .kpi-box { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 16px; }
+        .kpi-box { background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 16px; }
         .kpi-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; }
         .kpi-data { display: flex; flex-direction: column; }
         .kpi-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
@@ -54,63 +65,64 @@
         .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
         .form-row > div { flex: 1; }
         label { font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; }
-        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 14px; color: var(--text-main); background-color: #f8fafc; outline: none; transition: 0.2s; }
-        input:focus, select:focus { border-color: var(--primary); background-color: #ffffff; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 14px; color: var(--text-main); background-color: #0f172a; outline: none; transition: 0.2s; }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
         button.btn-action { background-color: var(--primary); color: white; border: none; padding: 11px 16px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; }
         button.btn-action:hover { background-color: var(--primary-hover); }
         .btn-view-details { background: none; border: none; color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
         /* LISTADOS DE REGISTROS */
         ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; }
-        ul.records-list li { background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        ul.records-list li { background: #0f172a; border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .record-info { display: flex; flex-direction: column; gap: 2px; }
         .record-title { font-weight: 600; color: var(--text-main); }
         .record-meta { font-size: 11px; color: var(--text-muted); }
         .record-actions { display: flex; gap: 4px; }
-        .record-actions button { background: white; border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
-        .record-actions button:hover { background: #f1f5f9; }
+        .record-actions button { background: #1e293b; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
+        .record-actions button:hover { background: #334155; }
 
-        /* TABLA DE PLAZOS */
+        /* TABLAS */
         .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background-color: #f8fafc; color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); }
-        td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: #ffffff; }
+        th { background-color: #0f172a; color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); text-align: left; }
+        td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: #1e293b; }
 
-        /* GRÁFICO DE BARRAS FINANZAS (ESTILO IMAGEN 5) */
-        .bars-chart-box { display: flex; align-items: flex-end; justify-content: space-around; height: 260px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 10px 10px 10px; margin-top: 10px; }
-        .bar-col { display: flex; flex-direction: column; align-items: center; width: 13%; height: 100%; justify-content: flex-end; }
-        .bar-stack { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 6px; overflow: hidden; margin-bottom: 8px; background-color: #f1f5f9; }
-        .bar-segment { width: 100%; transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; position: relative; }
-        .bar-txt { color: white; font-size: 9px; font-weight: 700; text-shadow: 0 1px 1px rgba(0,0,0,0.4); }
+        /* GRÁFICO DE BARRAS FINANZAS */
+        .bars-chart-box { display: flex; align-items: flex-end; justify-content: space-around; height: 260px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 10px 10px 10px; margin-top: 10px; width: 100%; }
+        .bar-col { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; }
+        .bar-stack { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 6px; overflow: hidden; margin-bottom: 8px; background-color: #1e293b; }
+        .bar-segment { width: 100%; transition: height 0.5s ease; display: flex; align-items: center; justify-content: center; position: relative; }
+        .bar-txt { color: white; font-size: 9px; font-weight: 700; text-shadow: 0 1px 1px rgba(0,0,0,0.6); }
         .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; }
         .bar-top-val { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
 
-        /* CONTENEDOR GRÁFICOS SVG VECTORIALES */
-        .vector-chart-container { width: 100%; height: 220px; margin-top: 10px; position: relative; }
+        /* CONTENEDOR GRÁFICOS VECTORIALES ANCHURA TOTAL */
+        .vector-chart-container { width: 100%; height: 240px; margin-top: 10px; position: relative; background: #0f172a; border-radius: 14px; border: 1px solid var(--border-color); padding: 15px; }
         .svg-chart-text { font-size: 10px; font-weight: 600; fill: var(--text-muted); }
 
         /* PANEL DE IA INTERACTIVO */
-        .ai-chat-container { display: flex; flex-direction: column; height: 280px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-top: 12px; }
+        .ai-chat-container { display: flex; flex-direction: column; height: 300px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-top: 12px; }
         .ai-messages-wall { flex-grow: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         .ai-bubble { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
         .bubble-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .bubble-ai { background: white; color: var(--text-main); border: 1px solid var(--border-color); align-self: flex-start; border-bottom-left-radius: 2px; }
-        .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: #ffffff; padding: 10px; gap: 8px; }
-        .ai-input-bar input { flex-grow: 1; background: #f8fafc; border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; }
+        .bubble-ai { background: #1e293b; color: var(--text-main); border: 1px solid var(--border-color); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: #1e293b; padding: 10px; gap: 8px; }
+        .ai-input-bar input { flex-grow: 1; background: #0f172a; border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; color: white; }
 
-        /* PANTALLA DE AUTENTICACIÓN ACORDE AL ESTILO */
+        /* PANTALLA DE ACCESO */
         #auth_screen { position: fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-main); display:flex; justify-content:center; align-items:center; z-index:99999; }
-        .auth-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
+        .auth-card { background: var(--sidebar-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
 
         /* MODAL POPUP */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(2px); }
-        .modal-content { background: white; padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); box-sizing: border-box; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
+        .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: white; padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; box-sizing: border-box; }
         .modal-header { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
 
-    <!-- MODAL POPUP PARA EDICIÓN -->
+    <input type="hidden" id="tasaCambio" value="7.8">
+
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -122,7 +134,6 @@
         </div>
     </div>
 
-    <!-- PANTALLA INICIAL DE ACCESO -->
     <div id="auth_screen">
         <div class="auth-card">
             <h2 style="margin: 0 0 8px 0; color: var(--primary); text-align: center; font-weight: 800;">🔒 Acceso Financiero</h2>
@@ -135,20 +146,18 @@
         </div>
     </div>
 
-    <!-- ENTRENAMIENTO COMPLETO DE LA APLICACIÓN -->
     <div id="app_content" style="display:none; width: 100%; height: 100vh; display: flex;">
         
-        <!-- SECCIÓN 1: MENÚ LATERAL INTERACTIVO (IMAGEN 5) -->
         <div class="sidebar">
             <div>
                 <div class="logo-area"><span>📊</span> Mi Finanzas Pro</div>
                 <div class="nav-menu">
-                    <div class="nav-item active">📈 Panel Principal</div>
-                    <div class="nav-item" onclick="document.getElementById('i_nombre').focus()">💵 Ingresos</div>
-                    <div class="nav-item" onclick="document.getElementById('g_nombre').focus()">🛒 Gastos</div>
-                    <div class="nav-item" onclick="document.getElementById('t_nombre').focus()">💳 Tarjetas</div>
-                    <div class="nav-item" onclick="document.getElementById('c_concepto').focus()">🛍️ Plazos</div>
-                    <div class="nav-item" onclick="document.getElementById('chat_user_input').focus()">🤖 Consultor IA</div>
+                    <div class="nav-item active" onclick="navegarA('top_resumen')">📈 Panel Principal</div>
+                    <div class="nav-item" onclick="navegarA('seccion_ingresos')">💵 Ingresos</div>
+                    <div class="nav-item" onclick="navegarA('seccion_gastos')">🛒 Gastos</div>
+                    <div class="nav-item" onclick="navegarA('seccion_tarjetas')">💳 Tarjetas</div>
+                    <div class="nav-item" onclick="navegarA('seccion_plazos')">🛍️ Plazos</div>
+                    <div class="nav-item" onclick="navegarA('seccion_ia')">🤖 Consultor IA</div>
                 </div>
             </div>
             <div class="cloud-badge">
@@ -158,11 +167,9 @@
             </div>
         </div>
 
-        <!-- SECCIÓN 2: ESPACIO DE TRABAJO Y DASHBOARDS -->
-        <div class="main-content">
+        <div class="main-content" id="contenedor_scroll">
             
-            <!-- BARRA SUPERIOR: CONTROL DE MES GLOBAL UNIFICADO (REQUISITO 4) -->
-            <div class="top-navbar">
+            <div class="top-navbar" id="top_resumen">
                 <h2>Resumen de Operaciones</h2>
                 <div class="global-controls">
                     <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Mes de Corte Central:</span>
@@ -172,11 +179,10 @@
 
             <div class="dashboard-grid">
                 
-                <!-- DASHBOARD GENERAL 1: FINANZAS / FLUJO DE CAJA -->
-                <div class="card" style="background: #ffffff;">
-                    <div class="card-header" style="color:var(--text-main);">
+                <div class="card">
+                    <div class="card-header">
                         📊 1. Finanzas (Flujo de Caja)
-                        <select id="filtro_tipo_grafico" class="filtro-chart" style="background:#f1f5f9; color:var(--text-main); border:1px solid var(--border-color); width:180px; padding:4px 8px; font-size:12px;" onchange="actualizarTodo()">
+                        <select id="filtro_tipo_grafico" style="background:#0f172a; color:var(--text-main); border:1px solid var(--border-color); width:180px; padding:4px 8px; font-size:12px;" onchange="actualizarTodo()">
                             <option value="all">Ver Todo (Apilado)</option>
                             <option value="ingresos">Solo Ingresos</option>
                             <option value="fijo">Solo Gastos Fijos</option>
@@ -186,19 +192,17 @@
                     </div>
                     
                     <div class="kpi-row">
-                        <div class="kpi-box"><div class="kpi-icon" style="background:#e6f4ea; color:var(--success);">💵</div><div class="kpi-data"><span class="kpi-title">Ingresos</span><span class="kpi-value" style="color:var(--success);" id="dashIngresos">Q 0.00</span></div></div>
-                        <div class="kpi-box"><div class="kpi-icon" style="background:#fce8e6; color:var(--danger);">🛒</div><div class="kpi-data"><span class="kpi-title">Gastos Efectivo</span><span class="kpi-value" id="dashGastosEfec">Q 0.00</span></div></div>
-                        <div class="kpi-box"><div class="kpi-icon" style="background:#e8eaf6; color:var(--primary);">💳</div><div class="kpi-data"><span class="kpi-title">Pago Tarjetas</span><span class="kpi-value" id="dashTarjetas">Q 0.00</span></div></div>
-                        <div class="kpi-box" style="border: 2px solid var(--success);"><div class="kpi-icon" style="background:#e6f4ea; color:var(--success);">💰</div><div class="kpi-data"><span class="kpi-title">Disponible Líquido</span><span class="kpi-value" style="color:var(--success);" id="dashDisponible">Q 0.00</span></div></div>
+                        <div class="kpi-box"><div class="kpi-icon" style="background:#1e3a8a; color:#60a5fa;">💵</div><div class="kpi-data"><span class="kpi-title">Ingresos</span><span class="kpi-value" style="color:var(--success);" id="dashIngresos">Q 0.00</span></div></div>
+                        <div class="kpi-box"><div class="kpi-icon" style="background:#881337; color:#f43f5e;">🛒</div><div class="kpi-data"><span class="kpi-title">Gastos Efectivo</span><span class="kpi-value" id="dashGastosEfec">Q 0.00</span></div></div>
+                        <div class="kpi-box"><div class="kpi-icon" style="background:#311042; color:#d946ef;">💳</div><div class="kpi-data"><span class="kpi-title">Pago Tarjetas</span><span class="kpi-value" id="dashTarjetas">Q 0.00</span></div></div>
+                        <div class="kpi-box" style="border: 2px solid var(--success);"><div class="kpi-icon" style="background:#064e3b; color:#34d399;">💰</div><div class="kpi-data"><span class="kpi-title">Disponible Líquido</span><span class="kpi-value" style="color:var(--success);" id="dashDisponible">Q 0.00</span></div></div>
                     </div>
                     
                     <div class="bars-chart-box" id="chartPresupuesto"></div>
                 </div>
 
-                <!-- FORMULARIOS INTERMEDIOS DE ENTRADA DE DATOS (IMAGEN 5) -->
                 <div class="card-row">
-                    <!-- REGISTRO DE INGRESOS -->
-                    <div class="card">
+                    <div class="card" id="seccion_ingresos">
                         <div class="card-header">📥 2. Registro de Ingresos</div>
                         <div class="form-row">
                             <div style="flex:2;"><label>Concepto</label><input type="text" id="i_nombre" placeholder="Ej. Salario Neto"></div>
@@ -212,14 +216,13 @@
                             <div><label>Mes Factura</label><input type="month" id="i_fecha_factura"></div>
                             <div><label>Mes Fondeo</label><input type="month" id="i_mes_fondear"></div>
                         </div>
-                        <label class="checkbox-label" style="margin-top:8px;"><input type="checkbox" id="i_iva"> Retener 5% de IVA automático</label>
+                        <label style="margin-top:8px; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="i_iva"> Retener 5% de IVA automático</label>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarIngreso()">Guardar Ingreso</button>
                         <button class="btn-view-details" onclick="toggleVisibilidad('wrapIngresos')">👁️ Ver desglose de ingresos</button>
                         <div id="wrapIngresos" style="display: none;"><ul class="records-list" id="listaIngresos"></ul></div>
                     </div>
 
-                    <!-- REGISTRO DE GASTOS -->
-                    <div class="card">
+                    <div class="card" id="seccion_gastos">
                         <div class="card-header">📤 3. Registro de Gastos</div>
                         <div class="form-row">
                             <div style="flex:2;"><label>Concepto</label><input type="text" id="g_nombre" placeholder="Ej. Supermercado"></div>
@@ -238,8 +241,7 @@
                         <div id="wrapGastos" style="display: none;"><ul class="records-list" id="listaGastos"></ul></div>
                     </div>
 
-                    <!-- MAESTRO DE TARJETAS -->
-                    <div class="card">
+                    <div class="card" id="seccion_tarjetas">
                         <div class="card-header">💳 4. Maestro de Tarjetas</div>
                         <div class="form-row">
                             <div style="flex:2;"><label>Nombre Emisor</label><input type="text" id="t_nombre" placeholder="Ej. Visa BI"></div>
@@ -259,8 +261,7 @@
                     </div>
                 </div>
 
-                <!-- CONSUMOS A PLAZOS -->
-                <div class="card">
+                <div class="card" id="seccion_plazos">
                     <div class="card-header">🛒 5. Consumos a Plazos (Amortizaciones)</div>
                     <div class="form-row">
                         <div><label>Tarjeta Vinculada</label><select id="c_tarjeta"></select></div>
@@ -278,7 +279,6 @@
                     </div>
                 </div>
 
-                <!-- DASHBOARD GENERAL 2: MISH (REQUISITO 3 - BALANCE ACUMULADO) -->
                 <div class="card">
                     <div class="card-header" style="color:var(--primary);">📈 6. Mish - Proyección de Tarjeta (6 meses Acumulativo)</div>
                     <div class="form-row">
@@ -288,8 +288,7 @@
                     <div class="vector-chart-container" id="chartLineasContenedor"></div>
                 </div>
 
-                <!-- DASHBOARD GENERAL 3: PLAN DE DEPÓSITOS DE AHORRO -->
-                <div class="card" style="background-color: #ffffff; border-left: 5px solid var(--success);">
+                <div class="card" style="border-left: 5px solid var(--success);">
                     <div class="card-header" style="color: var(--success);">🏦 7. Plan de Depósitos de Ahorro</div>
                     <div class="form-row">
                         <div style="flex: 2;"><label>Base Histórica Inicial Guardada</label><input type="number" id="a_base" value="0" oninput="guardarBaseAhorro()"></div>
@@ -304,28 +303,26 @@
                     <button class="btn-action" style="background-color: var(--success);" onclick="guardarAhorro()">Registrar Aporte de Capital</button>
                     <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver desglose de aportes</button>
                     <div id="wrapAhorros" style="display: none;"><ul class="records-list" id="listaAhorros"></ul></div>
-                    <div class="metricas metrics-2" style="margin-top: 20px; display:flex; gap:16px;">
+                    <div style="margin-top: 20px; display:flex; gap:16px;">
                         <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Crecimiento en el Mes</span><span id="ahorroMesGTQ" style="color: var(--success); font-size:20px; font-weight:700;">Q 0.00</span></div></div>
                         <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Capital Total Acumulado</span><span id="ahorroTotalGTQ" style="color: var(--success); font-size:20px; font-weight:700;">Q 0.00</span></div></div>
                     </div>
                 </div>
 
-                <!-- DASHBOARD GENERAL 4: CRECIMIENTO AHORRO ACUMULADO -->
                 <div class="card">
                     <div class="card-header" style="color:var(--teal);">📉 8. Crecimiento Ahorro Acumulado (Histórico)</div>
                     <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
                 </div>
 
-                <!-- DASHBOARD GENERAL 5: CONSULTOR IA -->
-                <div class="card">
+                <div class="card" id="seccion_ia">
                     <div class="card-header" style="color:var(--primary);">🤖 9. Consultor Financiero Conversacional IA</div>
                     <div class="form-row">
-                        <div style="flex: 2;"><label>Credencial de Acceso Gemini API Key</label><input type="password" id="gemini_api_key" placeholder="Pega tu API Key..." style="background: #ffffff;"></div>
+                        <div style="flex: 2;"><label>Credencial de Acceso Gemini API Key</label><input type="password" id="gemini_api_key" placeholder="Pega tu API Key..." style="background: #0f172a;"></div>
                         <div><label>&nbsp;</label><button class="btn-action" onclick="guardarApiKey()">💾 Almacenar Llave</button></div>
                     </div>
                     <div class="ai-chat-container">
                         <div class="ai-messages-wall" id="chat_grid">
-                            <div class="ai-bubble bubble-ai">¡Hola Esteban! He analizado tu propuesta visual de diseño. El sistema en la nube está completamente estructurado en quetzales estables y enlazado a Supabase. ¿En qué evaluación matemática te asisto hoy?</div>
+                            <div class="ai-bubble bubble-ai">¡Hola! El entorno oscuro está completamente activado y libre de bordes blancos laterales. Las gráficas de Finanzas y MISH operan de forma reactiva al mes global. ¿En qué cálculo contable profundizamos hoy?</div>
                         </div>
                         <div class="ai-input-bar">
                             <input type="text" id="chat_user_input" placeholder="Escribe tu consulta financiera..." onkeypress="if(event.key === 'Enter') enviarMensajeIA()">
@@ -349,27 +346,29 @@
         let ingresos = []; let ahorros = []; let tarjetas = []; let gastos = []; let compras = [];
         const nombresMeses = ["Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
+        function navegarA(idElemento) {
+            let el = document.getElementById(idElemento);
+            let contenedor = document.getElementById('contenedor_scroll');
+            if(el && contenedor) {
+                contenedor.scrollTop = el.offsetTop - 20;
+            }
+            
+            // Actualizar clase activa visual en el menú lateral
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
         function establecerMesActualPorDefecto() {
             if(!document.getElementById('global_mes').value) {
-                // Establecemos Junio 2026 por defecto basándonos en tu entorno productivo real
                 document.getElementById('global_mes').value = "2026-06";
-                document.getElementById('dash_mes').value = "2026-06";
             }
         }
 
         function sincronizarMesGlobal() {
-            let m = document.getElementById('global_mes').value;
-            document.getElementById('dash_mes').value = m;
             actualizarTodo();
         }
 
         async function verificarSesion() {
-            // Elemento oculto para compatibilidad con lógica previa
-            if(!document.getElementById('dash_mes')) {
-                let inputOculto = document.createElement('input');
-                inputOculto.type = 'hidden'; inputOculto.id = 'dash_mes';
-                document.body.appendChild(inputOculto);
-            }
             establecerMesActualPorDefecto();
             const { data: { session } } = await _supabase.auth.getSession();
             if (session) {
@@ -389,7 +388,7 @@
             let email = document.getElementById('auth_email').value; let pass = document.getElementById('auth_password').value;
             const { data, error } = await _supabase.auth.signUp({ email, password: pass });
             if(error) document.getElementById('auth_error').innerText = error.message;
-            else alert('¡Registro completado con éxito en Supabase! Ya puedes ingresar.');
+            else alert('¡Registro completado con éxito! Ya puedes ingresar.');
         }
 
         async function ejecutarLogin() {
@@ -425,7 +424,7 @@
         function getTasa() { return parseFloat(document.getElementById('tasaCambio').value) || 7.8; }
         function obtenerEnGTQ(monto, moneda) { return moneda === 'USD' ? monto * getTasa() : monto; }
         function toggleVisibilidad(id) { let el = document.getElementById(id); el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
-        function guardarApiKey() { let key = document.getElementById('gemini_api_key').value; if(key) { localStorage.setItem('gemini_key', key); alert('🔑 API Key registrada con éxito.'); } }
+        function guardarApiKey() { let key = document.getElementById('gemini_api_key').value; if(key) { localStorage.setItem('gemini_key', key); alert('🔑 API Key registrada.'); } }
         
         function guardarBaseAhorro() { 
             localStorage.setItem('db_a_base', document.getElementById('a_base').value); 
@@ -449,10 +448,6 @@
                     <div class="form-row">
                         <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto}"></div>
                         <div><label>Moneda</label><select id="m_moneda"><option value="GTQ" ${r.moneda==='GTQ'?'selected':''}>GTQ</option><option value="USD" ${r.moneda==='USD'?'selected':''}>USD</option></select></div>
-                    </div>
-                    <div class="form-row">
-                        <div><label>Mes Fondeo</label><input type="month" id="m_fecha_fond" value="${r.fecha_fond}"></div>
-                        <div><label>Tipo</label><select id="m_tipo"><option value="fijo" ${r.tipo==='fijo'?'selected':''}>Fijo</option><option value="variable" ${r.tipo==='variable'?'selected':''}>Variable</option></select></div>
                     </div>`;
             } else if (tabla === 'gastos') {
                 let r = gastos.find(x => x.id === id);
@@ -461,10 +456,6 @@
                     <div class="form-row">
                         <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto}"></div>
                         <div><label>Moneda</label><select id="m_moneda"><option value="GTQ" ${r.moneda==='GTQ'?'selected':''}>GTQ</option><option value="USD" ${r.moneda==='USD'?'selected':''}>USD</option></select></div>
-                    </div>
-                    <div class="form-row">
-                        <div><label>Fecha</label><input type="date" id="m_fecha_orig" value="${r.fecha_orig}"></div>
-                        <div><label>Tipo</label><select id="m_tipo"><option value="fijo" ${r.tipo==='fijo'?'selected':''}>Fijo</option><option value="variable" ${r.tipo==='variable'?'selected':''}>Variable</option></select></div>
                     </div>`;
             } else if (tabla === 'tarjetas') {
                 let r = tarjetas.find(x => x.id === id);
@@ -480,10 +471,6 @@
                     <div style="margin-bottom:12px;"><label>Detalle Aporte</label><input type="text" id="m_nombre" value="${r.nombre}"></div>
                     <div class="form-row">
                         <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto}"></div>
-                        <div><label>Moneda</label><select id="m_moneda"><option value="GTQ" ${r.moneda==='GTQ'?'selected':''}>GTQ</option><option value="USD" ${r.moneda==='USD'?'selected':''}>USD</option></select></div>
-                    </div>
-                    <div class="form-row">
-                        <div><label>Mes Aporte</label><input type="month" id="m_fecha_orig" value="${r.fecha_orig}"></div>
                     </div>`;
             }
         }
@@ -493,24 +480,10 @@
         async function ejecutarActualizacionCloud() {
             let t = registroEdicionActual.tabla; let id = registroEdicionActual.id;
             let pack = { nombre: document.getElementById('m_nombre').value };
-            
             if(document.getElementById('m_monto')) pack.monto = parseFloat(document.getElementById('m_monto').value);
             if(document.getElementById('m_moneda')) pack.moneda = document.getElementById('m_moneda').value;
-            if(document.getElementById('m_tipo')) pack.tipo = document.getElementById('m_tipo').value;
-
-            if(t === 'ingresos') {
-                let f = document.getElementById('m_fecha_fond').value; let p = f.split('-');
-                pack.fecha_fond = f; pack.anio = parseInt(p[0]); pack.mes = parseInt(p[1]);
-            } else if(t === 'gastos') {
-                let f = document.getElementById('m_fecha_orig').value; let p = f.split('-');
-                pack.fecha_orig = f; pack.anio = parseInt(p[0]); pack.mes = parseInt(p[1]);
-            } else if(t === 'ahorros') {
-                let f = document.getElementById('m_fecha_orig').value; let p = f.split('-');
-                pack.fecha_orig = f; pack.anio = parseInt(p[0]); pack.mes = parseInt(p[1]);
-            } else if(t === 'tarjetas') {
-                pack.lim_contado = parseFloat(document.getElementById('m_lim_contado').value);
-                pack.lim_cuotas = parseFloat(document.getElementById('m_lim_cuotas').value);
-            }
+            if(document.getElementById('m_lim_contado')) pack.lim_contado = parseFloat(document.getElementById('m_lim_contado').value);
+            if(document.getElementById('m_lim_cuotas')) pack.lim_cuotas = parseFloat(document.getElementById('m_lim_cuotas').value);
 
             await _supabase.from(t).update(pack).eq('id', id);
             cerrarModal();
@@ -522,7 +495,7 @@
             let n = document.getElementById('i_nombre').value; let m = parseFloat(document.getElementById('i_monto').value); let mo = document.getElementById('i_moneda').value;
             let t = document.getElementById('i_tipo').value; let fFact = document.getElementById('i_fecha_factura').value; let fFond = document.getElementById('i_mes_fondear').value;
             let generarIva = document.getElementById('i_iva').checked;
-            if (!n || isNaN(m) || !fFact || !fFond) return alert("Por favor completa los campos obligatorios.");
+            if (!n || isNaN(m) || !fFact || !fFond) return alert("Completa los campos obligatorios.");
             
             let id = Date.now(); let pFond = fFond.split('-');
             let packageIng = { id, user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, anio: parseInt(pFond[0]), mes: parseInt(pFond[1]), fecha_fact: fFact, fecha_fond: fFond };
@@ -577,7 +550,7 @@
 
         async function guardarCompra() {
             let tId = document.getElementById('c_tarjeta').value; let n = document.getElementById('c_concepto').value; let m = parseFloat(document.getElementById('c_monto').value); let f = document.getElementById('c_fecha').value; let c = parseInt(document.getElementById('c_cuotas').value);
-            if (!tId || !n || isNaN(m) || !f || isNaN(c)) return alert("Completa los datos del consumo.");
+            if (!tId || !n || isNaN(m) || !f || isNaN(c)) return alert("Completa los datos.");
             let p = f.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
             let fIn = `${aAn}-${String(mAn).padStart(2,'0')}`;
             let mFin = mAn + c - 1; let aFin = aAn; while(mFin > 12) { mFin -= 12; aFin++; }
@@ -591,7 +564,7 @@
             let tb = document.getElementById('bodyCompras'); tb.innerHTML = "";
             compras.forEach(c => {
                 let t = tarjetas.find(x => x.id == c.tarjeta_id);
-                tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small style="color:var(--text-muted);">${t?t.nombre:"N/A"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} a ${c.fecha_fin}</td><td class="record-actions"><button style="color:var(--danger);" onclick="borrarCompra(${c.id})">🗑️</button></td></tr>`;
+                tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small style="color:var(--text-muted);">${t?t.nombre:"N/A"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} a ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none; cursor:pointer;" onclick="borrarCompra(${c.id})">🗑️</button></td></tr>`;
             });
         }
 
@@ -605,12 +578,12 @@
         async function borrarAhorro(id) { await _supabase.from('ahorros').delete().eq('id', id); await pullCloudData(); }
         function renderAhorros() {
             let ul = document.getElementById('listaAhorros'); ul.innerHTML = "";
-            ahorros.forEach(a => { ul.innerHTML += `<li><div class="record-info"><span class="record-title" style="color:#1e293b !important;">${a.nombre}</span><span class="record-meta">${a.moneda} ${formatMoney(a.monto)} | ${a.fecha_orig}</span></div><div class="record-actions"><button onclick="abrirModalEdicion('ahorros', ${a.id})">✏️</button><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑️</button></div></li>`; });
+            ahorros.forEach(a => { ul.innerHTML += `<li><div class="record-info"><span class="record-title">${a.nombre}</span><span class="record-meta">${a.moneda} ${formatMoney(a.monto)} | ${a.fecha_orig}</span></div><div class="record-actions"><button onclick="abrirModalEdicion('ahorros', ${a.id})">✏️</button><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑️</button></div></li>`; });
         }
 
-        // --- CALCULO CENTRAL DE FLUJO DE CAJA ---
+        // --- CÁLCULO DE FLUJO DE CAJA ---
         function actualizarDashboard() {
-            let fMes = document.getElementById('dash_mes').value; if(!fMes) return;
+            let fMes = document.getElementById('global_mes').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
 
             let ing = ingresos.filter(i => (i.tipo === 'fijo' && (aAn > i.anio || (aAn === i.anio && mAn >= i.mes))) || (i.tipo === 'variable' && i.anio === aAn && i.mes === mAn)).reduce((a, i) => a + obtenerEnGTQ(i.monto, i.moneda), 0);
@@ -638,13 +611,13 @@
             dibujarGraficoApilado(mAn, aAn);
         }
 
-        // --- REQUISITO 1: GRÁFICO ESCALAR REAL DINÁMICO ---
+        // --- RENDERIZADO DINÁMICO DE BARRAS DE FINANZAS ---
         function dibujarGraficoApilado(mB, aB) {
-            let cont = document.getElementById('chartPresupuesto'); cont.innerHTML = ''; 
+            let cont = document.getElementById('chartPresupuesto'); if(!cont) return;
+            cont.innerHTML = ''; 
             let filtro = document.getElementById('filtro_tipo_grafico').value;
             let maxAlt = 0; let data = [];
 
-            // Iteración de los 6 meses proyectados en el bloque
             for(let i = 0; i < 6; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
                 
@@ -671,7 +644,6 @@
             }
             if(maxAlt === 0) maxAlt = 1;
 
-            // Renderizado físico proporcional (Garantiza que Julio se vea más alto)
             data.forEach(d => {
                 let pila = `<div class="bar-stack">`;
                 let totalCajaText = d.ingresos;
@@ -700,15 +672,15 @@
             });
         }
 
-        // --- REQUISITO 3: GRÁFICA MISH DE AMORTIZACIÓN ACUMULATIVA DE CUPO DE TARJETAS ---
+        // --- MISH: GRÁFICA ACUMULATIVA AMORTIZADA INVERSA ---
         function dibujarGraficoLineas() {
             let tId = document.getElementById('p_line_tarjeta').value; 
             let cont = document.getElementById('chartLineasContenedor');
             let tipoLim = document.getElementById('p_line_tipo').value;
-            let fMes = document.getElementById('dash_mes').value;
+            let fMes = document.getElementById('global_mes').value;
             
             if(!tId || !fMes) { 
-                cont.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding-top:90px; font-size:13px;">⚠️ Selecciona una tarjeta del listado para generar el modelo matemático acumulado.</div>'; 
+                cont.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta para proyectar la curva matemática de equilibrio.</div>'; 
                 return; 
             }
             
@@ -719,46 +691,54 @@
             let coordsDeuda = []; let coordsDisp = [];
             let puntosHtml = ""; let labelsHtml = "";
 
-            // Modelo Dinámico Acumulado Inverso
+            // Cálculo acumulativo real de saldos amortizados a lo largo del tiempo
             for(let i=0; i<6; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
                 
-                let deudaMes = compras.filter(c => {
+                // Saldo vivo pendiente (la deuda acumulada baja conforme pasan los meses)
+                let deudaVivaAcumulada = compras.filter(c => {
                     let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
-                    let cv = tA*12 + tM; return c.tarjeta_id == tId && cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
-                }).reduce((a,c) => a + c.pago_mensual, 0);
+                    let cv = tA*12 + tM;
+                    return c.tarjeta_id == tId && cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
+                }).reduce((a,c) => {
+                    let pIni = c.fecha_inicio.split('-');
+                    let mesesTranscurridos = (tA*12 + tM) - (parseInt(pIni[0])*12 + parseInt(pIni[1]));
+                    let saldoRestante = c.monto - (c.pago_mensual * mesesTranscurridos);
+                    return a + (saldoRestante > 0 ? saldoRestante : 0);
+                }, 0);
 
-                let disponibleMes = limiteMax - deudaMes; if(disponibleMes < 0) disponibleMes = 0;
-                let x = 60 + (i * 95);
+                let disponibleMes = limiteMax - deudaVivaAcumulada; if(disponibleMes < 0) disponibleMes = 0;
                 
-                let yDeuda = 180 - (limiteMax > 0 ? (deudaMes / limiteMax) * 120 : 0);
+                // Mapeo proporcional sobre el contenedor SVG dinámico completo (100% responsivo)
+                let x = 50 + (i * 100);
+                let yDeuda = 180 - (limiteMax > 0 ? (deudaVivaAcumulada / limiteMax) * 120 : 0);
                 let yDisp = 180 - (limiteMax > 0 ? (disponibleMes / limiteMax) * 120 : 0);
 
                 coordsDeuda.push(`${x},${yDeuda}`);
                 coordsDisp.push(`${x},${yDisp}`);
 
                 puntosHtml += `<circle cx="${x}" cy="${yDeuda}" r="4" fill="var(--danger)"/>`;
-                puntosHtml += `<text x="${x}" y="${yDeuda - 6}" style="font-size:9px; font-weight:700;" fill="#ef4444" text-anchor="middle">Q${formatMoneyCorto(deudaMes)}</text>`;
+                puntosHtml += `<text x="${x}" y="${yDeuda - 8}" style="font-size:9px; font-weight:700;" fill="#ef4444" text-anchor="middle">Q${formatMoneyCorto(deudaVivaAcumulada)}</text>`;
                 
                 puntosHtml += `<circle cx="${x}" cy="${yDisp}" r="4" fill="var(--success)"/>`;
-                puntosHtml += `<text x="${x}" y="${yDisp + 12}" style="font-size:9px; font-weight:700;" fill="#10b981" text-anchor="middle">Q${formatMoneyCorto(disponibleMes)}</text>`;
+                puntosHtml += `<text x="${x}" y="${yDisp + 14}" style="font-size:9px; font-weight:700;" fill="#10b981" text-anchor="middle">Q${formatMoneyCorto(disponibleMes)}</text>`;
                 
-                labelsHtml += `<text x="${x}" y="210" class="svg-chart-text" text-anchor="middle">${nombresMeses[tM-1]}</text>`;
+                labelsHtml += `<text x="${x}" y="210" class="svg-chart-text" fill="#94a3b8" text-anchor="middle">${nombresMeses[tM-1]}</text>`;
             }
 
             cont.innerHTML = `
-                <svg width="100%" height="100%" viewBox="0 0 600 230" style="overflow:visible;">
-                    <line x1="40" y1="180" x2="570" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
-                    <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="2.5"/>
+                <svg width="100%" height="100%" viewBox="0 0 600 230" preserveAspectRatio="none" style="overflow:visible;">
+                    <line x1="30" y1="180" x2="570" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
+                    <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-dasharray="4 2"/>
                     <path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="2.5"/>
                     ${puntosHtml}
                     ${labelsHtml}
                 </svg>`;
         }
 
-        // --- CALCULO Y ACUMULACIÓN DE AHORROS HISTÓRICOS ---
+        // --- CÁLCULO E HISTÓRICO DE AHORROS ---
         function actualizarAhorros() {
-            let fMes = document.getElementById('dash_mes').value; if(!fMes) return;
+            let fMes = document.getElementById('global_mes').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
             
             let baseNum = parseFloat(document.getElementById('a_base').value) || 0;
@@ -775,7 +755,7 @@
 
         function dibujarGraficoAhorroHistorico() {
             let cont = document.getElementById('chartAhorroHistoricoContenedor');
-            let fMes = document.getElementById('dash_mes').value; if(!fMes) return;
+            let fMes = document.getElementById('global_mes').value; if(!fMes) return;
 
             let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
             let baseNum = parseFloat(document.getElementById('a_base').value) || 0;
@@ -796,8 +776,8 @@
             if(maxAhorro === 0) maxAhorro = 1;
 
             valoresMeses.forEach((v, i) => {
-                let x = 60 + (i * 95);
-                let y = 180 - ((v.total / maxAhorro) * 120); if(y < 30) y = 30;
+                let x = 50 + (i * 100);
+                let y = 180 - ((v.total / maxAhorro) * 120);
 
                 coordsAhorro.push(`${x},${y}`);
                 puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--teal)"/>`;
@@ -806,36 +786,36 @@
             });
 
             cont.innerHTML = `
-                <svg width="100%" height="100%" viewBox="0 0 600 230" style="overflow:visible;">
-                    <line x1="40" y1="180" x2="570" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
+                <svg width="100%" height="100%" viewBox="0 0 600 230" preserveAspectRatio="none" style="overflow:visible;">
+                    <line x1="30" y1="180" x2="570" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
                     <path d="M ${coordsAhorro.join(' L ')}" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
                     ${puntosHtml}
                     ${labelsHtml}
                 </svg>`;
         }
 
-        // --- SISTEMA CONVERSACIONAL IA GEMINI ---
+        // --- CONSULTOR IA GEMINI ---
         async function enviarMensajeIA() {
             let key = localStorage.getItem('gemini_key') || document.getElementById('gemini_api_key').value;
-            if(!key) return alert('Por favor ingresa y guarda tu API Key de Gemini.');
+            if(!key) return alert('Por favor ingresa tu API Key de Gemini.');
             let inputChat = document.getElementById('chat_user_input'); let userText = inputChat.value.trim(); if(!userText) return;
 
             let grid = document.getElementById('chat_grid'); grid.innerHTML += `<div class="ai-bubble bubble-user">${userText}</div>`;
             inputChat.value = ""; grid.scrollTop = grid.scrollHeight;
 
             let aiId = 'ai_loading_' + Date.now();
-            grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}"><i>Analizando contabilidad en tiempo real...</i></div>`;
+            grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}"><i>Procesando balance contable en la nube...</i></div>`;
 
             try {
                 let respuesta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Actúa como asesor bancario. El usuario pregunta: "${userText}". Contexto real de datos en quetzales: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}. Plazos: ${JSON.stringify(compras)}.` }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `Actúa como analista contable. Consulta: "${userText}". Contexto real: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}. Plazos: ${JSON.stringify(compras)}.` }] }] })
                 });
                 let datos = await respuesta.json();
                 let textoAI = datos.candidates[0].content.parts[0].text;
                 document.getElementById(aiId).innerHTML = textoAI.replace(/\n/g, '<br>');
-            } catch (error) { document.getElementById(aiId).innerHTML = `⚠️ Error de red con Gemini. Verifica tu conexión.`; }
+            } catch (error) { document.getElementById(aiId).innerHTML = `⚠️ Error en API Key o conexión.`; }
             finally { grid.scrollTop = grid.scrollHeight; }
         }
 
