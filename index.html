@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V24.0</title>
+    <title>Mi App Financiera Cloud Pro - V24.1</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -98,7 +98,7 @@
         button.btn-action:hover { background-color: var(--primary-hover); }
         .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
-        /* LISTADOS Y TABLAS (CORRECCIÓN DE CONTRASTE SEGURO) */
+        /* LISTADOS Y TABLAS */
         ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
         ul.records-list li { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-main); }
         ul.records-list li button { background: none; border: none; cursor: pointer; font-size: 14px; padding: 2px 6px; }
@@ -128,10 +128,9 @@
         .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: var(--card-bg); padding: 10px; gap: 8px; }
         .ai-input-bar input { flex-grow: 1; background: var(--bg-main); border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; color: var(--text-main); }
 
-        /* PANTALLAS ACCESO Y MODALES */
+        /* MODALES */
         #auth_screen { position: fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-main); display:flex; justify-content:center; align-items:center; z-index:99999; }
         .auth-card { background: var(--sidebar-bg); padding: 40px; border-radius: 20px; box-shadow: var(--shadow-md); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
-        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
         .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: var(--shadow-md); }
     </style>
@@ -149,6 +148,7 @@
         </div>
     </div>
 
+    <!-- PANTALLA INICIAL ACCESO -->
     <div id="auth_screen">
         <div class="auth-card">
             <h2 style="margin:0 0 8px 0; color:var(--primary); text-align:center; font-weight:800;">🔒 Sistema Financiero</h2>
@@ -161,6 +161,7 @@
         </div>
     </div>
 
+    <!-- ENTORNO COMPLETO APP -->
     <div id="app_content" style="display:none; width:100%; height:100vh; display:flex;">
         
         <div class="sidebar">
@@ -179,11 +180,9 @@
                     <label>Tasa de Cambio (USD/GTQ)</label>
                     <input type="number" id="tasaCambio" value="7.8" step="0.01" oninput="recalcularPorTasa()">
                 </div>
-                
                 <button class="btn-theme-toggle" onclick="alternarTemaVisual()">
                     <span id="theme_icon">🌙</span> <span id="theme_text">Modo Oscuro</span>
                 </button>
-                
                 <div class="cloud-badge">
                     🌐 Base de Datos Activa<br>
                     <button onclick="ejecutarLogout()" style="background:none; border:none; color:var(--danger); font-size:11px; font-weight:700; margin-top:8px; cursor:pointer; width:100%;">🚪 Cerrar Sesión</button>
@@ -194,6 +193,7 @@
         <div class="main-content" id="contenedor_scroll">
             <div class="dashboard-grid">
                 
+                <!-- MODULE 1: FINANZAS -->
                 <div class="card" id="panel_finanzas">
                     <div class="card-header">
                         <span>📊 1. Finanzas (Flujo de Caja Real)</span>
@@ -219,6 +219,7 @@
                     <div class="bars-chart-box" id="chartPresupuesto"></div>
                 </div>
 
+                <!-- FORMULARIOS -->
                 <div class="card-row">
                     <div class="card" id="seccion_ingresos">
                         <div class="card-header">📥 Registro de Ingresos</div>
@@ -252,6 +253,7 @@
                         </div>
                         <div class="form-row">
                             <div><label>Fecha Operación</label><input type="date" id="g_fecha" value="2026-06-01"></div>
+                            <!-- VÍA PAGO AHORA ES TOTALMENTE DINÁMICO (MÉTRICAS AUTOMATIZADAS) -->
                             <div><label>Vía Pago</label><select id="g_metodo"><option value="efectivo">Efectivo / Transferencia</option></select></div>
                         </div>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarGasto()">Guardar Gasto</button>
@@ -279,78 +281,79 @@
                     </div>
                 </div>
 
-                <div class="card-split-row" id="agrupacion_mish">
-                    <div class="card" id="seccion_plazos">
-                        <div class="card-header">🛍️ Consumos a Plazos</div>
-                        <div class="form-row">
-                            <div><label>Tarjeta</label><select id="c_tarjeta"></select></div>
-                            <div style="flex:2;"><label>Concepto</label><input type="text" id="c_concepto" placeholder="Seguro / Aparatos"></div>
-                        </div>
-                        <div class="form-row">
-                            <div><label>Monto Total</label><input type="number" id="c_monto"></div>
-                            <div><label>Fecha Inicial</label><input type="date" id="c_fecha" value="2026-06-01"></div>
-                            <div><label>Cuotas</label><input type="number" id="c_cuotas" min="1" value="12"></div>
-                        </div>
-                        <button class="btn-action" onclick="guardarCompra()">Inscribir Amortización</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapCompras')">👁️ Ver Tabla de Cuotas Activas</button>
-                        <div id="wrapCompras" style="display:none;">
-                            <div class="table-frame"><table><thead><tr><th>Detalle</th><th>Total</th><th>Cuotas</th><th>Plazo</th><th>Acción</th></tr></thead><tbody id="bodyCompras"></tbody></table></div>
-                        </div>
+                <!-- AMORTIZACIONES -->
+                <div class="card" id="seccion_plazos">
+                    <div class="card-header">🛍️ Consumos a Plazos (Amortizaciones)</div>
+                    <div class="form-row">
+                        <div><label>Tarjeta</label><select id="c_tarjeta"></select></div>
+                        <div style="flex:2;"><label>Concepto de la Compra</label><input type="text" id="c_concepto" placeholder="Seguro / Electrodomésticos"></div>
                     </div>
-
-                    <div class="card" id="panel_mish">
-                        <div class="card-header">
-                            <span style="color:var(--primary);">📈 MISH - Curva Crediticia</span>
-                            <div class="header-controls">
-                                <select id="p_line_tarjeta" style="width:110px; padding:4px;" onchange="actualizarMish()"></select>
-                                <select id="p_line_tipo" style="width:110px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Lím. Cuotas</option><option value="contado">Lím. Contado</option></select>
-                                <input type="month" id="mes_mish" class="card-inline-month" style="width:100px;" value="2026-06" onchange="actualizarMish()">
-                            </div>
-                        </div>
-                        <div class="vector-chart-container" id="chartLineasContenedor"></div>
+                    <div class="form-row">
+                        <div><label>Monto Total</label><input type="number" id="c_monto"></div>
+                        <div><label>Fecha Inicial</label><input type="date" id="c_fecha" value="2026-06-01"></div>
+                        <div><label>Cuotas</label><input type="number" id="c_cuotas" min="1" value="12"></div>
+                    </div>
+                    <button class="btn-action" onclick="guardarCompra()">Inscribir Amortización</button>
+                    <button class="btn-view-details" onclick="toggleVisibilidad('wrapCompras')">👁️ Ver Tabla de Cuotas Activas</button>
+                    <div id="wrapCompras" style="display:none;">
+                        <div class="table-frame"><table><thead><tr><th>Detalle</th><th>Total</th><th>Cuotas</th><th>Plazo</th><th>Acción</th></tr></thead><tbody id="bodyCompras"></tbody></table></div>
                     </div>
                 </div>
 
-                <div class="card-split-row" id="agrupacion_ahorros">
-                    <div class="card" id="panel_ahorros" style="border-left:5px solid var(--success);">
-                        <div class="card-header">
-                            <span style="color:var(--success);">🏦 Plan de Ahorros</span>
-                            <input type="month" id="mes_ahorros" class="card-inline-month" value="2026-06" onchange="actualizarAhorrosModulo()">
-                        </div>
-                        <div class="form-row">
-                            <div style="flex:2;"><label>Base Histórica Guardada</label><input type="number" id="a_base" value="0" oninput="guardarBaseAhorro()"></div>
-                            <div><label>Moneda Base</label><select id="a_base_moneda" onchange="guardarBaseAhorro()"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
-                        </div>
-                        <div class="form-row" style="margin-top:10px; border-top:1px dashed var(--border-color); padding-top:10px;">
-                            <div style="flex:2;"><label>Detalle Aporte</label><input type="text" id="a_nombre" placeholder="Reserva"></div>
-                            <div><label>Monto</label><input type="number" id="a_monto"></div>
-                            <div><label>Moneda</label><select id="a_moneda"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
-                        </div>
-                        <button class="btn-action" style="background-color:var(--success);" onclick="guardarAhorro()">Registrar Capital</button>
-                        <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver Historial</button>
-                        <div id="wrapAhorros" style="display:none;"><ul class="records-list" id="listaAhorros"></ul></div>
-                        
-                        <div style="margin-top:12px; display:flex; gap:12px;">
-                            <div class="kpi-box" style="flex:1; padding:10px;"><div class="kpi-data"><span class="kpi-title" style="font-size:9px;">En el Mes</span><span id="ahorroMesGTQ" style="color:var(--success); font-size:14px; font-weight:700;">Q 0.00</span></div></div>
-                            <div class="kpi-box" style="flex:1; padding:10px;"><div class="kpi-data"><span class="kpi-title" style="font-size:9px;">Acumulado Neto</span><span id="ahorroTotalGTQ" style="color:var(--success); font-size:14px; font-weight:700;">Q 0.00</span></div></div>
+                <!-- MODULE 2: MISH -->
+                <div class="card" id="panel_mish">
+                    <div class="card-header">
+                        <span style="color:var(--primary);">📈 2. Mish - Curva de Capacidad Crediticia (6 Meses)</span>
+                        <div class="header-controls">
+                            <select id="p_line_tarjeta" style="width:130px; padding:4px;" onchange="actualizarMish()"></select>
+                            <select id="p_line_tipo" style="width:130px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select>
+                            <input type="month" id="mes_mish" class="card-inline-month" value="2026-06" onchange="actualizarMish()">
                         </div>
                     </div>
+                    <div class="vector-chart-container" id="chartLineasContenedor"></div>
+                </div>
 
-                    <div class="card">
-                        <div class="card-header"><span style="color:var(--teal);">📉 Histórico de Crecimiento</span></div>
-                        <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
+                <!-- MODULE 3: PLAN DE AHORROS -->
+                <div class="card" id="panel_ahorros" style="border-left:5px solid var(--success);">
+                    <div class="card-header">
+                        <span style="color:var(--success);">🏦 3. Plan de Depósitos de Ahorros</span>
+                        <input type="month" id="mes_ahorros" class="card-inline-month" value="2026-06" onchange="actualizarAhorrosModulo()">
+                    </div>
+                    <div class="form-row">
+                        <div style="flex:2;"><label>Base Histórica Inicial Guardada</label><input type="number" id="a_base" value="0" oninput="guardarBaseAhorro()"></div>
+                        <div><label>Moneda Base</label><select id="a_base_moneda" onchange="guardarBaseAhorro()"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
+                    </div>
+                    <div class="form-row" style="margin-top:15px; border-top:1px dashed var(--border-color); padding-top:15px;">
+                        <div style="flex:2;"><label>Detalle Aporte</label><input type="text" id="a_nombre" placeholder="Fondo Contingencia"></div>
+                        <div><label>Monto</label><input type="number" id="a_monto"></div>
+                        <div><label>Moneda</label><select id="a_moneda"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
+                    </div>
+                    <button class="btn-action" style="background-color:var(--success);" onclick="guardarAhorro()">Registrar Capital</button>
+                    <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver Historial Aportes</button>
+                    <div id="wrapAhorros" style="display:none;"><ul class="records-list" id="listaAhorros"></ul></div>
+                    
+                    <div style="margin-top:20px; display:flex; gap:16px;">
+                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Aporte en Mes Seleccionado</span><span id="ahorroMesGTQ" style="color:var(--success); font-size:18px; font-weight:700;">Q 0.00</span></div></div>
+                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Capital Acumulado Total</span><span id="ahorroTotalGTQ" style="color:var(--success); font-size:18px; font-weight:700;">Q 0.00</span></div></div>
                     </div>
                 </div>
 
+                <!-- MODULE 4: HISTÓRICO DE AHORROS -->
+                <div class="card">
+                    <div class="card-header"><span style="color:var(--teal);">📉 4. Histórico de Crecimiento de Ahorro Neto</span></div>
+                    <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
+                </div>
+
+                <!-- MODULE 5: IA CONSULTOR -->
                 <div class="card" id="seccion_ia">
-                    <div class="card-header" style="color:var(--primary);">🤖 Consultor IA Financiero Experto</div>
+                    <div class="card-header" style="color:var(--primary);">🤖 5. Consultor IA Financiero Experto</div>
                     <div class="form-row">
                         <div style="flex:2;"><label>Gemini API Key</label><input type="password" id="gemini_api_key" placeholder="AIzaSy..."></div>
                         <div><label>&nbsp;</label><button class="btn-action" onclick="guardarApiKey()">💾 Guardar Llave</button></div>
                     </div>
                     <div class="ai-chat-container">
                         <div class="ai-messages-wall" id="chat_grid">
-                            <div class="ai-bubble bubble-ai">Entorno Premium calibrado a Zoom 100% y con soporte de Modo Claro/Oscuro dinámico con tipografía Poppins. ¿Qué balance estratégico deseas calcular hoy?</div>
+                            <div class="ai-bubble bubble-ai">Entorno Premium adaptivo calibrado a Zoom 100% y con soporte de Modo Claro/Oscuro dinámico con la nueva fuente Poppins. ¿Qué balance estratégico deseas calcular hoy?</div>
                         </div>
                         <div class="ai-input-bar">
                             <input type="text" id="chat_user_input" placeholder="Pregúntale a la IA sobre tus finanzas..." onkeypress="if(event.key==='Enter') enviarMensajeIA()">
@@ -379,7 +382,7 @@
             localStorage.setItem("theme_preference", newTheme);
             document.getElementById("theme_icon").innerText = newTheme === "light" ? "🌙" : "☀️";
             document.getElementById("theme_text").innerText = newTheme === "light" ? "Modo Oscuro" : "Modo Claro";
-            actualizarFinanzas(); actualizarMish(); actualizarAhorrosModulo();
+            actualizarMish(); actualizarAhorrosModulo();
         }
 
         function cargarTemaPreferido() {
@@ -451,7 +454,6 @@
         function guardarApiKey() { localStorage.setItem('gemini_key', document.getElementById('gemini_api_key').value); alert('Llave guardada.'); }
         function guardarBaseAhorro() { localStorage.setItem('db_a_base', document.getElementById('a_base').value); localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); actualizarAhorrosModulo(); }
 
-        /* PUNTO 5: FORMULARIO DE EDICIÓN TOTALMENTE COMPLETO */
         function abrirModalEdicion(tabla, id) {
             registroEdicionActual = { tabla, id };
             let body = document.getElementById('modalBody'); body.innerHTML = "";
@@ -461,6 +463,11 @@
             if(!r && tabla==='ahorros') r = ahorros.find(x=>x.id===id);
             
             if(tabla === 'ingresos' || tabla === 'gastos' || tabla === 'ahorros') {
+                let optionsVias = `<option value="efectivo" ${r.medio_pago==='efectivo'?'selected':''}>Efectivo / Transferencia</option>`;
+                tarjetas.forEach(t => {
+                    optionsVias += `<option value="${t.id}" ${r.medio_pago==String(t.id)?'selected':''}>Tarjeta: ${t.nombre}</option>`;
+                });
+
                 body.innerHTML = `
                     <div style="margin-bottom:12px;"><label>Concepto / Nombre</label><input type="text" id="m_nombre" value="${r.nombre||''}"></div>
                     <div class="form-row">
@@ -469,8 +476,9 @@
                     </div>
                     <div class="form-row">
                         <div><label>Tipo</label><select id="m_tipo"><option value="fijo" ${r.tipo==='fijo'?'selected':''}>Fijo</option><option value="variable" ${r.tipo==='variable'?'selected':''}>Variable</option></select></div>
+                        ${tabla==='gastos'? `<div><label>Vía de Pago</label><select id="m_metodo">${optionsVias}</select></div>` : ''}
                     </div>`;
-            } else if(tabla === 'tarjetas') {
+            } else if(t === 'tarjetas') {
                 body.innerHTML = `
                     <div style="margin-bottom:12px;"><label>Nombre del Emisor</label><input type="text" id="m_nombre" value="${r.nombre||''}"></div>
                     <div class="form-row">
@@ -493,6 +501,7 @@
             if(document.getElementById('m_monto')) pack.monto = parseFloat(document.getElementById('m_monto').value);
             if(document.getElementById('m_moneda')) pack.moneda = document.getElementById('m_moneda').value;
             if(document.getElementById('m_tipo')) pack.tipo = document.getElementById('m_tipo').value;
+            if(document.getElementById('m_metodo')) pack.medio_pago = document.getElementById('m_metodo').value;
             
             if(t === 'tarjetas') {
                 pack.lim_contado = parseFloat(document.getElementById('m_lim_contado').value);
@@ -524,8 +533,10 @@
         async function guardarGasto() {
             let n = document.getElementById('g_nombre').value; let m = parseFloat(document.getElementById('g_monto').value);
             let mo = document.getElementById('g_moneda').value; let t = document.getElementById('g_tipo').value;
-            let f = document.getElementById('g_fecha').value; if(!n || isNaN(m)) return alert('Datos vacíos'); let p = f.split('-');
-            await _supabase.from('gastos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, medio_pago: 'efectivo', anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
+            let f = document.getElementById('g_fecha').value; 
+            let mp = document.getElementById('g_metodo').value;
+            if(!n || isNaN(m)) return alert('Datos vacíos'); let p = f.split('-');
+            await _supabase.from('gastos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, medio_pago: mp, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
             await pullCloudData();
         }
         async function borrarGasto(id) { await _supabase.from('gastos').delete().eq('id', id); await pullCloudData(); }
@@ -542,20 +553,23 @@
         }
         async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
         
-        /* PUNTO 1: SOLUCIÓN COMPLETA PARA MISH Y PLAZOS */
+        /* ALIMENTACIÓN DE SELECTORES DINÁMICOS VÍAS DE PAGO */
         function renderTarjetas() {
             let ul = document.getElementById('listaMaestroTarjetas'); 
             let sC = document.getElementById('c_tarjeta'); 
             let sP = document.getElementById('p_line_tarjeta');
+            let sG = document.getElementById('g_metodo'); // Selector de gastos
             
             if(ul) ul.innerHTML = ""; 
             if(sC) sC.innerHTML = ""; 
             if(sP) sP.innerHTML = ""; 
+            if(sG) sG.innerHTML = '<option value="efectivo">Efectivo / Transferencia</option>'; 
             
             tarjetas.forEach(t => { 
                 if(ul) ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><div><button onclick="abrirModalEdicion('tarjetas',${t.id})">✏️</button><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></div></li>`; 
                 if(sC) sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; 
                 if(sP) sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; 
+                if(sG) sG.innerHTML += `<option value="${t.id}">Tarjeta: ${t.nombre}</option>`;
             }); 
         }
 
@@ -586,25 +600,34 @@
             let ul = document.getElementById('listaAhorros'); if(ul) { ul.innerHTML = ""; ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><div><button onclick="abrirModalEdicion('ahorros',${a.id})">✏️</button><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></div></li>`; }); }
         }
 
+        // --- MÓDULO 1: FINANZAS ---
         function actualizarFinanzas() {
             let fMes = document.getElementById('mes_finanzas').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
 
             let ing = ingresos.filter(i => (i.tipo==='fijo' && (aAn>i.anio || (aAn===i.anio && mAn>=i.mes))) || (i.tipo==='variable' && i.anio===aAn && i.mes===mAn)).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-            let sF = gastos.filter(g => g.tipo==='fijo' && (aAn>g.anio || (aAn===g.anio && mAn>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-            let sV = gastos.filter(g => g.tipo==='variable' && g.anio===aAn && g.mes===mAn).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+            
+            // FILTRO DE GASTOS DINÁMICO SEGÚN MEDIO DE PAGO SELECCIONADO
+            let sF_efec = gastos.filter(g => g.tipo==='fijo' && g.medio_pago === 'efectivo' && (aAn>g.anio || (aAn===g.anio && mAn>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+            let sV_efec = gastos.filter(g => g.tipo==='variable' && g.medio_pago === 'efectivo' && g.anio===aAn && g.mes===mAn).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+            let totalGastosEfectivo = sF_efec + sV_efec;
+
+            let sF_tarj = gastos.filter(g => g.tipo==='fijo' && g.medio_pago !== 'efectivo' && (aAn>g.anio || (aAn===g.anio && mAn>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+            let sV_tarj = gastos.filter(g => g.tipo==='variable' && g.medio_pago !== 'efectivo' && g.anio===aAn && g.mes===mAn).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
             
             let sT_cuotas = compras.filter(c => {
                 let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
                 return (aAn*12 + mAn) >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && (aAn*12 + mAn) <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
             }).reduce((a, b) => a + b.pago_mensual, 0);
 
-            let totEgresos = sF + sV + sT_cuotas;
-            let disp = ing - totEgresos; if(disp < 0) disp = 0;
+            let totalPagoTarjetas = sF_tarj + sV_tarj + sT_cuotas;
+            let pAh = ahorros.filter(a => a.anio === aAn && a.mes === mAn).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+            
+            let disp = ing - (totalGastosEfectivo + totalPagoTarjetas + pAh); if(disp < 0) disp = 0;
 
             document.getElementById('dashIngresos').innerText = "Q " + formatMoney(ing);
-            document.getElementById('dashGastosEfec').innerText = "Q " + formatMoney(sF + sV);
-            document.getElementById('dashTarjetas').innerText = "Q " + formatMoney(sT_cuotas);
+            document.getElementById('dashGastosEfec').innerText = "Q " + formatMoney(totalGastosEfectivo);
+            document.getElementById('dashTarjetas').innerText = "Q " + formatMoney(totalPagoTarjetas);
             document.getElementById('dashDisponible').innerText = "Q " + formatMoney(disp);
             
             dibujarGraficoBarrasFinanzas(mAn, aAn);
@@ -619,18 +642,24 @@
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
                 
                 let pIng = ingresos.filter(inv => (inv.tipo==='fijo' && (tA>inv.anio || (tA===inv.anio && tM>=inv.mes))) || (inv.tipo==='variable' && inv.anio===tA && inv.mes===tM)).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-                let pF = gastos.filter(g => g.tipo==='fijo' && (tA>g.anio || (tA===g.anio && tM>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-                let pV = gastos.filter(g => g.tipo==='variable' && g.anio===tA && g.mes===tM).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+                
+                let pF_efec = gastos.filter(g => g.tipo==='fijo' && g.medio_pago === 'efectivo' && (tA>g.anio || (tA===g.anio && tM>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+                let pV_efec = gastos.filter(g => g.tipo==='variable' && g.medio_pago === 'efectivo' && g.anio===tA && g.mes===tM).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+                let totalEfec = pF_efec + pV_efec;
+
+                let pF_tarj = gastos.filter(g => g.tipo==='fijo' && g.medio_pago !== 'efectivo' && (tA>g.anio || (tA===g.anio && tM>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+                let pV_tarj = gastos.filter(g => g.tipo==='variable' && g.medio_pago !== 'efectivo' && g.anio===tA && g.mes===tM).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+                
                 let pTc = compras.filter(c => {
                     let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
                     let cv = tA*12 + tM; return cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
                 }).reduce((a, b) => a + b.pago_mensual, 0);
+                let totalTarj = pF_tarj + pV_tarj + pTc;
 
-                let totalEgresos = pF + pV + pTc;
-                let disp = pIng - totalEgresos; if(disp<0) disp=0;
-                let techo = pIng > totalEgresos ? pIng : totalEgresos; if(techo > maxAlt) maxAlt = techo;
+                let disp = pIng - (totalEfec + totalTarj); if(disp<0) disp=0;
+                let techo = pIng > (totalEfec + totalTarj) ? pIng : (totalEfec + totalTarj); if(techo > maxAlt) maxAlt = techo;
 
-                data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF, variable: pV, tarjeta: pTc, disponible: disp, ingresos: pIng });
+                data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF_efec, variable: pV_efec, tarjeta: totalTarj, disponible: disp, ingresos: pIng });
             }
             if(maxAlt===0) maxAlt = 1;
 
@@ -662,7 +691,7 @@
             let tipoLim = document.getElementById('p_line_tipo').value;
             let fMes = document.getElementById('mes_mish').value;
             
-            if(!tId || !fMes) { if(cont) cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:12px;">⚠️ Selecciona una tarjeta para proyectar la curva crediticia.</div>`; return; }
+            if(!tId || !fMes) { if(cont) cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta de crédito activa.</div>`; return; }
             let t = tarjetas.find(x => x.id == tId); if(!t) return;
             let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
             let limiteMax = tipoLim === 'cuotas' ? t.lim_cuotas : t.lim_contado;
