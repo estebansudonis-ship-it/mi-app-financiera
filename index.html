@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V20.0 (Dark Mode)</title>
+    <title>Mi App Financiera Cloud Pro - V21.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -19,11 +19,10 @@
             --danger: #ef4444; 
             --warning: #f59e0b; 
             --teal: #14b8a6;
-            --input-bg: #1e293b;
         }
         
-        * { box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
         /* MENÚ LATERAL */
         .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; justify-content: space-between; shrink: 0; }
@@ -33,74 +32,59 @@
         .nav-item:hover, .nav-item.active { background-color: #334155; color: var(--primary); font-weight: 600; }
         .cloud-badge { background: #112240; border: 1px solid #1e3a8a; padding: 12px; border-radius: 12px; font-size: 12px; text-align: center; color: #60a5fa; font-weight: 600; }
 
-        /* CONTENEDOR PRINCIPAL FLUIDO (100% ANCHO) */
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; width: 100%; scroll-behavior: smooth; }
-        
-        /* BARRA SUPERIOR CON FILTRO GLOBAL */
-        .top-navbar { background: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .top-navbar h2 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
-        .global-controls { display: flex; align-items: center; gap: 16px; }
-        .filtro-global-mes { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; font-size: 14px; outline: none; }
-        
-        /* MALLA DE CONTENIDO COMPLETA SIN LÍMITE DE ANCHO */
-        .dashboard-grid { padding: 30px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; }
+        /* CONTENEDOR PRINCIPAL OPTIMIZADO PARA ZOOM 100% */
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; scroll-behavior: smooth; background-color: var(--bg-main); }
+        .dashboard-grid { padding: 30px 40px; display: flex; flex-direction: column; gap: 30px; width: 100%; min-width: 1100px; box-sizing: border-box; }
         .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
-        @media (max-width: 1200px) { .card-row { grid-template-columns: 1fr; } }
         
-        /* TARJETAS MODO OSCURO */
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); width: 100%; }
-        .card-header { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* TARJETAS */
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); width: 100%; position: relative; }
+        .card-header { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .header-controls { display: flex; align-items: center; gap: 12px; }
         
+        /* INPUTS INLINE DE TARJETAS */
+        .card-inline-month { background-color: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-family: inherit; font-weight: 600; outline: none; }
+
         /* BLOQUES DE MÉTRICAS */
         .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        @media (max-width: 768px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
-        .kpi-box { background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 16px; }
-        .kpi-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; }
+        .kpi-box { background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+        .kpi-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .kpi-data { display: flex; flex-direction: column; }
-        .kpi-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-value { font-size: 18px; font-weight: 700; margin-top: 2px; }
+        .kpi-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+        .kpi-value { font-size: 17px; font-weight: 700; margin-top: 2px; }
 
-        /* FORMULARIOS Y CONTROLES */
+        /* FORMULARIOS */
         .form-group { margin-bottom: 14px; }
         .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
         .form-row > div { flex: 1; }
         label { font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; }
-        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 14px; color: var(--text-main); background-color: #0f172a; outline: none; transition: 0.2s; }
-        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
-        button.btn-action { background-color: var(--primary); color: white; border: none; padding: 11px 16px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        input, select { padding: 10px 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 13px; color: var(--text-main); background-color: #0f172a; outline: none; }
+        input:focus, select:focus { border-color: var(--primary); }
+        button.btn-action { background-color: var(--primary); color: white; border: none; padding: 11px 16px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
         button.btn-action:hover { background-color: var(--primary-hover); }
-        .btn-view-details { background: none; border: none; color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
+        .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
-        /* LISTADOS DE REGISTROS */
-        ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; }
-        ul.records-list li { background: #0f172a; border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-        .record-info { display: flex; flex-direction: column; gap: 2px; }
-        .record-title { font-weight: 600; color: var(--text-main); }
-        .record-meta { font-size: 11px; color: var(--text-muted); }
-        .record-actions { display: flex; gap: 4px; }
-        .record-actions button { background: #1e293b; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
-        .record-actions button:hover { background: #334155; }
-
-        /* TABLAS */
+        /* LISTADOS Y TABLAS */
+        ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
+        ul.records-list li { background: #0f172a; border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th { background-color: #0f172a; color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); text-align: left; }
         td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: #1e293b; }
 
-        /* GRÁFICO DE BARRAS FINANZAS */
+        /* GRÁFICO DE BARRAS */
         .bars-chart-box { display: flex; align-items: flex-end; justify-content: space-around; height: 260px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 10px 10px 10px; margin-top: 10px; width: 100%; }
         .bar-col { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; }
         .bar-stack { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 6px; overflow: hidden; margin-bottom: 8px; background-color: #1e293b; }
-        .bar-segment { width: 100%; transition: height 0.5s ease; display: flex; align-items: center; justify-content: center; position: relative; }
-        .bar-txt { color: white; font-size: 9px; font-weight: 700; text-shadow: 0 1px 1px rgba(0,0,0,0.6); }
-        .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; }
+        .bar-segment { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+        .bar-txt { color: white; font-size: 9px; font-weight: 700; text-shadow: 0 1px 1px rgba(0,0,0,0.8); }
+        .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 4px; }
         .bar-top-val { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
 
-        /* CONTENEDOR GRÁFICOS VECTORIALES ANCHURA TOTAL */
-        .vector-chart-container { width: 100%; height: 240px; margin-top: 10px; position: relative; background: #0f172a; border-radius: 14px; border: 1px solid var(--border-color); padding: 15px; }
-        .svg-chart-text { font-size: 10px; font-weight: 600; fill: var(--text-muted); }
+        /* CONTENEDORES DE GRÁFICOS SVG REESTILIZADOS EXCLUSIVOS */
+        .vector-chart-container { width: 100%; height: 260px; margin-top: 10px; background: #0f172a; border-radius: 14px; border: 1px solid var(--border-color); padding: 20px; position: relative; overflow: hidden; }
 
-        /* PANEL DE IA INTERACTIVO */
+        /* IA INTERFAZ */
         .ai-chat-container { display: flex; flex-direction: column; height: 300px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-top: 12px; }
         .ai-messages-wall { flex-grow: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         .ai-bubble { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
@@ -109,14 +93,11 @@
         .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: #1e293b; padding: 10px; gap: 8px; }
         .ai-input-bar input { flex-grow: 1; background: #0f172a; border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; color: white; }
 
-        /* PANTALLA DE ACCESO */
+        /* PANTALLA ACCESO */
         #auth_screen { position: fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-main); display:flex; justify-content:center; align-items:center; z-index:99999; }
         .auth-card { background: var(--sidebar-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
-
-        /* MODAL POPUP */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
-        .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: white; padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; box-sizing: border-box; }
-        .modal-header { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
+        .modal-content { background: var(--sidebar-bg); border: 1px solid var(--border-color); color: white; padding: 28px; border-radius: 16px; width: 100%; max-width: 500px; }
     </style>
 </head>
 <body>
@@ -125,77 +106,72 @@
 
     <div id="editModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <span id="modalTitle">✏️ Modificar Parámetros</span>
-                <span style="cursor:pointer; font-size:20px; font-weight:bold; color:var(--text-muted);" onclick="cerrarModal()">&times;</span>
+            <div style="font-size:16px; font-weight:700; margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:12px; display:flex; justify-content:between; align-items:center;">
+                <span id="modalTitle">✏️ Editar Registro</span>
+                <span style="cursor:pointer; font-size:20px;" onclick="cerrarModal()">&times;</span>
             </div>
             <div id="modalBody"></div>
-            <button class="btn-action" style="margin-top:15px;" onclick="ejecutarActualizacionCloud()">Confirmar Cambios en la Nube</button>
+            <button class="btn-action" style="margin-top:15px;" onclick="ejecutarActualizacionCloud()">Guardar Cambios</button>
         </div>
     </div>
 
     <div id="auth_screen">
         <div class="auth-card">
-            <h2 style="margin: 0 0 8px 0; color: var(--primary); text-align: center; font-weight: 800;">🔒 Acceso Financiero</h2>
-            <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 24px;">Consolidación Bancaria en Tiempo Real</p>
+            <h2 style="margin:0 0 8px 0; color:var(--primary); text-align:center; font-weight:800;">🔒 Sistema Financiero</h2>
+            <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-bottom:24px;">Control de Amortizaciones & Nube</p>
             <div class="form-group"><label>Correo Electrónico</label><input type="email" id="auth_email" placeholder="nombre@correo.com"></div>
             <div class="form-group"><label>Contraseña</label><input type="password" id="auth_password" placeholder="••••••••"></div>
-            <button class="btn-action" style="margin-top: 10px;" onclick="ejecutarLogin()">Ingresar Seguro</button>
-            <button class="btn-action" style="background:none; color:var(--primary); font-size:13px; margin-top:8px;" onclick="ejecutarRegistro()">Registrar Nueva Cuenta Cloud</button>
+            <button class="btn-action" style="margin-top:10px;" onclick="ejecutarLogin()">Ingresar Seguro</button>
+            <button class="btn-action" style="background:none; color:var(--primary); font-size:13px; margin-top:8px;" onclick="ejecutarRegistro()">Crear Nueva Cuenta Cloud</button>
             <div id="auth_error" style="color:var(--danger); font-size:12px; margin-top:12px; text-align:center; font-weight:600;"></div>
         </div>
     </div>
 
-    <div id="app_content" style="display:none; width: 100%; height: 100vh; display: flex;">
+    <div id="app_content" style="display:none; width:100%; height:100vh;">
         
         <div class="sidebar">
             <div>
-                <div class="logo-area"><span>📊</span> Mi Finanzas Pro</div>
+                <div class="logo-area"><span>📊</span> Control Pro</div>
                 <div class="nav-menu">
-                    <div class="nav-item active" onclick="navegarA('top_resumen')">📈 Panel Principal</div>
+                    <div class="nav-item active" onclick="navegarA('panel_finanzas')">📈 Flujo de Caja</div>
                     <div class="nav-item" onclick="navegarA('seccion_ingresos')">💵 Ingresos</div>
-                    <div class="nav-item" onclick="navegarA('seccion_gastos')">🛒 Gastos</div>
-                    <div class="nav-item" onclick="navegarA('seccion_tarjetas')">💳 Tarjetas</div>
-                    <div class="nav-item" onclick="navegarA('seccion_plazos')">🛍️ Plazos</div>
-                    <div class="nav-item" onclick="navegarA('seccion_ia')">🤖 Consultor IA</div>
+                    <div class="nav-item" onclick="navegarA('seccion_gastos')">🛒 Gastos Básicos</div>
+                    <div class="nav-item" onclick="navegarA('seccion_tarjetas')">💳 Tarjetas Maestro</div>
+                    <div class="nav-item" onclick="navegarA('seccion_plazos')">🛍️ Amortizaciones</div>
+                    <div class="nav-item" onclick="navegarA('panel_mish')">📉 Gráfica MISH</div>
+                    <div class="nav-item" onclick="navegarA('panel_ahorros')">🏦 Plan Ahorros</div>
+                    <div class="nav-item" onclick="navegarA('seccion_ia')">🤖 Inteligencia IA</div>
                 </div>
             </div>
             <div class="cloud-badge">
-                🌐 Sincronizado Supabase<br>
-                <small style="font-weight:400; font-size:10px; color:var(--text-muted);">Acceso de datos activo</small>
+                🌐 Base de Datos Activa<br>
                 <button onclick="ejecutarLogout()" style="background:none; border:none; color:var(--danger); font-size:11px; font-weight:700; margin-top:8px; cursor:pointer; width:100%;">🚪 Cerrar Sesión</button>
             </div>
         </div>
 
         <div class="main-content" id="contenedor_scroll">
-            
-            <div class="top-navbar" id="top_resumen">
-                <h2>Resumen de Operaciones</h2>
-                <div class="global-controls">
-                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Mes de Corte Central:</span>
-                    <input type="month" id="global_mes" class="filtro-global-mes" onchange="sincronizarMesGlobal()">
-                </div>
-            </div>
-
             <div class="dashboard-grid">
                 
-                <div class="card">
+                <div class="card" id="panel_finanzas">
                     <div class="card-header">
-                        📊 1. Finanzas (Flujo de Caja)
-                        <select id="filtro_tipo_grafico" style="background:#0f172a; color:var(--text-main); border:1px solid var(--border-color); width:180px; padding:4px 8px; font-size:12px;" onchange="actualizarTodo()">
-                            <option value="all">Ver Todo (Apilado)</option>
-                            <option value="ingresos">Solo Ingresos</option>
-                            <option value="fijo">Solo Gastos Fijos</option>
-                            <option value="variable">Solo Gastos Variables</option>
-                            <option value="tarjeta">Solo Tarjetas</option>
-                        </select>
+                        <span>📊 1. Finanzas (Flujo de Caja Real)</span>
+                        <div class="header-controls">
+                            <select id="filtro_tipo_grafico" style="background:var(--bg-main); color:white; border:1px solid var(--border-color); width:150px; padding:4px; font-size:12px;" onchange="actualizarFinanzas()">
+                                <option value="all">Ver Todo</option>
+                                <option value="ingresos">Solo Ingresos</option>
+                                <option value="fijo">Gastos Fijos</option>
+                                <option value="variable">Gastos Variables</option>
+                                <option value="tarjeta">Tarjetas</option>
+                            </select>
+                            <input type="month" id="mes_finanzas" class="card-inline-month" value="2026-06" onchange="actualizarFinanzas()">
+                        </div>
                     </div>
                     
                     <div class="kpi-row">
                         <div class="kpi-box"><div class="kpi-icon" style="background:#1e3a8a; color:#60a5fa;">💵</div><div class="kpi-data"><span class="kpi-title">Ingresos</span><span class="kpi-value" style="color:var(--success);" id="dashIngresos">Q 0.00</span></div></div>
                         <div class="kpi-box"><div class="kpi-icon" style="background:#881337; color:#f43f5e;">🛒</div><div class="kpi-data"><span class="kpi-title">Gastos Efectivo</span><span class="kpi-value" id="dashGastosEfec">Q 0.00</span></div></div>
                         <div class="kpi-box"><div class="kpi-icon" style="background:#311042; color:#d946ef;">💳</div><div class="kpi-data"><span class="kpi-title">Pago Tarjetas</span><span class="kpi-value" id="dashTarjetas">Q 0.00</span></div></div>
-                        <div class="kpi-box" style="border: 2px solid var(--success);"><div class="kpi-icon" style="background:#064e3b; color:#34d399;">💰</div><div class="kpi-data"><span class="kpi-title">Disponible Líquido</span><span class="kpi-value" style="color:var(--success);" id="dashDisponible">Q 0.00</span></div></div>
+                        <div class="kpi-box" style="border:1px solid var(--success);"><div class="kpi-icon" style="background:#064e3b; color:#34d399;">💰</div><div class="kpi-data"><span class="kpi-title">Remanente</span><span class="kpi-value" style="color:var(--success);" id="dashDisponible">Q 0.00</span></div></div>
                     </div>
                     
                     <div class="bars-chart-box" id="chartPresupuesto"></div>
@@ -203,9 +179,9 @@
 
                 <div class="card-row">
                     <div class="card" id="seccion_ingresos">
-                        <div class="card-header">📥 2. Registro de Ingresos</div>
+                        <div class="card-header">📥 Registro de Ingresos</div>
                         <div class="form-row">
-                            <div style="flex:2;"><label>Concepto</label><input type="text" id="i_nombre" placeholder="Ej. Salario Neto"></div>
+                            <div style="flex:2;"><label>Concepto</label><input type="text" id="i_nombre" placeholder="Salario"></div>
                             <div><label>Monto</label><input type="number" id="i_monto"></div>
                         </div>
                         <div class="form-row">
@@ -213,19 +189,19 @@
                             <div><label>Tipo</label><select id="i_tipo"><option value="fijo">Fijo</option><option value="variable">Variable</option></select></div>
                         </div>
                         <div class="form-row">
-                            <div><label>Mes Factura</label><input type="month" id="i_fecha_factura"></div>
-                            <div><label>Mes Fondeo</label><input type="month" id="i_mes_fondear"></div>
+                            <div><label>Mes Factura</label><input type="month" id="i_fecha_factura" value="2026-06"></div>
+                            <div><label>Mes Fondeo</label><input type="month" id="i_mes_fondear" value="2026-06"></div>
                         </div>
-                        <label style="margin-top:8px; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="i_iva"> Retener 5% de IVA automático</label>
+                        <label style="margin-top:8px; display:flex; align-items:center; gap:8px; font-size:12px;"><input type="checkbox" id="i_iva"> Retener 5% de IVA mensual</label>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarIngreso()">Guardar Ingreso</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapIngresos')">👁️ Ver desglose de ingresos</button>
-                        <div id="wrapIngresos" style="display: none;"><ul class="records-list" id="listaIngresos"></ul></div>
+                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapIngresos')">👁️ Ver Listado de Ingresos</button>
+                        <div id="wrapIngresos" style="display:none;"><ul class="records-list" id="listaIngresos"></ul></div>
                     </div>
 
                     <div class="card" id="seccion_gastos">
-                        <div class="card-header">📤 3. Registro de Gastos</div>
+                        <div class="card-header">📤 Registro de Gastos Básicos</div>
                         <div class="form-row">
-                            <div style="flex:2;"><label>Concepto</label><input type="text" id="g_nombre" placeholder="Ej. Supermercado"></div>
+                            <div style="flex:2;"><label>Concepto</label><input type="text" id="g_nombre" placeholder="Luz / Internet"></div>
                             <div><label>Monto</label><input type="number" id="g_monto"></div>
                         </div>
                         <div class="form-row">
@@ -233,18 +209,18 @@
                             <div><label>Tipo</label><select id="g_tipo"><option value="fijo">Fijo</option><option value="variable">Variable</option></select></div>
                         </div>
                         <div class="form-row">
-                            <div><label>Fecha Operación</label><input type="date" id="g_fecha"></div>
-                            <div><label>Vía de Pago</label><select id="g_metodo"><option value="efectivo">Efectivo / Transferencia</option></select></div>
+                            <div><label>Fecha Operación</label><input type="date" id="g_fecha" value="2026-06-01"></div>
+                            <div><label>Vía Pago</label><select id="g_metodo"><option value="efectivo">Efectivo / Transferencia</option></select></div>
                         </div>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarGasto()">Guardar Gasto</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapGastos')">👁️ Ver desglose de gastos</button>
-                        <div id="wrapGastos" style="display: none;"><ul class="records-list" id="listaGastos"></ul></div>
+                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapGastos')">👁️ Ver Listado de Gastos</button>
+                        <div id="wrapGastos" style="display:none;"><ul class="records-list" id="listaGastos"></ul></div>
                     </div>
 
                     <div class="card" id="seccion_tarjetas">
-                        <div class="card-header">💳 4. Maestro de Tarjetas</div>
+                        <div class="card-header">💳 Maestro de Tarjetas</div>
                         <div class="form-row">
-                            <div style="flex:2;"><label>Nombre Emisor</label><input type="text" id="t_nombre" placeholder="Ej. Visa BI"></div>
+                            <div style="flex:2;"><label>Emisor</label><input type="text" id="t_nombre" placeholder="Visa BI"></div>
                             <div><label>Moneda</label><select id="t_moneda"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
                         </div>
                         <div class="form-row">
@@ -256,76 +232,82 @@
                             <div><label>Día Pago</label><input type="number" id="t_pago" min="1" max="31"></div>
                         </div>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarTarjeta()">Inscribir Tarjeta</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapTarjetas')">👁️ Ver desglose de tarjetas</button>
-                        <div id="wrapTarjetas" style="display: none;"><ul class="records-list" id="listaMaestroTarjetas"></ul></div>
+                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapTarjetas')">👁️ Ver Tarjetas Activas</button>
+                        <div id="wrapTarjetas" style="display:none;"><ul class="records-list" id="listaMaestroTarjetas"></ul></div>
                     </div>
                 </div>
 
                 <div class="card" id="seccion_plazos">
-                    <div class="card-header">🛒 5. Consumos a Plazos (Amortizaciones)</div>
+                    <div class="card-header">🛍️ Consumos a Plazos (Amortizaciones)</div>
                     <div class="form-row">
-                        <div><label>Tarjeta Vinculada</label><select id="c_tarjeta"></select></div>
-                        <div style="flex:2;"><label>Concepto de Compra</label><input type="text" id="c_concepto" placeholder="Ej. Ortodoncia"></div>
+                        <div><label>Tarjeta</label><select id="c_tarjeta"></select></div>
+                        <div style="flex:2;"><label>Concepto de la Compra</label><input type="text" id="c_concepto" placeholder="Seguro / Electrodomésticos"></div>
                     </div>
                     <div class="form-row">
-                        <div><label>Monto Financiado</label><input type="number" id="c_monto"></div>
-                        <div><label>Fecha Compra</label><input type="date" id="c_fecha"></div>
-                        <div><label>Número Cuotas</label><input type="number" id="c_cuotas" min="1"></div>
+                        <div><label>Monto Total</label><input type="number" id="c_monto"></div>
+                        <div><label>Fecha Inicial</label><input type="date" id="c_fecha" value="2026-06-01"></div>
+                        <div><label>Cuotas</label><input type="number" id="c_cuotas" min="1" value="12"></div>
                     </div>
-                    <button class="btn-action" onclick="guardarCompra()">Vincular Compra Cuotas</button>
-                    <button class="btn-view-details" onclick="toggleVisibilidad('wrapCompras')">👁️ Ver detalle de amortizaciones activas</button>
-                    <div id="wrapCompras" style="display: none;">
-                        <div class="table-frame"><table><thead><tr><th>Detalle</th><th>Total</th><th>Cuotas</th><th>Línea Temporal</th><th>Eliminar</th></tr></thead><tbody id="bodyCompras"></tbody></table></div>
+                    <button class="btn-action" onclick="guardarCompra()">Inscribir Amortización</button>
+                    <button class="btn-view-details" onclick="toggleVisibilidad('wrapCompras')">👁️ Ver Tabla de Cuotas Activas</button>
+                    <div id="wrapCompras" style="display:none;">
+                        <div class="table-frame"><table><thead><tr><th>Detalle</th><th>Total</th><th>Cuotas</th><th>Plazo</th><th>Acción</th></tr></thead><tbody id="bodyCompras"></tbody></table></div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header" style="color:var(--primary);">📈 6. Mish - Proyección de Tarjeta (6 meses Acumulativo)</div>
-                    <div class="form-row">
-                        <div style="flex: 2;"><label>Tarjeta a Proyectar</label><select id="p_line_tarjeta" onchange="dibujarGraficoLineas()"></select></div>
-                        <div><label>Segmento Evaluado</label><select id="p_line_tipo" onchange="dibujarGraficoLineas()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select></div>
+                <div class="card" id="panel_mish">
+                    <div class="card-header">
+                        <span style="color:var(--primary);">📈 2. Mish - Curva de Capacidad Crediticia (6 Meses Acumulativo)</span>
+                        <div class="header-controls">
+                            <select id="p_line_tarjeta" style="background:var(--bg-main); color:white; width:130px; padding:4px;" onchange="actualizarMish()"></select>
+                            <select id="p_line_tipo" style="background:var(--bg-main); color:white; width:130px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select>
+                            <input type="month" id="mes_mish" class="card-inline-month" value="2026-06" onchange="actualizarMish()">
+                        </div>
                     </div>
                     <div class="vector-chart-container" id="chartLineasContenedor"></div>
                 </div>
 
-                <div class="card" style="border-left: 5px solid var(--success);">
-                    <div class="card-header" style="color: var(--success);">🏦 7. Plan de Depósitos de Ahorro</div>
+                <div class="card" id="panel_ahorros" style="border-left:5px solid var(--success);">
+                    <div class="card-header">
+                        <span style="color:var(--success);">🏦 3. Plan de Depósitos de Ahorros</span>
+                        <input type="month" id="mes_ahorros" class="card-inline-month" value="2026-06" onchange="actualizarAhorrosModulo()">
+                    </div>
                     <div class="form-row">
-                        <div style="flex: 2;"><label>Base Histórica Inicial Guardada</label><input type="number" id="a_base" value="0" oninput="guardarBaseAhorro()"></div>
+                        <div style="flex:2;"><label>Base Histórica Inicial Guardada</label><input type="number" id="a_base" value="0" oninput="guardarBaseAhorro()"></div>
                         <div><label>Moneda Base</label><select id="a_base_moneda" onchange="guardarBaseAhorro()"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
                     </div>
-                    <div class="form-row" style="margin-top: 15px;">
-                        <div style="flex: 2;"><label>Concepto Aporte</label><input type="text" id="a_nombre" placeholder="Ej. Ahorro Junio"></div>
+                    <div class="form-row" style="margin-top:15px; border-top:1px dashed var(--border-color); padding-top:15px;">
+                        <div style="flex:2;"><label>Detalle Aporte</label><input type="text" id="a_nombre" placeholder="Fondo Contingencia"></div>
                         <div><label>Monto</label><input type="number" id="a_monto"></div>
                         <div><label>Moneda</label><select id="a_moneda"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
-                        <div><label>Mes Destino</label><input type="month" id="a_fecha"></div>
                     </div>
-                    <button class="btn-action" style="background-color: var(--success);" onclick="guardarAhorro()">Registrar Aporte de Capital</button>
-                    <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver desglose de aportes</button>
-                    <div id="wrapAhorros" style="display: none;"><ul class="records-list" id="listaAhorros"></ul></div>
-                    <div style="margin-top: 20px; display:flex; gap:16px;">
-                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Crecimiento en el Mes</span><span id="ahorroMesGTQ" style="color: var(--success); font-size:20px; font-weight:700;">Q 0.00</span></div></div>
-                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Capital Total Acumulado</span><span id="ahorroTotalGTQ" style="color: var(--success); font-size:20px; font-weight:700;">Q 0.00</span></div></div>
+                    <button class="btn-action" style="background-color:var(--success);" onclick="guardarAhorro()">Registrar Capital</button>
+                    <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver Historial Aportes</button>
+                    <div id="wrapAhorros" style="display:none;"><ul class="records-list" id="listaAhorros"></ul></div>
+                    
+                    <div style="margin-top:20px; display:flex; gap:16px;">
+                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Aporte en Mes Seleccionado</span><span id="ahorroMesGTQ" style="color:var(--success); font-size:18px; font-weight:700;">Q 0.00</span></div></div>
+                        <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Capital Acumulado Total</span><span id="ahorroTotalGTQ" style="color:var(--success); font-size:18px; font-weight:700;">Q 0.00</span></div></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-header" style="color:var(--teal);">📉 8. Crecimiento Ahorro Acumulado (Histórico)</div>
+                    <div class="card-header"><span style="color:var(--teal);">📉 4. Histórico de Crecimiento de Ahorro Neto</span></div>
                     <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
                 </div>
 
                 <div class="card" id="seccion_ia">
-                    <div class="card-header" style="color:var(--primary);">🤖 9. Consultor Financiero Conversacional IA</div>
+                    <div class="card-header" style="color:var(--primary);">🤖 5. Consultor IA Financiero Experto</div>
                     <div class="form-row">
-                        <div style="flex: 2;"><label>Credencial de Acceso Gemini API Key</label><input type="password" id="gemini_api_key" placeholder="Pega tu API Key..." style="background: #0f172a;"></div>
-                        <div><label>&nbsp;</label><button class="btn-action" onclick="guardarApiKey()">💾 Almacenar Llave</button></div>
+                        <div style="flex:2;"><label>Gemini API Key</label><input type="password" id="gemini_api_key" placeholder="AIzaSy..."></div>
+                        <div><label>&nbsp;</label><button class="btn-action" onclick="guardarApiKey()">💾 Guardar Llave</button></div>
                     </div>
                     <div class="ai-chat-container">
                         <div class="ai-messages-wall" id="chat_grid">
-                            <div class="ai-bubble bubble-ai">¡Hola! El entorno oscuro está completamente activado y libre de bordes blancos laterales. Las gráficas de Finanzas y MISH operan de forma reactiva al mes global. ¿En qué cálculo contable profundizamos hoy?</div>
+                            <div class="ai-bubble bubble-ai">Entorno optimizado a resolución limpia 100% Zoom. Gráficas corregidas e independientes con cuadrículas y etiquetas de mes reales. ¿Qué balance estratégico deseas calcular hoy?</div>
                         </div>
                         <div class="ai-input-bar">
-                            <input type="text" id="chat_user_input" placeholder="Escribe tu consulta financiera..." onkeypress="if(event.key === 'Enter') enviarMensajeIA()">
+                            <input type="text" id="chat_user_input" placeholder="Pregúntale a la IA sobre tus gastos y deudas de la nube..." onkeypress="if(event.key==='Enter') enviarMensajeIA()">
                             <button class="btn-action" style="width:auto; padding:0 20px;" onclick="enviarMensajeIA()">Preguntar</button>
                         </div>
                     </div>
@@ -338,13 +320,11 @@
     <script>
         const SUPABASE_URL = "https://ltmvcqkpgrwqsinfqqkt.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_TP5UKKudDEefb5KogaRcsw_Ezn1OxbA"; 
-        
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        let activeUser = null;
-        let registroEdicionActual = null;
-
+        
+        let activeUser = null; let registroEdicionActual = null;
         let ingresos = []; let ahorros = []; let tarjetas = []; let gastos = []; let compras = [];
-        const nombresMeses = ["Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+        const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
         function navegarA(idElemento) {
             let el = document.getElementById(idElemento);
@@ -352,29 +332,16 @@
             if(el && contenedor) {
                 contenedor.scrollTop = el.offsetTop - 20;
             }
-            
-            // Actualizar clase activa visual en el menú lateral
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
         }
 
-        function establecerMesActualPorDefecto() {
-            if(!document.getElementById('global_mes').value) {
-                document.getElementById('global_mes').value = "2026-06";
-            }
-        }
-
-        function sincronizarMesGlobal() {
-            actualizarTodo();
-        }
-
         async function verificarSesion() {
-            establecerMesActualPorDefecto();
             const { data: { session } } = await _supabase.auth.getSession();
             if (session) {
                 activeUser = session.user;
                 document.getElementById('auth_screen').style.display = 'none';
-                document.getElementById('app_content').style.display = 'flex';
+                document.getElementById('app_content').style.display = 'block';
                 
                 if(localStorage.getItem('db_a_base')) document.getElementById('a_base').value = localStorage.getItem('db_a_base');
                 if(localStorage.getItem('db_a_base_moneda')) document.getElementById('a_base_moneda').value = localStorage.getItem('db_a_base_moneda');
@@ -384,179 +351,130 @@
             }
         }
 
-        async function ejecutarRegistro() {
-            let email = document.getElementById('auth_email').value; let pass = document.getElementById('auth_password').value;
-            const { data, error } = await _supabase.auth.signUp({ email, password: pass });
-            if(error) document.getElementById('auth_error').innerText = error.message;
-            else alert('¡Registro completado con éxito! Ya puedes ingresar.');
-        }
-
         async function ejecutarLogin() {
             let email = document.getElementById('auth_email').value; let pass = document.getElementById('auth_password').value;
             const { data, error } = await _supabase.auth.signInWithPassword({ email, password: pass });
             if(error) document.getElementById('auth_error').innerText = error.message;
-            else {
-                activeUser = data.user;
-                document.getElementById('auth_screen').style.display = 'none';
-                document.getElementById('app_content').style.display = 'flex';
-                await pullCloudData();
-            }
+            else { activeUser = data.user; location.reload(); }
+        }
+
+        async function ejecutarRegistro() {
+            let email = document.getElementById('auth_email').value; let pass = document.getElementById('auth_password').value;
+            const { data, error } = await _supabase.auth.signUp({ email, password: pass });
+            if(error) document.getElementById('auth_error').innerText = error.message;
+            else alert('Cuenta creada. Ya puedes iniciar sesión.');
         }
 
         async function ejecutarLogout() { await _supabase.auth.signOut(); location.reload(); }
 
         async function pullCloudData() {
             if(!activeUser) return;
-            try {
-                let rIng = await _supabase.from('ingresos').select('*'); ingresos = rIng.data || [];
-                let rTar = await _supabase.from('tarjetas').select('*'); tarjetas = rTar.data || [];
-                let rGas = await _supabase.from('gastos').select('*'); gastos = rGas.data || [];
-                let rAho = await _supabase.from('ahorros').select('*'); ahorros = rAho.data || [];
-                let rCom = await _supabase.from('compras').select('*'); compras = rCom.data || [];
+            let rIng = await _supabase.from('ingresos').select('*'); ingresos = rIng.data || [];
+            let rTar = await _supabase.from('tarjetas').select('*'); tarjetas = rTar.data || [];
+            let rGas = await _supabase.from('gastos').select('*'); gastos = rGas.data || [];
+            let rAho = await _supabase.from('ahorros').select('*'); ahorros = rAho.data || [];
+            let rCom = await _supabase.from('compras').select('*'); compras = rCom.data || [];
 
-                renderIngresos(); renderTarjetas(); renderGastos(); renderCompras(); renderAhorros();
-                actualizarTodo();
-            } catch (e) { console.error(e); }
+            renderIngresos(); renderTarjetas(); renderGastos(); renderCompras(); renderAhorros();
+            actualizarTodoLosModulos();
         }
 
         function formatMoney(num) { return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-        function formatMoneyCorto(num) { if(isNaN(num) || num <= 0) return "0"; if(num >= 1000) return (num/1000).toFixed(1).replace(/\.0$/, '') + 'k'; return Math.round(num).toString(); } 
+        function formatMoneyCorto(num) { if(isNaN(num) || num <= 0) return "0"; if(num >= 1000) return (num/1000).toFixed(1).replace(/\.0$/, '') + 'k'; return Math.round(num).toString(); }
         function getTasa() { return parseFloat(document.getElementById('tasaCambio').value) || 7.8; }
         function obtenerEnGTQ(monto, moneda) { return moneda === 'USD' ? monto * getTasa() : monto; }
         function toggleVisibilidad(id) { let el = document.getElementById(id); el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
-        function guardarApiKey() { let key = document.getElementById('gemini_api_key').value; if(key) { localStorage.setItem('gemini_key', key); alert('🔑 API Key registrada.'); } }
-        
-        function guardarBaseAhorro() { 
-            localStorage.setItem('db_a_base', document.getElementById('a_base').value); 
-            localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); 
-            actualizarTodo(); 
-        }
-        
-        function actualizarTodo() { actualizarDashboard(); actualizarAhorros(); dibujarGraficoLineas(); dibujarGraficoAhorroHistorico(); }
+        function guardarApiKey() { localStorage.setItem('gemini_key', document.getElementById('gemini_api_key').value); alert('Clave Almacenada.'); }
+        function guardarBaseAhorro() { localStorage.setItem('db_a_base', document.getElementById('a_base').value); localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); actualizarAhorrosModulo(); }
 
-        // --- POPUP MODAL EDICIÓN ---
+        function actualizarTodoLosModulos() {
+            actualizarFinanzas();
+            actualizarMish();
+            actualizarAhorrosModulo();
+        }
+
+        // --- EDICIÓN MODAL ---
         function abrirModalEdicion(tabla, id) {
             registroEdicionActual = { tabla, id };
-            let body = document.getElementById('modalBody');
-            body.innerHTML = "";
+            let body = document.getElementById('modalBody'); body.innerHTML = "";
             document.getElementById('editModal').style.display = "flex";
-
-            if (tabla === 'ingresos') {
-                let r = ingresos.find(x => x.id === id);
-                body.innerHTML = `
-                    <div style="margin-bottom:12px;"><label>Concepto</label><input type="text" id="m_nombre" value="${r.nombre}"></div>
-                    <div class="form-row">
-                        <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto}"></div>
-                        <div><label>Moneda</label><select id="m_moneda"><option value="GTQ" ${r.moneda==='GTQ'?'selected':''}>GTQ</option><option value="USD" ${r.moneda==='USD'?'selected':''}>USD</option></select></div>
-                    </div>`;
-            } else if (tabla === 'gastos') {
-                let r = gastos.find(x => x.id === id);
-                body.innerHTML = `
-                    <div style="margin-bottom:12px;"><label>Concepto</label><input type="text" id="m_nombre" value="${r.nombre}"></div>
-                    <div class="form-row">
-                        <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto}"></div>
-                        <div><label>Moneda</label><select id="m_moneda"><option value="GTQ" ${r.moneda==='GTQ'?'selected':''}>GTQ</option><option value="USD" ${r.moneda==='USD'?'selected':''}>USD</option></select></div>
-                    </div>`;
-            } else if (tabla === 'tarjetas') {
-                let r = tarjetas.find(x => x.id === id);
-                body.innerHTML = `
-                    <div style="margin-bottom:12px;"><label>Nombre</label><input type="text" id="m_nombre" value="${r.nombre}"></div>
-                    <div class="form-row">
-                        <div><label>Lim. Contado</label><input type="number" id="m_lim_contado" value="${r.lim_contado}"></div>
-                        <div><label>Lim. Cuotas</label><input type="number" id="m_lim_cuotas" value="${r.lim_cuotas}"></div>
-                    </div>`;
-            } else if (tabla === 'ahorros') {
-                let r = ahorros.find(x => x.id === id);
-                body.innerHTML = `
-                    <div style="margin-bottom:12px;"><label>Detalle Aporte</label><input type="text" id="m_nombre" value="${r.nombre}"></div>
-                    <div class="form-row">
-                        <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto}"></div>
-                    </div>`;
-            }
+            let r = (tabla==='ingresos')?ingresos.find(x=>x.id===id):(tabla==='gastos')?gastos.find(x=>x.id===id):tarjetas.find(x=>x.id===id);
+            if(!r && tabla==='ahorros') r = ahorros.find(x=>x.id===id);
+            
+            body.innerHTML = `
+                <div style="margin-bottom:12px;"><label>Concepto / Nombre</label><input type="text" id="m_nombre" value="${r.nombre||r.concepto}"></div>
+                <div class="form-row">
+                    <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto||0}"></div>
+                </div>`;
         }
-
         function cerrarModal() { document.getElementById('editModal').style.display = "none"; }
-
         async function ejecutarActualizacionCloud() {
             let t = registroEdicionActual.tabla; let id = registroEdicionActual.id;
             let pack = { nombre: document.getElementById('m_nombre').value };
             if(document.getElementById('m_monto')) pack.monto = parseFloat(document.getElementById('m_monto').value);
-            if(document.getElementById('m_moneda')) pack.moneda = document.getElementById('m_moneda').value;
-            if(document.getElementById('m_lim_contado')) pack.lim_contado = parseFloat(document.getElementById('m_lim_contado').value);
-            if(document.getElementById('m_lim_cuotas')) pack.lim_cuotas = parseFloat(document.getElementById('m_lim_cuotas').value);
-
-            await _supabase.from(t).update(pack).eq('id', id);
-            cerrarModal();
-            await pullCloudData();
+            await _supabase.from(t).update(pack).eq('id', id); cerrarModal(); await pullCloudData();
         }
 
-        // --- SISTEMA DE PERSISTENCIA ---
+        // --- CONTROLES FORMULARIOS ---
         async function guardarIngreso() {
-            let n = document.getElementById('i_nombre').value; let m = parseFloat(document.getElementById('i_monto').value); let mo = document.getElementById('i_moneda').value;
-            let t = document.getElementById('i_tipo').value; let fFact = document.getElementById('i_fecha_factura').value; let fFond = document.getElementById('i_mes_fondear').value;
-            let generarIva = document.getElementById('i_iva').checked;
-            if (!n || isNaN(m) || !fFact || !fFond) return alert("Completa los campos obligatorios.");
-            
-            let id = Date.now(); let pFond = fFond.split('-');
-            let packageIng = { id, user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, anio: parseInt(pFond[0]), mes: parseInt(pFond[1]), fecha_fact: fFact, fecha_fond: fFond };
-            await _supabase.from('ingresos').insert([packageIng]);
-            
-            if(generarIva) {
-                let pFact = fFact.split('-'); let mIva = parseInt(pFact[1]) + 1; let aIva = parseInt(pFact[0]); if(mIva > 12) { mIva = 1; aIva++; }
-                let packageIva = { id: id+1, user_id: activeUser.id, nombre: `IVA 5% (${n})`, monto: m * 0.05, moneda: mo, tipo: 'variable', medio_pago: 'efectivo', anio: aIva, mes: mIva, fecha_orig: `${aIva}-${String(mIva).padStart(2,'0')}-01` };
-                await _supabase.from('gastos').insert([packageIva]);
+            let n = document.getElementById('i_nombre').value; let m = parseFloat(document.getElementById('i_monto').value);
+            let mo = document.getElementById('i_moneda').value; let t = document.getElementById('i_tipo').value;
+            let fF = document.getElementById('i_fecha_factura').value; let fM = document.getElementById('i_mes_fondear').value;
+            if(!n || isNaN(m)) return alert('Campos incompletos');
+            let p = fM.split('-');
+            await _supabase.from('ingresos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_fact: fF, fecha_fond: fM }]);
+            if(document.getElementById('i_iva').checked) {
+                let pFact = fF.split('-'); let mm = parseInt(pFact[1])+1; let aa = parseInt(pFact[0]); if(mm>12) { mm=1; aa++; }
+                await _supabase.from('gastos').insert([{ id: Date.now()+1, user_id: activeUser.id, nombre: `Retención IVA (${n})`, monto: m*0.05, moneda: mo, tipo: 'variable', medio_pago: 'efectivo', anio: aa, mes: mm, fecha_orig: `${aa}-${String(mm).padStart(2,'0')}-01` }]);
             }
-            document.getElementById('i_nombre').value = ""; document.getElementById('i_monto').value = "";
             await pullCloudData();
         }
         async function borrarIngreso(id) { await _supabase.from('ingresos').delete().eq('id', id); await pullCloudData(); }
         function renderIngresos() {
             let ul = document.getElementById('listaIngresos'); ul.innerHTML = "";
-            ingresos.forEach(i => { ul.innerHTML += `<li><div class="record-info"><span class="record-title">${i.nombre}</span><span class="record-meta">${i.moneda} ${formatMoney(i.monto)} | Fondeo: ${i.fecha_fond}</span></div><div class="record-actions"><button onclick="abrirModalEdicion('ingresos', ${i.id})">✏️</button><button style="color:var(--danger);" onclick="borrarIngreso(${i.id})">🗑️</button></div></li>`; });
-        }
-
-        async function guardarTarjeta() {
-            let n = document.getElementById('t_nombre').value; let lc = parseFloat(document.getElementById('t_lim_contado').value); let lcu = parseFloat(document.getElementById('t_lim_cuotas').value);
-            let m = document.getElementById('t_moneda').value; let c = parseInt(document.getElementById('t_corte').value); let p = parseInt(document.getElementById('t_pago').value);
-            if (!n || isNaN(lc) || isNaN(lcu) || isNaN(c) || isNaN(p)) return alert("Completa los campos.");
-            await _supabase.from('tarjetas').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, lim_contado: lc, lim_cuotas: lcu, moneda: m, corte: c, pago: p }]);
-            document.getElementById('t_nombre').value = ""; document.getElementById('t_lim_contado').value = ""; document.getElementById('t_lim_cuotas').value = "";
-            await pullCloudData();
-        }
-        async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
-        function renderTarjetas() {
-            let ul = document.getElementById('listaMaestroTarjetas'); let selC = document.getElementById('c_tarjeta'); let selP = document.getElementById('p_line_tarjeta');
-            ul.innerHTML = ""; selC.innerHTML = '<option value="">-- Elige --</option>'; selP.innerHTML = '<option value="">-- Elige --</option>';
-            tarjetas.forEach((t) => {
-                ul.innerHTML += `<li><div class="record-info"><span class="record-title">💳 ${t.nombre}</span><span class="record-meta">Cupo: ${t.moneda} ${formatMoney(t.lim_contado)}</span></div><div class="record-actions"><button onclick="abrirModalEdicion('tarjetas', ${t.id})">✏️</button><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑️</button></div></li>`;
-                let opt = `<option value="${t.id}">${t.nombre}</option>`; selC.innerHTML += opt; selP.innerHTML += opt;
-            });
+            ingresos.forEach(i => { ul.innerHTML += `<li><span><b>${i.nombre}</b> - ${i.moneda} ${formatMoney(i.monto)} (${i.fecha_fond})</span><div><button onclick="abrirModalEdicion('ingresos',${i.id})">✏️</button><button style="color:var(--danger);" onclick="borrarIngreso(${i.id})">🗑/button></div></li>`; });
         }
 
         async function guardarGasto() {
-            let n = document.getElementById('g_nombre').value; let m = parseFloat(document.getElementById('g_monto').value); let mo = document.getElementById('g_moneda').value;
-            let t = document.getElementById('g_tipo').value; let f = document.getElementById('g_fecha').value; let mp = document.getElementById('g_metodo').value;
-            if (!n || isNaN(m) || !f) return alert("Completa los datos.");
-            let p = f.split('-');
-            await _supabase.from('gastos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, medio_pago: mp, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
-            document.getElementById('g_nombre').value = ""; document.getElementById('g_monto').value = "";
+            let n = document.getElementById('g_nombre').value; let m = parseFloat(document.getElementById('g_monto').value);
+            let mo = document.getElementById('g_moneda').value; let t = document.getElementById('g_tipo').value;
+            let f = document.getElementById('g_fecha').value;
+            if(!n || isNaN(m)) return alert('Datos vacíos'); let p = f.split('-');
+            await _supabase.from('gastos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, medio_pago: 'efectivo', anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
             await pullCloudData();
         }
         async function borrarGasto(id) { await _supabase.from('gastos').delete().eq('id', id); await pullCloudData(); }
         function renderGastos() {
             let ul = document.getElementById('listaGastos'); ul.innerHTML = "";
-            gastos.forEach(g => { ul.innerHTML += `<li><div class="record-info"><span class="record-title">${g.nombre}</span><span class="record-meta">${g.moneda} ${formatMoney(g.monto)} | ${g.fecha_orig}</span></div><div class="record-actions"><button onclick="abrirModalEdicion('gastos', ${g.id})">✏️</button><button style="color:var(--danger);" onclick="borrarGasto(${g.id})">🗑️</button></div></li>`; });
+            gastos.forEach(g => { ul.innerHTML += `<li><span><b>${g.nombre}</b> - ${g.moneda} ${formatMoney(g.monto)}</span><div><button onclick="abrirModalEdicion('gastos',${g.id})">✏️</button><button style="color:var(--danger);" onclick="borrarGasto(${g.id})">🗑</button></div></li>`; });
+        }
+
+        async function guardarTarjeta() {
+            let n = document.getElementById('t_nombre').value; let lc = parseFloat(document.getElementById('t_lim_contado').value);
+            let lcu = parseFloat(document.getElementById('t_lim_cuotas').value); let m = document.getElementById('t_moneda').value;
+            let c = parseInt(document.getElementById('t_corte').value); let p = parseInt(document.getElementById('t_pago').value);
+            await _supabase.from('tarjetas').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, lim_contado: lc, lim_cuotas: lcu, moneda: m, corte: c, pago: p }]);
+            await pullCloudData();
+        }
+        async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
+        function renderTarjetas() {
+            let ul = document.getElementById('listaMaestroTarjetas'); let sC = document.getElementById('c_tarjeta'); let sP = document.getElementById('p_line_tarjeta');
+            ul.innerHTML = ""; sC.innerHTML = ""; sP.innerHTML = "";
+            tarjetas.forEach(t => {
+                ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b> (Cupo Contado: Q${formatMoney(t.lim_contado)})</span><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></li>`;
+                sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`; sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`;
+            });
         }
 
         async function guardarCompra() {
-            let tId = document.getElementById('c_tarjeta').value; let n = document.getElementById('c_concepto').value; let m = parseFloat(document.getElementById('c_monto').value); let f = document.getElementById('c_fecha').value; let c = parseInt(document.getElementById('c_cuotas').value);
-            if (!tId || !n || isNaN(m) || !f || isNaN(c)) return alert("Completa los datos.");
-            let p = f.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
-            let fIn = `${aAn}-${String(mAn).padStart(2,'0')}`;
-            let mFin = mAn + c - 1; let aFin = aAn; while(mFin > 12) { mFin -= 12; aFin++; }
+            let tId = document.getElementById('c_tarjeta').value; let n = document.getElementById('c_concepto').value;
+            let m = parseFloat(document.getElementById('c_monto').value); let f = document.getElementById('c_fecha').value;
+            let cu = parseInt(document.getElementById('c_cuotas').value);
+            let p = f.split('-'); let aA = parseInt(p[0]); let mA = parseInt(p[1]);
+            let fIn = `${aA}-${String(mA).padStart(2,'0')}`;
+            let mFin = mA + cu - 1; let aFin = aA; while(mFin > 12) { mFin -= 12; aFin++; }
             let fFi = `${aFin}-${String(mFin).padStart(2,'0')}`;
-            await _supabase.from('compras').insert([{ id: Date.now(), user_id: activeUser.id, tarjeta_id: tId, concepto: n, monto: m, moneda: 'GTQ', fecha_orig: f, cuotas: c, pago_mensual: m/c, fecha_inicio: fIn, fecha_fin: fFi }]);
-            document.getElementById('c_concepto').value = ""; document.getElementById('c_monto').value = "";
+            await _supabase.from('compras').insert([{ id: Date.now(), user_id: activeUser.id, tarjeta_id: tId, concepto: n, monto: m, moneda: 'GTQ', fecha_orig: f, cuotas: cu, pago_mensual: m/cu, fecha_inicio: fIn, fecha_fin: fFi }]);
             await pullCloudData();
         }
         async function borrarCompra(id) { await _supabase.from('compras').delete().eq('id', id); await pullCloudData(); }
@@ -564,126 +482,108 @@
             let tb = document.getElementById('bodyCompras'); tb.innerHTML = "";
             compras.forEach(c => {
                 let t = tarjetas.find(x => x.id == c.tarjeta_id);
-                tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small style="color:var(--text-muted);">${t?t.nombre:"N/A"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} a ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none; cursor:pointer;" onclick="borrarCompra(${c.id})">🗑️</button></td></tr>`;
+                tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small>${t?t.nombre:"N/A"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} al ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none;" onclick="borrarCompra(${c.id})">🗑</button></td></tr>`;
             });
         }
 
         async function guardarAhorro() {
-            let n = document.getElementById('a_nombre').value; let m = parseFloat(document.getElementById('a_monto').value); let mo = document.getElementById('a_moneda').value; let f = document.getElementById('a_fecha').value;
-            if (!n || isNaN(m) || !f) return alert("Completa los datos."); let p = f.split('-');
+            let n = document.getElementById('a_nombre').value; let m = parseFloat(document.getElementById('a_monto').value);
+            let mo = document.getElementById('a_moneda').value; let f = document.getElementById('mes_ahorros').value;
+            let p = f.split('-');
             await _supabase.from('ahorros').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
-            document.getElementById('a_nombre').value = ""; document.getElementById('a_monto').value = "";
             await pullCloudData();
         }
         async function borrarAhorro(id) { await _supabase.from('ahorros').delete().eq('id', id); await pullCloudData(); }
         function renderAhorros() {
             let ul = document.getElementById('listaAhorros'); ul.innerHTML = "";
-            ahorros.forEach(a => { ul.innerHTML += `<li><div class="record-info"><span class="record-title">${a.nombre}</span><span class="record-meta">${a.moneda} ${formatMoney(a.monto)} | ${a.fecha_orig}</span></div><div class="record-actions"><button onclick="abrirModalEdicion('ahorros', ${a.id})">✏️</button><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑️</button></div></li>`; });
+            ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: ${a.moneda} ${formatMoney(a.monto)}</span><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></li>`; });
         }
 
-        // --- CÁLCULO DE FLUJO DE CAJA ---
-        function actualizarDashboard() {
-            let fMes = document.getElementById('global_mes').value; if(!fMes) return;
+        // --- CÁLCULO INDEPENDIENTE MODULO 1: FINANZAS ---
+        function actualizarFinanzas() {
+            let fMes = document.getElementById('mes_finanzas').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
 
-            let ing = ingresos.filter(i => (i.tipo === 'fijo' && (aAn > i.anio || (aAn === i.anio && mAn >= i.mes))) || (i.tipo === 'variable' && i.anio === aAn && i.mes === mAn)).reduce((a, i) => a + obtenerEnGTQ(i.monto, i.moneda), 0);
-            let sF = gastos.filter(g => g.tipo === 'fijo' && g.medio_pago === 'efectivo' && (aAn > g.anio || (aAn === g.anio && mAn >= g.mes))).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
-            let sV = gastos.filter(g => g.tipo === 'variable' && g.medio_pago === 'efectivo' && g.anio === aAn && g.mes === mAn).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
+            let ing = ingresos.filter(i => (i.tipo==='fijo' && (aAn>i.anio || (aAn===i.anio && mAn>=i.mes))) || (i.tipo==='variable' && i.anio===aAn && i.mes===mAn)).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+            let sF = gastos.filter(g => g.tipo==='fijo' && (aAn>g.anio || (aAn===g.anio && mAn>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+            let sV = gastos.filter(g => g.tipo==='variable' && g.anio===aAn && g.mes===mAn).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
             
             let sT_cuotas = compras.filter(c => {
                 let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
                 return (aAn*12 + mAn) >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && (aAn*12 + mAn) <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
-            }).reduce((a, c) => a + c.pago_mensual, 0);
+            }).reduce((a, b) => a + b.pago_mensual, 0);
 
-            let sT_fijos = gastos.filter(g => g.tipo === 'fijo' && g.medio_pago !== 'efectivo' && (aAn > g.anio || (aAn === g.anio && mAn >= g.mes))).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
-            let sT_vars = gastos.filter(g => g.tipo === 'variable' && g.medio_pago !== 'efectivo' && g.anio === aAn && g.mes === mAn).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
-            let totTarjetas = sT_cuotas + sT_fijos + sT_vars;
-
+            let totTarjetas = sT_cuotas;
             let pAh = ahorros.filter(a => a.anio === aAn && a.mes === mAn).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-            let egresos = sF + sV + totTarjetas + pAh; 
-            let disp = ing - egresos; if(disp < 0) disp = 0;
+            let disp = ing - (sF + sV + totTarjetas + pAh); if(disp<0) disp=0;
 
             document.getElementById('dashIngresos').innerText = "Q " + formatMoney(ing);
             document.getElementById('dashGastosEfec').innerText = "Q " + formatMoney(sF + sV);
             document.getElementById('dashTarjetas').innerText = "Q " + formatMoney(totTarjetas);
             document.getElementById('dashDisponible').innerText = "Q " + formatMoney(disp);
             
-            dibujarGraficoApilado(mAn, aAn);
+            dibujarGraficoBarrasFinanzas(mAn, aAn);
         }
 
-        // --- RENDERIZADO DINÁMICO DE BARRAS DE FINANZAS ---
-        function dibujarGraficoApilado(mB, aB) {
-            let cont = document.getElementById('chartPresupuesto'); if(!cont) return;
-            cont.innerHTML = ''; 
+        function dibujarGraficoBarrasFinanzas(mB, aB) {
+            let cont = document.getElementById('chartPresupuesto'); cont.innerHTML = '';
             let filtro = document.getElementById('filtro_tipo_grafico').value;
             let maxAlt = 0; let data = [];
 
-            for(let i = 0; i < 6; i++) {
+            for(let i=0; i<6; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
                 
-                let pIng = ingresos.filter(inv => (inv.tipo === 'fijo' && (tA > inv.anio || (tA === inv.anio && tM >= inv.mes))) || (inv.tipo === 'variable' && inv.anio === tA && inv.mes === tM)).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-                let pF = gastos.filter(g => g.tipo === 'fijo' && g.medio_pago === 'efectivo' && (tA > g.anio || (tA === g.anio && tM >= g.mes))).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
-                let pV = gastos.filter(g => g.tipo === 'variable' && g.medio_pago === 'efectivo' && g.anio === tA && g.mes === tM).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
-                
+                let pIng = ingresos.filter(inv => (inv.tipo==='fijo' && (tA>inv.anio || (tA===inv.anio && tM>=inv.mes))) || (inv.tipo==='variable' && inv.anio===tA && inv.mes===tM)).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+                let pF = gastos.filter(g => g.tipo==='fijo' && (tA>g.anio || (tA===g.anio && tM>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
+                let pV = gastos.filter(g => g.tipo==='variable' && g.anio===tA && g.mes===tM).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
                 let pTc = compras.filter(c => {
                     let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
                     let cv = tA*12 + tM; return cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
-                }).reduce((a, c) => a + c.pago_mensual, 0);
-                let pTf = gastos.filter(g => g.tipo === 'fijo' && g.medio_pago !== 'efectivo' && (tA > g.anio || (tA === g.anio && tM >= g.mes))).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
-                let pTv = gastos.filter(g => g.tipo === 'variable' && g.medio_pago !== 'efectivo' && g.anio === tA && g.mes === tM).reduce((a, g) => a + obtenerEnGTQ(g.monto, g.moneda), 0);
-                let pT = pTc + pTf + pTv;
+                }).reduce((a, b) => a + b.pago_mensual, 0);
 
-                let pAh = ahorros.filter(a => a.anio === tA && a.mes === tM).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
-                let totalEgresos = pF + pV + pT + pAh;
-                let disp = pIng - totalEgresos; if(disp < 0) disp = 0;
+                let totalEgresos = pF + pV + pTc;
+                let disp = pIng - totalEgresos; if(disp<0) disp=0;
+                let techo = pIng > totalEgresos ? pIng : totalEgresos; if(techo > maxAlt) maxAlt = techo;
 
-                let valorComparativoTecho = pIng > totalEgresos ? pIng : totalEgresos;
-                if(valorComparativoTecho > maxAlt) maxAlt = valorComparativoTecho;
-
-                data.push({ nombre: nombresMeses[tM-1] || "Mes", fijo: pF, variable: pV, tarjeta: pT, ahorro: pAh, disponible: disp, ingresos: pIng });
+                data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF, variable: pV, tarjeta: pTc, disponible: disp, ingresos: pIng });
             }
-            if(maxAlt === 0) maxAlt = 1;
+            if(maxAlt===0) maxAlt = 1;
 
             data.forEach(d => {
                 let pila = `<div class="bar-stack">`;
-                let totalCajaText = d.ingresos;
+                let vistaVal = d.ingresos;
 
                 if (filtro === 'all') {
-                    if (d.disponible > 0) pila += `<div class="bar-segment" style="height: ${(d.disponible/maxAlt)*100}%; background-color: var(--success); flex-grow:1;"><span class="bar-txt">Q${formatMoneyCorto(d.disponible)}</span></div>`;
-                    if (d.ahorro > 0) pila += `<div class="bar-segment" style="height: ${(d.ahorro/maxAlt)*100}%; background-color: var(--teal);"><span class="bar-txt">Q${formatMoneyCorto(d.ahorro)}</span></div>`;
-                    if (d.tarjeta > 0) pila += `<div class="bar-segment" style="height: ${(d.tarjeta/maxAlt)*100}%; background-color: var(--primary);"><span class="bar-txt">Q${formatMoneyCorto(d.tarjeta)}</span></div>`;
-                    if (d.variable > 0) pila += `<div class="bar-segment" style="height: ${(d.variable/maxAlt)*100}%; background-color: var(--warning);"><span class="bar-txt">Q${formatMoneyCorto(d.variable)}</span></div>`;
-                    if (d.fijo > 0) pila += `<div class="bar-segment" style="height: ${(d.fijo/maxAlt)*100}%; background-color: var(--danger);"><span class="bar-txt">Q${formatMoneyCorto(d.fijo)}</span></div>`;
-                    totalCajaText = d.ingresos;
+                    if (d.disponible > 0) pila += `<div class="bar-segment" style="height:${(d.disponible/maxAlt)*100}%; background-color:var(--success); flex-grow:1;"><span class="bar-txt">Q${formatMoneyCorto(d.disponible)}</span></div>`;
+                    if (d.tarjeta > 0) pila += `<div class="bar-segment" style="height:${(d.tarjeta/maxAlt)*100}%; background-color:var(--primary);"><span class="bar-txt">Q${formatMoneyCorto(d.tarjeta)}</span></div>`;
+                    if (d.variable > 0) pila += `<div class="bar-segment" style="height:${(d.variable/maxAlt)*100}%; background-color:var(--warning);"><span class="bar-txt">Q${formatMoneyCorto(d.variable)}</span></div>`;
+                    if (d.fijo > 0) pila += `<div class="bar-segment" style="height:${(d.fijo/maxAlt)*100}%; background-color:var(--danger);"><span class="bar-txt">Q${formatMoneyCorto(d.fijo)}</span></div>`;
                 } else {
-                    let v = 0; let col = 'var(--primary)';
-                    if(filtro === 'ingresos') { v = d.ingresos; col = 'var(--success)'; }
-                    else if(filtro === 'fijo') { v = d.fijo; col = 'var(--danger)'; }
-                    else if(filtro === 'variable') { v = d.variable; col = 'var(--warning)'; }
-                    else if(filtro === 'tarjeta') { v = d.tarjeta; col = 'var(--primary)'; }
-                    totalCajaText = v;
-                    pila += `<div class="bar-segment" style="height: ${(v/maxAlt)*100}%; background-color: ${col}; flex-grow:1;"><span class="bar-txt">Q${formatMoneyCorto(v)}</span></div>`;
+                    let v = (filtro==='ingresos')?d.ingresos:(filtro==='fijo')?d.fijo:(filtro==='variable')?d.variable:d.tarjeta;
+                    vistaVal = v;
+                    let c = (filtro==='ingresos')?'var(--success)':(filtro==='fijo')?'var(--danger)':(filtro==='variable')?'var(--warning)':'var(--primary)';
+                    pila += `<div class="bar-segment" style="height:${(v/maxAlt)*100}%; background-color:${c}; flex-grow:1;"><span class="bar-txt">Q${formatMoneyCorto(v)}</span></div>`;
                 }
                 pila += `</div>`;
-
-                let w = document.createElement('div'); w.className = 'bar-col';
-                w.innerHTML = `<div class="bar-top-val">Q${formatMoneyCorto(totalCajaText)}</div>${pila}<div class="bar-lbl">${d.nombre}</div>`;
-                cont.appendChild(w);
+                
+                let col = document.createElement('div'); col.className = 'bar-col';
+                col.innerHTML = `<div class="bar-top-val">Q${formatMoneyCorto(vistaVal)}</div>${pila}<div class="bar-lbl">${d.nombre}</div>`;
+                cont.appendChild(col);
             });
         }
 
-        // --- MISH: GRÁFICA ACUMULATIVA AMORTIZADA INVERSA ---
-        function dibujarGraficoLineas() {
-            let tId = document.getElementById('p_line_tarjeta').value; 
+        // --- CÁLCULO INDEPENDIENTE MODULO 2: MISH ---
+        function actualizarMish() {
+            let tId = document.getElementById('p_line_tarjeta').value;
             let cont = document.getElementById('chartLineasContenedor');
             let tipoLim = document.getElementById('p_line_tipo').value;
-            let fMes = document.getElementById('global_mes').value;
+            let fMes = document.getElementById('mes_mish').value;
             
-            if(!tId || !fMes) { 
-                cont.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta para proyectar la curva matemática de equilibrio.</div>'; 
-                return; 
+            if(!tId || !fMes) {
+                cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px;">⚠️ Inscribe y selecciona una tarjeta de crédito.</div>`;
+                return;
             }
-            
+
             let t = tarjetas.find(x => x.id == tId);
             let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
             let limiteMax = tipoLim === 'cuotas' ? t.lim_cuotas : t.lim_contado;
@@ -691,84 +591,79 @@
             let coordsDeuda = []; let coordsDisp = [];
             let puntosHtml = ""; let labelsHtml = "";
 
-            // Cálculo acumulativo real de saldos amortizados a lo largo del tiempo
             for(let i=0; i<6; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
                 
-                // Saldo vivo pendiente (la deuda acumulada baja conforme pasan los meses)
-                let deudaVivaAcumulada = compras.filter(c => {
+                let deudaViva = compras.filter(c => {
                     let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
                     let cv = tA*12 + tM;
                     return c.tarjeta_id == tId && cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
-                }).reduce((a,c) => {
+                }).reduce((a, c) => {
                     let pIni = c.fecha_inicio.split('-');
-                    let mesesTranscurridos = (tA*12 + tM) - (parseInt(pIni[0])*12 + parseInt(pIni[1]));
-                    let saldoRestante = c.monto - (c.pago_mensual * mesesTranscurridos);
-                    return a + (saldoRestante > 0 ? saldoRestante : 0);
+                    let transcurridos = (tA*12 + tM) - (parseInt(pIni[0])*12 + parseInt(pIni[1]));
+                    return a + (c.monto - (c.pago_mensual * transcurridos));
                 }, 0);
 
-                let disponibleMes = limiteMax - deudaVivaAcumulada; if(disponibleMes < 0) disponibleMes = 0;
+                let disponible = limiteMax - deudaViva; if(disponible < 0) disponible = 0;
                 
-                // Mapeo proporcional sobre el contenedor SVG dinámico completo (100% responsivo)
-                let x = 50 + (i * 100);
-                let yDeuda = 180 - (limiteMax > 0 ? (deudaVivaAcumulada / limiteMax) * 120 : 0);
-                let yDisp = 180 - (limiteMax > 0 ? (disponibleMes / limiteMax) * 120 : 0);
+                let x = 60 + (i * 95);
+                let yDeuda = 180 - (limiteMax > 0 ? (deudaViva / limiteMax) * 130 : 0);
+                let yDisp = 180 - (limiteMax > 0 ? (disponible / limiteMax) * 130 : 0);
 
-                coordsDeuda.push(`${x},${yDeuda}`);
-                coordsDisp.push(`${x},${yDisp}`);
+                coordsDeuda.push(`${x},${yDeuda}`); coordsDisp.push(`${x},${yDisp}`);
 
-                puntosHtml += `<circle cx="${x}" cy="${yDeuda}" r="4" fill="var(--danger)"/>`;
-                puntosHtml += `<text x="${x}" y="${yDeuda - 8}" style="font-size:9px; font-weight:700;" fill="#ef4444" text-anchor="middle">Q${formatMoneyCorto(deudaVivaAcumulada)}</text>`;
+                puntosHtml += `
+                    <circle cx="${x}" cy="${yDeuda}" r="5" fill="var(--danger)" stroke="#0f172a" stroke-width="1.5"/>
+                    <rect x="${x-22}" y="${yDeuda-22}" width="44" height="15" rx="4" fill="#881337" opacity="0.85"/>
+                    <text x="${x}" y="${yDeuda-11}" style="font-size:9px; font-weight:700; fill:white;" text-anchor="middle">Q${formatMoneyCorto(deudaViva)}</text>
+                    
+                    <circle cx="${x}" cy="${yDisp}" r="5" fill="var(--success)" stroke="#0f172a" stroke-width="1.5"/>
+                    <rect x="${x-22}" y="${yDisp+8}" width="44" height="15" rx="4" fill="#064e3b" opacity="0.85"/>
+                    <text x="${x}" y="${yDisp+19}" style="font-size:9px; font-weight:700; fill:white;" text-anchor="middle">Q${formatMoneyCorto(disponible)}</text>`;
                 
-                puntosHtml += `<circle cx="${x}" cy="${yDisp}" r="4" fill="var(--success)"/>`;
-                puntosHtml += `<text x="${x}" y="${yDisp + 14}" style="font-size:9px; font-weight:700;" fill="#10b981" text-anchor="middle">Q${formatMoneyCorto(disponibleMes)}</text>`;
-                
-                labelsHtml += `<text x="${x}" y="210" class="svg-chart-text" fill="#94a3b8" text-anchor="middle">${nombresMeses[tM-1]}</text>`;
+                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[tM-1]}</text>`;
             }
 
             cont.innerHTML = `
-                <svg width="100%" height="100%" viewBox="0 0 600 230" preserveAspectRatio="none" style="overflow:visible;">
-                    <line x1="30" y1="180" x2="570" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
-                    <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-dasharray="4 2"/>
-                    <path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="2.5"/>
-                    ${puntosHtml}
-                    ${labelsHtml}
+                <svg width="100%" height="100%" viewBox="0 0 600 240" style="overflow:visible;">
+                    <line x1="40" y1="50" x2="560" y2="50" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line x1="40" y1="115" x2="560" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line x1="40" y1="180" x2="560" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
+                    
+                    <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="3" stroke-dasharray="5 3"/>
+                    <path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="3"/>
+                    ${puntosHtml} ${labelsHtml}
                 </svg>`;
         }
 
-        // --- CÁLCULO E HISTÓRICO DE AHORROS ---
-        function actualizarAhorros() {
-            let fMes = document.getElementById('global_mes').value; if(!fMes) return;
+        // --- CÁLCULO INDEPENDIENTE MODULO 3 Y 4: AHORROS ---
+        function actualizarAhorrosModulo() {
+            let fMes = document.getElementById('mes_ahorros').value; if(!fMes) return;
             let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
             
             let baseNum = parseFloat(document.getElementById('a_base').value) || 0;
             let baseMon = document.getElementById('a_base_moneda').value;
             let baseEnGTQ = baseMon === 'USD' ? baseNum * getTasa() : baseNum;
             
-            let ahMesGTQ = ahorros.filter(a => a.anio === aAn && a.mes === mAn).reduce((acc, a) => acc + (a.moneda === 'USD' ? a.monto * getTasa() : a.monto), 0);
-            let aportesTotalesGTQ = ahorros.reduce((acc, a) => acc + (a.moneda === 'USD' ? a.monto * getTasa() : a.monto), 0);
+            let ahMesGTQ = ahorros.filter(a => a.anio === aAn && a.mes === mAn).reduce((acc, a) => acc + (a.moneda==='USD'?a.monto*getTasa():a.monto), 0);
+            let aportesTotalesGTQ = ahorros.reduce((acc, a) => acc + (a.moneda==='USD'?a.monto*getTasa():a.monto), 0);
             let totalAcumuladoGTQ = baseEnGTQ + aportesTotalesGTQ;
             
             document.getElementById('ahorroMesGTQ').innerText = "Q " + formatMoney(ahMesGTQ);
             document.getElementById('ahorroTotalGTQ').innerText = "Q " + formatMoney(totalAcumuladoGTQ);
+
+            dibujarGraficoEvolucionAhorros(mAn, aAn, baseEnGTQ);
         }
 
-        function dibujarGraficoAhorroHistorico() {
+        function dibujarGraficoEvolucionAhorros(mB, aB, baseEnGTQ) {
             let cont = document.getElementById('chartAhorroHistoricoContenedor');
-            let fMes = document.getElementById('global_mes').value; if(!fMes) return;
-
-            let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
-            let baseNum = parseFloat(document.getElementById('a_base').value) || 0;
-            let baseMon = document.getElementById('a_base_moneda').value;
-            let baseEnGTQ = baseMon === 'USD' ? baseNum * getTasa() : baseNum;
-
             let coordsAhorro = []; let puntosHtml = ""; let labelsHtml = "";
             let valoresMeses = []; let maxAhorro = baseEnGTQ;
 
             let acumuladoAcum = baseEnGTQ;
             for(let i=0; i<6; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
-                let aportesDelMes = ahorros.filter(a => a.anio === tA && a.mes === tM).reduce((a,b) => a + (b.moneda === 'USD' ? b.monto * getTasa() : b.monto), 0);
+                let aportesDelMes = ahorros.filter(a => a.anio === tA && a.mes === tM).reduce((a, b) => a + (b.moneda==='USD'?b.monto*getTasa():b.monto), 0);
                 acumuladoAcum += aportesDelMes;
                 valoresMeses.push({ m: tM, total: acumuladoAcum });
                 if(acumuladoAcum > maxAhorro) maxAhorro = acumuladoAcum;
@@ -776,47 +671,50 @@
             if(maxAhorro === 0) maxAhorro = 1;
 
             valoresMeses.forEach((v, i) => {
-                let x = 50 + (i * 100);
-                let y = 180 - ((v.total / maxAhorro) * 120);
+                let x = 60 + (i * 95);
+                let y = 180 - ((v.total / maxAhorro) * 130);
 
                 coordsAhorro.push(`${x},${y}`);
-                puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--teal)"/>`;
-                puntosHtml += `<text x="${x}" y="${y-8}" style="font-size:9px; font-weight:700;" fill="#22d3ee" text-anchor="middle">Q${formatMoneyCorto(v.total)}</text>`;
-                labelsHtml += `<text x="${x}" y="210" class="svg-chart-text" text-anchor="middle">${nombresMeses[v.m-1]}</text>`;
+                puntosHtml += `
+                    <circle cx="${x}" cy="${y}" r="5.5" fill="var(--teal)" stroke="#0f172a" stroke-width="1.5"/>
+                    <rect x="${x-22}" y="${y-22}" width="44" height="15" rx="4" fill="#0e7490" opacity="0.9"/>
+                    <text x="${x}" y="${y-11}" style="font-size:9px; font-weight:700; fill:white;" text-anchor="middle">Q${formatMoneyCorto(v.total)}</text>`;
+                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[v.m-1]}</text>`;
             });
 
             cont.innerHTML = `
-                <svg width="100%" height="100%" viewBox="0 0 600 230" preserveAspectRatio="none" style="overflow:visible;">
-                    <line x1="30" y1="180" x2="570" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
-                    <path d="M ${coordsAhorro.join(' L ')}" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
-                    ${puntosHtml}
-                    ${labelsHtml}
+                <svg width="100%" height="100%" viewBox="0 0 600 240" style="overflow:visible;">
+                    <line x1="40" y1="50" x2="560" y2="50" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line x1="40" y1="115" x2="560" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line x1="40" y1="180" x2="560" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
+                    
+                    <path d="M ${coordsAhorro.join(' L ')}" fill="none" stroke="var(--teal)" stroke-width="3"/>
+                    ${puntosHtml} ${labelsHtml}
                 </svg>`;
         }
 
-        // --- CONSULTOR IA GEMINI ---
+        // --- CONSULTOR IA ---
         async function enviarMensajeIA() {
             let key = localStorage.getItem('gemini_key') || document.getElementById('gemini_api_key').value;
-            if(!key) return alert('Por favor ingresa tu API Key de Gemini.');
-            let inputChat = document.getElementById('chat_user_input'); let userText = inputChat.value.trim(); if(!userText) return;
+            if(!key) return alert('API Key faltante.');
+            let txt = document.getElementById('chat_user_input').value.trim(); if(!txt) return;
 
-            let grid = document.getElementById('chat_grid'); grid.innerHTML += `<div class="ai-bubble bubble-user">${userText}</div>`;
-            inputChat.value = ""; grid.scrollTop = grid.scrollHeight;
-
-            let aiId = 'ai_loading_' + Date.now();
-            grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}"><i>Procesando balance contable en la nube...</i></div>`;
+            let grid = document.getElementById('chat_grid'); grid.innerHTML += `<div class="ai-bubble bubble-user">${txt}</div>`;
+            document.getElementById('chat_user_input').value = "";
+            let aiId = 'ai_' + Date.now();
+            grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}"><i>Calculando proyecciones...</i></div>`;
+            grid.scrollTop = grid.scrollHeight;
 
             try {
-                let respuesta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+                let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Actúa como analista contable. Consulta: "${userText}". Contexto real: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}. Plazos: ${JSON.stringify(compras)}.` }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `Analista Contable. Consulta: "${txt}". Datos: Ingresos: ${JSON.stringify(ingresos)}. Gastos: ${JSON.stringify(gastos)}. Plazos: ${JSON.stringify(compras)}.` }] }] })
                 });
-                let datos = await respuesta.json();
-                let textoAI = datos.candidates[0].content.parts[0].text;
-                document.getElementById(aiId).innerHTML = textoAI.replace(/\n/g, '<br>');
-            } catch (error) { document.getElementById(aiId).innerHTML = `⚠️ Error en API Key o conexión.`; }
-            finally { grid.scrollTop = grid.scrollHeight; }
+                let d = await res.json();
+                document.getElementById(aiId).innerHTML = d.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
+            } catch (e) { document.getElementById(aiId).innerText = "Error de conexión o llave API inválida."; }
+            grid.scrollTop = grid.scrollHeight;
         }
 
         verificarSesion();
