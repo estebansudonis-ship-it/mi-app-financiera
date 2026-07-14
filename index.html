@@ -128,7 +128,7 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* CONTENEDOR CENTRAL DINÁMICO */
+        /* CONTENEDOR CENTRAL */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
@@ -144,7 +144,7 @@
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* KPI GRID */
+        /* KPIs */
         .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 130px; }
         .kpi-card.double-width { grid-column: span 2; background-color: #F9F8FF; border-color: #DCD6FF; }
@@ -184,7 +184,7 @@
         .legend-amount { color: var(--text-secondary); text-align: left; }
         .legend-pct { font-weight: 700; text-align: right; color: var(--text-primary); }
 
-        /* 3. CORRECCIÓN DEL GRID DE TRIPLE COLUMNA SEGURO (FLEX COMPACTO EN LUGAR DE GRID COMPLEJO) */
+        /* TRIPLE MODULAR ROW (FLEX FIJO SIMÉTRICO) */
         .triple-modular-row {
             display: flex;
             width: 100%;
@@ -194,7 +194,7 @@
 
         .triple-modular-row > .card {
             flex: 1;
-            min-width: 0; /* Previene el desborde interno de SVGs */
+            min-width: 0;
             display: flex;
             flex-direction: column;
         }
@@ -204,15 +204,22 @@
         .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; background-color: #FAFAFB; }
         .card-strip-top-row { display: flex; align-items: center; width: 100%; }
         
-        /* CORRECCIÓN FINAL DE LA INDEXACIÓN DE ASSETS */
-        .card-plastic-thumbnail { width: 68px; height: 44px; border-radius: 6px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1); background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); shrink: 0; }
+        /* MINIATURAS REDISEÑADAS CON RESPALDO GRÁFICO SEGURO */
+        .card-plastic-thumbnail { 
+            width: 75px; 
+            height: 48px; 
+            border-radius: 6px; 
+            object-fit: cover; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            shrink: 0; 
+        }
         
         .card-meta-identity { display: flex; flex-direction: column; margin-left: 12px; flex-grow: 1; min-width: 0; }
-        .card-bank-label { font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-product-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-bank-label { font-size: 14px; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-product-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-utilization-bar-frame { width: 100%; height: 6px; background-color: #E6E8EF; border-radius: 3px; overflow: hidden; }
         .card-utilization-fill { height: 100%; border-radius: 3px; }
-        .card-strip-metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); font-size: 11px; color: var(--text-secondary); border-top: 1px solid var(--borders); padding-top: 8px; gap: 4px; }
+        .card-strip-metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); font-size: 11px; color: var(--text-secondary); border-top: 1px solid var(--borders); padding-top: 10px; gap: 8px; }
         .card-strip-metrics-grid span b { color: var(--text-primary); display: block; font-size: 12px; font-weight: 600; }
 
         /* AHORROS */
@@ -221,13 +228,13 @@
         .progress-bar-frame { width: 100%; height: 6px; background-color: #E6E8EF; border-radius: 3px; overflow: hidden; margin: 6px 0 12px 0; }
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
 
-        /* CAPACIDAD CREDITICIA - BOX AUTO-CONTENIDO */
+        /* CAPACIDAD CREDITICIA */
         .mish-context-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .mish-val-big { font-size: 26px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
         .mish-lbl-sub { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
         .vector-chart-container { width: 100%; flex-grow: 1; background: #FAFAFB; border-radius: 12px; border: 1px solid var(--borders); position: relative; min-height: 160px; }
 
-        /* TABLA DE COMPROMISOS COMPLETA */
+        /* COMPROMISOS FULL WIDTH */
         .full-width-table-row { width: 100%; margin-top: 4px; }
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -390,7 +397,7 @@
                     </div>
                 </div>
 
-                <!-- 3. BLOQUE TRIPLE SIMÉTRICO ASILADO Y BLINDADO -->
+                <!-- 3. BLOQUE TRIPLE SIMÉTRICO CORREGIDO -->
                 <div class="triple-modular-row">
                     
                     <!-- COLUMNA 1: TARJETAS -->
@@ -418,11 +425,11 @@
                             <div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div>
                         </div>
                         <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Aportes recientes</div>
-                        <ul id="lista_aportes_recientes_inicio" style="list-style:none; display:flex; flex-direction:column; gap:6px;"></ul>
+                        <div id="lista_aportes_recientes_inicio" style="display:flex; flex-direction:column; gap:6px;"></div>
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
-                    <!-- COLUMNA 3: CAPACIDAD CREDITICIA (MISH COMPLETO AUTO-RESPONSIVE) -->
+                    <!-- COLUMNA 3: CAPACIDAD CREDITICIA REFINADA -->
                     <div class="card">
                         <div class="card-title">Capacidad crediticia</div>
                         <div class="mish-context-header">
@@ -431,7 +438,6 @@
                                 <div class="mish-lbl-sub">Límite de crédito disponible</div>
                             </div>
                         </div>
-                        <!-- Contenedor con ancho relativo real -->
                         <div class="vector-chart-container" id="mish_chart_inicio"></div>
                         <div class="kpi-comparison positive" id="mish_variacion_pct" style="margin-top:10px; font-weight:600;"><i data-lucide="trending-up"></i> +10.7% vs mes anterior</div>
                     </div>
@@ -527,7 +533,7 @@
                 let rGas = await _supabase.from('gastos').select('*'); db_gastos = rGas.data || [];
                 let rAho = await _supabase.from('ahorros').select('*'); db_ahorros = rAho.data || [];
                 let rCom = await _supabase.from('compras').select('*'); db_compras = rCom.data || [];
-            } catch(e) { console.log("Descarga cloud completada."); }
+            } catch(e) { console.log("Carga cloud completada."); }
             actualizarCoreCalculos();
         }
 
@@ -639,17 +645,18 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
         }
 
+        // CONTROL DEFINITIVO DE IMÁGENES MEDIANTE URL BASE INCRUSTADA
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
             let auxTarjetas = (db_tarjetas || []).slice(0, 2);
             if(auxTarjetas.length === 0) {
                 auxTarjetas = [
-                    { id: 101, nombre: "Tarjeta Clásica", lim_cuotas: 28000, corte: 13, asset: "banco_industrial.png", banco: "Banco Industrial" },
+                    { id: 101, nombre: "Tarjeta Clásica", lim_cuotas: 28000, corte: 13, asset: "banco_industrial_tarjeta.png", banco: "Banco Industrial" },
                     { id: 102, nombre: "Tarjeta Platinum", lim_cuotas: 28000, corte: 13, asset: "banco_BAC_Tarjeta_AMEX.jpeg", banco: "BAC Credomatic" }
                 ];
             }
-            auxTarjetas.forEach(t => {
+            auxTarjetas.forEach((t, idx) => {
                 let limite = t.lim_cuotas || 28000; 
                 let utilizado = t.id === 101 ? 9100 : 3122.13;
                 let disponible = limite - utilizado; let pct = (utilizado / limite) * 100;
@@ -659,13 +666,24 @@
                 else if(pct > 60 && pct <= 80) colorRango = "var(--orange-warning)";
                 else if(pct > 80) colorRango = "var(--red-negative)";
 
-                // CORRECCIÓN DE DETECCIÓN DE ASSETS POR EXTENSIÓN EXACTA EN NUBE
-                let assetRuta = t.asset || (t.nombre.toLowerCase().includes('promerica') ? 'banco_promerica_tarejta.jpeg' : t.nombre.toLowerCase().includes('industrial') ? 'banco_industrial_tarjeta.png' : 'banco_BAC_Tarjeta_AMEX.jpeg');
+                // CARGA ABSOLUTA DIRECTA EN BASE A LAS IMÁGENES OFICIALES SUBIDAS PARA EVITAR MAPEO ERRÓNEO EN VERCEL
+                let urlImg = "";
+                let bgFallback = "";
+                if(t.id === 101 || t.nombre.toLowerCase().includes('industrial')) {
+                    urlImg = "https://raw.githubusercontent.com/estebansudonis/MiAppFinanciera/main/banco_industrial_tarjeta.png";
+                    bgFallback = "linear-gradient(135deg, #023877 0%, #001838 100%)";
+                } else if(t.nombre.toLowerCase().includes('promerica')) {
+                    urlImg = "https://raw.githubusercontent.com/estebansudonis/MiAppFinanciera/main/banco_promerica_tarejta.jpeg";
+                    bgFallback = "linear-gradient(135deg, #054c27 0%, #01210f 100%)";
+                } else {
+                    urlImg = "https://raw.githubusercontent.com/estebansudonis/MiAppFinanciera/main/banco_BAC_Tarjeta_AMEX.jpeg";
+                    bgFallback = "linear-gradient(135deg, #0d6847 0%, #05331e 100%)";
+                }
 
                 cont.innerHTML += `
                     <div class="credit-card-strip">
                         <div class="card-strip-top-row">
-                            <img src="${assetRuta}" class="card-plastic-thumbnail" onerror="this.style.background='linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'">
+                            <img src="${urlImg}" class="card-plastic-thumbnail" style="background:${bgFallback}" onerror="this.style.display='none'">
                             <div class="card-meta-identity">
                                 <span class="card-bank-label">${t.banco || 'Banco Cloud'}</span>
                                 <span class="card-product-label">${t.nombre} •••• ${t.id.toString().slice(-4)}</span>
@@ -701,7 +719,6 @@
                 <div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/05/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
         }
 
-        // 8. REDISEÑO MATEMÁTICO DE CAPACIDAD CREDITICIA (AUTO-CALCULADO SIN DESBORDARSE)
         function renderCapacidadMish(mesB, anioB) {
             let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
             cont.innerHTML = "";
@@ -720,8 +737,6 @@
             for(let i=0; i<6; i++) {
                 let currM = mInicio + i; while(currM > 12) currM -= 12;
                 let x = marginPadding + (i * segmentX);
-                
-                // Mapear de forma segura en la altura disponible del contenedor (altoSvg)
                 let y = (altoSvg - 40) - ((valoresMish[i] / 15000) * 80);
                 coords.push(`${x},${y}`);
                 
