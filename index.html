@@ -293,7 +293,7 @@
         </div>
 
         <div class="main-container">
-            <div class="view-section" id="vista_inicio">
+           <div class="view-section" id="vista_inicio">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Resumen financiero</h1><p>Tu situación financiera actual</p></div>
                     <div class="header-action-area">
@@ -304,15 +304,46 @@
                     </div>
                 </div>
 
-                <div class="kpi-grid-3col">
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Disponible este mes</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-wallet-ico"></i></div></div><span class="kpi-main-value" id="kpi_disponible">Q 0.00</span></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-up-ico"></i></div></div><span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-down-ico"></i></div></div><span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span></div>
+                <div class="kpi-grid">
+                    <div class="kpi-card" style="background: linear-gradient(135deg, #ffffff, #F9F8FF); border-color: #DCD6FF;">
+                        <div class="kpi-label-row"><span class="kpi-label" style="color: var(--purple-main);">Disponible este mes</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-wallet-ico"></i></div></div>
+                        <span class="kpi-main-value" id="kpi_disponible" style="color: var(--purple-main); font-size: 34px;">Q 0.00</span>
+                        <div style="font-size: 12px; color: var(--green-positive); font-weight: 600; margin-top: 4px;">▲ +18.4% vs. junio</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Ingresos</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-up-ico"></i></div></div>
+                        <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span>
+                        <div style="font-size: 12px; color: var(--text-secondary);">Este mes</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Gastos</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-down-ico"></i></div></div>
+                        <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
+                        <div style="font-size: 12px; color: var(--text-secondary);">Efectivo + Tarjetas</div>
+                    </div>
                 </div>
 
                 <div class="charts-row">
                     <div class="card"><div class="card-title">Flujo de caja</div><div class="combined-chart-frame" id="contenedor_histograma"></div></div>
                     <div class="card"><div class="card-title">Distribución de gastos</div><div id="lista_leyenda_donut_inicio"></div></div>
+                </div>
+
+                <!-- 🛠️ RESTAURACIÓN DE LA FILA TRIPLE (TARJETAS, AHORROS Y MISH) -->
+                <div class="triple-modular-row" style="display: flex; gap: 24px; width: 100%;">
+                    <div class="card" style="flex: 1;"><div class="card-title">Tarjetas</div><div class="card-item-row" id="bloque_tarjetas_inicio"></div></div>
+                    <div class="card" style="flex: 1;">
+                        <div class="card-title">Ahorros</div>
+                        <div class="saving-kpi-block"><div><span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span></div></div>
+                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%; margin-top: 8px;"><span>Meta mensual</span><span id="meta_ahorro_pct" style="color:var(--green-positive); font-weight:700;">0%</span></div>
+                        <div class="progress-bar-frame" style="width: 100%; height: 8px; background: #E6E8EF; border-radius: 4px; overflow:hidden; margin: 6px 0;"><div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%; height:100%; background: var(--green-positive);"></div></div>
+                        <div class="saving-meta-detail" id="meta_ahorro_progresion" style="font-size:12px; color:var(--text-secondary);">Q0 de Q50,000</div>
+                        <div id="lista_aportes_recientes_inicio" style="margin-top: 12px;"></div>
+                    </div>
+                    <div class="card" style="flex: 1;"><div class="card-title">Capacidad crediticia</div><div class="vector-chart-container" id="mish_chart_inicio" style="min-height: 160px; position:relative;"></div></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Próximos compromisos</div>
+                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame"><thead><tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th style="text-align:center;">Tipo</th></tr></thead><tbody id="tabla_compromisos_inicio"></tbody></table></div>
                 </div>
             </div>
 
