@@ -603,6 +603,7 @@
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
 // REPARACIÓN DEFINITIVA POST-DIAGNÓSTICO DE COLUMNA OBLIGATORIA        async function ejecutarGuardadoDinamicoCloud() {
+async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
             let monto = parseFloat(document.getElementById('form_ing_monto').value);
