@@ -130,7 +130,7 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* CONTENT WORKSPACE */
+        /* MAIN WORKSPACE */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
@@ -160,13 +160,14 @@
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* NUEVA DISTRIBUCIÓN RECTIFICADA KPIs SUPERIORES */
+        /* KPIs SUPERIORES ESTRUCTURADOS */
         .kpi-master-grid-layout { 
             display: grid; 
             grid-template-columns: 2fr 1fr 1.2fr 1.2fr; 
             gap: 24px; 
             width: 100%; 
         }
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
         
         .kpi-card-premium-gradient { 
@@ -197,7 +198,7 @@
         .v-bar.expense { background-color: #F04438; }
         .chart-label { font-size: 12px; color: var(--text-secondary); margin-top: 12px; font-weight: 500; }
 
-        /* DONUT */
+        /* DONUT DE DISTRIBUCIÓN */
         .donut-container-layout { display: flex; align-items: center; gap: 24px; justify-content: center; width: 100%; min-height: 200px; }
         .donut-canvas-wrapper { width: 140px; height: 140px; position: relative; flex-shrink: 0; }
         .donut-chart-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
@@ -211,7 +212,7 @@
         .legend-amount { font-weight: 600; margin-left: auto; margin-right: 12px; }
         .legend-pct { font-size: 11px; color: var(--text-secondary); width: 32px; text-align: right; }
 
-        /* TRIPLE MODULAR ROW EN PARALELO */
+        /* SECCIONES COMPLEMENTARIAS */
         .triple-modular-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; width: 100%; }
         .tarjetas-paralelo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
 
@@ -226,12 +227,11 @@
         .card-strip-metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); font-size: 11px; color: var(--text-secondary); border-top: 1px dashed var(--borders); padding-top: 10px; gap: 8px; }
         .card-strip-metrics-grid span b { color: var(--text-primary); display: block; font-size: 12px; font-weight: 600; }
 
-        .saving-kpi-block { display: flex; justify-content: space-between; align-items: center; }
         .progress-bar-frame { width: 100%; height: 8px; background-color: #E6E8EF; border-radius: 4px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 4px; }
         .vector-chart-container { width: 100%; flex-grow: 1; position: relative; min-height: 160px; }
 
-        .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; margin-bottom: 4px; }
+        .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; }
         .fuente-active-mini-card { border: 1px solid var(--borders); border-radius: 14px; padding: 18px; background-color: #FAFAFB; display: flex; flex-direction: column; gap: 10px; }
         .fuente-card-header { display: flex; justify-content: space-between; align-items: center; }
         .fuente-card-header .brand-isotipo { width: 28px; height: 28px; border-radius: 6px; box-shadow: none; font-size: 12px; }
@@ -240,7 +240,7 @@
         .fuente-metrics-grid span { font-size: 11px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 2px; }
         .fuente-metrics-grid span b { font-size: 13px; color: var(--text-primary); font-weight: 600; }
 
-        /* COMPACT TABLES */
+        /* TABLAS COMPACTAS */
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; }
         .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); }
@@ -250,7 +250,7 @@
         .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
 
-        /* DRAWER ACCESOS */
+        /* FORMULARIOS DRAWER */
         #drawer_registro_ingresos { 
             position: fixed !important; top: 0 !important; right: 0 !important; left: auto !important;
             width: 400px !important; height: 100vh !important; background-color: #FFFFFF !important; 
@@ -282,6 +282,7 @@
         </div>
     </div>
 
+    <!-- DRAWER FORMULARIO -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
@@ -299,6 +300,7 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
+    <!-- NÚCLEO SHELL -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         <div class="sidebar">
             <div>
@@ -321,6 +323,7 @@
         </div>
 
         <div class="main-container">
+            <!-- VISTA 1: INICIO -->
             <div class="view-section" id="vista_inicio">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Resumen financiero</h1><p>Tu situación financiera actual</p></div>
@@ -379,7 +382,8 @@
                 </div>
             </div>
 
-<div class="view-section" id="vista_ingresos" style="display:none;">
+            <!-- VISTA 2: INGRESOS RE-ARQUITECTURADA DEFINITIVA -->
+            <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Ingresos</h1><p>Gestiona y analiza todas tus fuentes de ingreso.</p></div>
                     <div class="header-action-area">
@@ -390,7 +394,6 @@
                     </div>
                 </div>
 
-                <!-- 📦 RECTIFICACIÓN: 4 KPIs SUPERIORES EN VERDE CORPORATIVO -->
                 <div class="kpi-grid">
                     <div class="kpi-card">
                         <div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-1"></i></div></div>
@@ -414,7 +417,6 @@
                     </div>
                 </div>
 
-                <!-- 📊 GRÁFICAS CORREGIDAS CON DEGRADADOS Y FILTRO DE LEYENDAS REPORTE -->
                 <div class="charts-row">
                     <div class="card">
                         <div class="card-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
@@ -429,18 +431,14 @@
                     </div>
                 </div>
 
-                <!-- 🛠️ FUENTES ACTIVAS CON FILTRADO REACTIVO DINÁMICO DESDE SUPABASE -->
                 <div class="card" style="padding:20px 24px;">
                     <div class="card-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                         <span class="card-title" style="margin:0;">Fuentes activas</span>
                         <a href="#" style="font-size:12px; font-weight:600; color:var(--purple-main); text-decoration:none;">Ver todas las fuentes ></a>
                     </div>
-                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row" style="grid-template-columns: repeat(4, 1fr); gap:16px;">
-                        <!-- Se monta de forma dinámica por JavaScript -->
-                    </div>
+                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div>
                 </div>
 
-                <!-- 🔍 HISTORIAL DE INGRESOS COMPLETO CON FILTROS INTEGRADOS -->
                 <div class="card">
                     <div class="card-title">Historial de ingresos</div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; gap:12px; flex-wrap:wrap;">
@@ -471,14 +469,13 @@
                                     <th style="text-align:center;">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabla_historial_ingresos_tbody">
-                                <!-- Se monta dinámicamente -->
-                            </tbody>
+                            <tbody id="tabla_historial_ingresos_tbody"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
+            <!-- VISTA 3: GASTOS -->
             <div class="view-section" id="vista_gastos" style="display:none;">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Gastos</h1><p>Controla y organiza tus egresos.</p></div>
@@ -545,8 +542,11 @@
             document.getElementById('kpi-down-ico')?.setAttribute('data-lucide', 'arrow-down-right');
             document.getElementById('kpi-card-ico-top')?.setAttribute('data-lucide', 'credit-card');
             document.getElementById('kpi-inc-1')?.setAttribute('data-lucide', 'trending-up');
+            document.getElementById('kpi-inc-2')?.setAttribute('data-lucide', 'refresh-cw');
+            document.getElementById('kpi-inc-3')?.setAttribute('data-lucide', 'activity');
             document.getElementById('kpi-inc-4')?.setAttribute('data-lucide', 'clock-3');
             document.getElementById('kpi-exp-1')?.setAttribute('data-lucide', 'arrow-down-right');
+            document.getElementById('btn-export-ico-ing')?.setAttribute('data-lucide', 'download');
         }
 
         function conmutarDrawerRegistro(shouldOpen) {
@@ -661,104 +661,52 @@
             document.getElementById('kpi_disponible').innerText = "Q " + disponibleMes.toLocaleString('en-US', {minimumFractionDigits:2});
             document.getElementById('kpi_ingresos').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
             document.getElementById('kpi_gastos').innerText = "Q " + totalGastosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
+
+            // Agrupación automática por concepto/fuente de Supabase
+            let ingresosAgrupados = {};
+            let totalFijos = 0; let totalVariables = 0;
+
+            ingresosEsteMes.forEach(i => {
+                let qVal = normalizarAQuetzales(i.monto, i.moneda);
+                let claveFuente = i.nombre.split(' ')[0] || "Otros";
+                ingresosAgrupados[claveFuente] = (ingresosAgrupados[claveFuente] || 0) + qVal;
+
+                if(i.tipo === 'fijo') totalFijos += qVal;
+                else totalVariables += qVal;
+            });
+
+            if(ingresosEsteMes.length === 0) {
+                ingresosAgrupados = {"Salario": 13200, "Freelance": 3302};
+                totalFijos = 13200; totalVariables = 3302;
+            }
+
             document.getElementById('kpi_ing_mes').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
+            document.getElementById('kpi_ing_recurrente').innerText = "Q " + totalFijos.toLocaleString('en-US', {minimumFractionDigits:2});
+            document.getElementById('kpi_ing_variable').innerText = "Q " + totalVariables.toLocaleString('en-US', {minimumFractionDigits:2});
             document.getElementById('kpi_gas_mes_real').innerText = "Q " + totalGastosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
+            
+            let pctFijo = totalIngresosVisual > 0 ? ((totalFijos / totalIngresosVisual) * 100).toFixed(1) : "0.0";
+            let pctVar = totalIngresosVisual > 0 ? ((totalVariables / totalIngresosVisual) * 100).toFixed(1) : "0.0";
+            document.getElementById('kpi_ing_recurrente_pct').innerText = `${pctFijo}% del total`;
+            document.getElementById('kpi_ing_variable_pct').innerText = `${pctVar}% del total`;
 
-            // A. RE-RENDERIZADO DE HISTOGRAMA CON TENDENCIA
+            let comboF = document.getElementById('filtro_fuente_ingreso');
+            if(comboF && comboF.options.length <= 1) {
+                Object.keys(ingresosAgrupados).forEach(f => {
+                    comboF.innerHTML += `<option value="${f}">${f}</option>`;
+                });
+            }
+
             renderHistogramaCombinado();
-
-            // B. DONUT CHART
-            let leyDonut = document.getElementById('lista_leyenda_donut_inicio');
-            if(leyDonut) {
-                leyDonut.innerHTML = `
-                    <div class="donut-container-layout" style="margin-top:-10px;">
-                        <div class="donut-canvas-wrapper">
-                            <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
-                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
-                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#5B45F5" stroke-width="5.5" stroke-dasharray="75 25" stroke-dashoffset="25"></circle>
-                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="15 85" stroke-dashoffset="50"></circle>
-                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#12B76A" stroke-width="5.5" stroke-dasharray="10 90" stroke-dashoffset="35"></circle>
-                            </svg>
-                            <div class="donut-total-interior">Q 10.7k<span>Total</span></div>
-                        </div>
-                        <div class="donut-legend-list">
-                            <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#5B45F5"></div>Tarjetas</div><span class="legend-amount">Q 9,800.13</span><b class="legend-pct">91.2%</b></div>
-                            <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Gastos básicos</div><span class="legend-amount">Q 948.00</span><b class="legend-pct">8.8%</b></div>
-                            <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Efectivo</div><span class="legend-amount">Q 948.00</span><b class="legend-pct">8.8%</b></div>
-                        </div>
-                    </div>`;
-            }
-
-            // C. MAESTRO DE TARJETAS HORIZONTAL EN PARALELO
-            let contTarjetas = document.getElementById('bloque_tarjetas_inicio');
-            if(contTarjetas) {
-                contTarjetas.innerHTML = `
-                    <div class="credit-card-strip" style="background:#1e293b; color:#ffffff; border:none; border-radius:12px; padding:16px;">
-                        <div class="card-strip-top-row">
-                            <img src="https://www.corporacionbi.com/gt/bancoindustrial/wp-content/uploads/2023/08/tarjeta-credito-visa-clasica-bi.png" class="card-plastic-thumbnail">
-                            <div class="card-meta-identity" style="margin-left:12px;"><span class="card-bank-label" style="color:#fff;">Tarjeta Clásica</span><span class="card-product-label" style="color:#94a3b8;">Límite: Q28,000</span></div>
-                        </div>
-                        <div class="card-utilization-bar-frame" style="background:#334155; margin:8px 0;"><div class="card-utilization-fill" style="width: 32%; background-color:#12B76A;"></div></div>
-                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8;"><span>Utilizado: <b>Q9,100 (32%)</b></span><span>Disponible: <b>Q18,900</b></span></div>
-                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; border-top:1px dashed #334155; margin-top:8px; padding-top:6px;"><span>Próximo pago: <b>13 Ago</b></span><span>Mínimo: <b>Q280.00</b></span></div>
-                    </div>
-                    <div class="credit-card-strip" style="background:#0284c7; color:#ffffff; border:none; border-radius:12px; padding:16px;">
-                        <div class="card-strip-top-row">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTYYRvw79V0GFsDvZLWiYgviytrojDRXAgwITx7IFtVA&s=10" class="card-plastic-thumbnail">
-                            <div class="card-meta-identity" style="margin-left:12px;"><span class="card-bank-label" style="color:#fff;">Tarjeta Platinum</span><span class="card-product-label" style="color:#e0f2fe;">Límite: Q28,000</span></div>
-                        </div>
-                        <div class="card-utilization-bar-frame" style="background:#0369a1; margin:8px 0;"><div class="card-utilization-fill" style="width: 11%; background-color:#fff;"></div></div>
-                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#e0f2fe;"><span>Utilizado: <b>Q3,122.13 (11%)</b></span><span>Disponible: <b>Q24,877.87</b></span></div>
-                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#e0f2fe; border-top:1px dashed #0369a1; margin-top:8px; padding-top:6px;"><span>Próximo pago: <b>13 Ago</b></span><span>Mínimo: <b>Q280.00</b></span></div>
-                    </div>`;
-            }
-
-            // D. MÓDULO AHORROS
-            let contAhorroTotal = document.getElementById('ahorro_total_kpi');
-            if(contAhorroTotal) {
-                contAhorroTotal.innerText = "Q 7,400.00";
-                document.getElementById('meta_ahorro_progresion').innerText = "Meta mensual: Q7,400";
-                document.getElementById('meta_ahorro_pct').innerText = "100%";
-                document.getElementById('barra_progreso_ahorro_fill').style.width = "100%";
-                
-                let listRecientes = document.getElementById('lista_aportes_recientes_inicio');
-                if(listRecientes) {
-                    listRecientes.innerHTML = `
-                        <div style="padding:8px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders); margin-top:6px;"><span>01/06/2026 &nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>
-                        <div style="padding:8px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders); margin-top:4px;"><span>01/05/2026 &nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
-                }
-            }
-
-            // E. CAPACIDAD CREDITICIA MISH
-            let contMish = document.getElementById('mish_chart_inicio');
-            if(contMish) {
-                let anchoSvg = contMish.clientWidth || 340; let altoSvg = 160;
-                contMish.innerHTML = `
-                    <div style="padding:4px 0;"><b style="font-size:22px; color:var(--text-primary);">Q 7,400.00</b><span style="font-size:11px; color:var(--text-secondary); display:block; margin-top:2px;">Límite de crédito disponible</span></div>
-                    <svg width="100%" height="95px" viewBox="0 0 300 80" style="overflow:visible; margin-top:6px;">
-                        <path d="M 10 60 L 60 55 L 110 50 L 160 50 L 210 40 L 260 30" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
-                        <circle cx="10" cy="60" r="4" fill="#5B45F5"/><circle cx="60" cy="55" r="4" fill="#5B45F5"/><circle cx="110" cy="50" r="4" fill="#5B45F5"/><circle cx="160" cy="50" r="4" fill="#5B45F5"/><circle cx="210" cy="40" r="4" fill="#5B45F5"/><circle cx="260" cy="30" r="4" fill="#5B45F5"/>
-                        <text x="10" y="78" font-size="9" fill="#667085" text-anchor="middle">Jun</text><text x="60" y="78" font-size="9" fill="#667085" text-anchor="middle">Jul</text><text x="110" y="78" font-size="9" fill="#667085" text-anchor="middle">Ago</text><text x="160" y="78" font-size="9" fill="#667085" text-anchor="middle">Sep</text><text x="210" y="78" font-size="9" fill="#667085" text-anchor="middle">Oct</text><text x="260" y="78" font-size="9" fill="#667085" text-anchor="middle">Nov</text>
-                    </svg>
-                    <div style="font-size:11px; color:var(--green-positive); font-weight:600; margin-top:2px;">▲ +10.7% vs. junio</div>`;
-            }
-
-            // F. PRÓXIMOS COMPROMISOS
-            let tablaComp = document.getElementById('tabla_compromisos_inicio');
-            if(tablaComp) {
-                tablaComp.innerHTML = `
-                    <tr><td>13 Ago 2026</td><td>Pago mínimo Tarjeta Clásica</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td></tr>
-                    <tr><td>13 Ago 2026</td><td>Pago mínimo Tarjeta Platinum</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td></tr>
-                    <tr><td>06 Jul 2026</td><td>Luz / Internet</td><td style="text-align:right; font-weight:700;">Q 948.00</td><td><span class="badge blue">Servicio</span></td></tr>
-                    <tr><td>03 Jul 2026</td><td>Transferencia a ahorros</td><td style="text-align:right; font-weight:700;">Q 7,400.00</td><td><span class="badge green">Ahorro</span></td></tr>`;
-            }
-
+            renderDonutGastos(totalGastosVisual);
             renderHistogramaCombinadoIngresos();
-            renderDonutFuentesIngreso(totalIngresosVisual);
+            renderDonutFuentesIngreso(totalIngresosVisual, ingresosAgrupados);
             renderHistogramaCombinadoGastos();
             renderDonutCategoriasGastosMaster(totalGastosVisual);
-            renderFuentesActivasTarjetas();
+            
+            renderFuentesActivasTarjetas(ingresosAgrupados);
             renderCategoriasActivasTarjetas();
+            
             renderHistorialTablaIngresos(ingresosEsteMes);
             renderHistorialTablaGastos(gastosEsteMes);
 
@@ -787,12 +735,18 @@
         function renderHistogramaCombinadoIngresos() {
             let cont = document.getElementById('cont_histograma_ingresos'); if(!cont) return;
             cont.innerHTML = `
-                <div class="chart-y-axis-labels"><div>Q25k</div><div>Q12k</div><div>Q0</div></div>
-                <div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div>`;
-            let meses = ["Feb", "Mar", "Abr", "May", "Jun", "Jul"];
+                <div class="chart-y-axis-labels"><div>Q25k</div><div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div></div>
+                <div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div>
+                <div style="position:absolute; left:52px; right:16px; top:24px; height:216px; pointer-events:none; z-index:5;">
+                    <svg width="100%" height="100%" viewBox="0 0 580 200" style="overflow:visible;">
+                        <path d="M 48 160 L 144 148 L 240 120 L 336 142 L 432 100 L 528 115" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
+                        <circle cx="48" cy="160" r="4" fill="#5B45F5"/><circle cx="144" cy="148" r="4" fill="#5B45F5"/><circle cx="240" cy="120" r="4" fill="#5B45F5"/><circle cx="336" cy="142" r="4" fill="#5B45F5"/><circle cx="432" cy="100" r="4" fill="#5B45F5"/><circle cx="528" cy="115" r="4" fill="#5B45F5"/>
+                    </svg>
+                </div>`;
+            let meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun"];
             meses.forEach(m => {
-                let hBar = m === "Jul" ? 170 : 130;
-                cont.innerHTML += `<div class="chart-column"><div class="bars-container"><div class="v-bar income" style="height:${hBar}px;"></div></div><div class="chart-label">${m}</div></div>`;
+                let hBar = m === "Jun" ? 165 : 120;
+                cont.innerHTML += `<div class="chart-column"><div class="bars-container"><div class="v-bar income" style="height:${hBar}px; background: linear-gradient(to top, #12B76A, #A6F4C5);"></div></div><div class="chart-label">${m}</div></div>`;
             });
         }
 
@@ -808,12 +762,64 @@
             });
         }
 
-        function renderDonutFuentesIngreso(total) {
-            let ctr = document.getElementById('donut_ingresos_centro_val'); if(ctr) ctr.innerText = "Q " + (total/1000).toFixed(1) + "k";
-            let ley = document.getElementById('leyenda_donut_ingresos'); if(!ley) return;
+        function renderDonutGastos(total) {
+            let ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
             ley.innerHTML = `
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Salario Base</div><span class="legend-amount">Q ${Math.round(total * 0.85).toLocaleString()}</span><b class="legend-pct">85%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Extras</div><span class="legend-amount">Q ${Math.round(total * 0.15).toLocaleString()}</span><b class="legend-pct">15%</b></div>`;
+                <div class="donut-container-layout" style="margin-top:-10px;">
+                    <div class="donut-canvas-wrapper">
+                        <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#5B45F5" stroke-width="5.5" stroke-dasharray="75 25" stroke-dashoffset="25"></circle>
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="15 85" stroke-dashoffset="50"></circle>
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#12B76A" stroke-width="5.5" stroke-dasharray="10 90" stroke-dashoffset="35"></circle>
+                        </svg>
+                        <div class="donut-total-interior">Q 10.7k<span>Total</span></div>
+                    </div>
+                    <div class="donut-legend-list">
+                        <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#5B45F5"></div>Tarjetas</div><span class="legend-amount">Q 9,800.13</span><b class="legend-pct">91.2%</b></div>
+                        <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Gastos básicos</div><span class="legend-amount">Q 948.00</span><b class="legend-pct">8.8%</b></div>
+                        <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Efectivo</div><span class="legend-amount">Q 948.00</span><b class="legend-pct">8.8%</b></div>
+                    </div>
+                </div>`;
+        }
+
+        function renderDonutFuentesIngreso(total, ingresosAgrupados) {
+            let contenedor = document.getElementById('contenedor_layout_donut_ingresos'); if(!contenedor) return;
+            let coloresFuentes = ["#5B45F5", "#2E90FA", "#12B76A", "#F79009", "#7F56D9"];
+            let leyendasHtml = ""; let dashOffsetAcumulado = 25; let svgSectores = "";
+            let totalFuentesContadas = Object.keys(ingresosAgrupados).length || 1;
+
+            Object.keys(ingresosAgrupados).forEach((fuente, index) => {
+                let color = coloresFuentes[index % coloresFuentes.length];
+                let montoFuente = ingresosAgrupados[fuente];
+                let porcentaje = total > 0 ? ((montoFuente / total) * 100) : 0;
+                
+                let strokeDash = `${porcentaje.toFixed(1)} ${(100 - porcentaje).toFixed(1)}`;
+                svgSectores += `<circle cx="21" cy="21" r="15.915" fill="transparent" stroke="${color}" stroke-width="5.5" stroke-dasharray="${strokeDash}" stroke-dashoffset="${dashOffsetAcumulado}"></circle>`;
+                dashOffsetAcumulado -= porcentaje;
+
+                leyendasHtml += `
+                    <div class="legend-item">
+                        <div class="legend-color-dot"><div class="color-dot" style="background-color:${color}"></div>${fuente}</div>
+                        <span class="legend-amount">Q ${montoFuente.toLocaleString('en-US', {minimumFractionDigits:2})}</span>
+                        <b class="legend-pct">${porcentaje.toFixed(1)}%</b>
+                    </div>`;
+            });
+
+            contenedor.innerHTML = `
+                <div class="donut-container-layout" style="margin-top:-10px;">
+                    <div class="donut-canvas-wrapper">
+                        <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
+                            ${svgSectores}
+                        </svg>
+                        <div class="donut-total-interior" id="donut_ingresos_centro_val">Q ${(total/1000).toFixed(1)}k<span>Total</span></div>
+                    </div>
+                    <div class="donut-legend-list">
+                        ${leyendasHtml}
+                        <div style="font-size:11px; font-weight:700; color:var(--green-positive); padding-top:4px;"><i data-lucide="layers" style="width:12px; height:12px;"></i> ${totalFuentesContadas} fuentes activas</div>
+                    </div>
+                </div>`;
         }
 
         function renderDonutCategoriasGastosMaster(total) {
@@ -824,9 +830,37 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Servicios</div><span class="legend-amount">Q ${Math.round(total * 0.4).toLocaleString()}</span><b class="legend-pct">40%</b></div>`;
         }
 
-        function renderFuentesActivasTarjetas() {
-            let block = document.getElementById('bloque_fuentes_activas_row'); if(!block) return;
-            block.innerHTML = `<div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-dark-icon);"><i data-lucide="briefcase"></i></div><span class="badge green">Activa</span></div><span class="fuente-name-lbl">Salario Principal</span><div class="fuente-metrics-grid"><span>Canal<b>Nómina</b></span><span>Frecuencia<b>Mensual</b></span></div></div>`;
+        function renderFuentesActivasTarjetas(ingresosAgrupados) {
+            let block = document.getElementById('bloque_fuentes_activas_row'); if(!block) return; block.innerHTML = "";
+            let iconos = ["briefcase", "sparkles", "wallet", "layers"];
+            let backgrounds = ["var(--purple-light)", "var(--blue-light)", "var(--green-light)", "var(--orange-light)"];
+            let colorIconos = ["var(--purple-main)", "var(--blue-info)", "var(--green-positive)", "var(--orange-warning)"];
+
+            let idx = 0;
+            let mapaFuentes = Object.keys(ingresosAgrupados).length > 0 ? ingresosAgrupados : {"Salario": 13200, "Bonificación": 3302};
+
+            Object.keys(mapaFuentes).forEach(fuente => {
+                let monto = mapaFuentes[fuente];
+                let icon = iconos[idx % iconos.length];
+                let bg = backgrounds[idx % backgrounds.length];
+                let textCol = colorIconos[idx % colorIconos.length];
+                let isRecu = fuente.toLowerCase().includes('salario') || fuente.toLowerCase().includes('fijo');
+
+                block.innerHTML += `
+                    <div class="fuente-active-mini-card" style="background:#ffffff; border-radius:12px; padding:16px; border:1px solid var(--borders);">
+                        <div class="fuente-card-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <div class="brand-isotipo" style="background:${bg}; color:${textCol}; width:32px; height:32px; border-radius:8px;"><i data-lucide="${icon}"></i></div>
+                            <span class="badge ${isRecu ? 'green' : 'blue'}">${isRecu ? 'Recurrente' : 'Variable'}</span>
+                        </div>
+                        <span class="fuente-name-lbl" style="font-size:14px; font-weight:700; display:block;">${fuente}</span>
+                        <b style="font-size:16px; font-weight:700; color:var(--text-primary); display:block; margin:2px 0;">Q ${monto.toLocaleString('en-US', {minimumFractionDigits:2})}</b>
+                        <div class="fuente-metrics-grid" style="display:flex; justify-content:space-between; border-top:1px dashed var(--borders); padding-top:8px; margin-top:4px; font-size:11px; color:var(--text-secondary);">
+                            <span>Frecuencia<b>${isRecu ? 'Mensual' : 'Ocasional'}</b></span>
+                            <span>Próximo ingreso<b>${isRecu ? '01 Ago 2026' : '—'}</b></span>
+                        </div>
+                    </div>`;
+                idx++;
+            });
         }
 
         function renderCategoriasActivasTarjetas() {
@@ -854,6 +888,23 @@
                 let m = normalizarAQuetzales(gas.monto, gas.moneda);
                 tbody.innerHTML += `<tr><td>${gas.fecha_fact}</td><td><b>${gas.nombre}</b></td><td><span class="badge purple">${gas.categoria || 'General'}</span></td><td style="text-align:right; font-weight:700; color:var(--red-negative);">Q ${m.toLocaleString()}</td><td><span class="badge purple">${gas.tipo}</span></td></tr>`;
             });
+        }
+
+        function filtrarHistorialIngresosMecanismo() {
+            let busqueda = document.getElementById('busqueda_ingreso_input').value.toLowerCase();
+            let tipo = document.getElementById('filtro_tipo_ingreso').value;
+            let selectorNode = document.querySelector('.select_filtro_mes_sincronizado');
+            let filtroMes = selectorNode ? selectorNode.value : "2026-07";
+            let piezas = filtroMes.split('-');
+            let anioAct = parseInt(piezas[0]); let mesAct = parseInt(piezas[1]);
+
+            let baseFiltrada = db_ingresos.filter(i => {
+                let matchesBusqueda = i.nombre.toLowerCase().includes(busqueda);
+                let matchesTipo = (tipo === "Todos" || i.tipo === tipo);
+                let matchesMes = (parseInt(i.anio) === anioAct && parseInt(i.mes) === mesAct);
+                return matchesBusqueda && matchesTipo && matchesMes;
+            });
+            renderHistorialTablaIngresos(baseFiltrada);
         }
 
         verificarCredentialsSesion();
