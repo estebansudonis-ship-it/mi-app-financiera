@@ -204,13 +204,13 @@
         .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; background-color: #FAFAFB; }
         .card-strip-top-row { display: flex; align-items: center; width: 100%; }
         
-        /* MINIATURAS REDISEÑADAS CON RESPALDO GRÁFICO SEGURO */
+        /* MINIATURAS DEFINITIVAS DE ALTA FIDELIDAD */
         .card-plastic-thumbnail { 
             width: 75px; 
             height: 48px; 
             border-radius: 6px; 
-            object-fit: cover; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            object-fit: fill; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15); 
             shrink: 0; 
         }
         
@@ -397,17 +397,15 @@
                     </div>
                 </div>
 
-                <!-- 3. BLOQUE TRIPLE SIMÉTRICO CORREGIDO -->
+                <!-- TRIPLE MODULAR ROW -->
                 <div class="triple-modular-row">
                     
-                    <!-- COLUMNA 1: TARJETAS -->
                     <div class="card">
                         <div class="card-title">Tarjetas</div>
                         <div class="card-item-row" id="bloque_tarjetas_inicio"></div>
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
-                    <!-- COLUMNA 2: AHORROS -->
                     <div class="card">
                         <div class="card-title">Ahorros</div>
                         <div class="saving-kpi-block">
@@ -429,7 +427,6 @@
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
-                    <!-- COLUMNA 3: CAPACIDAD CREDITICIA REFINADA -->
                     <div class="card">
                         <div class="card-title">Capacidad crediticia</div>
                         <div class="mish-context-header">
@@ -444,7 +441,7 @@
 
                 </div>
 
-                <!-- PRÓXIMOS COMPROMISOS FULL WIDTH -->
+                <!-- COMPROMISOS FULL WIDTH -->
                 <div class="card full-width-table-row">
                     <div class="card-title">Próximos compromisos</div>
                     <div style="flex-grow:1;">
@@ -460,7 +457,7 @@
 
             </div>
 
-            <!-- VISTAS CAPAS MOCKUP (AISLADAS) -->
+            <!-- VISTAS CAPAS MOCKUP -->
             <div class="view-section fallback-view" id="vista_ingresos" style="display:none;"><h2>Vista de Ingresos</h2></div>
             <div class="view-section fallback-view" id="vista_gastos" style="display:none;"><h2>Vista de Gastos</h2></div>
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
@@ -645,7 +642,7 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
         }
 
-        // URLS ABSOLUTAS RESPALDO DIRECTAS DESDE PROMERICA, SCOTIABANK Y VISA OFICIALES
+        // INCORPORACIÓN DE LAS ENLACES PÚBLICOS DE GOOGLE IMÁGENES VALIDADOS
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
@@ -666,21 +663,20 @@
                 else if(pct > 60 && pct <= 80) colorRango = "var(--orange-warning)";
                 else if(pct > 80) colorRango = "var(--red-negative)";
 
-                // CENTRALIZACIÓN MEDIANTE URLS DE ALTA DISPONIBILIDAD DE RECURSOS FINANCIEROS REALES
-                let urlImg = "";
-                let bgFallback = "";
+                // MAPEO DIRECTO A LAS URLS TOTALMENTE EXPUESTAS QUE ME PROPORCIONASTE
+                let urlImgMaster = "";
                 if(idx === 0 || t.nombre.toLowerCase().includes('industrial') || t.banco.toLowerCase().includes('industrial')) {
-                    urlImg = "https://images.unsplash.com/photo-1613243555988-441166d4d6fd?w=150&auto=format&fit=crop&q=60"; // Textura de Tarjeta Corporativa Oscura Premium
-                    bgFallback = "#0b1c3a";
+                    urlImgMaster = "https://www.corporacionbi.com/gt/bancoindustrial/wp-content/uploads/2023/08/tarjeta-credito-visa-clasica-bi.png";
+                } else if(t.nombre.toLowerCase().includes('promerica') || t.banco.toLowerCase().includes('promerica')) {
+                    urlImgMaster = "https://www.promerica.com.do/media/460974/tarjetas-de-credito-promerica_-1011x638px_visa-clasica.png";
                 } else {
-                    urlImg = "https://images.unsplash.com/photo-1589758438368-0ad531db3366?w=150&auto=format&fit=crop&q=60"; // Textura Premium Esmeralda/Amex
-                    bgFallback = "#053a25";
+                    urlImgMaster = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTYYRvw79V0GFsDvZLWiYgviytrojDRXAgwITx7IFtVA&s=10";
                 }
 
                 cont.innerHTML += `
                     <div class="credit-card-strip">
                         <div class="card-strip-top-row">
-                            <div class="card-plastic-thumbnail" style="background: url('${urlImg}') center/cover no-repeat, ${bgFallback}; border: 1px solid rgba(255,255,255,0.15);"></div>
+                            <img src="${urlImgMaster}" class="card-plastic-thumbnail">
                             <div class="card-meta-identity">
                                 <span class="card-bank-label">${t.banco || 'Banco Cloud'}</span>
                                 <span class="card-product-label">${t.nombre} •••• ${t.id.toString().slice(-4)}</span>
