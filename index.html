@@ -15,7 +15,7 @@
             --text-primary: #111827;
             --text-secondary: #667085;
             --borders: #E6E8EF;
-            
+            f
             --purple-main: #5B45F5;
             --purple-dark: #4328D7;
             --purple-light: #F1EEFF;
@@ -602,8 +602,8 @@
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-// REPARACIÓN DEFINITIVA POST-DIAGNÓSTICO DE COLUMNA OBLIGATORIA        async function ejecutarGuardadoDinamicoCloud() {
-async function ejecutarGuardadoDinamicoCloud() {
+// REPARACIÓN COMPLETA DEL PIPELINE DE INSERCIÓN CLOUD CON FECHA_FOND
+        async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
             let monto = parseFloat(document.getElementById('form_ing_monto').value);
@@ -620,9 +620,11 @@ async function ejecutarGuardadoDinamicoCloud() {
             err.innerText = "";
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
+            
+            // Construcción del string de fecha ISO compatible (ej. 2026-07-13)
             let fechaISO = `${anio}-${mes.toString().padStart(2,'0')}-13`;
 
-            // Payload maestro con la columna exacta requerida por tu Supabase
+            // Mapeo exacto con la estructura requerida por Supabase
             let registroPayload = { 
                 nombre: nombre, 
                 monto: monto, 
@@ -630,18 +632,15 @@ async function ejecutarGuardadoDinamicoCloud() {
                 tipo: tipo, 
                 anio: anio, 
                 mes: mes, 
-                fecha_fond: fechaISO, // ¡COLUMNA DEFINITIVA DETECTADA EN CAPTURA!
+                fecha_fond: fechaISO, // Columna de fecha corregida
                 user_id: activeSessionUser.id 
             };
             
             if(tablaDestino === 'gastos') {
                 registroPayload.categoria = fuenteCat;
                 registroPayload.medio_pago = 'efectivo';
-                // Por si gastos también pide fecha_fond o mantiene fecha_fact, duplicamos para asegurar
-                registroPayload.fecha_fact = fechaISO; 
             } else {
-                // Como vimos que 'fuente' da error, no la mandamos o Supabase la rechazará
-                console.log("Insertando ingreso limpio con fecha_fond...");
+                registroPayload.fuente = fuenteCat; // Envía la fuente seleccionada
             }
 
             const { data, error } = await _supabase.from(tablaDestino).insert([registroPayload]);
@@ -649,7 +648,7 @@ async function ejecutarGuardadoDinamicoCloud() {
             if(error) { 
                 err.innerText = "Error Cloud: " + error.message; 
             } else {
-                // Limpiar inputs, cerrar panel y refrescar la UI de forma reactiva
+                // Limpiar inputs, ocultar el panel flotante y recargar la UI
                 document.getElementById('form_ing_nombre').value = "";
                 document.getElementById('form_ing_monto').value = "";
                 conmutarDrawerRegistro(false);
