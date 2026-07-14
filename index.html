@@ -550,22 +550,18 @@
             await descargarEstructuresCloud();
         }
 
-        function actualizarCoreCalculos() {
+      function actualizarCoreCalculos() {
             let selectorNode = document.querySelector('.select_filtro_mes_sincronizado');
             let filtroMes = selectorNode ? selectorNode.value : "2026-07";
             let piezas = filtroMes.split('-');
             let anioAct = parseInt(piezas[0]); let mesAct = parseInt(piezas[1]);
 
-            // Filtrado dinámico 100% real por año y mes sin mocks bloqueantes
-            let ingresosEsteMes = db_ingresos.filter(i => parseInt(i.anio) === anioAct && parseInt(i.mes) === mesAct);
+            // Sincronización robusta y blindaje contra colecciones null/undefined
+            let ingresosEsteMes = (db_ingresos || []).filter(i => parseInt(i.anio) === anioAct && parseInt(i.mes) === mesAct);
             let totalIngresos = ingresosEsteMes.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
             
-            let gastosEsteMes = db_gastos.filter(g => parseInt(g.anio) === anioAct && parseInt(g.mes) === mesAct);
-            let totalGastos = gastosEsteMes.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-
-            // Valores de caída en caso de base de datos vacía para mantener la consistencia visual
-            let totalIngresosVisual = totalIngresos === 0 ? 17394 : totalIngresos;
-            let totalGastosVisual = totalGastos === 0 ? 10748.13 : totalGastos;
+            let gastosEsteMes = (db_gastos || []).filter(g => parseInt(g.anio) === anioAct && parseInt(g.mes) === mesAct);
+            let totalGastos = gastosEsteMes.reduce((a, b) => a + normalizar
 
             document.getElementById('kpi_disponible').innerText = "Q " + (totalIngresosVisual - totalGastosVisual).toLocaleString('en-US', {minimumFractionDigits:2});
             document.getElementById('kpi_ingresos').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
