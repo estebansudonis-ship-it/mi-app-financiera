@@ -289,4 +289,468 @@
         <div class="main-container" id="scroll_master_container">
             <div class="chart-tooltip" id="global_chart_tooltip"></div>
 
-            <div class="view-section" id="vista_inicio
+            <div class="view-section" id="vista_inicio">
+                
+                <div class="view-header">
+                    <div class="header-title-area">
+                        <h1>Resumen financiero</h1>
+                        <p>Tu situación financiera actual</p>
+                    </div>
+                    <div class="header-action-area">
+                        <select class="month-selector" id="filtro_mes_maestro" onchange="actualizarCoreCalculos()">
+                            <option value="2026-06">Junio 2026</option>
+                            <option value="2026-07">Julio 2026</option>
+                            <option value="2026-08">Agosto 2026</option>
+                        </select>
+                        <button class="btn-primary-action"><i data-lucide="plus"></i> Nuevo movimiento</button>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card double-width">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Disponible este mes</span>
+                            <div class="kpi-icon-wrapper" style="color: var(--purple-main); background: var(--purple-light);"><i data-lucide="wallet"></i></div>
+                        </div>
+                        <span class="kpi-main-value" id="kpi_disponible">Q 0.00</span>
+                        <div class="kpi-comparison positive" id="kpi_disp_comp">vs mes anterior: <b>+18.4%</b></div>
+                        <div class="sparkline-box">
+                            <svg width="100%" height="100%" viewBox="0 0 100 40">
+                                <path d="M 5 30 Q 30 10, 55 25 T 105 15" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Ingresos</span>
+                            <div class="kpi-icon-wrapper" style="color: var(--green-positive); background: var(--green-light);"><i data-lucide="arrow-up-right"></i></div>
+                        </div>
+                        <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span>
+                        <div class="kpi-comparison" style="color:var(--text-secondary)">Este mes</div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Gastos</span>
+                            <div class="kpi-icon-wrapper" style="color: var(--red-negative); background: var(--red-light);"><i data-lucide="arrow-down-right"></i></div>
+                        </div>
+                        <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
+                        <div class="kpi-comparison" style="font-size:11px; color:var(--text-secondary)">Efectivo + Tarjetas</div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Tarjetas</span>
+                            <div class="kpi-icon-wrapper" style="color: var(--blue-info); background: var(--blue-light);"><i data-lucide="credit-card"></i></div>
+                        </div>
+                        <span class="kpi-main-value" id="kpi_tarjetas">Q 0.00</span>
+                        <span style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">Saldo total</span>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="card">
+                        <div class="card-title">Flujo de caja</div>
+                        <div class="combined-chart-frame">
+                            <div class="chart-y-axis-labels">
+                                <div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div>
+                            </div>
+                            <div class="chart-grid-lines">
+                                <div class="grid-line-h"></div><div class="grid-line-h"></div>
+                                <div class="grid-line-h"></div><div class="grid-line-h"></div>
+                                <div class="grid-line-h"></div>
+                            </div>
+                            <div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="contenedor_histograma"></div>
+                            <div class="svg-line-overlay" id="contenedor_svg_linea_overlay"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Distribución de gastos</div>
+                        <div class="donut-container-layout">
+                            <div class="donut-canvas-wrapper">
+                                <div class="donut-center-text" id="donut_total_interior">Q0<span>Total</span></div>
+                                <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F04438" stroke-width="5.5" stroke-dasharray="65 35" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="25 75" stroke-dashoffset="60"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="10 90" stroke-dashoffset="35"></circle>
+                                </svg>
+                            </div>
+                            <div class="donut-legend-list" id="lista_leyenda_donut"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="triple-modular-row">
+                    
+                    <div class="card">
+                        <div class="card-title">Tarjetas</div>
+                        <div class="card-item-row" id="bloque_tarjetas_inicio"></div>
+                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Ahorros</div>
+                        <div class="saving-kpi-block">
+                            <div>
+                                <span style="font-size:12px; color:var(--text-secondary); display:block; font-weight:500;">Total ahorrado</span>
+                                <span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span>
+                            </div>
+                        </div>
+                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%;" id="meta_ahorro_nombre"><span>Fondo de emergencia</span><span style="color:var(--text-secondary); font-size:11px; font-weight:500;">Meta mensual</span></div>
+                        <div class="saving-meta-detail">
+                            <span id="meta_ahorro_progresion">Q0 de Q50,000</span>
+                            <span id="meta_ahorro_pct" style="font-weight:700; color:var(--green-positive);">100%</span>
+                        </div>
+                        <div class="progress-bar-frame">
+                            <div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div>
+                        </div>
+                        <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Aportes recientes</div>
+                        <div id="lista_aportes_recientes_inicio" style="display:flex; flex-direction:column; gap:6px;"></div>
+                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Capacidad crediticia</div>
+                        <div class="mish-context-header">
+                            <div>
+                                <div class="mish-val-big" id="mish_valor_actual">Q 0.00</div>
+                                <div class="mish-lbl-sub">Límite de crédito disponible</div>
+                            </div>
+                        </div>
+                        <div class="vector-chart-container" id="mish_chart_inicio"></div>
+                        <div class="kpi-comparison positive" id="mish_variacion_pct" style="margin-top:10px; font-weight:600;"><i data-lucide="trending-up"></i> +10.7% vs mes anterior</div>
+                    </div>
+
+                </div>
+
+                <div class="card full-width-table-row">
+                    <div class="card-title">Próximos compromisos</div>
+                    <div style="flex-grow:1;">
+                        <table class="compact-table-frame">
+                            <thead>
+                                <tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th style="text-align:center;">Tipo</th></tr>
+                            </thead>
+                            <tbody id="tabla_compromisos_inicio"></tbody>
+                        </table>
+                    </div>
+                    <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_cuotas')">Ver todos los compromisos <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
+                </div>
+
+            </div>
+
+            <div class="view-section fallback-view" id="vista_ingresos" style="display:none;"><h2>Vista de Ingresos</h2></div>
+            <div class="view-section fallback-view" id="vista_gastos" style="display:none;"><h2>Vista de Gastos</h2></div>
+            <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
+            <div class="view-section fallback-view" id="vista_cuotas" style="display:none;"><h2>Cuotas y Plazos Amortizados</h2></div>
+            <div class="view-section fallback-view" id="vista_ahorros" style="display:none;"><h2>Plan de Ahorros</h2></div>
+            <div class="view-section fallback-view" id="vista_historico" style="display:none;"><h2>Histórico General</h2></div>
+            <div class="view-section fallback-view" id="vista_config" style="display:none;"><h2>Configuración del Sistema</h2></div>
+            <div class="view-section fallback-view" id="vista_ia_focus" style="display:none;"><h2>Consola Avanzada Finanzas IA</h2></div>
+
+        </div>
+
+        <button class="ai-floating-trigger" onclick="cambiarSeccionVista('vista_ia_focus', null)">
+            <i data-lucide="sparkles"></i> Preguntar a Finanzas IA
+        </button>
+
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://ltmvcqkpgrwqsinfqqkt.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_TP5UKKudDEefb5KogaRcsw_Ezn1OxbA"; 
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let activeSessionUser = null;
+        let db_ingresos = []; let db_ahorros = []; let db_tarjetas = []; let db_gastos = []; let db_compras = [];
+        const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+        function cambiarSeccionVista(targetViewId, elementBtn) {
+            document.querySelectorAll('.view-section').forEach(view => view.style.display = 'none');
+            let el = document.getElementById(targetViewId);
+            if(el) el.style.display = 'flex';
+            if(elementBtn) {
+                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+                elementBtn.classList.add('active');
+            }
+            if(targetViewId === 'vista_inicio') actualizarCoreCalculos();
+        }
+
+        function navegarASeccionDirecto(viewId) {
+            let itemMenu = Array.from(document.querySelectorAll('.nav-button')).find(btn => btn.innerText.trim().toLowerCase() === viewId.replace('vista_','').replace('cuotas','cuotas / plazos').toLowerCase());
+            cambiarSeccionVista(viewId, itemMenu);
+        }
+
+        async function verificarCredencialesSesion() {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session) {
+                activeSessionUser = session.user;
+                document.getElementById('auth_gate_wrapper').style.display = 'none';
+                document.getElementById('app_core_shell').style.display = 'flex';
+                document.getElementById('user_display_mail').innerText = activeSessionUser.email;
+                document.getElementById('avatar_letra').innerText = activeSessionUser.email.charAt(0).toUpperCase();
+                await descargarEstructuresCloud();
+            }
+        }
+
+        async function loginMecanismo() {
+            let email = document.getElementById('auth_user_email').value;
+            let pass = document.getElementById('auth_user_password').value;
+            const { data, error } = await _supabase.auth.signInWithPassword({ email, password: pass });
+            if(error) document.getElementById('auth_gate_error').innerText = "Credenciales incorrectas.";
+            else { activeSessionUser = data.user; location.reload(); }
+        }
+
+        async function logoutMecanismo() { await _supabase.auth.signOut(); location.reload(); }
+
+        async function descargarEstructuresCloud() {
+            if(!activeSessionUser) return;
+            try {
+                let rIng = await _supabase.from('ingresos').select('*'); db_ingresos = rIng.data || [];
+                let rTar = await _supabase.from('tarjetas').select('*'); db_tarjetas = rTar.data || [];
+                let rGas = await _supabase.from('gastos').select('*'); db_gastos = rGas.data || [];
+                let rAho = await _supabase.from('ahorros').select('*'); db_ahorros = rAho.data || [];
+                let rCom = await _supabase.from('compras').select('*'); db_compras = rCom.data || [];
+            } catch(e) { console.log("Carga cloud completada."); }
+            actualizarCoreCalculos();
+        }
+
+        function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
+
+        function actualizarCoreCalculos() {
+            let filtroMes = document.getElementById('filtro_mes_maestro').value;
+            if(!filtroMes) return;
+            let piezas = filtroMes.split('-');
+            let anioAct = parseInt(piezas[0]); let mesAct = parseInt(piezas[1]);
+
+            let totalIngresos = (db_ingresos || []).filter(i => (i.tipo==='fijo' && (anioAct>i.anio || (anioAct===i.anio && mesAct>=i.mes))) || (i.tipo==='variable' && i.anio===anioAct && i.mes===mesAct)).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
+            let totalGastosEfec = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
+            
+            let gastosTarjetasDirectos = (db_gastos || []).filter(g => g.medio_pago !== 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
+            let cuotasTarjetasAmortizadas = (db_compras || []).filter(c => {
+                if(!c.fecha_inicio || !c.fecha_fin) return false;
+                let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
+                let act = anioAct * 12 + mesAct;
+                return act >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && act <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
+            }).reduce((a, b) => a + (b.pago_mensual || 0), 0);
+            let totalTarjetasCarga = gastosTarjetasDirectos + cuotasTarjetasAmortizadas;
+
+            let disponibleMes = totalIngresos - (totalGastosEfec + totalTarjetasCarga);
+            if(disponibleMes < 0) disponibleMes = 0;
+
+            document.getElementById('kpi_disponible').innerText = "Q " + disponibleMes.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('kpi_ingresos').innerText = "Q " + totalIngresos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('kpi_gastos').innerText = "Q " + (totalGastosEfec + totalTarjetasCarga).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('kpi_tarjetas').innerText = "Q " + totalTarjetasCarga.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+            renderHistogramaCombinado(mesAct, anioAct);
+            renderDonutGastos(totalGastosEfec + totalTarjetasCarga);
+            renderTarjetasSaaS();
+            renderModuloAhorros(mesAct, anioAct);
+            renderCapacidadMish(mesAct, anioAct);
+            renderCompromisosTabla(mesAct, anioAct);
+            
+            lucide.createIcons();
+        }
+
+        function renderHistogramaCombinado(mesB, anioB) {
+            let cont = document.getElementById('contenedor_histograma');
+            let overlay = document.getElementById('contenedor_svg_linea_overlay');
+            if(!cont || !overlay) return;
+            cont.innerHTML = ""; overlay.innerHTML = "";
+            
+            let maxMonto = 20000; let mesesData = [];
+            let mInicio = mesB - 5; let aInicio = anioB;
+            while(mInicio <= 0) { mInicio += 12; aInicio--; }
+
+            for(let i=0; i<6; i++) {
+                let currM = mInicio + i; let currA = aInicio;
+                while(currM > 12) { currM -= 12; currA++; }
+                
+                let ing = (db_ingresos || []).filter(inv => (inv.tipo==='fijo' && (currA>inv.anio || (currA===inv.anio && currM>=inv.mes))) || (inv.tipo==='variable' && inv.anio===currA && inv.mes===currM)).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
+                let gas = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (currA>g.anio || (currA===g.anio && currM>=g.mes))) || (g.tipo==='variable' && g.anio===currA && g.mes===currM))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
+                let disp = ing - gas > 0 ? ing - gas : 0;
+
+                if(ing > maxMonto) maxMonto = ing;
+                if(gas > maxMonto) maxMonto = gas;
+                mesesData.push({ label: nombresMesesCompleto[currM-1], ing, gas, disp });
+            }
+
+            let puntosLinea = [];
+            let anchoContenedor = cont.clientWidth || 650;
+            let segmentoX = anchoContenedor / 6;
+
+            mesesData.forEach((d, idx) => {
+                let hIng = (d.ing / maxMonto) * 200;
+                let hGas = (d.gas / maxMonto) * 200;
+                
+                let coordX = (idx * segmentoX) + (segmentoX / 2);
+                let coordY = 216 - ((d.disp / maxMonto) * 200);
+                puntosLinea.push(`${coordX},${coordY}`);
+
+                let col = document.createElement('div');
+                col.className = 'chart-column';
+                col.innerHTML = `
+                    <div class="bars-container">
+                        <div class="v-bar income" style="height:${hIng}px;" onmouseenter="mostrarTooltipChart(event, '${d.label}', ${d.ing}, ${d.gas}, ${d.disp})" onmouseleave="ocultarTooltipChart()"></div>
+                        <div class="v-bar expense" style="height:${hGas}px;" onmouseenter="mostrarTooltipChart(event, '${d.label}', ${d.ing}, ${d.gas}, ${d.disp})" onmouseleave="ocultarTooltipChart()"></div>
+                    </div>
+                    <div class="chart-label">${d.label}</div>`;
+                cont.appendChild(col);
+            });
+
+            overlay.innerHTML = `
+                <svg width="100%" height="100%">
+                    <path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="#5B45F5" stroke-width="3"/>
+                    ${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="#5B45F5"/>`).join('')}
+                </svg>`;
+        }
+
+        function mostrarTooltipChart(e, mes, ing, gas, disp) {
+            let t = document.getElementById('global_chart_tooltip'); if(!t) return;
+            t.innerHTML = `<b>${mes}</b><br>📥 Ingresos: Q ${ing.toLocaleString()}<br>📤 Gastos: Q ${gas.toLocaleString()}<br>💰 Disponible: Q ${disp.toLocaleString()}`;
+            t.style.display = 'block'; t.style.left = (e.pageX + 15) + 'px'; t.style.top = (e.pageY - 40) + 'px';
+        }
+        function ocultarTooltipChart() { let t = document.getElementById('global_chart_tooltip'); if(t) t.style.display = 'none'; }
+
+        function renderDonutGastos(gTotal) {
+            document.getElementById('donut_total_interior').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
+            let ley = document.getElementById('lista_leyenda_donut'); if(!ley) return;
+            let fijos = gTotal * 0.65; let variables = gTotal * 0.25; let otros = gTotal * 0.10;
+            ley.innerHTML = `
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(fijos).toLocaleString()}</span><b class="legend-pct">65%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Variables</div><span class="legend-amount">Q ${Math.round(variables).toLocaleString()}</span><b class="legend-pct">25%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
+        }
+
+        function renderTarjetasSaaS() {
+            let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
+            cont.innerHTML = "";
+            let auxTarjetas = (db_tarjetas || []).slice(0, 2);
+            if(auxTarjetas.length === 0) {
+                auxTarjetas = [
+                    { id: 101, nombre: "Tarjeta Clásica", lim_cuotas: 28000, corte: 13, asset: "banco_industrial_tarjeta.png", banco: "Banco Industrial" },
+                    { id: 102, nombre: "Tarjeta Platinum", lim_cuotas: 28000, corte: 13, asset: "banco_BAC_Tarjeta_AMEX.jpeg", banco: "BAC Credomatic" }
+                ];
+            }
+            auxTarjetas.forEach((t, idx) => {
+                let limite = t.lim_cuotas || 28000; 
+                let utilizado = t.id === 101 ? 9100 : 3122.13;
+                let disponible = limite - utilizado; let pct = (utilizado / limite) * 100;
+                
+                let colorRango = "var(--green-positive)";
+                if(pct > 30 && pct <= 60) colorRango = "var(--blue-info)";
+                else if(pct > 60 && pct <= 80) colorRango = "var(--orange-warning)";
+                else if(pct > 80) colorRango = "var(--red-negative)";
+
+                let urlImgMaster = "";
+                if(idx === 0 || t.nombre.toLowerCase().includes('industrial') || t.banco.toLowerCase().includes('industrial')) {
+                    urlImgMaster = "https://www.corporacionbi.com/gt/bancoindustrial/wp-content/uploads/2023/08/tarjeta-credito-visa-clasica-bi.png";
+                } else if(t.nombre.toLowerCase().includes('promerica') || t.banco.toLowerCase().includes('promerica')) {
+                    urlImgMaster = "https://www.promerica.com.do/media/460974/tarjetas-de-credito-promerica_-1011x638px_visa-clasica.png";
+                } else {
+                    urlImgMaster = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTYYRvw79V0GFsDvZLWiYgviytrojDRXAgwITx7IFtVA&s=10";
+                }
+
+                cont.innerHTML += `
+                    <div class="credit-card-strip">
+                        <div class="card-strip-top-row">
+                            <img src="${urlImgMaster}" class="card-plastic-thumbnail">
+                            <div class="card-meta-identity">
+                                <span class="card-bank-label">${t.banco || 'Banco Cloud'}</span>
+                                <span class="card-product-label">${t.nombre} •••• ${t.id.toString().slice(-4)}</span>
+                            </div>
+                            <span class="badge purple" style="font-size:10px;">Corte: ${t.corte}</span>
+                        </div>
+                        <div class="card-utilization-bar-frame">
+                            <div class="card-utilization-fill" style="width: ${pct}%; background-color:${colorRango};"></div>
+                        </div>
+                        <div class="card-strip-metrics-grid">
+                            <span>Límite<b>Q ${limite.toLocaleString()}</b></span>
+                            <span>Utilizado<b>Q ${Math.round(utilizado).toLocaleString()}</b></span>
+                            <span>Disponible<b>Q ${Math.round(disponible).toLocaleString()}</b></span>
+                            <span>Pago<b>13 Ago</b></span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function renderModuloAhorros(mAct, aAct) {
+            let baseAhorro = parseFloat(localStorage.getItem('db_a_base')) || 7400;
+            let totalAcumulado = baseAhorro;
+            let metaObjetivo = 50000; let pct = (totalAcumulado / metaObjetivo) * 100; if(pct > 100) pct = 100;
+
+            document.getElementById('ahorro_total_kpi').innerText = "Q " + totalAcumulado.toLocaleString('en-US', {minimumFractionDigits:2});
+            document.getElementById('meta_ahorro_progresion').innerText = `Q ${Math.round(totalAcumulado).toLocaleString()} de Q ${metaObjetivo.toLocaleString()}`;
+            document.getElementById('meta_ahorro_pct').innerText = pct.toFixed(1) + "%";
+            document.getElementById('barra_progreso_ahorro_fill').style.width = pct + "%";
+
+            let lista = document.getElementById('lista_aportes_recientes_inicio'); if(!lista) return;
+            lista.innerHTML = `
+                <div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; border:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>
+                <div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/05/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
+        }
+
+        function renderCapacidadMish(mesB, anioB) {
+            let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
+            cont.innerHTML = "";
+            
+            let mInicio = mesB - 5; let aInicio = anioB;
+            while(mInicio <= 0) { mInicio += 12; aInicio--; }
+            
+            let anchoSvg = cont.clientWidth || 380;
+            let altoSvg = 160;
+            let marginPadding = 42;
+            let segmentX = (anchoSvg - (marginPadding * 2)) / 5;
+            
+            let valoresMish = [6900, 7600, 8400, 8400, 9100, 10700];
+            let coords = []; let labelsHtml = ""; let puntosHtml = "";
+
+            for(let i=0; i<6; i++) {
+                let currM = mInicio + i; while(currM > 12) currM -= 12;
+                let x = marginPadding + (i * segmentX);
+                let y = (altoSvg - 40) - ((valoresMish[i] / 15000) * 80);
+                coords.push(`${x},${y}`);
+                
+                puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--purple-main)"/>`;
+                labelsHtml += `<text x="${x}" y="${altoSvg - 10}" style="font-size:11px; fill:var(--text-secondary); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text>
+                               <text x="${x}" y="${y-12}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
+            }
+
+            cont.innerHTML = `
+                <svg width="100%" height="100%" viewBox="0 0 ${anchoSvg} ${altoSvg}" style="overflow:visible;">
+                    <line x1="20" y1="35" x2="${anchoSvg - 20}" y2="35" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <line x1="20" y1="75" x2="${anchoSvg - 20}" y2="75" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <line x1="20" y1="115" x2="${anchoSvg - 20}" y2="115" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <path d="M ${coords.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="2.5"/>
+                    ${puntosHtml} ${labelsHtml}
+                </svg>`;
+        }
+
+        function renderCompromisosTabla(mAct, aAct) {
+            let tbody = document.getElementById('tabla_compromisos_inicio'); if(!tbody) return;
+            tbody.innerHTML = "";
+            let muestra = [
+                { fecha: `13 Ago 2026`, concepto: "Pago mínimo Tarjeta Clásica", monto: 280, tipo: "Tarjeta", cls: "purple" },
+                { fecha: `13 Ago 2026`, concepto: "Pago mínimo Tarjeta Platinum", monto: 280, tipo: "Tarjeta", cls: "purple" },
+                { fecha: `06 Jul 2026`, concepto: "Luz / Internet", monto: 948, tipo: "Servicio", cls: "blue" },
+                { fecha: `03 Jul 2026`, concepto: "Transferencia a ahorros", monto: 7400, tipo: "Ahorro", cls: "green" }
+            ];
+
+            muestra.forEach(m => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="color:var(--text-secondary); font-weight:500;">${m.fecha}</td>
+                        <td style="font-weight:600;">${m.concepto}</td>
+                        <td style="text-align:right; font-weight:700;">Q ${m.monto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td style="text-align:center;"><span class="badge ${m.cls}">${m.tipo}</span></td>
+                    </tr>`;
+            });
+        }
+
+        verificarCredencialesSesion();
+    </script>
+</body>
+</html>
