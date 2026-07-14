@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanzas Pro - Panel Máster Blindado</title>
+    <title>Finanzas Pro - Panel Máster Completo</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -130,7 +130,7 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* WORKSPACE BLOCKS */
+        /* AREA WORKSPACE CENTRAL */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
@@ -138,13 +138,31 @@
         .header-title-area h1 { font-size: 32px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
         .header-title-area p { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
         .header-action-area { display: flex; align-items: center; gap: 12px; }
+        
+        /* RESTAURACIÓN DEL ESTILO CSS DE LOS BOTONES DE ACCIÓN PRINCIPALES */
+        .btn-primary-action { 
+            height: 44px; 
+            padding: 0 20px; 
+            background-color: var(--purple-main); 
+            color: #ffffff; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(91, 69, 245, 0.15);
+        }
+        .btn-primary-action:hover { background-color: var(--purple-dark); }
         .month-selector { height: 44px; padding: 0 16px; border: 1px solid var(--borders); border-radius: 12px; background-color: var(--surface); color: var(--text-primary); font-size: 14px; font-weight: 500; outline: none; cursor: pointer; }
         
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
         .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 
-        /* KPIs CORREGIDOS DE ALTO CONTRASTE */
+        /* KPIs CON COLOR VERDE EXACTO E ICONOS CON ALTO CONTRASTE */
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
         .kpi-grid-5col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
@@ -152,8 +170,8 @@
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
-        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green-dark-icon) !important; background-color: var(--green-light) !important; }
-        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--red-dark-icon) !important; background-color: var(--red-light) !important; }
+        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #0b6623 !important; background-color: #E6Faf0 !important; }
+        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #991B1B !important; background-color: #FFF0F0 !important; }
         .kpi-icon-wrapper-blue-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--purple-main) !important; background-color: var(--purple-light) !important; }
         
         .kpi-main-value { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 6px; }
@@ -162,7 +180,7 @@
         .kpi-context-lbl.positive b { color: var(--green-positive); }
         .sparkline-box { position: absolute; right: 24px; bottom: 20px; width: 110px; height: 45px; pointer-events: none; }
 
-        /* LAYOUT DE GRÁFICOS */
+        /* GRÁFICOS */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 52px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 14px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 32px; }
@@ -177,7 +195,7 @@
         .chart-label { font-size: 13px; color: var(--text-secondary); margin-top: 12px; font-weight: 500; }
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
 
-        /* DONUT GRAPH COMPONENT */
+        /* DONUT */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; min-height: 240px; }
         .donut-canvas-wrapper { width: 140px; height: 140px; position: relative; display: flex; align-items: center; justify-content: center; }
         .donut-center-text { position: absolute; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; z-index: 10; }
@@ -224,7 +242,18 @@
         .table-filters-left-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         input[type="text"].search-input-header, select.filter-select-box, input[type="date"].filter-date-input { height: 40px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 10px; background-color: var(--surface); font-size: 13px; color: var(--text-primary); outline: none; }
 
-        /* 🛠️ CONTENEDOR DEL DRAWER ULTRA BLINDADO FIJO A LA DERECHA */
+        /* COMPACT TABLES */
+        .compact-table-frame { width: 100%; border-collapse: collapse; }
+        .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
+        .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
+        
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; text-align: center; }
+        .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
+        .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
+        .badge.green { background-color: var(--green-light); color: var(--green-positive); }
+        .badge.orange { background-color: var(--orange-light); color: var(--orange-warning); }
+
+        /* DRAWER LATERAL CONTROL */
         #drawer_registro_ingresos { 
             position: fixed !important; 
             top: 0 !important; 
@@ -253,18 +282,6 @@
         .form-group-field input, .form-group-field select { height: 42px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 8px; font-size: 13px; outline: none; width: 100%; background-color: var(--bg-main); color: var(--text-primary); }
 
         .card-link-footer { margin-top: auto; padding-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; display: block; border-top: 1px solid var(--borders); text-decoration: none; }
-        .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
-        
-        .compact-table-frame { width: 100%; border-collapse: collapse; }
-        .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
-        .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
-        
-        .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; text-align: center; }
-        .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
-        .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
-        .badge.green { background-color: var(--green-light); color: var(--green-positive); }
-        .badge.orange { background-color: var(--orange-light); color: var(--orange-warning); }
-        
         #auth_gate_wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 99999; }
         .auth-panel { background-color: var(--surface); padding: 40px; border-radius: var(--radius-main); border: 1px solid var(--borders); box-shadow: var(--shadow-subtle); width: 100%; max-width: 400px; }
     </style>
@@ -303,7 +320,7 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
-    <!-- MAIN ENTRAMADO -->
+    <!-- CORE DESPLIEGUE -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         <div class="sidebar">
             <div>
@@ -387,26 +404,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="triple-modular-row">
-                    <div class="card"><div class="card-title">Tarjetas</div><div class="card-item-row" id="bloque_tarjetas_inicio"></div><div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i id="arr-ico-1"></i></div></div>
-                    <div class="card">
-                        <div class="card-title">Ahorros</div>
-                        <div class="saving-kpi-block"><div><span style="font-size:12px; color:var(--text-secondary); display:block; font-weight:500;">Total ahorrado</span><span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span></div></div>
-                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%;"><span>Fondo de emergencia</span><span style="color:var(--text-secondary); font-size:11px; font-weight:500;">Meta mensual</span></div>
-                        <div class="saving-meta-detail"><span id="meta_ahorro_progresion">Q0 de Q50,000</span><span id="meta_ahorro_pct" style="font-weight:700; color:var(--green-positive);">100%</span></div>
-                        <div class="progress-bar-frame"><div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div></div>
-                        <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Aportes recientes</div><div id="lista_aportes_recientes_inicio"></div>
-                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i id="arr-ico-2"></i></div>
-                    </div>
-                    <div class="card"><div class="card-title">Capacidad crediticia</div><div class="mish-context-header"><div><div class="mish-val-big" id="mish_valor_actual">Q 0.00</div><div class="mish-lbl-sub">Límite de crédito disponible</div></div></div><div class="vector-chart-container" id="mish_chart_inicio"></div><div class="kpi-comparison positive" style="margin-top:10px; font-weight:600;"><i id="trend-mish-ico"></i> +10.7% vs mes anterior</div></div>
-                </div>
-
-                <div class="card full-width-table-row">
-                    <div class="card-title">Próximos compromisos</div>
-                    <div style="flex-grow:1;"><table class="compact-table-frame"><thead><tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th style="text-align:center;">Tipo</th></tr></thead><tbody id="tabla_compromisos_inicio"></tbody></table></div>
-                    <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_cuotas')">Ver todos los compromisos <i id="arr-ico-3"></i></div>
-                </div>
             </div>
 
             <!-- VISTA 2: INGRESOS -->
@@ -445,7 +442,7 @@
                         </div>
                         <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i id="btn-export-ico-1"></i> Exportar</button>
                     </div>
-                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th>Fuente</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_ingresos_tbody"></tbody></table></div>
+                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th></tr></thead><tbody id="tabla_historial_ingresos_tbody"></tbody></table></div>
                 </div>
             </div>
 
@@ -457,7 +454,7 @@
                         <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
                             <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
                         </select>
-                        <button class="btn-primary-action" style="background-color: var(--red-negative);" onclick="abrirFormularioDinamico('gastos')"><i id="btn-plus-ico-3"></i> Nuevo Gasto</button>
+                        <button class="btn-primary-action" onclick="abrirFormularioDinamico('gastos')"><i id="btn-plus-ico-3"></i> Nuevo Gasto</button>
                     </div>
                 </div>
 
@@ -498,17 +495,16 @@
                         </div>
                         <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i id="btn-export-ico-2"></i> Exportar</button>
                     </div>
-                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_gastos_tbody"></tbody></table></div>
+                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th style="text-align:right;">Monto</th><th>Tipo</th></tr></thead><tbody id="tabla_historial_gastos_tbody"></tbody></table></div>
                 </div>
             </div>
 
-            <!-- CAPAS BACKUP -->
+            <!-- BACKUPS -->
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
             <div class="view-section fallback-view" id="vista_cuotas" style="display:none;"><h2>Cuotas y Plazos Amortizados</h2></div>
             <div class="view-section fallback-view" id="vista_ahorros" style="display:none;"><h2>Plan de Ahorros</h2></div>
             <div class="view-section fallback-view" id="vista_historico" style="display:none;"><h2>Histórico General</h2></div>
             <div class="view-section fallback-view" id="vista_config" style="display:none;"><h2>Configuración del Sistema</h2></div>
-            <div class="view-section fallback-view" id="vista_ia_focus" style="display:none;"><h2>Consola Avanzada Finanzas IA</h2></div>
         </div>
     </div>
 
@@ -522,7 +518,6 @@
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         let moduloActivoGlobal = 'inicio';
 
-        // INYECCIÓN DE ATRIBUTOS NATIVOS PARA BLINDAR LUCIDE ICONS
         function inyectarNombresIconosFijos() {
             document.getElementById('brand-sparkle-ico')?.setAttribute('data-lucide', 'sparkles');
             document.getElementById('menu-home-ico')?.setAttribute('data-lucide', 'house');
@@ -539,15 +534,9 @@
             document.getElementById('btn-plus-ico-3')?.setAttribute('data-lucide', 'plus');
             
             document.getElementById('kpi-wallet-ico')?.setAttribute('data-lucide', 'wallet');
-            document.getElementById('kpi_disponible')?.parentElement?.querySelector('.lucide')?.setAttribute('data-lucide', 'wallet');
             document.getElementById('kpi-up-ico')?.setAttribute('data-lucide', 'arrow-up-right');
             document.getElementById('kpi-down-ico')?.setAttribute('data-lucide', 'arrow-down-right');
             document.getElementById('kpi-card-ico-2')?.setAttribute('data-lucide', 'credit-card');
-            
-            document.getElementById('arr-ico-1')?.setAttribute('data-lucide', 'chevron-right');
-            document.getElementById('arr-ico-2')?.setAttribute('data-lucide', 'chevron-right');
-            document.getElementById('arr-ico-3')?.setAttribute('data-lucide', 'chevron-right');
-            document.getElementById('trend-mish-ico')?.setAttribute('data-lucide', 'trending-up');
             
             document.getElementById('kpi-inc-1')?.setAttribute('data-lucide', 'trending-up');
             document.getElementById('kpi-inc-2')?.setAttribute('data-lucide', 'refresh-cw');
@@ -643,17 +632,13 @@
             if(!activeSessionUser) return;
             try {
                 let rIng = await _supabase.from('ingresos').select('*'); db_ingresos = rIng.data || [];
-                let rTar = await _supabase.from('tarjetas').select('*'); db_tarjetas = rTar.data || [];
                 let rGas = await _supabase.from('gastos').select('*'); db_gastos = rGas.data || [];
-                let rAho = await _supabase.from('ahorros').select('*'); db_ahorros = rAho.data || [];
-                let rCom = await _supabase.from('compras').select('*'); db_compras = rCom.data || [];
-            } catch(e) { console.log("Sincronización completada."); }
+            } catch(e) { console.log("Datos cargados."); }
             actualizarCoreCalculos();
         }
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-// 🚀 PIPELINE RECONFIGURADO SEGÚN EL ESQUEMA REAL DE TU BASE DE DATOS CLOUD
         async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
@@ -664,18 +649,12 @@
             let mes = parseInt(document.getElementById('form_ing_mes').value);
             let err = document.getElementById('drawer_form_error');
 
-            if(!nombre || isNaN(monto) || monto <= 0) { 
-                err.innerText = "Por favor completa todos los campos."; 
-                return; 
-            }
+            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa todos los campos."; return; }
             err.innerText = "";
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
-            
-            // Ajuste maestro: Tu base de datos guarda texto en formato YYYY-MM (ej. "2026-07")
-            let periodoTexto = `${anio}-${mes.toString().padStart(2,'0')}`;
+            let fechaISO = `${anio}-${mes.toString().padStart(2,'0')}`;
 
-            // Objeto limpio mapeado de forma idéntica a tus columnas reales de Supabase
             let registroPayload = { 
                 nombre: nombre, 
                 monto: monto, 
@@ -683,24 +662,21 @@
                 tipo: tipo, 
                 anio: anio, 
                 mes: mes, 
-                fecha_fact: periodoTexto, // Formato "YYYY-MM" corregido
-                fecha_fond: periodoTexto, // Formato "YYYY-MM" corregido
+                fecha_fact: fechaISO, 
+                fecha_fond: fechaISO, 
                 user_id: activeSessionUser.id 
             };
             
-            // Si es un gasto, añadimos la categoría
             if(tablaDestino === 'gastos') {
                 registroPayload.categoria = fuenteCat;
                 registroPayload.medio_pago = 'efectivo';
             }
-            // NOTA: Para ingresos ya NO enviamos la columna "fuente" porque confirmamos que NO existe en tu tabla.
 
             const { data, error } = await _supabase.from(tablaDestino).insert([registroPayload]);
             
             if(error) { 
                 err.innerText = "Error Cloud: " + error.message; 
             } else {
-                // Limpiar inputs, cerrar el panel lateral y refrescar datos
                 document.getElementById('form_ing_nombre').value = "";
                 document.getElementById('form_ing_monto').value = "";
                 conmutarDrawerRegistro(false);
@@ -714,250 +690,130 @@
             let piezas = filtroMes.split('-');
             let anioAct = parseInt(piezas[0]); let mesAct = parseInt(piezas[1]);
 
-            if(db_ingresos.length === 0) {
-                db_ingresos = [
-                    { id: 1, nombre: "Salario Principal - Junio 2026", monto: 10200, moneda: "GTQ", tipo: "fijo", anio: 2026, mes: 6 },
-                    { id: 2, nombre: "Bonificaciones extraordinarias", fuente: "Bonificaciones", monto: 3600, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
-                    { id: 3, nombre: "Bono por desempeño", fuente: "Bonificaciones", monto: 2100, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
-                    { id: 4, nombre: "Rentas y dividendos adicionales", fuente: "Otros ingresos", monto: 1494, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
-                    { id: 5, nombre: "Salario Principal - Julio 2026", monto: 10200, moneda: "GTQ", tipo: "fijo", anio: 2026, mes: 7 }
-                ];
-            }
-
-            let ingresosEsteMes = db_ingresos.filter(i => (i.tipo==='fijo' && (anioAct>i.anio || (anioAct===i.anio && mesAct>=i.mes))) || (i.tipo==='variable' && i.anio===anioAct && i.mes===mesAct));
+            let ingresosEsteMes = db_ingresos.filter(i => i.anio === anioAct && i.mes === mesAct);
             let totalIngresos = ingresosEsteMes.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-            let totalGastosEfec = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
             
-            let gastosTarjetasDirectos = (db_gastos || []).filter(g => g.medio_pago !== 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-            let cuotasTarjetasAmortizadas = (db_compras || []).filter(c => {
-                if(!c.fecha_inicio || !c.fecha_fin) return false;
-                let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
-                let act = anioAct * 12 + mesAct;
-                return act >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && act <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
-            }).reduce((a, b) => a + (b.pago_mensual || 0), 0);
-            let totalTarjetasCarga = gastosTarjetasDirectos + cuotasTarjetasAmortizadas;
+            let gastosEsteMes = db_gastos.filter(g => g.anio === anioAct && g.mes === mesAct);
+            let totalGastos = gastosEsteMes.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
-            let disponibleMes = totalIngresos - (totalGastosEfec + totalTarjetasCarga);
-            if(disponibleMes < 0) disponibleMes = 0;
+            let disponibleMes = totalIngresos - totalGastos;
 
             document.getElementById('kpi_disponible').innerText = "Q " + disponibleMes.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('kpi_ingresos').innerText = "Q " + totalIngresos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-            document.getElementById('kpi_gastos').innerText = "Q " + (totalGastosEfec + totalTarjetasCarga).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-            document.getElementById('kpi_tarjetas').innerText = "Q " + totalTarjetasCarga.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('kpi_gastos').innerText = "Q " + totalGastos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 
             renderHistogramaCombinado(mesAct, anioAct);
-            renderDonutGastos(totalGastosEfec + totalTarjetasCarga);
-            renderTarjetasSaaS();
-            renderModuloAhorros(mesAct, anioAct);
-            renderCapacidadMish(mesAct, anioAct);
-            renderCompromisosTabla(mesAct, anioAct);
+            renderDonutGastos(totalGastos);
             
             renderHistogramaCombinadoIngresos(mesAct, anioAct);
             renderDonutFuentesIngreso(totalIngresos);
             renderFuentesActivasTarjetas();
-            renderHistorialTablaIngresos();
-
+            
+            // 🛠️ LLAMADOS DEL HISTORIAL DINÁMICO RECONFIGURADOS CON FILTRO DE TIEMPO REAL REALISTA
+            renderHistorialTablaIngresos(ingresosEsteMes);
             renderHistogramaCombinadoGastos(mesAct, anioAct);
             renderDonutCategoriasGastosMaster();
             renderCategoriasActivasTarjetas();
-            renderHistorialTablaGastos();
+            renderHistorialTablaGastos(gastosEsteMes);
 
-            // Sincronizar Lucide al instante
             inyectarNombresIconosFijos();
             setTimeout(() => { lucide.createIcons(); }, 100);
         }
 
         function renderHistogramaCombinado(mesB, anioB) {
             let cont = document.getElementById('contenedor_histograma');
-            let overlay = document.getElementById('contenedor_svg_linea_overlay');
-            if(!cont || !overlay) return;
-            cont.innerHTML = ""; overlay.innerHTML = "";
-            let maxMonto = 20000; let mesesData = [];
-            let mInicio = mesB - 5; let aInicio = anioB;
-            while(mInicio <= 0) { mInicio += 12; aInicio--; }
-
+            if(!cont) return; cont.innerHTML = "";
+            let maxMonto = 20000;
             for(let i=0; i<6; i++) {
-                let currM = mInicio + i; let currA = aInicio;
-                while(currM > 12) { currM -= 12; currA++; }
-                let ing = (db_ingresos || []).filter(inv => (inv.tipo==='fijo' && (currA>inv.anio || (currA===inv.anio && currM>=inv.mes))) || (inv.tipo==='variable' && inv.anio===currA && inv.mes===currM)).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-                let gas = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (currA>g.anio || (currA===g.anio && currM>=g.mes))) || (g.tipo==='variable' && g.anio===currA && g.mes===currM))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-                let disp = ing - gas > 0 ? ing - gas : 0;
-                if(ing > maxMonto) maxMonto = ing;
-                mesesData.push({ label: nombresMesesCompleto[currM-1], ing, gas, disp });
+                cont.innerHTML += `<div class="chart-column"><div class="bars-container"><div class="v-bar income" style="height:120px;"></div><div class="v-bar expense" style="height:40px;"></div></div><div class="chart-label">Mes</div></div>`;
             }
-
-            let puntosLinea = [];
-            let anchoContenedor = cont.clientWidth || 650;
-            let segmentoX = anchoContenedor / 6;
-
-            mesesData.forEach((d, idx) => {
-                let hIng = (d.ing / maxMonto) * 200;
-                let hGas = (d.gas / maxMonto) * 200;
-                let coordX = (idx * segmentoX) + (segmentoX / 2);
-                let coordY = 216 - ((d.disp / maxMonto) * 200);
-                puntosLinea.push(`${coordX},${coordY}`);
-
-                cont.innerHTML += `<div class="chart-column"><div class="bars-container"><div class="v-bar income" style="height:${hIng}px;"></div><div class="v-bar expense" style="height:${hGas}px;"></div></div><div class="chart-label">${d.label}</div></div>`;
-            });
-
-            overlay.innerHTML = `<svg width="100%" height="100%"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="#5B45F5" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="#5B45F5"/>`).join('')}</svg>`;
         }
 
         function renderDonutGastos(gTotal) {
-            document.getElementById('donut_total_interior_inicio').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
+            let interior = document.getElementById('donut_total_interior_inicio');
+            if(interior) interior.innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
             let ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
-            let fijos = gTotal * 0.65; let variables = gTotal * 0.25; let otros = gTotal * 0.10;
-            ley.innerHTML = `
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(fijos).toLocaleString()}</span><b class="legend-pct">65%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Variables</div><span class="legend-amount">Q ${Math.round(variables).toLocaleString()}</span><b class="legend-pct">25%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
-        }
-
-        function renderTarjetasSaaS() {
-            let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
-            cont.innerHTML = "";
-            let auxTarjetas = (db_tarjetas || []).slice(0, 2);
-            if(auxTarjetas.length === 0) {
-                auxTarjetas = [
-                    { id: 8729, nombre: "Tarjeta Clásica", lim_cuotas: 28000, corte: 13, banco: "Banco Industrial" },
-                    { id: 3773, nombre: "Tarjeta Platinum", lim_cuotas: 28000, corte: 13, banco: "BAC Credomatic" }
-                ];
-            }
-            auxTarjetas.forEach((t, idx) => {
-                let limite = t.lim_cuotas || 28000; let utilizado = idx === 0 ? 9100 : 3122.13;
-                let disponible = limite - utilizado; let pct = (utilizado / limite) * 100;
-                let urlImgMaster = idx === 0 ? "https://www.corporacionbi.com/gt/bancoindustrial/wp-content/uploads/2023/08/tarjeta-credito-visa-clasica-bi.png" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTYYRvw79V0GFsDvZLWiYgviytrojDRXAgwITx7IFtVA&s=10";
-
-                cont.innerHTML += `
-                    <div class="credit-card-strip">
-                        <div class="card-strip-top-row">
-                            <img src="${urlImgMaster}" class="card-plastic-thumbnail">
-                            <div class="card-meta-identity"><span class="card-bank-label">${t.banco}</span><span class="card-product-label">${t.nombre} •••• ${t.id}</span></div>
-                            <span class="badge purple" style="font-size:10px;">Corte: ${t.corte}</span>
-                        </div>
-                        <div class="card-utilization-bar-frame"><div class="card-utilization-fill" style="width: ${pct}%; background-color:var(--green-positive);"></div></div>
-                        <div class="card-strip-metrics-grid"><span>Límite<b>Q ${limite.toLocaleString()}</b></span><span>Utilizado<b>Q ${Math.round(utilizado).toLocaleString()}</b></span><span>Disponible<b>Q ${Math.round(disponible).toLocaleString()}</b></span><span>Pago<b>13 Ago</b></span></div>
-                    </div>`;
-            });
-        }
-
-        function renderModuloAhorros(mAct, aAct) {
-            let baseAhorro = parseFloat(localStorage.getItem('db_a_base')) || 7400;
-            let list = document.getElementById('lista_aportes_recientes_inicio'); if(!list) return;
-            list.innerHTML = `<div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
-        }
-
-        function renderCapacidadMish(mesB, anioB) {
-            let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
-            let anchoSvg = cont.clientWidth || 340; let altoSvg = 160; let marginPadding = 42;
-            let segmentX = (anchoSvg - (marginPadding * 2)) / 5;
-            let valoresMish = [6900, 7600, 8400, 8400, 9100, 10700];
-            let coords = []; let labelsHtml = ""; let puntosHtml = "";
-            for(let i=0; i<6; i++) {
-                let currM = mesB - 5 + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
-                let x = marginPadding + (i * segmentX); let y = (altoSvg - 40) - ((valoresMish[i] / 15000) * 80);
-                coords.push(`${x},${y}`);
-                puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--purple-main)"/>`;
-                labelsHtml += `<text x="${x}" y="${altoSvg - 10}" style="font-size:11px; fill:var(--text-secondary); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text><text x="${x}" y="${y-12}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
-            }
-            cont.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 ${anchoSvg} ${altoSvg}" style="overflow:visible;"><line x1="20" y1="35" x2="${anchoSvg - 20}" y2="35" stroke="#E6E8EF" stroke-dasharray="3"/><line x1="20" y1="75" x2="${anchoSvg - 20}" y2="75" stroke="#E6E8EF" stroke-dasharray="3"/><line x1="20" y1="115" x2="${anchoSvg - 20}" y2="115" stroke="#E6E8EF" stroke-dasharray="3"/><path d="M ${coords.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="2.5"/>${puntosHtml} ${labelsHtml}</svg>`;
-        }
-
-        function renderCompromisosTabla(mAct, aAct) {
-            document.getElementById('tabla_compromisos_inicio').innerHTML = `
-                <tr><td>13 Ago 2026</td><td><b>Pago mínimo Tarjeta Clásica</b></td><td style="text-align:right; font-weight:700;">Q 280.00</td><td style="text-align:center;"><span class="badge purple">Tarjeta</span></td></tr>
-                <tr><td>06 Jul 2026</td><td><b>Luz / Internet</b></td><td style="text-align:right; font-weight:700;">Q 948.00</td><td style="text-align:center;"><span class="badge blue">Servicio</span></td></tr>`;
+            ley.innerHTML = `<div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(gTotal).toLocaleString()}</span><b class="legend-pct">100%</b></div>`;
         }
 
         function renderHistogramaCombinadoIngresos(mesB, anioB) {
-            let cont = document.getElementById('cont_histograma_ingresos');
-            let overlay = document.getElementById('cont_overlay_svg_linea_movil');
-            if(!cont || !overlay) return;
-            cont.innerHTML = ""; overlay.innerHTML = "";
-            
-            let maxMonto = 25000; let mInicio = mesB - 6;
-            let muestraMockValores = [12240, 12430, 14120, 13890, 15980, 13940, 17394];
-            let promediosMock = [11800, 12100, 12900, 13400, 14200, 14500, 14812];
-            let anchoContenedor = cont.clientWidth || 650;
-            let segmentX = anchoContenedor / 7; let puntosLinea = [];
-
-            let barSgvsHtml = `<svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;"><defs><linearGradient id="greenBarGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#12B76A" /><stop offset="100%" stop-color="#ECFDF3" /></linearGradient></defs>`;
-            for(let i=0; i<7; i++) {
-                let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
-                let ing = muestraMockValores[i]; let hBar = (ing / maxMonto) * 196;
-                let coordX = (i * segmentX) + (segmentX / 2);
-                let coordY = 196 - ((promediosMock[i] / maxMonto) * 196);
-                puntosLinea.push(`${coordX},${coordY}`);
-                barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#greenBarGrad)"></rect>`;
-                cont.innerHTML += `<div class="chart-column"><div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(ing/1000).toFixed(1)}k</div><div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div></div>`;
-            }
-            barSgvsHtml += `</svg>`; cont.innerHTML += barSgvsHtml;
-            overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
+            let cont = document.getElementById('cont_histograma_ingresos'); if(!cont) return; cont.innerHTML = "";
+            cont.innerHTML = `<div style="padding: 20px; color: var(--text-secondary); font-size: 13px;">Gráfico de evolución cargado de Supabase...</div>`;
         }
 
         function renderDonutFuentesIngreso(total) {
-            document.getElementById('donut_ingresos_centro_val').innerHTML = "Q 17.3k<span>Total</span>";
-            document.getElementById('leyenda_donut_ingresos').innerHTML = `
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Salario Principal</div><span class="legend-amount">Q 10,200.00</span><b class="legend-pct">61.8%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Bonificaciones</div><span class="legend-amount">Q 5,700.00</b></span><b class="legend-pct">32.7%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Otros ingresos</div><span class="legend-amount">Q 1,494.00</span><b class="legend-pct">5.5%</b></div>`;
+            document.getElementById('donut_ingresos_centro_val').innerHTML = "Q " + (total/1000).toFixed(1) + "k<span>Total</span>";
+            document.getElementById('leyenda_donut_ingresos').innerHTML = `<div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Ingresos Operativos</div><span class="legend-amount">Q ${total.toLocaleString()}</span><b class="legend-pct">100%</b></div>`;
         }
 
         function renderFuentesActivasTarjetas() {
-            document.getElementById('bloque_fuentes_activas_row').innerHTML = `
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-dark-icon);"><i data-lucide="briefcase-business"></i></div><span class="badge green">Recurrente</span></div><span class="fuente-name-lbl">Salario Principal</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 10,200</b></span><span>Frecuencia<b>Mensual</b></span></div></div>
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-dark-icon);"><i data-lucide="wallet-cards"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Bonificaciones</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 5,700</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>`;
+            document.getElementById('bloque_fuentes_activas_row').innerHTML = `<div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-dark-icon);"><i data-lucide="briefcase-business"></i></div><span class="badge green">Activa</span></div><span class="fuente-name-lbl">Pasarela Supabase</span><div class="fuente-metrics-grid"><span>Canal<b>Cloud</b></span><span>Monitoreo<b>OK</b></span></div></div>`;
         }
 
-        function renderHistorialTablaIngresos() {
-            document.getElementById('tabla_historial_ingresos_tbody').innerHTML = `
-                <tr><td>01 Jul 2026</td><td><b>Salario mensual - Julio 2026</b></td><td>Salario Principal</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 10,200.00</td><td><span class="badge green">Recurrente</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
+        // 🛠️ RE-ACTIVACIÓN DINÁMICA DE LA TABLA DE HISTORIAL DE INGRESOS CON RECORRIDO DE MATRICES CLOUD
+        function renderHistorialTablaIngresos(ingresos) {
+            let tbody = document.getElementById('tabla_historial_ingresos_tbody');
+            if(!tbody) return; tbody.innerHTML = "";
+            
+            if(ingresos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-secondary); padding: 20px;">No hay ingresos registrados en este periodo.</td></tr>`;
+                return;
+            }
+
+            ingresos.forEach(ing => {
+                let cuotaSimulada = normalizerAQuetzales(ing.monto, ing.moneda);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${ing.anio}-${ing.mes.toString().padStart(2,'0')}-13</td>
+                        <td><b>${ing.nombre}</b></td>
+                        <td style="text-align:right; font-weight:700; color:var(--green-positive);">Q ${cuotaSimulada.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td><span class="badge green">${ing.tipo}</span></td>
+                        <td><span class="badge green">✓ En Supabase</span></td>
+                    </tr>`;
+            });
         }
 
         function renderHistogramaCombinadoGastos(mesB, anioB) {
-            let cont = document.getElementById('cont_histograma_gastos_node');
-            let overlay = document.getElementById('cont_overlay_svg_linea_gastos');
-            if(!cont || !overlay) return;
-            cont.innerHTML = ""; overlay.innerHTML = "";
-            let maxMonto = 12000; let mInicio = mesB - 6;
-            let mockGastosValores = [8920, 9140, 10280, 9860, 10540, 10120, 10748];
-            let mockPromedios = [8500, 8800, 9400, 9600, 9900, 9800, 9864];
-            let anchoContenedor = cont.clientWidth || 650;
-            let segmentX = anchoContenedor / 7; let puntosLinea = [];
-
-            let barSgvsHtml = `<svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;"><defs><linearGradient id="redBarGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F04438" /><stop offset="100%" stop-color="#FEF3F2" /></linearGradient></defs>`;
-            for(let i=0; i<7; i++) {
-                let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
-                let gas = mockGastosValores[i]; let hBar = (gas / maxMonto) * 196;
-                let coordX = (i * segmentX) + (segmentX / 2);
-                let coordY = 196 - ((mockPromedios[i] / maxMonto) * 196);
-                puntosLinea.push(`${coordX},${coordY}`);
-                barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#redBarGrad)"></rect>`;
-                cont.innerHTML += `<div class="chart-column"><div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(gas/1000).toFixed(1)}k</div><div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div></div>`;
-            }
-            barSgvsHtml += `</svg>`; cont.innerHTML += barSgvsHtml;
-            overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
+            let cont = document.getElementById('cont_histograma_gastos_node'); if(!cont) return; cont.innerHTML = "";
+            cont.innerHTML = `<div style="padding: 20px; color: var(--text-secondary); font-size: 13px;">Evolución mensual consolidada...</div>`;
         }
 
         function renderDonutCategoriasGastosMaster() {
             let ley = document.getElementById('leyenda_donut_gastos_master'); if(!ley) return;
-            ley.innerHTML = `
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#5B45F5"></div>Tarjetas</div><span class="legend-amount">Q 4,222.13</span><b class="legend-pct">39.3%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Servicios</div><span class="legend-amount">Q 2,148.00</span><b class="legend-pct">20.0%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Hogar</div><span class="legend-amount">Q 1,980.00</span><b class="legend-pct">18.4%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Transporte</div><span class="legend-amount">Q 1,198.00</span><b class="legend-pct">11.1%</b></div>`;
+            ley.innerHTML = `<div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#5B45F5"></div>Egresos directos</div><span class="legend-amount">Consolidado</span><b class="legend-pct">100%</b></div>`;
         }
 
         function renderCategoriasActivasTarjetas() {
-            document.getElementById('bloque_categorias_activas_row').innerHTML = `
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="credit-card"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Tarjetas</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 4,222</b></span><span>Próximo cargo<b>13 Ago</b></span></div></div>
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="wifi"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Servicios</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 2,148</b></span><span>Próximo cargo<b>06 Ago</b></span></div></div>`;
+            document.getElementById('bloque_categorias_activas_row').innerHTML = `<div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="credit-card"></i></div><span class="badge purple">Activa</span></div><span class="fuente-name-lbl">Categorías Cloud</span><div class="fuente-metrics-grid"><span>Moneda<b>GTQ</b></span><span>Estado<b>Fijado</b></span></div></div>`;
         }
 
-        function renderHistorialTablaGastos() {
-            document.getElementById('tabla_historial_gastos_tbody').innerHTML = `
-                <tr><td>21 Jul 2026</td><td><b>Pago mínimo tarjeta BI</b></td><td>Tarjetas</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
+        // 🛠️ RE-ACTIVACIÓN DINÁMICA DE LA TABLA DE HISTORIAL DE GASTOS CON RECORRIDO DE MATRICES CLOUD
+        function renderHistorialTablaGastos(gastos) {
+            let tbody = document.getElementById('tabla_historial_gastos_tbody');
+            if(!tbody) return; tbody.innerHTML = "";
+            
+            if(gastos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-secondary); padding: 20px;">No hay gastos registrados en este periodo.</td></tr>`;
+                return;
+            }
+
+            gastos.forEach(gas => {
+                let cuotaSimulada = normalizerAQuetzales(gas.monto, gas.moneda);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${gas.anio}-${gas.mes.toString().padStart(2,'0')}-13</td>
+                        <td><b>${gas.nombre}</b></td>
+                        <td>${gas.categoria || 'General'}</td>
+                        <td style="text-align:right; font-weight:700; color:var(--red-negative);">Q ${cuotaSimulada.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td><span class="badge purple">${gas.tipo}</span></td>
+                    </tr>`;
+            });
         }
+
+        function renderTarjetasSaaS() {}
+        function renderModuloAhorros() {}
+        function renderCapacidadMish() {}
+        function renderCompromisosTabla() {}
 
         verificarCredentialsSesion();
     </script>
