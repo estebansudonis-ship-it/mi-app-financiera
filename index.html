@@ -9,7 +9,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* PALETA BASE MAESTRA */
         :root {
             --bg-main: #F7F8FC;
             --surface: #FFFFFF;
@@ -60,7 +59,7 @@
             vertical-align: middle;
         }
 
-        /* 1. SIDEBAR & BRANDING */
+        /* SIDEBAR & BRANDING */
         .sidebar {
             width: 240px;
             height: 100vh;
@@ -146,38 +145,37 @@
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
         .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 
-        /* KPIs COMPONENTES */
+        /* 2. REGLA: ICONOS DE ARRIBA SON TODOS VERDES */
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
         .kpi-grid-5col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
         .kpi-card.double-width { grid-column: span 2; background-color: #F9F8FF; border-color: #DCD6FF; }
         
-        /* CORRECCIÓN DE ALINEACIÓN DE ICONOS KPIs */
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
-        .kpi-icon-wrapper { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        
+        /* Contenedores forzados a verde positivo */
+        .kpi-icon-wrapper-green { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green-positive); background-color: var(--green-light); }
         
         .kpi-main-value { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 6px; }
         .kpi-card.double-width .kpi-main-value { color: var(--purple-main); font-size: 34px; }
         .kpi-context-lbl { font-size: 12px; color: var(--text-secondary); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
         .kpi-context-lbl.positive b { color: var(--green-positive); }
+        .sparkline-box { position: absolute; right: 24px; bottom: 20px; width: 110px; height: 45px; pointer-events: none; }
 
-        /* GRÁFICOS INTERNOS */
+        /* 1. GRÁFICA EVOLUCIÓN DE INGRESOS CON BARRAS EN DEGRADADO */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 52px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 14px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 32px; }
         .chart-grid-lines { position: absolute; left: 52px; right: 16px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
         .grid-line-h { width: 100%; border-top: 1px dashed #E2E4EB; }
-        .chart-column { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; z-index: 2; }
-        .bars-container { display: flex; gap: 6px; width: 100%; height: 85%; align-items: flex-end; justify-content: center; position: relative; }
-        .v-bar { width: 22px; border-radius: 4px 4px 0 0; transition: transform 0.15s; cursor: pointer; }
-        .v-bar.income { background-color: #12B76A; }
-        .v-bar.expense { background-color: #F04438; }
+        
+        .chart-column { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; z-index: 2; position: relative; }
         .chart-label { font-size: 13px; color: var(--text-secondary); margin-top: 12px; font-weight: 500; }
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
         .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
-        /* RECONSTRUCCIÓN DEL DONUT CHART */
+        /* 3. RECONSTRUCCIÓN DEL DONUT CHART CON COLORES CORRECTOS */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; min-height: 240px; }
         .donut-canvas-wrapper { width: 140px; height: 140px; position: relative; display: flex; align-items: center; justify-content: center; }
         .donut-center-text { position: absolute; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; z-index: 10; }
@@ -195,7 +193,7 @@
         .triple-modular-row { display: flex; width: 100%; gap: 24px; align-items: stretch; }
         .triple-modular-row > .card { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
-        /* ELEMENTOS INFERIORES VISTA INICIO */
+        /* COMPONENTES INFERIORES VISTA INICIO */
         .card-item-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
         .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; background-color: #FAFAFB; }
         .card-strip-top-row { display: flex; align-items: center; width: 100%; }
@@ -225,9 +223,8 @@
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
         .badge.green { background-color: var(--green-light); color: var(--green-positive); }
         .badge.orange { background-color: var(--orange-light); color: var(--orange-warning); }
-        .badge.red { background-color: var(--red-light); color: var(--red-negative); }
 
-        /* ELEMENTOS EXCLUSIVOS MÓDULO INGRESOS */
+        /* FUENTES ACTIVAS */
         .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
         .fuente-active-mini-card { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; background-color: #FAFAFB; display: flex; flex-direction: column; gap: 12px; }
         .fuente-card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -250,10 +247,6 @@
 
         .card-link-footer { margin-top: auto; padding-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; display: block; border-top: 1px solid var(--borders); text-decoration: none; }
         .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
-
-        #auth_gate_wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 99999; }
-        .auth-panel { background-color: var(--surface); padding: 40px; border-radius: var(--radius-main); border: 1px solid var(--borders); box-shadow: var(--shadow-subtle); width: 100%; max-width: 400px; }
-        .fallback-view { padding: 40px; text-align: center; color: var(--text-secondary); }
     </style>
 </head>
 <body>
@@ -286,7 +279,6 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
-    <!-- NAVEGACIÓN GENERAL -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         
         <div class="sidebar">
@@ -442,7 +434,7 @@
             </div>
 
             <!-- ================================================== -->
-            <!-- VISTA 2: MODULO DE INGRESOS COMPLETO (PASO 2)     -->
+            <!-- VISTA 2: MODULO DE INGRESOS (REFINADO PASO 2)       -->
             <!-- ================================================== -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
@@ -455,12 +447,12 @@
                     </div>
                 </div>
 
-                <!-- KPIs DE INGRESOS CON CORRECCIÓN DE ICONOS -->
+                <!-- 2. CORRECCIÓN: ICONOS KPIs TODOS VERDES CON FONDO VERDE CLARO -->
                 <div class="kpi-grid">
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Ingresos del mes</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--green-positive); background: var(--green-light);"><i data-lucide="trending-up"></i></div>
+                            <div class="kpi-icon-wrapper-green"><i data-lucide="trending-up"></i></div>
                         </div>
                         <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 17,394.00</span>
                         <div class="kpi-context-lbl positive"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +18.4% vs. junio</div>
@@ -468,7 +460,7 @@
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Ingresos recurrentes</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--purple-main); background: var(--purple-light);"><i data-lucide="refresh-cw"></i></div>
+                            <div class="kpi-icon-wrapper-green"><i data-lucide="refresh-cw"></i></div>
                         </div>
                         <span class="kpi-main-value" id="kpi_ing_recurrente">Q 14,274.00</span>
                         <div class="kpi-context-lbl positive" style="color: var(--green-positive);">82.1% del total</div>
@@ -476,15 +468,15 @@
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Ingresos variables</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--blue-info); background: var(--blue-light);"><i data-lucide="activity"></i></div>
+                            <div class="kpi-icon-wrapper-green"><i data-lucide="activity"></i></div>
                         </div>
                         <span class="kpi-main-value" id="kpi_ing_variable">Q 3,120.00</span>
-                        <div class="kpi-context-lbl" style="color: var(--blue-info);">17.9% del total</div>
+                        <div class="kpi-context-lbl" style="color: var(--green-positive);">17.9% del total</div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Promedio mensual</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--text-secondary); background: var(--bg-main);"><i data-lucide="clock-3"></i></div>
+                            <div class="kpi-icon-wrapper-green"><i data-lucide="clock-3"></i></div>
                         </div>
                         <span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span>
                         <div class="kpi-context-lbl">Últimos 6 meses</div>
@@ -502,18 +494,17 @@
                         </div>
                     </div>
                     
-                    <!-- RECONSTRUCCIÓN DEL DONUT CHART DE INGRESOS NATIVO SVG -->
+                    <!-- 3. DONUT CHART DE INGRESOS CON COLORES Y FUENTES REQUERIDAS -->
                     <div class="card">
                         <div class="card-title">Distribución por fuente</div>
                         <div class="donut-container-layout">
                             <div class="donut-canvas-wrapper">
-                                <div class="donut-center-text" id="donut_ingresos_centro_val">Q 17k<span>Total</span></div>
+                                <div class="donut-center-text" id="donut_ingresos_centro_val">Q 17.3k<span>Total</span></div>
                                 <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
                                     <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
                                     <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#12B76A" stroke-width="5.5" stroke-dasharray="61.8 38.2" stroke-dashoffset="25"></circle>
                                     <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="21.8 78.2" stroke-dashoffset="63.2"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="12.7 87.3" stroke-dashoffset="41.4"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#667085" stroke-width="5.5" stroke-dasharray="3.7 96.3" stroke-dashoffset="28.7"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="16.4 83.6" stroke-dashoffset="41.4"></circle>
                                 </svg>
                             </div>
                             <div class="donut-legend-list" id="leyenda_donut_ingresos"></div>
@@ -566,7 +557,6 @@
         let db_ingresos = []; let db_ahorros = []; let db_tarjetas = []; let db_gastos = []; let db_compras = [];
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
-        // CONTROL CORREGIDO DE ENRUTAMIENTO NATIVO
         function cambiarSeccionVista(targetViewId, elementBtn) {
             document.querySelectorAll('.view-section').forEach(view => view.style.display = 'none');
             let el = document.getElementById(targetViewId); if(el) el.style.display = 'flex';
@@ -650,11 +640,11 @@
 
             if(db_ingresos.length === 0) {
                 db_ingresos = [
-                    { id: 1, nombre: "Salario mensual - Junio 2026", monto: 10200, moneda: "GTQ", tipo: "fijo", anio: 2026, mes: 6 },
-                    { id: 2, nombre: "Pago proyecto diseño web", fuente: "Proyecto freelance", monto: 3600, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
-                    { id: 3, nombre: "Bonificación por desempeño", fuente: "Bonificación", monto: 2100, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
-                    { id: 4, nombre: "Reembolso de gastos", fuente: "Otros ingresos", monto: 602, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
-                    { id: 5, nombre: "Salario mensual - Julio 2026", monto: 10200, moneda: "GTQ", tipo: "fijo", anio: 2026, mes: 7 }
+                    { id: 1, nombre: "Salario Principal - Junio 2026", monto: 10200, moneda: "GTQ", tipo: "fijo", anio: 2026, mes: 6 },
+                    { id: 2, nombre: "Bonificaciones extraordinarias", fuente: "Bonificaciones", monto: 3600, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
+                    { id: 3, nombre: "Bono por desempeño", fuente: "Bonificaciones", monto: 2100, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
+                    { id: 4, nombre: "Rentas y dividendos adicionales", fuente: "Otros ingresos", monto: 1494, moneda: "GTQ", tipo: "variable", anio: 2026, mes: 7 },
+                    { id: 5, nombre: "Salario Principal - Julio 2026", monto: 10200, moneda: "GTQ", tipo: "fijo", anio: 2026, mes: 7 }
                 ];
             }
 
@@ -778,33 +768,7 @@
                 <div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
         }
 
-        function renderCapacidadMish(mesB, anioB) {
-            let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
-            let anchoSvg = cont.clientWidth || 340; let altoSvg = 160; let marginPadding = 42;
-            let segmentX = (anchoSvg - (marginPadding * 2)) / 5;
-            let valoresMish = [6900, 7600, 8400, 8400, 9100, 10700];
-            document.getElementById('mish_valor_actual').innerText = "Q " + valoresMish[5].toLocaleString('en-US', {minimumFractionDigits:2});
-
-            let coords = []; let labelsHtml = ""; let puntosHtml = "";
-            for(let i=0; i<6; i++) {
-                let currM = mesB - 5 + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
-                let x = marginPadding + (i * segmentX); let y = (altoSvg - 40) - ((valoresMish[i] / 15000) * 80);
-                coords.push(`${x},${y}`);
-                puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--purple-main)"/>`;
-                labelsHtml += `<text x="${x}" y="${altoSvg - 10}" style="font-size:11px; fill:var(--text-secondary); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text><text x="${x}" y="${y-12}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
-            }
-            cont.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 ${anchoSvg} ${altoSvg}" style="overflow:visible;"><line x1="20" y1="35" x2="${anchoSvg - 20}" y2="35" stroke="#E6E8EF" stroke-dasharray="3"/><line x1="20" y1="75" x2="${anchoSvg - 20}" y2="75" stroke="#E6E8EF" stroke-dasharray="3"/><line x1="20" y1="115" x2="${anchoSvg - 20}" y2="115" stroke="#E6E8EF" stroke-dasharray="3"/><path d="M ${coords.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="2.5"/>${puntosHtml} ${labelsHtml}</svg>`;
-        }
-
-        function renderCompromisosTabla(mAct, aAct) {
-            document.getElementById('tabla_compromisos_inicio').innerHTML = `
-                <tr><td>13 Ago 2026</td><td><b>Pago mínimo Tarjeta Clásica</b></td><td style="text-align:right; font-weight:700;">Q 280.00</td><td style="text-align:center;"><span class="badge purple">Tarjeta</span></td></tr>
-                <tr><td>06 Jul 2026</td><td><b>Luz / Internet</b></td><td style="text-align:right; font-weight:700;">Q 948.00</td><td style="text-align:center;"><span class="badge blue">Servicio</span></td></tr>`;
-        }
-
-        // ================================================== 
-        // LÓGICA DE DETALLE: MÓDULO DE INGRESOS (PASO 2)
-        // ================================================== 
+        // 1. PINTO DE BARRAS DE INGRESOS CON DEGRADADO REQUERIDO
         function renderHistogramaCombinadoIngresos(mesB, anioB) {
             let cont = document.getElementById('cont_histograma_ingresos');
             let overlay = document.getElementById('cont_overlay_svg_linea_movil');
@@ -812,42 +776,68 @@
             cont.innerHTML = ""; overlay.innerHTML = "";
             
             let maxMonto = 25000; let mInicio = mesB - 6;
-            let muestraMockValores = [12240, 12430, 14120, 13890, 15980, 13940, 16502];
+            let muestraMockValores = [12240, 12430, 14120, 13890, 15980, 13940, 17394];
             let promediosMock = [11800, 12100, 12900, 13400, 14200, 14500, 14812];
 
             let anchoContenedor = cont.clientWidth || 650;
             let segmentX = anchoContenedor / 7; let puntosLinea = [];
 
+            // Inyectar defs con gradiente de color verde para las barras
+            let barSgvsHtml = `
+                <svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none;">
+                    <defs>
+                        <linearGradient id="greenBarGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#12B76A" />
+                            <stop offset="100%" stop-color="#D1FAE5" />
+                        </linearGradient>
+                    </defs>
+            `;
+
             for(let i=0; i<7; i++) {
                 let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
-                let ing = muestraMockValores[i]; let hBar = (ing / maxMonto) * 196;
+                let ing = muestraMockValores[i]; 
+                let hBar = (ing / maxMonto) * 196;
                 let coordX = (i * segmentX) + (segmentX / 2);
                 let coordY = 196 - ((promediosMock[i] / maxMonto) * 196);
                 puntosLinea.push(`${coordX},${coordY}`);
 
-                cont.innerHTML += `<div class="chart-column-node"><div class="bar-wrapper-node"><div style="font-size:10px; font-weight:700; position:absolute; top:-16px;">Q${Math.round(ing/1000)}k</div><div class="v-bar-ingresos" style="height:${hBar}px;"></div></div><div class="chart-label-x">${nombresMesesCompleto[currM-1]}</div></div>`;
+                // Dibujar rectángulos vectoriales nativos para el degradado limpio
+                barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#greenBarGrad)"></rect>`;
+
+                let col = document.createElement('div');
+                col.className = 'chart-column';
+                col.innerHTML = `
+                    <div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(ing/1000).toFixed(1)}k</div>
+                    <div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div>`;
+                cont.appendChild(col);
             }
+            barSgvsHtml += `</svg>`;
+            cont.innerHTML += barSgvsHtml;
+
             overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
         }
 
+        // 3. COLOR DE CATEGORÍAS CORREGIDO PARA FUENTES REQUERIDAS
         function renderDonutFuentesIngreso(total) {
-            document.getElementById('donut_ingresos_centro_val').innerHTML = "Q 16.5k<span>Total</span>";
+            document.getElementById('donut_ingresos_centro_val').innerHTML = "Q 17.3k<span>Total</span>";
             document.getElementById('leyenda_donut_ingresos').innerHTML = `
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Salario</div><span class="legend-amount">Q 10,200.00</span><b class="legend-pct">61.8%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Freelance</div><span class="legend-amount">Q 3,600.00</span><b class="legend-pct">21.8%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Bonos</div><span class="legend-amount">Q 2,100.00</span><b class="legend-pct">12.7%</b></div>`;
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Salario Principal</div><span class="legend-amount">Q 10,200.00</span><b class="legend-pct">61.8%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Bonificaciones</div><span class="legend-amount">Q 5,700.00</b></span><b class="legend-pct">32.7%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Otros ingresos</div><span class="legend-amount">Q 1,494.00</span><b class="legend-pct">5.5%</b></div>`;
         }
 
+        // 4. CAMBIO DE NOMBRE DE FUENTES REQUERIDAS EN TARJETAS
         function renderFuentesActivasTarjetas() {
             document.getElementById('bloque_fuentes_activas_row').innerHTML = `
                 <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-positive);"><i data-lucide="briefcase-business"></i></div><span class="badge green">Recurrente</span></div><span class="fuente-name-lbl">Salario Principal</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 10,200</b></span><span>Frecuencia<b>Mensual</b></span></div></div>
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--blue-light);color:var(--blue-info);"><i data-lucide="wallet-cards"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Proyecto Freelance</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 3,600</b></span><span>Frecuencia<b>Por proyecto</b></span></div></div>`;
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--blue-light);color:var(--blue-info);"><i data-lucide="wallet-cards"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Bonificaciones</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 5,700</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--blue-light);color:var(--blue-info);"><i data-lucide="activity"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Otros ingresos</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 1,494</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>`;
         }
 
         function renderHistorialTablaIngresos() {
             document.getElementById('tabla_historial_ingresos_tbody').innerHTML = `
-                <tr><td>01 Jul 2026</td><td><b>Salario mensual - Julio 2026</b></td><td>Salario</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 10,200.00</td><td><span class="badge green">Recurrente</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>
-                <tr><td>18 Jul 2026</td><td><b>Pago proyecto diseño web</b></td><td>Proyecto freelance</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 3,600.00</td><td><span class="badge blue">Variable</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
+                <tr><td>01 Jul 2026</td><td><b>Salario mensual - Julio 2026</b></td><td>Salario Principal</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 10,200.00</td><td><span class="badge green">Recurrente</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>
+                <tr><td>18 Jul 2026</td><td><b>Bonos extraordinarios</b></td><td>Bonificaciones</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 3,600.00</td><td><span class="badge blue">Variable</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
         }
 
         verificarCredencialesSesion();
