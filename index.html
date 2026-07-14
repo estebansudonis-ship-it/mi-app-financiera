@@ -379,7 +379,7 @@
                 </div>
             </div>
 
-            <div class="view-section" id="vista_ingresos" style="display:none;">
+<div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Ingresos</h1><p>Gestiona y analiza todas tus fuentes de ingreso.</p></div>
                     <div class="header-action-area">
@@ -390,33 +390,92 @@
                     </div>
                 </div>
 
+                <!-- 📦 RECTIFICACIÓN: 4 KPIs SUPERIORES EN VERDE CORPORATIVO -->
                 <div class="kpi-grid">
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-1"></i></div></div><span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 0.00</span></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-4"></i></div></div><span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span></div>
-                </div>
-
-                <div class="charts-row">
-                    <div class="card"><div class="card-title">Evolución de ingresos</div><div class="combined-chart-frame" id="cont_histograma_ingresos"></div></div>
-                    <div class="card">
-                        <div class="card-title">Distribución por fuente</div>
-                        <div class="donut-container-layout">
-                            <div class="donut-canvas-wrapper">
-                                <div class="donut-total-interior" id="donut_ingresos_centro_val">Q 0.0k</div>
-                                <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg"><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle></svg>
-                            </div>
-                            <div class="donut-legend-list" id="leyenda_donut_ingresos"></div>
-                        </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-1"></i></div></div>
+                        <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 0.00</span>
+                        <div style="font-size: 11px; color: var(--green-positive); font-weight:600; margin-top:2px;">▲ +18.4% vs. junio</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Ingresos recurrentes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-2"></i></div></div>
+                        <span class="kpi-main-value" id="kpi_ing_recurrente">Q 0.00</span>
+                        <div style="font-size: 11px; color: var(--green-positive); font-weight:600; margin-top:2px;" id="kpi_ing_recurrente_pct">0.0% del total</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Ingresos variables</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-3"></i></div></div>
+                        <span class="kpi-main-value" id="kpi_ing_variable">Q 0.00</span>
+                        <div style="font-size: 11px; color: var(--green-positive); font-weight:600; margin-top:2px;" id="kpi_ing_variable_pct">0.0% del total</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-4"></i></div></div>
+                        <span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span>
+                        <div style="font-size: 11px; color: var(--text-secondary);">Últimos 6 meses</div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">Fuentes de Ingreso Activas</div>
-                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div>
+                <!-- 📊 GRÁFICAS CORREGIDAS CON DEGRADADOS Y FILTRO DE LEYENDAS REPORTE -->
+                <div class="charts-row">
+                    <div class="card">
+                        <div class="card-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                            <span class="card-title" style="margin:0;">Evolución de ingresos</span>
+                            <select class="month-selector" style="height:32px; padding:0 8px; font-size:11px;"><option>Últimos 7 meses</option></select>
+                        </div>
+                        <div class="combined-chart-frame" id="cont_histograma_ingresos"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Distribución por fuente</div>
+                        <div id="contenedor_layout_donut_ingresos"></div>
+                    </div>
                 </div>
 
+                <!-- 🛠️ FUENTES ACTIVAS CON FILTRADO REACTIVO DINÁMICO DESDE SUPABASE -->
+                <div class="card" style="padding:20px 24px;">
+                    <div class="card-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <span class="card-title" style="margin:0;">Fuentes activas</span>
+                        <a href="#" style="font-size:12px; font-weight:600; color:var(--purple-main); text-decoration:none;">Ver todas las fuentes ></a>
+                    </div>
+                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row" style="grid-template-columns: repeat(4, 1fr); gap:16px;">
+                        <!-- Se monta de forma dinámica por JavaScript -->
+                    </div>
+                </div>
+
+                <!-- 🔍 HISTORIAL DE INGRESOS COMPLETO CON FILTROS INTEGRADOS -->
                 <div class="card">
                     <div class="card-title">Historial de ingresos</div>
-                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Periodo</th><th>Concepto / Detalle</th><th style="text-align:right;">Monto Original</th><th>Tipo</th><th>Estado</th></tr></thead><tbody id="tabla_historial_ingresos_tbody"></tbody></table></div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; gap:12px; flex-wrap:wrap;">
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <input type="text" id="busqueda_ingreso_input" style="height:36px; padding:0 12px; border:1px solid var(--borders); border-radius:8px; font-size:13px; width:220px;" placeholder="🔍 Buscar ingreso..." oninput="filtrarHistorialIngresosMecanismo()">
+                            <select id="filtro_tipo_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
+                                <option value="Todos">Tipo: Todos</option><option value="fijo">Recurrente</option><option value="variable">Variable</option>
+                            </select>
+                            <select id="filtro_fuente_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
+                                <option value="Todas">Fuente: Todas</option>
+                            </select>
+                            <select id="filtro_estado_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
+                                <option value="Todos">Estado: Todos</option><option value="Confirmado">Confirmado</option>
+                            </select>
+                        </div>
+                        <button class="month-selector" style="height:36px; display:flex; align-items:center; gap:6px; font-size:13px;"><i id="btn-export-ico-ing"></i> Exportar</button>
+                    </div>
+                    <div style="width:100%; overflow-x:auto;">
+                        <table class="compact-table-frame" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Fecha <i data-lucide="chevrons-up-down" style="width:12px; height:14px; color:var(--text-secondary);"></i></th>
+                                    <th>Concepto</th>
+                                    <th>Fuente</th>
+                                    <th style="text-align:right;">Monto</th>
+                                    <th>Tipo</th>
+                                    <th>Estado</th>
+                                    <th style="text-align:center;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla_historial_ingresos_tbody">
+                                <!-- Se monta dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
