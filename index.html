@@ -603,7 +603,7 @@
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
         // 🛠️ CORRECCIÓN CLAVE: CONSTRUCCIÓN REQUERIDA DEL CAMPO FECHA_FACT MAESTRO ISO-DATE PARA EVITAR NOT-NULL VIOLATIONS
-        async function ejecutarGuardadoDinamicoCloud() {
+       async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
             let monto = parseFloat(document.getElementById('form_ing_monto').value);
@@ -613,22 +613,26 @@
             let mes = parseInt(document.getElementById('form_ing_mes').value);
             let err = document.getElementById('drawer_form_error');
 
-            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa todos los campos."; return; }
+            if(!nombre || isNaN(monto) || monto <= 0) { 
+                err.innerText = "Por favor completa todos los campos."; 
+                return; 
+            }
             err.innerText = "";
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
             
-            // Re-armar fecha estricta para la columna requerida por tu base de datos cloud
+            // Construcción correcta de la fecha ISO requerida por Supabase
             let fechaISO = `${anio}-${mes.toString().padStart(2,'0')}-13`;
 
+            // Mapeo exacto de las columnas físicas de tu base de datos cloud
             let registroPayload = { 
-                nombre, 
-                monto, 
-                moneda, 
-                tipo, 
-                anio, 
-                mes, 
-                fecha_fact: fechaISO, 
+                nombre: nombre, 
+                monto: monto, 
+                moneda: moneda, 
+                tipo: tipo, 
+                anio: anio, 
+                mes: mes, 
+                fecha_fact: fechaISO, // Nombre de columna corregido
                 user_id: activeSessionUser.id 
             };
             
@@ -640,8 +644,11 @@
             }
 
             const { data, error } = await _supabase.from(tablaDestino).insert([registroPayload]);
-            if(error) { err.innerText = error.message; }
-            else {
+            
+            if(error) { 
+                err.innerText = "Error: " + error.message; 
+            } else {
+                // Limpiar formulario, cerrar y refrescar datos reactivamente
                 document.getElementById('form_ing_nombre').value = "";
                 document.getElementById('form_ing_monto').value = "";
                 conmutarDrawerRegistro(false);
