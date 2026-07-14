@@ -9,7 +9,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* 10. ESTILO VISUAL GENERAL - CONFIGURACIÓN DE SISTEMA MAESTRO */
         :root {
             --bg-main: #F7F8FC;
             --surface: #FFFFFF;
@@ -60,7 +59,7 @@
             vertical-align: middle;
         }
 
-        /* 1. ARQUITECTURA DE SIDEBAR Y BRANDING REFINADO */
+        /* SIDEBAR & BRANDING */
         .sidebar {
             width: 240px;
             height: 100vh;
@@ -95,23 +94,9 @@
             box-shadow: 0 2px 8px rgba(91, 69, 245, 0.2);
         }
 
-        .brand-text-block {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.1;
-        }
-
-        .brand-sub {
-            font-size: 11px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
+        .brand-text-block { display: flex; flex-direction: column; }
+        .brand-title { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+        .brand-sub { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
 
         .nav-group { display: flex; flex-direction: column; gap: 4px; }
 
@@ -131,30 +116,10 @@
             text-align: left;
         }
 
-        .nav-button:hover {
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-        }
-
-        .nav-button.active {
-            background-color: var(--purple-light);
-            color: var(--purple-main);
-            font-weight: 600;
-            position: relative;
-        }
+        .nav-button:hover { background-color: var(--bg-main); color: var(--text-primary); }
+        .nav-button.active { background-color: var(--purple-light); color: var(--purple-main); font-weight: 600; position: relative; }
         .nav-button.active .lucide { color: var(--purple-main); }
-
-        /* Indicador fino y limpio del sidebar */
-        .nav-button.active::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 25%;
-            height: 50%;
-            width: 3.5px;
-            background-color: var(--purple-main);
-            border-radius: 0 4px 4px 0;
-        }
+        .nav-button.active::after { content: ''; position: absolute; left: 0; top: 25%; height: 50%; width: 3.5px; background-color: var(--purple-main); border-radius: 0 4px 4px 0; }
 
         .sidebar-footer { border-top: 1px solid var(--borders); padding-top: 16px; display: flex; flex-direction: column; gap: 4px; }
         .sidebar-user { display: flex; align-items: center; gap: 12px; padding: 8px 12px; margin-top: 4px; }
@@ -163,11 +128,10 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* CONTENEDOR PANORÁMICO INTEGRAL */
+        /* CONTENEDOR CENTRAL */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
-        /* ENCABEZADO LIMPIO */
         .view-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .header-title-area h1 { font-size: 32px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
         .header-title-area p { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
@@ -178,17 +142,15 @@
         .btn-primary-action:hover { background-color: var(--purple-dark); }
 
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
-        .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; text-transform: none; letter-spacing: normal; }
+        .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* 2. KPIs SUPERIORES CON VERDADERA PROTAGONISTA */
+        /* KPIs */
         .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; }
         .kpi-card.double-width { grid-column: span 2; background-color: #F9F8FF; border-color: #DCD6FF; }
-        
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .kpi-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
-        .kpi-icon-container { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-
+        .kpi-icon-badge { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
         .kpi-main-value { font-size: 34px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; }
         .kpi-card.double-width .kpi-main-value { color: var(--purple-main); }
         .kpi-comparison { font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px; color: var(--text-secondary); }
@@ -196,18 +158,14 @@
         .kpi-comparison.negative b { color: var(--red-negative); }
         .sparkline-box { position: absolute; right: 24px; bottom: 24px; width: 110px; height: 45px; pointer-events: none; }
 
-        /* 3. ORDEN Y ESTRUCTURA DE BLOQUES GRÁFICOS */
+        /* FILA DE GRÁFICOS */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
-        
-        /* 4. REFINAMIENTO DEL GRÁFICO DE FLUJO DE CAJA */
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 52px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 14px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 32px; }
         .chart-grid-lines { position: absolute; left: 52px; right: 16px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
         .grid-line-h { width: 100%; border-top: 1px dashed #E2E4EB; }
         .chart-column { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; z-index: 2; }
         .bars-container { display: flex; gap: 6px; width: 100%; height: 85%; align-items: flex-end; justify-content: center; position: relative; }
-        
-        /* Barras anchas y profesionales */
         .v-bar { width: 22px; border-radius: 4px 4px 0 0; transition: transform 0.15s; cursor: pointer; }
         .v-bar:hover { transform: scaleY(1.04); }
         .v-bar.income { background-color: #12B76A; }
@@ -216,80 +174,55 @@
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
         .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
-        /* 5. GRÁFICO DE DISTRIBUCIÓN DE GASTOS COMPLETO */
+        /* DONUT GASTOS */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; }
         .donut-visual-mock { width: 140px; height: 150px; border-radius: 50%; border: 24px solid var(--borders); border-top-color: #F04438; border-right-color: #F79009; border-bottom-color: #2E90FA; display: flex; align-items: center; justify-content: center; shrink: 0; position: relative; }
         .donut-center-value { font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; }
         .donut-center-value span { font-size: 12px; color: var(--text-secondary); display: block; font-weight: 500; margin-top: 2px; }
         .donut-legend-list { display: flex; flex-direction: column; gap: 10px; width: 100%; border-top: 1px solid var(--borders); padding-top: 16px; }
-        
-        /* Formato esperado de 3 columnas limpias */
         .legend-item { display: grid; grid-template-columns: 1.5fr 1fr 1fr; align-items: center; font-size: 13px; }
         .legend-color-dot { display: flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 500; }
         .color-dot { width: 10px; height: 10px; border-radius: 50%; }
         .legend-amount { color: var(--text-secondary); text-align: left; }
         .legend-pct { font-weight: 700; text-align: right; color: var(--text-primary); }
 
-        /* MULTI-GRID DE BLOQUES DE DETALLE INFERIOR */
-        .bottom-sections-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; width: 100%; }
-        .card-item-row { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; }
-        
-        /* 6. CORRECCIÓN MAESTRA Y REDISEÑO PREMIUM DE TARJETAS */
-        .credit-card-strip {
-            border: 1px solid var(--borders);
-            border-radius: 14px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            background-color: #FAFAFB;
-        }
-
-        .card-strip-top-row {
-            display: flex;
-            align-items: center;
+        /* 3. NUEVO SECTOR DE TRIPLE COLUMNA (TARJETAS + AHORROS + CAPACIDAD) */
+        .triple-modular-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
             width: 100%;
         }
 
-        .card-plastic-thumbnail {
-            width: 80px;
-            height: 52px;
-            border-radius: 8px;
-            object-fit: cover;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            shrink: 0;
-        }
-
-        .card-meta-identity {
-            display: flex;
-            flex-direction: column;
-            margin-left: 16px;
-            flex-grow: 1;
-        }
-
-        .card-bank-label { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-        .card-product-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-top: 1px; }
-
-        .card-utilization-bar-frame { width: 100%; height: 8px; background-color: #E6E8EF; border-radius: 4px; overflow: hidden; margin-top: 2px; }
-        .card-utilization-fill { height: 100%; border-radius: 4px; }
+        /* TARJETAS PREMIUM */
+        .card-item-row { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+        .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 14px; background-color: #FAFAFB; }
+        .card-strip-top-row { display: flex; align-items: center; width: 100%; }
         
-        /* Columnas horizontales ejecutivas */
-        .card-strip-metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--borders); padding-top: 12px; gap: 8px; }
-        .card-strip-metrics-grid span b { color: var(--text-primary); display: block; font-size: 13px; margin-top: 3px; font-weight: 600; }
+        /* CORRECCIÓN DE LA RUTA DE IMAGEN EN CONTENEDOR */
+        .card-plastic-thumbnail { width: 75px; height: 48px; border-radius: 6px; object-fit: cover; box-shadow: 0 3px 6px rgba(0,0,0,0.1); background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); shrink: 0; }
+        
+        .card-meta-identity { display: flex; flex-direction: column; margin-left: 12px; flex-grow: 1; }
+        .card-bank-label { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+        .card-product-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+        .card-utilization-bar-frame { width: 100%; height: 6px; background-color: #E6E8EF; border-radius: 3px; overflow: hidden; }
+        .card-utilization-fill { height: 100%; border-radius: 3px; }
+        .card-strip-metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); font-size: 11px; color: var(--text-secondary); border-top: 1px solid var(--borders); padding-top: 10px; gap: 8px; }
+        .card-strip-metrics-grid span b { color: var(--text-primary); display: block; font-size: 12px; margin-top: 2px; font-weight: 600; }
 
-        /* 7. RESUMEN DE AHORROS CON ALTA DENSIDAD */
+        /* AHORROS */
         .saving-kpi-block { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .saving-meta-detail { font-size: 13px; color: var(--text-secondary); display: flex; justify-content: space-between; width: 100%; margin-top: 4px; }
         .progress-bar-frame { width: 100%; height: 8px; background-color: #E6E8EF; border-radius: 4px; overflow: hidden; margin: 8px 0 16px 0; }
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 4px; }
 
-        /* 8. CAPACIDAD CREDITICIA CON CONTEXTO VALIOSO */
+        /* CAPACIDAD CREDITICIA */
         .mish-context-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-        .mish-val-big { font-size: 30px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
+        .mish-val-big { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
         .mish-lbl-sub { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
 
-        /* 9. PRÓXIMOS COMPROMISOS LIMPIO Y PROFESIONAL */
+        /* TABLA FULL WIDTH INFERIOR */
+        .full-width-table-row { width: 100%; }
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
         .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
@@ -303,7 +236,7 @@
         .card-link-footer { margin-top: auto; padding-top: 16px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; text-decoration: none; display: block; border-top: 1px solid var(--borders); }
         .card-link-footer:hover { color: var(--purple-dark); }
 
-        /* 13. BURBUJA IA FLOTANTE INTERACTIVA */
+        /* BURBUJA IA FLOTANTE */
         .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
         .ai-floating-trigger:hover { background-color: var(--purple-dark); }
 
@@ -314,22 +247,20 @@
 </head>
 <body>
 
-    <!-- CAPA COMPUERTA DE ENTRADA -->
     <div id="auth_gate_wrapper">
         <div class="auth-panel">
             <h2 style="font-size:24px; font-weight:700; text-align:center; margin-bottom:6px;">🔒 Iniciar Sesión</h2>
             <p style="font-size:13px; color:var(--text-secondary); text-align:center; margin-bottom:24px;">Sincronización segura con Supabase Cloud</p>
-            <div style="margin-bottom:14px;"><label>Correo Fletrónico</label><input type="email" id="auth_user_email" placeholder="ejemplo@correo.com"></div>
+            <div style="margin-bottom:14px;"><label>Correo Electrónico</label><input type="email" id="auth_user_email" placeholder="ejemplo@correo.com"></div>
             <div style="margin-bottom:20px;"><label>Contraseña</label><input type="password" id="auth_user_password" placeholder="••••••••"></div>
             <button class="btn-primary-action" style="width:100%; justify-content:center;" onclick="loginMecanismo()">Entrar de forma segura</button>
             <div id="auth_gate_error" style="color:var(--red-negative); font-size:12px; margin-top:12px; text-align:center; font-weight:500;"></div>
         </div>
     </div>
 
-    <!-- ENTORNO CORE GENERAL -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         
-        <!-- BARRA LATERAL FIJA CON BRANDING PREMIUM -->
+        <!-- SIDEBAR CON BRANDING PREMIUM -->
         <div class="sidebar">
             <div>
                 <div class="sidebar-brand-wrapper">
@@ -362,11 +293,9 @@
             </div>
         </div>
 
-        <!-- ÁREA CENTRAL DE TRABAJO -->
         <div class="main-container" id="scroll_master_container">
             <div class="chart-tooltip" id="global_chart_tooltip"></div>
 
-            <!-- VISTA INICIO COMPLETA REDISEÑADA -->
             <div class="view-section" id="vista_inicio">
                 
                 <div class="view-header">
@@ -384,7 +313,7 @@
                     </div>
                 </div>
 
-                <!-- KPIs EN FILA SUPERIOR -->
+                <!-- KPIs -->
                 <div class="kpi-grid">
                     <div class="kpi-card double-width">
                         <div class="kpi-label-row">
@@ -394,8 +323,8 @@
                         <span class="kpi-main-value" id="kpi_disponible">Q 0.00</span>
                         <div class="kpi-comparison positive" id="kpi_disp_comp">vs mes anterior: <b>+18.4%</b></div>
                         <div class="sparkline-box">
-                            <svg width="100%" height="100%" viewBox="0 0 110 45">
-                                <path d="M 5 35 Q 28 12, 55 30 T 105 15" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
+                            <svg width="100%" height="100%" viewBox="0 0 100 40">
+                                <path d="M 5 30 Q 30 10, 55 25 T 105 15" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
                             </svg>
                         </div>
                     </div>
@@ -428,7 +357,7 @@
                     </div>
                 </div>
 
-                <!-- FILA DE BLOQUES GRÁFICOS COMPUESTOS -->
+                <!-- FILA DE GRÁFICOS -->
                 <div class="charts-row">
                     <div class="card">
                         <div class="card-title">Flujo de caja</div>
@@ -457,15 +386,17 @@
                     </div>
                 </div>
 
-                <!-- DETALLES INFERIORES -->
-                <div class="bottom-sections-grid">
+                <!-- 3. TRIPLE SECTOR EN UNA SOLA FILA (TARJETAS + AHORROS + CAPACIDAD) -->
+                <div class="triple-modular-row">
                     
+                    <!-- BLOQUE 1: TARJETAS -->
                     <div class="card">
                         <div class="card-title">Tarjetas</div>
                         <div class="card-item-row" id="bloque_tarjetas_inicio"></div>
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
+                    <!-- BLOQUE 2: AHORROS -->
                     <div class="card">
                         <div class="card-title">Ahorros</div>
                         <div class="saving-kpi-block">
@@ -487,6 +418,7 @@
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
+                    <!-- BLOQUE 3: CAPACIDAD CREDITICIA -->
                     <div class="card">
                         <div class="card-title">Capacidad crediticia</div>
                         <div class="mish-context-header">
@@ -495,28 +427,29 @@
                                 <div class="mish-lbl-sub">Límite de crédito disponible</div>
                             </div>
                         </div>
-                        <div class="vector-chart-container" id="mish_chart_inicio" style="min-height:180px; position:relative; padding-left:40px; padding-bottom:30px;"></div>
+                        <div class="vector-chart-container" id="mish_chart_inicio" style="min-height:150px; position:relative; padding-left:35px; padding-bottom:25px;"></div>
                         <div class="kpi-comparison positive" id="mish_variacion_pct" style="margin-top:10px; font-weight:600;"><i data-lucide="trending-up"></i> +10.7% vs mes anterior</div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title">Próximos compromisos</div>
-                        <div style="flex-grow:1;">
-                            <table class="compact-table-frame">
-                                <thead>
-                                    <tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th style="text-align:center;">Tipo</th></tr>
-                                </thead>
-                                <tbody id="tabla_compromisos_inicio"></tbody>
-                            </table>
-                        </div>
-                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_cuotas')">Ver todos los compromisos <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
                 </div>
 
+                <!-- FILA COMPLETA INFERIOR PARA PRÓXIMOS COMPROMISOS -->
+                <div class="card full-width-table-row">
+                    <div class="card-title">Próximos compromisos</div>
+                    <div style="flex-grow:1;">
+                        <table class="compact-table-frame">
+                            <thead>
+                                <tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th style="text-align:center;">Tipo</th></tr>
+                            </thead>
+                            <tbody id="tabla_compromisos_inicio"></tbody>
+                        </table>
+                    </div>
+                    <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_cuotas')">Ver todos los compromisos <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
+                </div>
+
             </div>
 
-            <!-- MOCKUP VIEWS -->
+            <!-- VISTAS CAPAS MOCKUP (AISLADAS) -->
             <div class="view-section fallback-view" id="vista_ingresos" style="display:none;"><h2>Vista de Ingresos</h2></div>
             <div class="view-section fallback-view" id="vista_gastos" style="display:none;"><h2>Vista de Gastos</h2></div>
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
@@ -595,7 +528,6 @@
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-        // CORRECCIÓN DE DECIMALES A DOS POSICIONES EN KPIs REALES
         function actualizarCoreCalculos() {
             let filtroMes = document.getElementById('filtro_mes_maestro').value;
             if(!filtroMes) return;
@@ -632,7 +564,6 @@
             lucide.createIcons();
         }
 
-        // 4. REFINAMIENTO DE BARRAS DE HISTOGRAMA COMBINADO OPERATIVO
         function renderHistogramaCombinado(mesB, anioB) {
             let cont = document.getElementById('contenedor_histograma');
             let overlay = document.getElementById('contenedor_svg_linea_overlay');
@@ -693,7 +624,6 @@
         }
         function ocultarTooltipChart() { let t = document.getElementById('global_chart_tooltip'); if(t) t.style.display = 'none'; }
 
-        // 5. COLOR DE CATEGORÍAS FIJAS EN DONUT SEGÚN SOLICITUD MOCKUP
         function renderDonutGastos(gTotal) {
             document.getElementById('donut_total_interior').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
             let ley = document.getElementById('lista_leyenda_donut'); if(!ley) return;
@@ -704,7 +634,7 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
         }
 
-        // 6. REDISEÑO PREMIUM HORIZONTAL DE LAS TARJETAS DE CRÉDITO
+        // CORRECCIÓN E INDEXACIÓN DIRECTA DE IMÁGENES FIJAS
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
@@ -717,7 +647,7 @@
             }
             auxTarjetas.forEach(t => {
                 let limite = t.lim_cuotas || 28000; 
-                let utilizado = t.id === 101 ? 9100 : 3122.13; // Datos alineados simétricamente a tu balance
+                let utilizado = t.id === 101 ? 9100 : 3122.13;
                 let disponible = limite - utilizado; let pct = (utilizado / limite) * 100;
                 
                 let colorRango = "var(--green-positive)";
@@ -730,27 +660,28 @@
                 cont.innerHTML += `
                     <div class="credit-card-strip">
                         <div class="card-strip-top-row">
-                            <img src="/public/assets/cards/${assetRuta}" class="card-plastic-thumbnail" onerror="this.style.background='linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'">
+                            <!-- CORREGIDO EL COMPORTAMIENTO DE RUTA LOCAL NATIVA -->
+                            <img src="assets/cards/${assetRuta}" class="card-plastic-thumbnail" onerror="this.style.background='linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'">
                             <div class="card-meta-identity">
                                 <span class="card-bank-label">${t.banco || 'Banco Cloud'}</span>
                                 <span class="card-product-label">${t.nombre} •••• ${t.id.toString().slice(-4)}</span>
                             </div>
-                            <span class="badge purple" style="font-size:11px;">Corte: ${t.corte}</span>
+                            <span class="badge purple" style="font-size:10px;">Corte: ${t.corte}</span>
                         </div>
                         <div class="card-utilization-bar-frame">
                             <div class="card-utilization-fill" style="width: ${pct}%; background-color:${colorRango};"></div>
                         </div>
                         <div class="card-strip-metrics-grid">
                             <span>Límite<b>Q ${limite.toLocaleString()}</b></span>
-                            <span>Utilizado<b>Q ${utilizado.toLocaleString()} (${Math.round(pct)}%)</b></span>
+                            <span>Utilizado<b>Q ${utilizado.toLocaleString()}</b></span>
                             <span>Disponible<b>Q ${disponible.toLocaleString()}</b></span>
-                            <span style="text-align:right;">Próximo Pago<b>13 Ago 2026</b></span>
+                            <span>Próximo Pago<b>13 Ago</b></span>
                         </div>
                     </div>`;
             });
+            lucide.createIcons();
         }
 
-        // 7. RESUMEN DE AHORROS CON ALTA DENSIDAD UTIL
         function renderModuloAhorros(mAct, aAct) {
             let baseAhorro = parseFloat(localStorage.getItem('db_a_base')) || 7400;
             let totalAcumulado = baseAhorro;
@@ -763,11 +694,10 @@
 
             let lista = document.getElementById('lista_aportes_recientes_inicio'); if(!lista) return;
             lista.innerHTML = `
-                <li style="padding:12px; background:#FAFAFB; border-radius:10px; display:flex; justify-content:space-between; font-size:13px; border-bottom:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp;&nbsp;&nbsp; Aporte mensual</span><b style="color:var(--text-primary);">Q 7,400.00</b></li>
-                <li style="padding:12px; background:#FAFAFB; border-radius:10px; display:flex; justify-content:space-between; font-size:13px; margin-top:4px;"><span>01/05/2026 &nbsp;&nbsp;&nbsp;&nbsp; Aporte mensual</span><b style="color:var(--text-primary);">Q 7,400.00</b></li>`;
+                <li style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border-bottom:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b style="color:var(--text-primary);">Q 7,400.00</b></li>
+                <li style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; margin-top:4px;"><span>01/05/2026 &nbsp;&nbsp; Aporte mensual</span><b style="color:var(--text-primary);">Q 7,400.00</b></li>`;
         }
 
-        // 8. CAPACIDAD CREDITICIA CON VERDADERO CONTEXTO FINANCIERO CON SOLIDEZ DE EJES
         function renderCapacidadMish(mesB, anioB) {
             let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
             let mInicio = mesB - 5; let aInicio = anioB;
@@ -781,24 +711,23 @@
 
             for(let i=0; i<6; i++) {
                 let currM = mInicio + i; while(currM > 12) currM -= 12;
-                let x = 40 + (i * segmentX); let y = 130 - ((valoresMish[i] / 15000) * 80);
+                let x = 40 + (i * segmentX); let y = 120 - ((valoresMish[i] / 15000) * 70);
                 coords.push(`${x},${y}`);
                 puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--purple-main)"/>`;
-                labelsHtml += `<text x="${x}" y="165" style="font-size:11px; fill:var(--text-secondary); font-weight:500;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text>
-                               <text x="${x}" y="${y-12}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
+                labelsHtml += `<text x="${x}" y="145" style="font-size:11px; fill:var(--text-secondary); font-weight:500;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text>
+                               <text x="${x}" y="${y-10}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
             }
 
             cont.innerHTML = `
                 <svg width="100%" height="100%">
-                    <line x1="30" y1="40" x2="${anchoSvg - 20}" y2="40" stroke="#E6E8EF" stroke-dasharray="3"/>
-                    <line x1="30" y1="90" x2="${anchoSvg - 20}" y2="90" stroke="#E6E8EF" stroke-dasharray="3"/>
-                    <line x1="30" y1="140" x2="${anchoSvg - 20}" y2="140" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <line x1="30" y1="30" x2="${anchoSvg - 20}" y2="30" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <line x1="30" y1="70" x2="${anchoSvg - 20}" y2="70" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <line x1="30" y1="110" x2="${anchoSvg - 20}" y2="110" stroke="#E6E8EF" stroke-dasharray="3"/>
                     <path d="M ${coords.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="2.5"/>
                     ${puntosHtml} ${labelsHtml}
                 </svg>`;
         }
 
-        // 9. TABLA DE COMPROMISOS LIMPIA CON ALINEACIONES MATEMÁTICAS EXACTAS
         function renderCompromisosTabla(mAct, aAct) {
             let tbody = document.getElementById('tabla_compromisos_inicio'); if(!tbody) return;
             tbody.innerHTML = "";
