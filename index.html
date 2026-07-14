@@ -21,12 +21,12 @@
             --purple-light: #F1EEFF;
             
             --green-positive: #12B76A;
-            --green-light: #E6Faf0; /* Fondo más claro requerido */
-            --green-dark-icon: #0b6623; /* Tono más oscuro requerido */
+            --green-light: #E6Faf0; 
+            --green-dark-icon: #0b6623; 
             
             --red-negative: #F04438;
-            --red-light: #FFF0F0; /* Fondo más claro requerido */
-            --red-dark-icon: #991B1B; /* Tono más oscuro requerido */
+            --red-light: #FFF0F0; 
+            --red-dark-icon: #991B1B; 
             
             --blue-info: #2E90FA;
             --blue-light: #EFF8FF;
@@ -61,7 +61,7 @@
             vertical-align: middle;
         }
 
-        /* SIDEBAR */
+        /* SIDEBAR & BRANDING */
         .sidebar {
             width: 240px;
             height: 100vh;
@@ -147,7 +147,7 @@
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
         .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 
-        /* KPIs FILA SUPERIOR */
+        /* KPIs CON COLOR VERDE EXACTO E ICONOS CON ALTO CONTRASTE */
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
         .kpi-grid-5col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
@@ -155,9 +155,10 @@
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
-        /* 3. CONTENEDORES OPTIMIZADOS PARA MÁXIMO CONTRASTE EN INGRESOS Y GASTOS */
-        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green-dark-icon); background-color: var(--green-light); }
-        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--red-dark-icon); background-color: var(--red-light); }
+        /* CONTRASTE ALTO BLINDADO PARA LOS ICONOS (LUCIDE FORCE COLOR) */
+        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #0b6623 !important; background-color: #E6Faf0 !important; }
+        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #991B1B !important; background-color: #FFF0F0 !important; }
+        .kpi-icon-wrapper-blue-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--purple-main) !important; background-color: var(--purple-light) !important; }
         
         .kpi-main-value { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 6px; }
         .kpi-card.double-width .kpi-main-value { color: var(--purple-main); font-size: 34px; }
@@ -179,7 +180,6 @@
         .v-bar.expense { background-color: #F04438; }
         .chart-label { font-size: 13px; color: var(--text-secondary); margin-top: 12px; font-weight: 500; }
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
-        .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
         /* DONUT */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; min-height: 240px; }
@@ -217,7 +217,7 @@
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
         .vector-chart-container { width: 100%; flex-grow: 1; background: #FAFAFB; border-radius: 12px; border: 1px solid var(--borders); position: relative; min-height: 160px; }
 
-        /* MÓDULO EXCLUSIVO FUENTES ACTIVAS */
+        /* MÓDULO FUENTES ACTIVAS */
         .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
         .fuente-active-mini-card { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; background-color: #FAFAFB; display: flex; flex-direction: column; gap: 12px; }
         .fuente-card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -229,19 +229,6 @@
         .table-controls-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
         .table-filters-left-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         input[type="text"].search-input-header, select.filter-select-box, input[type="date"].filter-date-input { height: 40px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 10px; background-color: var(--surface); font-size: 13px; color: var(--text-primary); outline: none; }
-
-        /* DRAWER LATERAL RECONFIGURADO */
-        .drawer-overlay-panel { position: fixed; top: 0; right: -420px; width: 400px; height: 100vh; background-color: var(--surface); border-left: 1px solid var(--borders); box-shadow: -4px 0 24px rgba(16, 24, 40, 0.08); z-index: 9999; padding: 32px 24px; display: flex; flex-direction: column; gap: 20px; transition: right 0.3s ease-in-out; }
-        .drawer-overlay-panel.opened { right: 0; }
-        .drawer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(16, 24, 40, 0.2); z-index: 9998; display: none; }
-        .form-group-field { display: flex; flex-direction: column; gap: 6px; }
-        .form-group-field label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
-        .form-group-field input, .form-group-field select { height: 42px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 8px; font-size: 13px; outline: none; width: 100%; background-color: var(--bg-main); }
-
-        .card-link-footer { margin-top: auto; padding-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; display: block; border-top: 1px solid var(--borders); text-decoration: none; }
-        .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
-        #auth_gate_wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 99999; }
-        .auth-panel { background-color: var(--surface); padding: 40px; border-radius: var(--radius-main); border: 1px solid var(--borders); box-shadow: var(--shadow-subtle); width: 100%; max-width: 400px; }
     </style>
 </head>
 <body>
@@ -257,14 +244,21 @@
         </div>
     </div>
 
-    <!-- 1. REGLA: DRAWER UNIFICADO DESPLEGABLE ADAPTABLE PARA LOS MOVIMIENTOS -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div class="drawer-overlay-panel" id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px;">
             <h3 style="font-size:18px; font-weight:700;" id="drawer_dinamico_titulo">➕ Nuevo Movimiento</h3>
             <button onclick="conmutarDrawerRegistro(false)" style="background:none; border:none; cursor:pointer; color:var(--text-secondary);"><i data-lucide="x"></i></button>
         </div>
-        <div class="form-group-field"><label>Concepto / Origen</label><input type="text" id="form_ing_nombre" placeholder="Ej. Depósito / Gasto Directo"></div>
+        <div class="form-group-field"><label>Concepto / Detalle</label><input type="text" id="form_ing_nombre" placeholder="Ej. Depósito / Gasto Directo"></div>
+        <div class="form-group-field" id="form_campo_fuente_select_wrapper">
+            <label id="lbl_dinamico_fuente_cat">Fuente / Categoría</label>
+            <select id="form_ing_fuente">
+                <option value="Salario Principal">Salario Principal</option>
+                <option value="Bonificaciones">Bonificaciones</option>
+                <option value="Otros ingresos">Otros ingresos</option>
+            </select>
+        </div>
         <div class="form-group-field"><label>Monto Neto</label><input type="number" id="form_ing_monto" placeholder="0.00"></div>
         <div class="form-group-field"><label>Moneda</label><select id="form_ing_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
         <div class="form-group-field" id="form_campo_tipo_wrapper"><label>Tipo de Flujo</label><select id="form_ing_tipo"><option value="fijo">Recurrente / Fijo</option><option value="variable">Variable</option></select></div>
@@ -275,15 +269,11 @@
     </div>
 
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
-        
         <div class="sidebar">
             <div>
                 <div class="sidebar-brand-wrapper">
                     <div class="brand-isotipo"><i data-lucide="sparkles" style="width:16px;height:16px;"></i></div>
-                    <div class="brand-text-block">
-                        <span class="brand-title">Finanzas Pro</span>
-                        <span class="brand-sub">Personal</span>
-                    </div>
+                    <div class="brand-text-block"><span class="brand-title">Finanzas Pro</span><span class="brand-sub">Personal</span></div>
                 </div>
                 <div class="nav-group">
                     <button class="nav-button active" id="btn_menu_inicio" onclick="cambiarSeccionVista('vista_inicio', this)"><i data-lucide="house"></i> Inicio</button>
@@ -295,15 +285,11 @@
                     <button class="nav-button" onclick="cambiarSeccionVista('vista_historico', this)"><i data-lucide="history"></i> Histórico</button>
                 </div>
             </div>
-            
             <div class="sidebar-footer">
                 <button class="nav-button" onclick="cambiarSeccionVista('vista_config', this)"><i data-lucide="settings"></i> Configuración</button>
                 <div class="sidebar-user">
                     <div class="user-avatar" id="avatar_letra">U</div>
-                    <div class="user-info">
-                        <span class="user-name" id="user_display_mail">usuario@mail.com</span>
-                        <span class="user-logout" onclick="logoutMecanismo()">Cerrar sesión</span>
-                    </div>
+                    <div class="user-info"><span class="user-name" id="user_display_mail">usuario@mail.com</span><span class="user-logout" onclick="logoutMecanismo()">Cerrar sesión</span></div>
                 </div>
             </div>
         </div>
@@ -311,21 +297,12 @@
         <div class="main-container" id="scroll_master_container">
             <div class="chart-tooltip" id="global_chart_tooltip"></div>
 
-            <!-- ================================================== -->
-            <!-- VISTA 1: INICIO / RESUMEN FINANCIERO               -->
-            <!-- ================================================== -->
             <div class="view-section" id="vista_inicio">
                 <div class="view-header">
-                    <div class="header-title-area">
-                        <h1>Resumen financiero</h1>
-                        <p>Tu situación financiera actual</p>
-                    </div>
-                    <!-- 2. REGLA: TODOS TIENEN EL FILTRO DE MES INTEGRADO -->
+                    <div class="header-title-area"><h1>Resumen financiero</h1><p>Tu situación financiera actual</p></div>
                     <div class="header-action-area">
-                        <select class="month-selector" id="filtro_mes_maestro" onchange="actualizarCoreCalculos()">
-                            <option value="2026-06">Junio 2026</option>
-                            <option value="2026-07" selected>Julio 2026</option>
-                            <option value="2026-08">Agosto 2026</option>
+                        <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
+                            <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
                         </select>
                         <button class="btn-primary-action" onclick="abrirFormularioDinamico('inicio')"><i data-lucide="plus"></i> Nuevo movimiento</button>
                     </div>
@@ -333,37 +310,23 @@
 
                 <div class="kpi-grid-5col">
                     <div class="kpi-card double-width">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Disponible este mes</span>
-                            <div class="kpi-icon-wrapper-green" style="color: var(--purple-main); background: var(--purple-light);"><i data-lucide="wallet"></i></div>
-                        </div>
+                        <div class="kpi-label-row"><span class="kpi-label">Disponible este mes</span><div class="kpi-icon-wrapper-blue-exact"><i data-lucide="wallet"></i></div></div>
                         <span class="kpi-main-value" id="kpi_disponible">Q 0.00</span>
                         <div class="kpi-comparison positive">vs mes anterior: <b>+18.4%</b></div>
-                        <div class="sparkline-box">
-                            <svg width="100%" height="100%" viewBox="0 0 100 40"><path d="M 5 30 Q 30 10, 55 25 T 105 15" fill="none" stroke="#5B45F5" stroke-width="2.5"/></svg>
-                        </div>
+                        <div class="sparkline-box"><svg width="100%" height="100%" viewBox="0 0 100 40"><path d="M 5 30 Q 30 10, 55 25 T 105 15" fill="none" stroke="#5B45F5" stroke-width="2.5"/></svg></div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Ingresos</span>
-                            <div class="kpi-icon-wrapper-green-exact"><i data-lucide="arrow-up-right"></i></div>
-                        </div>
+                        <div class="kpi-label-row"><span class="kpi-label">Ingresos</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="arrow-up-right"></i></div></div>
                         <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span>
                         <div class="kpi-comparison" style="color:var(--text-secondary)">Este mes</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Gastos</span>
-                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div>
-                        </div>
+                        <div class="kpi-label-row"><span class="kpi-label">Gastos</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div></div>
                         <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
                         <div class="kpi-comparison" style="font-size:11px; color:var(--text-secondary)">Efectivo + Tarjetas</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Tarjetas</span>
-                            <div class="kpi-icon-wrapper-green" style="color: var(--blue-info); background: var(--blue-light);"><i data-lucide="credit-card"></i></div>
-                        </div>
+                        <div class="kpi-label-row"><span class="kpi-label">Tarjetas</span><div class="kpi-icon-wrapper-blue-exact"><i data-lucide="credit-card"></i></div></div>
                         <span class="kpi-main-value" id="kpi_tarjetas">Q 0.00</span>
                         <span style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">Saldo total</span>
                     </div>
@@ -397,29 +360,17 @@
                 </div>
 
                 <div class="triple-modular-row">
-                    <div class="card">
-                        <div class="card-title">Tarjetas</div>
-                        <div class="card-item-row" id="bloque_tarjetas_inicio"></div>
-                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
-                    </div>
+                    <div class="card"><div class="card-title">Tarjetas</div><div class="card-item-row" id="bloque_tarjetas_inicio"></div><div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div></div>
                     <div class="card">
                         <div class="card-title">Ahorros</div>
-                        <div class="saving-kpi-block">
-                            <div><span style="font-size:12px; color:var(--text-secondary); display:block; font-weight:500;">Total ahorrado</span><span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span></div>
-                        </div>
-                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%;" id="meta_ahorro_nombre"><span>Fondo de emergencia</span><span style="color:var(--text-secondary); font-size:11px; font-weight:500;">Meta mensual</span></div>
+                        <div class="saving-kpi-block"><div><span style="font-size:12px; color:var(--text-secondary); display:block; font-weight:500;">Total ahorrado</span><span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span></div></div>
+                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%;"><span>Fondo de emergencia</span><span style="color:var(--text-secondary); font-size:11px; font-weight:500;">Meta mensual</span></div>
                         <div class="saving-meta-detail"><span id="meta_ahorro_progresion">Q0 de Q50,000</span><span id="meta_ahorro_pct" style="font-weight:700; color:var(--green-positive);">100%</span></div>
                         <div class="progress-bar-frame"><div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div></div>
-                        <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Aportes recientes</div>
-                        <div id="lista_aportes_recientes_inicio" style="display:flex; flex-direction:column; gap:6px;"></div>
+                        <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Aportes recientes</div><div id="lista_aportes_recientes_inicio"></div>
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
-                    <div class="card">
-                        <div class="card-title">Capacidad crediticia</div>
-                        <div class="mish-context-header"><div><div class="mish-val-big" id="mish_valor_actual">Q 0.00</div><div class="mish-lbl-sub">Límite de crédito disponible</div></div></div>
-                        <div class="vector-chart-container" id="mish_chart_inicio"></div>
-                        <div class="kpi-comparison positive" id="mish_variacion_pct" style="margin-top:10px; font-weight:600;"><i data-lucide="trending-up"></i> +10.7% vs mes anterior</div>
-                    </div>
+                    <div class="card"><div class="card-title">Capacidad crediticia</div><div class="mish-context-header"><div><div class="mish-val-big" id="mish_valor_actual">Q 0.00</div><div class="mish-lbl-sub">Límite de crédito disponible</div></div></div><div class="vector-chart-container" id="mish_chart_inicio"></div><div class="kpi-comparison positive" style="margin-top:10px; font-weight:600;"><i data-lucide="trending-up"></i> +10.7% vs mes anterior</div></div>
                 </div>
 
                 <div class="card full-width-table-row">
@@ -429,16 +380,13 @@
                 </div>
             </div>
 
-            <!-- ================================================== -->
-            <!-- VISTA 2: MÓDULO DE INGRESOS (ICONOS CONTRALTA FIJADOS)-->
-            <!-- ================================================== -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
-                    <div class="header-title-area">
-                        <h1>Ingresos</h1>
-                        <p>Gestiona y analiza todas tus fuentes de ingreso.</p>
-                    </div>
+                    <div class="header-title-area"><h1>Ingresos</h1><p>Gestiona y analiza todas tus fuentes de ingreso.</p></div>
                     <div class="header-action-area">
+                        <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
+                            <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
+                        </select>
                         <button class="btn-primary-action" onclick="abrirFormularioDinamico('ingresos')"><i data-lucide="plus"></i> Nuevo ingreso</button>
                     </div>
                 </div>
@@ -477,17 +425,15 @@
                     </div>
                 </div>
 
-                <div class="card" style="padding: 20px 24px;"><div class="card-title-row" style="margin-bottom:14px;"><span class="card-title">Fuentes activas</span></div><div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div></div>
+                <div class="card" style="padding: 20px 24px;"><div class="card-title-row"><span class="card-title">Fuentes activas</span></div><div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div></div>
 
                 <div class="card">
-                    <div class="card-title-row" style="margin-bottom:12px;"><span class="card-title">Historial de ingresos</span></div>
+                    <div class="card-title-row"><span class="card-title">Historial de ingresos</span></div>
                     <div class="table-controls-bar">
                         <div class="table-filters-left-group">
                             <input type="text" class="search-input-header" placeholder="Buscar ingreso..." id="table_search_ing">
-                            <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Desde:</span>
-                            <input type="date" class="filter-date-input" id="filtro_fecha_desde" value="2026-01-01">
-                            <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Hasta:</span>
-                            <input type="date" class="filter-date-input" id="filtro_fecha_hasta" value="2026-12-31">
+                            <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Desde:</span><input type="date" class="filter-date-input" id="filtro_fecha_desde" value="2026-01-01">
+                            <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Hasta:</span><input type="date" class="filter-date-input" id="filtro_fecha_hasta" value="2026-12-31">
                         </div>
                         <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i data-lucide="download"></i> Exportar</button>
                     </div>
@@ -495,53 +441,22 @@
                 </div>
             </div>
 
-            <!-- ================================================== -->
-            <!-- VISTA 3: MÓDULO DE GASTOS COMPLETO (PASO 3)         -->
-            <!-- ================================================== -->
             <div class="view-section" id="vista_gastos" style="display:none;">
                 <div class="view-header">
-                    <div class="header-title-area">
-                        <h1>Gastos</h1>
-                        <p>Controla, analiza y organiza todos tus egresos de capital.</p>
-                    </div>
+                    <div class="header-title-area"><h1>Gastos</h1><p>Controla, analiza y organiza todos tus egresos de capital.</p></div>
                     <div class="header-action-area">
+                        <select class="month-selector select_filtro_mes_sincronized" onchange="actualizarMesSincronizadoGlobal(this)">
+                            <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
+                        </select>
                         <button class="btn-primary-action" style="background-color: var(--red-negative);" onclick="abrirFormularioDinamico('gastos')"><i data-lucide="plus"></i> Nuevo Gasto</button>
                     </div>
                 </div>
 
                 <div class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Gastos del mes</span>
-                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div>
-                        </div>
-                        <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_mes_real">Q 10,748.13</span>
-                        <div class="kpi-context-lbl positive" style="color:var(--green-positive);"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +6.2% vs. junio</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Gastos fijos</span>
-                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="refresh-cw"></i></div>
-                        </div>
-                        <span class="kpi-main-value" id="kpi_gas_fijo_real">Q 4,980.00</span>
-                        <div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">46.3% del total</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Gastos variables</span>
-                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="activity"></i></div>
-                        </div>
-                        <span class="kpi-main-value" id="kpi_gas_variable_real">Q 5,768.13</span>
-                        <div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">53.7% del total</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Promedio mensual</span>
-                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="clock-3"></i></div>
-                        </div>
-                        <span class="kpi-main-value" id="kpi_gas_promedio_real">Q 9,864.20</span>
-                        <div class="kpi-context-lbl">Últimos 6 meses</div>
-                    </div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos del mes</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div></div><span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_mes_real">Q 10,748.13</span><div class="kpi-context-lbl positive" style="color:var(--green-positive);"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +6.2% vs. junio</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos fijos</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="refresh-cw"></i></div></div><span class="kpi-main-value" id="kpi_gas_fijo_real">Q 4,980.00</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">46.3% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos variables</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="activity"></i></div></div><span class="kpi-main-value" id="kpi_gas_variable_real">Q 5,768.13</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">53.7% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="clock-3"></i></div></div><span class="kpi-main-value" id="kpi_gas_promedio_real">Q 9,864.20</span><div class="kpi-context-lbl">Últimos 6 meses</div></div>
                 </div>
 
                 <div class="charts-row">
@@ -572,10 +487,10 @@
                     </div>
                 </div>
 
-                <div class="card" style="padding: 20px 24px;"><div class="card-title-row" style="margin-bottom:14px;"><span class="card-title">Categorías activas</span></div><div class="fuentes-activas-grid-row" id="bloque_categorias_activas_row"></div></div>
+                <div class="card" style="padding: 20px 24px;"><div class="card-title-row"><span class="card-title">Categorías activas</span></div><div class="fuentes-activas-grid-row" id="bloque_categorias_activas_row"></div></div>
 
                 <div class="card">
-                    <div class="card-title-row" style="margin-bottom:12px;"><span class="card-title">Historial de gastos</span></div>
+                    <div class="card-title-row"><span class="card-title">Historial de gastos</span></div>
                     <div class="table-controls-bar">
                         <div class="table-filters-left-group">
                             <input type="text" class="search-input-header" placeholder="Buscar gasto..." id="table_search_gas">
@@ -586,7 +501,6 @@
                 </div>
             </div>
 
-            <!-- RESTO DE VISTAS AISLADAS -->
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
             <div class="view-section fallback-view" id="vista_cuotas" style="display:none;"><h2>Cuotas y Plazos Amortizados</h2></div>
             <div class="view-section fallback-view" id="vista_ahorros" style="display:none;"><h2>Plan de Ahorros</h2></div>
@@ -594,8 +508,6 @@
             <div class="view-section fallback-view" id="vista_config" style="display:none;"><h2>Configuración del Sistema</h2></div>
             <div class="view-section fallback-view" id="vista_ia_focus" style="display:none;"><h2>Consola Avanzada Finanzas IA</h2></div>
         </div>
-
-        <button class="ai-floating-trigger" onclick="cambiarSeccionVista('vista_ia_focus', null)"><i data-lucide="sparkles"></i> Preguntar a Finanzas IA</button>
     </div>
 
     <script>
@@ -615,20 +527,38 @@
             else { d.classList.remove('opened'); b.style.display = 'none'; }
         }
 
-        // 1. REGLA: PREPARACIÓN DINÁMICA DEL FORMULARIO SEGÚN LA VISTA AbIERTA
         function abrirFormularioDinamico(contexto) {
             moduloActivoGlobal = contexto;
             let titulo = document.getElementById('drawer_dinamico_titulo');
-            let wrapperTipo = document.getElementById('form_campo_tipo_wrapper');
+            let comboFuenteCat = document.getElementById('form_ing_fuente');
+            let lblFuenteCat = document.getElementById('lbl_dinamico_fuente_cat');
             
             if(contexto === 'gastos') {
                 titulo.innerText = "➕ Registrar Gasto";
-                wrapperTipo.style.display = "flex";
+                lblFuenteCat.innerText = "Categoría del Gasto";
+                comboFuenteCat.innerHTML = `
+                    <option value="Tarjetas">Tarjetas</option>
+                    <option value="Servicios">Servicios</option>
+                    <option value="Hogar">Hogar</option>
+                    <option value="Transporte">Transporte</option>
+                `;
             } else {
                 titulo.innerText = "➕ Registrar Ingreso";
-                wrapperTipo.style.display = "flex";
+                lblFuenteCat.innerText = "Fuente del Ingreso";
+                comboFuenteCat.innerHTML = `
+                    <option value="Salario Principal">Salario Principal</option>
+                    <option value="Bonificaciones">Bonificaciones</option>
+                    <option value="Otros ingresos">Otros ingresos</option>
+                `;
             }
             conmutarDrawerRegistro(true);
+        }
+
+        function actualizarMesSincronizadoGlobal(selectorNode) {
+            document.querySelectorAll('.select_filtro_mes_sincronizado, .select_filtro_mes_sincronized').forEach(sel => {
+                sel.value = selectorNode.value;
+            });
+            actualizarCoreCalculos();
         }
 
         function cambiarSeccionVista(targetViewId, elementBtn) {
@@ -678,8 +608,10 @@
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
+        // CORRECCIÓN INTEGRAL: MAPEADO DEL CAMPO REQUERIDO DE FUENTE / CATEGORÍA EN INSERCIÓN
         async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
+            let fuenteCat = document.getElementById('form_ing_fuente').value;
             let monto = parseFloat(document.getElementById('form_ing_monto').value);
             let moneda = document.getElementById('form_ing_moneda').value;
             let tipo = document.getElementById('form_ing_tipo').value;
@@ -687,12 +619,30 @@
             let mes = parseInt(document.getElementById('form_ing_mes').value);
             let err = document.getElementById('drawer_form_error');
 
-            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa los campos."; return; }
+            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa todos los campos."; return; }
             err.innerText = "";
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
+            
+            // Configurar el payload dinámico mapeando tanto la columna semántica como el nombre
+            let registroPayload = { 
+                nombre, 
+                monto, 
+                moneda, 
+                tipo, 
+                anio, 
+                mes, 
+                user_id: activeSessionUser.id 
+            };
+            
+            if(tablaDestino === 'gastos') {
+                registroPayload.categoria = fuenteCat;
+                registroPayload.medio_pago = 'efectivo';
+            } else {
+                registroPayload.fuente = fuenteCat;
+            }
 
-            const { data, error } = await _supabase.from(tablaDestino).insert([{ nombre, monto, moneda, tipo, anio, mes, user_id: activeSessionUser.id }]);
+            const { data, error } = await _supabase.from(tablaDestino).insert([registroPayload]);
             if(error) { err.innerText = error.message; }
             else {
                 document.getElementById('form_ing_nombre').value = "";
@@ -703,8 +653,8 @@
         }
 
         function actualizarCoreCalculos() {
-            let filtroMes = document.getElementById('filtro_mes_maestro').value;
-            if(!filtroMes) return;
+            let selectorNode = document.querySelector('.select_filtro_mes_sincronizado');
+            let filtroMes = selectorNode ? selectorNode.value : "2026-07";
             let piezas = filtroMes.split('-');
             let anioAct = parseInt(piezas[0]); let mesAct = parseInt(piezas[1]);
 
@@ -746,7 +696,6 @@
             renderCapacidadMish(mesAct, anioAct);
             renderCompromisosTabla(mesAct, anioAct);
             
-            // Re-renderizar módulos secundarios
             renderHistogramaCombinadoIngresos(mesAct, anioAct);
             renderDonutFuentesIngreso(totalIngresos);
             renderFuentesActivasTarjetas();
@@ -757,7 +706,7 @@
             renderCategoriasActivasTarjetas();
             renderHistorialTablaGastos();
 
-            lucide.createIcons();
+            setTimeout(() => { lucide.createIcons(); }, 120);
         }
 
         function renderHistogramaCombinado(mesB, anioB) {
@@ -845,8 +794,6 @@
             let anchoSvg = cont.clientWidth || 340; let altoSvg = 160; let marginPadding = 42;
             let segmentX = (anchoSvg - (marginPadding * 2)) / 5;
             let valoresMish = [6900, 7600, 8400, 8400, 9100, 10700];
-            document.getElementById('mish_valor_actual').innerText = "Q " + valoresMish[5].toLocaleString('en-US', {minimumFractionDigits:2});
-
             let coords = []; let labelsHtml = ""; let puntosHtml = "";
             for(let i=0; i<6; i++) {
                 let currM = mesB - 5 + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
@@ -873,7 +820,6 @@
             let maxMonto = 25000; let mInicio = mesB - 6;
             let muestraMockValores = [12240, 12430, 14120, 13890, 15980, 13940, 17394];
             let promediosMock = [11800, 12100, 12900, 13400, 14200, 14500, 14812];
-
             let anchoContenedor = cont.clientWidth || 650;
             let segmentX = anchoContenedor / 7; let puntosLinea = [];
 
@@ -929,7 +875,7 @@
                 let coordY = 196 - ((mockPromedios[i] / maxMonto) * 196);
                 puntosLinea.push(`${coordX},${coordY}`);
                 barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#redBarGrad)"></rect>`;
-                cont.innerHTML += `<div class="chart-column"><div style="font-size:10px; font-weight:700; position:absolute; top:6px;">Q${(gas/1000).toFixed(1)}k</div><div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div></div>`;
+                cont.innerHTML += `<div class="chart-column"><div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(gas/1000).toFixed(1)}k</div><div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div></div>`;
             }
             barSgvsHtml += `</svg>`; cont.innerHTML += barSgvsHtml;
             overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
@@ -944,6 +890,7 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Transporte</div><span class="legend-amount">Q 1,198.00</span><b class="legend-pct">11.1%</b></div>`;
         }
 
+        // CORRECCIÓN CONTRASTE FUENTES GASTOS (TRAZO OSCURO ROJO)
         function renderCategoriasActivasTarjetas() {
             document.getElementById('bloque_categorias_activas_row').innerHTML = `
                 <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="credit-card"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Tarjetas</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 4,222</b></span><span>Próximo cargo<b>13 Ago</b></span></div></div>
