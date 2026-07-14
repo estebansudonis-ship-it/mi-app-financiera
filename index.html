@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanzas Personal - Resumen Financiero</title>
+    <title>Finanzas Personal - Resumen Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -128,7 +128,7 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* CONTENEDOR CENTRAL */
+        /* CONTENEDOR CENTRAL DINÁMICO */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
@@ -144,21 +144,19 @@
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* KPIs */
+        /* KPI GRID */
         .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
-        .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; }
+        .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 130px; }
         .kpi-card.double-width { grid-column: span 2; background-color: #F9F8FF; border-color: #DCD6FF; }
-        .kpi-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .kpi-label-row { display: flex; justify-content: space-between; align-items: center; }
         .kpi-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
-        .kpi-icon-badge { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .kpi-main-value { font-size: 34px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; }
+        .kpi-main-value { font-size: 34px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 4px; }
         .kpi-card.double-width .kpi-main-value { color: var(--purple-main); }
-        .kpi-comparison { font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px; color: var(--text-secondary); }
+        .kpi-comparison { font-size: 13px; margin-top: 4px; display: flex; align-items: center; gap: 4px; color: var(--text-secondary); }
         .kpi-comparison.positive b { color: var(--green-positive); }
-        .kpi-comparison.negative b { color: var(--red-negative); }
-        .sparkline-box { position: absolute; right: 24px; bottom: 24px; width: 110px; height: 45px; pointer-events: none; }
+        .sparkline-box { position: absolute; right: 24px; bottom: 20px; width: 110px; height: 45px; pointer-events: none; }
 
-        /* FILA DE GRÁFICOS */
+        /* GRÁFICOS COMBINADOS */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 52px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 14px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 32px; }
@@ -174,7 +172,7 @@
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
         .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
-        /* DONUT GASTOS */
+        /* DONUT CHART */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; }
         .donut-visual-mock { width: 140px; height: 150px; border-radius: 50%; border: 24px solid var(--borders); border-top-color: #F04438; border-right-color: #F79009; border-bottom-color: #2E90FA; display: flex; align-items: center; justify-content: center; shrink: 0; position: relative; }
         .donut-center-value { font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; }
@@ -186,43 +184,51 @@
         .legend-amount { color: var(--text-secondary); text-align: left; }
         .legend-pct { font-weight: 700; text-align: right; color: var(--text-primary); }
 
-        /* 3. NUEVO SECTOR DE TRIPLE COLUMNA (TARJETAS + AHORROS + CAPACIDAD) */
+        /* 3. CORRECCIÓN DEL GRID DE TRIPLE COLUMNA SEGURO (FLEX COMPACTO EN LUGAR DE GRID COMPLEJO) */
         .triple-modular-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            display: flex;
             width: 100%;
+            gap: 24px;
+            align-items: stretch;
         }
 
-        /* TARJETAS PREMIUM */
-        .card-item-row { display: flex; flex-direction: column; gap: 16px; width: 100%; }
-        .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 14px; background-color: #FAFAFB; }
+        .triple-modular-row > .card {
+            flex: 1;
+            min-width: 0; /* Previene el desborde interno de SVGs */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TARJETAS */
+        .card-item-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; background-color: #FAFAFB; }
         .card-strip-top-row { display: flex; align-items: center; width: 100%; }
         
-        /* CORRECCIÓN DE LA RUTA DE IMAGEN EN CONTENEDOR */
-        .card-plastic-thumbnail { width: 75px; height: 48px; border-radius: 6px; object-fit: cover; box-shadow: 0 3px 6px rgba(0,0,0,0.1); background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); shrink: 0; }
+        /* CORRECCIÓN FINAL DE LA INDEXACIÓN DE ASSETS */
+        .card-plastic-thumbnail { width: 68px; height: 44px; border-radius: 6px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1); background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); shrink: 0; }
         
-        .card-meta-identity { display: flex; flex-direction: column; margin-left: 12px; flex-grow: 1; }
-        .card-bank-label { font-size: 14px; font-weight: 700; color: var(--text-primary); }
-        .card-product-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+        .card-meta-identity { display: flex; flex-direction: column; margin-left: 12px; flex-grow: 1; min-width: 0; }
+        .card-bank-label { font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-product-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-utilization-bar-frame { width: 100%; height: 6px; background-color: #E6E8EF; border-radius: 3px; overflow: hidden; }
         .card-utilization-fill { height: 100%; border-radius: 3px; }
-        .card-strip-metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); font-size: 11px; color: var(--text-secondary); border-top: 1px solid var(--borders); padding-top: 10px; gap: 8px; }
-        .card-strip-metrics-grid span b { color: var(--text-primary); display: block; font-size: 12px; margin-top: 2px; font-weight: 600; }
+        .card-strip-metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); font-size: 11px; color: var(--text-secondary); border-top: 1px solid var(--borders); padding-top: 8px; gap: 4px; }
+        .card-strip-metrics-grid span b { color: var(--text-primary); display: block; font-size: 12px; font-weight: 600; }
 
         /* AHORROS */
-        .saving-kpi-block { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .saving-meta-detail { font-size: 13px; color: var(--text-secondary); display: flex; justify-content: space-between; width: 100%; margin-top: 4px; }
-        .progress-bar-frame { width: 100%; height: 8px; background-color: #E6E8EF; border-radius: 4px; overflow: hidden; margin: 8px 0 16px 0; }
-        .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 4px; }
+        .saving-kpi-block { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .saving-meta-detail { font-size: 12px; color: var(--text-secondary); display: flex; justify-content: space-between; width: 100%; margin-top: 2px; }
+        .progress-bar-frame { width: 100%; height: 6px; background-color: #E6E8EF; border-radius: 3px; overflow: hidden; margin: 6px 0 12px 0; }
+        .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
 
-        /* CAPACIDAD CREDITICIA */
-        .mish-context-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-        .mish-val-big { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
-        .mish-lbl-sub { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+        /* CAPACIDAD CREDITICIA - BOX AUTO-CONTENIDO */
+        .mish-context-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .mish-val-big { font-size: 26px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
+        .mish-lbl-sub { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+        .vector-chart-container { width: 100%; flex-grow: 1; background: #FAFAFB; border-radius: 12px; border: 1px solid var(--borders); position: relative; min-height: 160px; }
 
-        /* TABLA FULL WIDTH INFERIOR */
-        .full-width-table-row { width: 100%; }
+        /* TABLA DE COMPROMISOS COMPLETA */
+        .full-width-table-row { width: 100%; margin-top: 4px; }
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
         .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
@@ -233,10 +239,9 @@
         .badge.green { background-color: var(--green-light); color: var(--green-positive); }
         .badge.orange { background-color: var(--orange-light); color: var(--orange-warning); }
 
-        .card-link-footer { margin-top: auto; padding-top: 16px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; text-decoration: none; display: block; border-top: 1px solid var(--borders); }
+        .card-link-footer { margin-top: auto; padding-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; text-decoration: none; display: block; border-top: 1px solid var(--borders); }
         .card-link-footer:hover { color: var(--purple-dark); }
 
-        /* BURBUJA IA FLOTANTE */
         .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
         .ai-floating-trigger:hover { background-color: var(--purple-dark); }
 
@@ -260,7 +265,6 @@
 
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         
-        <!-- SIDEBAR CON BRANDING PREMIUM -->
         <div class="sidebar">
             <div>
                 <div class="sidebar-brand-wrapper">
@@ -357,7 +361,7 @@
                     </div>
                 </div>
 
-                <!-- FILA DE GRÁFICOS -->
+                <!-- GRÁFICOS -->
                 <div class="charts-row">
                     <div class="card">
                         <div class="card-title">Flujo de caja</div>
@@ -386,26 +390,26 @@
                     </div>
                 </div>
 
-                <!-- 3. TRIPLE SECTOR EN UNA SOLA FILA (TARJETAS + AHORROS + CAPACIDAD) -->
+                <!-- 3. BLOQUE TRIPLE SIMÉTRICO ASILADO Y BLINDADO -->
                 <div class="triple-modular-row">
                     
-                    <!-- BLOQUE 1: TARJETAS -->
+                    <!-- COLUMNA 1: TARJETAS -->
                     <div class="card">
                         <div class="card-title">Tarjetas</div>
                         <div class="card-item-row" id="bloque_tarjetas_inicio"></div>
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
-                    <!-- BLOQUE 2: AHORROS -->
+                    <!-- COLUMNA 2: AHORROS -->
                     <div class="card">
                         <div class="card-title">Ahorros</div>
                         <div class="saving-kpi-block">
                             <div>
                                 <span style="font-size:12px; color:var(--text-secondary); display:block; font-weight:500;">Total ahorrado</span>
-                                <span style="font-size:28px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span>
+                                <span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span>
                             </div>
                         </div>
-                        <div style="font-size:14px; font-weight:600; display:flex; justify-content:space-between; width:100%;" id="meta_ahorro_nombre"><span>Fondo de emergencia</span><span style="color:var(--text-secondary); font-size:12px; font-weight:500;">Meta mensual</span></div>
+                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%;" id="meta_ahorro_nombre"><span>Fondo de emergencia</span><span style="color:var(--text-secondary); font-size:11px; font-weight:500;">Meta mensual</span></div>
                         <div class="saving-meta-detail">
                             <span id="meta_ahorro_progresion">Q0 de Q50,000</span>
                             <span id="meta_ahorro_pct" style="font-weight:700; color:var(--green-positive);">100%</span>
@@ -413,12 +417,12 @@
                         <div class="progress-bar-frame">
                             <div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div>
                         </div>
-                        <div style="font-size:13px; font-weight:600; margin-bottom:8px;">Aportes recientes</div>
-                        <ul id="lista_aportes_recientes_inicio" style="list-style:none; display:flex; flex-direction:column; gap:8px;"></ul>
+                        <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Aportes recientes</div>
+                        <ul id="lista_aportes_recientes_inicio" style="list-style:none; display:flex; flex-direction:column; gap:6px;"></ul>
                         <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
                     </div>
 
-                    <!-- BLOQUE 3: CAPACIDAD CREDITICIA -->
+                    <!-- COLUMNA 3: CAPACIDAD CREDITICIA (MISH COMPLETO AUTO-RESPONSIVE) -->
                     <div class="card">
                         <div class="card-title">Capacidad crediticia</div>
                         <div class="mish-context-header">
@@ -427,13 +431,14 @@
                                 <div class="mish-lbl-sub">Límite de crédito disponible</div>
                             </div>
                         </div>
-                        <div class="vector-chart-container" id="mish_chart_inicio" style="min-height:150px; position:relative; padding-left:35px; padding-bottom:25px;"></div>
+                        <!-- Contenedor con ancho relativo real -->
+                        <div class="vector-chart-container" id="mish_chart_inicio"></div>
                         <div class="kpi-comparison positive" id="mish_variacion_pct" style="margin-top:10px; font-weight:600;"><i data-lucide="trending-up"></i> +10.7% vs mes anterior</div>
                     </div>
 
                 </div>
 
-                <!-- FILA COMPLETA INFERIOR PARA PRÓXIMOS COMPROMISOS -->
+                <!-- PRÓXIMOS COMPROMISOS FULL WIDTH -->
                 <div class="card full-width-table-row">
                     <div class="card-title">Próximos compromisos</div>
                     <div style="flex-grow:1;">
@@ -449,7 +454,7 @@
 
             </div>
 
-            <!-- VISTAS CAPAS MOCKUP (AISLADAS) -->
+            <!-- MOCKUPS -->
             <div class="view-section fallback-view" id="vista_ingresos" style="display:none;"><h2>Vista de Ingresos</h2></div>
             <div class="view-section fallback-view" id="vista_gastos" style="display:none;"><h2>Vista de Gastos</h2></div>
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
@@ -522,7 +527,7 @@
                 let rGas = await _supabase.from('gastos').select('*'); db_gastos = rGas.data || [];
                 let rAho = await _supabase.from('ahorros').select('*'); db_ahorros = rAho.data || [];
                 let rCom = await _supabase.from('compras').select('*'); db_compras = rCom.data || [];
-            } catch(e) { console.log("Carga cloud completada de forma segura."); }
+            } catch(e) { console.log("Descarga cloud completada."); }
             actualizarCoreCalculos();
         }
 
@@ -634,7 +639,6 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
         }
 
-        // CORRECCIÓN E INDEXACIÓN DIRECTA DE IMÁGENES FIJAS
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
@@ -642,7 +646,7 @@
             if(auxTarjetas.length === 0) {
                 auxTarjetas = [
                     { id: 101, nombre: "Tarjeta Clásica", lim_cuotas: 28000, corte: 13, asset: "banco_industrial.png", banco: "Banco Industrial" },
-                    { id: 102, nombre: "Tarjeta Platinum", lim_cuotas: 28000, corte: 13, asset: "amex.jpeg", banco: "BAC Credomatic" }
+                    { id: 102, nombre: "Tarjeta Platinum", lim_cuotas: 28000, corte: 13, asset: "banco_BAC_Tarjeta_AMEX.jpeg", banco: "BAC Credomatic" }
                 ];
             }
             auxTarjetas.forEach(t => {
@@ -655,13 +659,13 @@
                 else if(pct > 60 && pct <= 80) colorRango = "var(--orange-warning)";
                 else if(pct > 80) colorRango = "var(--red-negative)";
 
-                let assetRuta = t.asset || (t.nombre.toLowerCase().includes('promerica') ? 'promerica.jpeg' : t.nombre.toLowerCase().includes('industrial') ? 'banco_industrial.png' : 'amex.jpeg');
+                // CORRECCIÓN DE DETECCIÓN DE ASSETS POR EXTENSIÓN EXACTA EN NUBE
+                let assetRuta = t.asset || (t.nombre.toLowerCase().includes('promerica') ? 'banco_promerica_tarejta.jpeg' : t.nombre.toLowerCase().includes('industrial') ? 'banco_industrial_tarjeta.png' : 'banco_BAC_Tarjeta_AMEX.jpeg');
 
                 cont.innerHTML += `
                     <div class="credit-card-strip">
                         <div class="card-strip-top-row">
-                            <!-- CORREGIDO EL COMPORTAMIENTO DE RUTA LOCAL NATIVA -->
-                            <img src="assets/cards/${assetRuta}" class="card-plastic-thumbnail" onerror="this.style.background='linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'">
+                            <img src="${assetRuta}" class="card-plastic-thumbnail" onerror="this.style.background='linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'">
                             <div class="card-meta-identity">
                                 <span class="card-bank-label">${t.banco || 'Banco Cloud'}</span>
                                 <span class="card-product-label">${t.nombre} •••• ${t.id.toString().slice(-4)}</span>
@@ -673,13 +677,12 @@
                         </div>
                         <div class="card-strip-metrics-grid">
                             <span>Límite<b>Q ${limite.toLocaleString()}</b></span>
-                            <span>Utilizado<b>Q ${utilizado.toLocaleString()}</b></span>
-                            <span>Disponible<b>Q ${disponible.toLocaleString()}</b></span>
-                            <span>Próximo Pago<b>13 Ago</b></span>
+                            <span>Utilizado<b>Q ${Math.round(utilizado).toLocaleString()}</b></span>
+                            <span>Disponible<b>Q ${Math.round(disponible).toLocaleString()}</b></span>
+                            <span>Pago<b>13 Ago</b></span>
                         </div>
                     </div>`;
             });
-            lucide.createIcons();
         }
 
         function renderModuloAhorros(mAct, aAct) {
@@ -694,35 +697,44 @@
 
             let lista = document.getElementById('lista_aportes_recientes_inicio'); if(!lista) return;
             lista.innerHTML = `
-                <li style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border-bottom:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b style="color:var(--text-primary);">Q 7,400.00</b></li>
-                <li style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; margin-top:4px;"><span>01/05/2026 &nbsp;&nbsp; Aporte mensual</span><b style="color:var(--text-primary);">Q 7,400.00</b></li>`;
+                <div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; border:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>
+                <div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/05/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
         }
 
+        // 8. REDISEÑO MATEMÁTICO DE CAPACIDAD CREDITICIA (AUTO-CALCULADO SIN DESBORDARSE)
         function renderCapacidadMish(mesB, anioB) {
             let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
+            cont.innerHTML = "";
+            
             let mInicio = mesB - 5; let aInicio = anioB;
             while(mInicio <= 0) { mInicio += 12; aInicio--; }
             
-            let coords = []; let labelsHtml = ""; let puntosHtml = "";
-            let anchoSvg = cont.clientWidth || 450;
-            let segmentX = (anchoSvg - 60) / 5;
+            let anchoSvg = cont.clientWidth || 380;
+            let altoSvg = 160;
+            let marginPadding = 42;
+            let segmentX = (anchoSvg - (marginPadding * 2)) / 5;
+            
             let valoresMish = [6900, 7600, 8400, 8400, 9100, 10700];
-            document.getElementById('mish_valor_actual').innerText = "Q " + valoresMish[5].toLocaleString('en-US', {minimumFractionDigits:2});
+            let coords = []; let labelsHtml = ""; let puntosHtml = "";
 
             for(let i=0; i<6; i++) {
                 let currM = mInicio + i; while(currM > 12) currM -= 12;
-                let x = 40 + (i * segmentX); let y = 120 - ((valoresMish[i] / 15000) * 70);
+                let x = marginPadding + (i * segmentX);
+                
+                // Mapear de forma segura en la altura disponible del contenedor (altoSvg)
+                let y = (altoSvg - 40) - ((valoresMish[i] / 15000) * 80);
                 coords.push(`${x},${y}`);
+                
                 puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--purple-main)"/>`;
-                labelsHtml += `<text x="${x}" y="145" style="font-size:11px; fill:var(--text-secondary); font-weight:500;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text>
-                               <text x="${x}" y="${y-10}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
+                labelsHtml += `<text x="${x}" y="${altoSvg - 10}" style="font-size:11px; fill:var(--text-secondary); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text>
+                               <text x="${x}" y="${y-12}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
             }
 
             cont.innerHTML = `
-                <svg width="100%" height="100%">
-                    <line x1="30" y1="30" x2="${anchoSvg - 20}" y2="30" stroke="#E6E8EF" stroke-dasharray="3"/>
-                    <line x1="30" y1="70" x2="${anchoSvg - 20}" y2="70" stroke="#E6E8EF" stroke-dasharray="3"/>
-                    <line x1="30" y1="110" x2="${anchoSvg - 20}" y2="110" stroke="#E6E8EF" stroke-dasharray="3"/>
+                <svg width="100%" height="100%" viewBox="0 0 ${anchoSvg} ${altoSvg}" style="overflow:visible;">
+                    <line x1="20" y1="35" x2="${anchoSvg - 20}" y2="35" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <line x1="20" y1="75" x2="${anchoSvg - 20}" y2="75" stroke="#E6E8EF" stroke-dasharray="3"/>
+                    <line x1="20" y1="115" x2="${anchoSvg - 20}" y2="115" stroke="#E6E8EF" stroke-dasharray="3"/>
                     <path d="M ${coords.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="2.5"/>
                     ${puntosHtml} ${labelsHtml}
                 </svg>`;
