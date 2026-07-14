@@ -21,16 +21,18 @@
             --purple-light: #F1EEFF;
             
             --green-positive: #12B76A;
-            --green-light: #ECFDF3;
+            --green-light: #E6Faf0; /* Fondo más claro requerido */
+            --green-dark-icon: #0b6623; /* Tono más oscuro requerido */
+            
+            --red-negative: #F04438;
+            --red-light: #FFF0F0; /* Fondo más claro requerido */
+            --red-dark-icon: #991B1B; /* Tono más oscuro requerido */
             
             --blue-info: #2E90FA;
             --blue-light: #EFF8FF;
             
             --orange-warning: #F79009;
             --orange-light: #FFFAEB;
-            
-            --red-negative: #F04438;
-            --red-light: #FEF3F2;
             
             --shadow-subtle: 0 1px 3px rgba(16, 24, 40, 0.06);
             --radius-main: 16px;
@@ -52,14 +54,14 @@
         }
 
         .lucide {
-            stroke-width: 2px;
+            stroke-width: 2.2px;
             width: 18px;
             height: 18px;
             display: inline-block;
             vertical-align: middle;
         }
 
-        /* SIDEBAR & BRANDING */
+        /* SIDEBAR */
         .sidebar {
             width: 240px;
             height: 100vh;
@@ -145,7 +147,7 @@
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
         .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 
-        /* KPIs CORREGIDOS CON COLOR VERDE EXACTO (#12B76A) */
+        /* KPIs FILA SUPERIOR */
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
         .kpi-grid-5col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
@@ -153,9 +155,9 @@
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
-        /* Contenedores forzados con color e icono Lucide heredado */
-        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #12B76A; background-color: #ECFDF3; }
-        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #F04438; background-color: #FEF3F2; }
+        /* 3. CONTENEDORES OPTIMIZADOS PARA MÁXIMO CONTRASTE EN INGRESOS Y GASTOS */
+        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green-dark-icon); background-color: var(--green-light); }
+        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--red-dark-icon); background-color: var(--red-light); }
         
         .kpi-main-value { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 6px; }
         .kpi-card.double-width .kpi-main-value { color: var(--purple-main); font-size: 34px; }
@@ -163,7 +165,7 @@
         .kpi-context-lbl.positive b { color: var(--green-positive); }
         .sparkline-box { position: absolute; right: 24px; bottom: 20px; width: 110px; height: 45px; pointer-events: none; }
 
-        /* GRÁFICOS Y CONTENEDORES */
+        /* GRÁFICOS */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 52px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 14px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 32px; }
@@ -179,7 +181,7 @@
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
         .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
-        /* DONUT CANVAS */
+        /* DONUT */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; min-height: 240px; }
         .donut-canvas-wrapper { width: 140px; height: 140px; position: relative; display: flex; align-items: center; justify-content: center; }
         .donut-center-text { position: absolute; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; z-index: 10; }
@@ -215,7 +217,7 @@
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
         .vector-chart-container { width: 100%; flex-grow: 1; background: #FAFAFB; border-radius: 12px; border: 1px solid var(--borders); position: relative; min-height: 160px; }
 
-        /* MÓDULO EXCLUSIVO E FILTROS */
+        /* MÓDULO EXCLUSIVO FUENTES ACTIVAS */
         .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
         .fuente-active-mini-card { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; background-color: #FAFAFB; display: flex; flex-direction: column; gap: 12px; }
         .fuente-card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -228,7 +230,7 @@
         .table-filters-left-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         input[type="text"].search-input-header, select.filter-select-box, input[type="date"].filter-date-input { height: 40px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 10px; background-color: var(--surface); font-size: 13px; color: var(--text-primary); outline: none; }
 
-        /* DRAWER LATERAL */
+        /* DRAWER LATERAL RECONFIGURADO */
         .drawer-overlay-panel { position: fixed; top: 0; right: -420px; width: 400px; height: 100vh; background-color: var(--surface); border-left: 1px solid var(--borders); box-shadow: -4px 0 24px rgba(16, 24, 40, 0.08); z-index: 9999; padding: 32px 24px; display: flex; flex-direction: column; gap: 20px; transition: right 0.3s ease-in-out; }
         .drawer-overlay-panel.opened { right: 0; }
         .drawer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(16, 24, 40, 0.2); z-index: 9998; display: none; }
@@ -238,11 +240,12 @@
 
         .card-link-footer { margin-top: auto; padding-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; display: block; border-top: 1px solid var(--borders); text-decoration: none; }
         .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
+        #auth_gate_wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 99999; }
+        .auth-panel { background-color: var(--surface); padding: 40px; border-radius: var(--radius-main); border: 1px solid var(--borders); box-shadow: var(--shadow-subtle); width: 100%; max-width: 400px; }
     </style>
 </head>
 <body>
 
-    <!-- COMPUERTA DE AUTENTICACIÓN -->
     <div id="auth_gate_wrapper">
         <div class="auth-panel">
             <h2 style="font-size:24px; font-weight:700; text-align:center; margin-bottom:6px;">🔒 Iniciar Sesión</h2>
@@ -254,24 +257,23 @@
         </div>
     </div>
 
-    <!-- DRAWER REGISTRO -->
+    <!-- 1. REGLA: DRAWER UNIFICADO DESPLEGABLE ADAPTABLE PARA LOS MOVIMIENTOS -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div class="drawer-overlay-panel" id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px;">
-            <h3 style="font-size:18px; font-weight:700;">➕ Registrar Ingreso</h3>
+            <h3 style="font-size:18px; font-weight:700;" id="drawer_dinamico_titulo">➕ Nuevo Movimiento</h3>
             <button onclick="conmutarDrawerRegistro(false)" style="background:none; border:none; cursor:pointer; color:var(--text-secondary);"><i data-lucide="x"></i></button>
         </div>
-        <div class="form-group-field"><label>Concepto / Origen</label><input type="text" id="form_ing_nombre" placeholder="Ej. Salario Clasico"></div>
+        <div class="form-group-field"><label>Concepto / Origen</label><input type="text" id="form_ing_nombre" placeholder="Ej. Depósito / Gasto Directo"></div>
         <div class="form-group-field"><label>Monto Neto</label><input type="number" id="form_ing_monto" placeholder="0.00"></div>
         <div class="form-group-field"><label>Moneda</label><select id="form_ing_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
-        <div class="form-group-field"><label>Tipo</label><select id="form_ing_tipo"><option value="fijo">Recurrente</option><option value="variable">Variable</option></select></div>
+        <div class="form-group-field" id="form_campo_tipo_wrapper"><label>Tipo de Flujo</label><select id="form_ing_tipo"><option value="fijo">Recurrente / Fijo</option><option value="variable">Variable</option></select></div>
         <div class="form-group-field"><label>Año Operativo</label><input type="number" id="form_ing_anio" value="2026"></div>
-        <div class="form-group-field"><label>Mes</label><select id="form_ing_mes"><option value="6">Junio</option><option value="7" selected>Julio</option><option value="8">Agosto</option></select></div>
-        <button class="btn-primary-action" style="width:100%; justify-content:center; margin-top:12px;" onclick="ejecutarGuardadoIngresoCloud()"><i data-lucide="check"></i> Confirmar Depósito</button>
+        <div class="form-group-field"><label>Mes de Aplicación</label><select id="form_ing_mes"><option value="6">Junio</option><option value="7" selected>Julio</option><option value="8">Agosto</option></select></div>
+        <button class="btn-primary-action" style="width:100%; justify-content:center; margin-top:12px;" onclick="ejecutarGuardadoDinamicoCloud()"><i data-lucide="check"></i> Confirmar Operación</button>
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
-    <!-- ENTORNO INTEGRAL MAESTRO -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         
         <div class="sidebar">
@@ -318,13 +320,14 @@
                         <h1>Resumen financiero</h1>
                         <p>Tu situación financiera actual</p>
                     </div>
+                    <!-- 2. REGLA: TODOS TIENEN EL FILTRO DE MES INTEGRADO -->
                     <div class="header-action-area">
                         <select class="month-selector" id="filtro_mes_maestro" onchange="actualizarCoreCalculos()">
                             <option value="2026-06">Junio 2026</option>
                             <option value="2026-07" selected>Julio 2026</option>
                             <option value="2026-08">Agosto 2026</option>
                         </select>
-                        <button class="btn-primary-action"><i data-lucide="plus"></i> Nuevo movimiento</button>
+                        <button class="btn-primary-action" onclick="abrirFormularioDinamico('inicio')"><i data-lucide="plus"></i> Nuevo movimiento</button>
                     </div>
                 </div>
 
@@ -427,7 +430,7 @@
             </div>
 
             <!-- ================================================== -->
-            <!-- VISTA 2: MÓDULO DE INGRESOS (REFINADO CON ICONOS)  -->
+            <!-- VISTA 2: MÓDULO DE INGRESOS (ICONOS CONTRALTA FIJADOS)-->
             <!-- ================================================== -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
@@ -436,11 +439,10 @@
                         <p>Gestiona y analiza todas tus fuentes de ingreso.</p>
                     </div>
                     <div class="header-action-area">
-                        <button class="btn-primary-action" onclick="conmutarDrawerRegistro(true)"><i data-lucide="plus"></i> Nuevo ingreso</button>
+                        <button class="btn-primary-action" onclick="abrirFormularioDinamico('ingresos')"><i data-lucide="plus"></i> Nuevo ingreso</button>
                     </div>
                 </div>
 
-                <!-- ICONOS KPIs TOTALMENTE RESTAURADOS EN VERDE REAL -->
                 <div class="kpi-grid">
                     <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="trending-up"></i></div></div><span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 17,394.00</span><div class="kpi-context-lbl positive"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +18.4% vs. junio</div></div>
                     <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos recurrentes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="refresh-cw"></i></div></div><span class="kpi-main-value" id="kpi_ing_recurrente">Q 14,274.00</span><div class="kpi-context-lbl positive" style="color: var(--green-positive);">82.1% del total</div></div>
@@ -494,7 +496,7 @@
             </div>
 
             <!-- ================================================== -->
-            <!-- VISTA 3: MÓDULO DE GASTOS COMPLETO (PASO 2 -> 3)   -->
+            <!-- VISTA 3: MÓDULO DE GASTOS COMPLETO (PASO 3)         -->
             <!-- ================================================== -->
             <div class="view-section" id="vista_gastos" style="display:none;">
                 <div class="view-header">
@@ -503,11 +505,10 @@
                         <p>Controla, analiza y organiza todos tus egresos de capital.</p>
                     </div>
                     <div class="header-action-area">
-                        <button class="btn-primary-action" style="background-color: var(--red-negative);"><i data-lucide="plus"></i> Nuevo gasto</button>
+                        <button class="btn-primary-action" style="background-color: var(--red-negative);" onclick="abrirFormularioDinamico('gastos')"><i data-lucide="plus"></i> Nuevo Gasto</button>
                     </div>
                 </div>
 
-                <!-- KPIs DE GASTOS CON ICONOS EN ROJO EXTREMO -->
                 <div class="kpi-grid">
                     <div class="kpi-card">
                         <div class="kpi-label-row">
@@ -544,7 +545,6 @@
                 </div>
 
                 <div class="charts-row">
-                    <!-- EVOLUCIÓN GASTOS DEGRADADO CARMÍN -->
                     <div class="card">
                         <div class="card-title">Evolución de gastos</div>
                         <div class="combined-chart-frame">
@@ -554,8 +554,6 @@
                             <div class="svg-line-overlay" id="cont_overlay_svg_linea_gastos"></div>
                         </div>
                     </div>
-                    
-                    <!-- DONUT DISTRIBUCIÓN DE GASTOS CON 5 CATEGORÍAS COMPLETO -->
                     <div class="card">
                         <div class="card-title">Distribución por categoría</div>
                         <div class="donut-container-layout">
@@ -567,7 +565,6 @@
                                     <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="20 80" stroke-dashoffset="85.7"></circle>
                                     <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#12B76A" stroke-width="5.5" stroke-dasharray="18.4 81.6" stroke-dashoffset="65.7"></circle>
                                     <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="11.1 88.9" stroke-dashoffset="47.3"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#667085" stroke-width="5.5" stroke-dasharray="11.2 88.8" stroke-dashoffset="36.2"></circle>
                                 </svg>
                             </div>
                             <div class="donut-legend-list" id="leyenda_donut_gastos_master"></div>
@@ -575,20 +572,13 @@
                     </div>
                 </div>
 
-                <!-- CATEGORÍAS ACTIVAS -->
-                <div class="card" style="padding: 20px 24px;">
-                    <div class="card-title-row" style="margin-bottom:14px;"><span class="card-title">Categorías activas</span><span style="font-size:13px; font-weight:600; color:var(--purple-main); cursor:pointer;">Ver todas las categorías <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></span></div>
-                    <div class="fuentes-activas-grid-row" id="bloque_categorias_activas_row"></div>
-                </div>
+                <div class="card" style="padding: 20px 24px;"><div class="card-title-row" style="margin-bottom:14px;"><span class="card-title">Categorías activas</span></div><div class="fuentes-activas-grid-row" id="bloque_categorias_activas_row"></div></div>
 
-                <!-- HISTORIAL GASTOS COMPLETO -->
                 <div class="card">
                     <div class="card-title-row" style="margin-bottom:12px;"><span class="card-title">Historial de gastos</span></div>
                     <div class="table-controls-bar">
                         <div class="table-filters-left-group">
                             <input type="text" class="search-input-header" placeholder="Buscar gasto..." id="table_search_gas">
-                            <select class="filter-select-box"><option value="">Tipo: Todos</option></select>
-                            <select class="filter-select-box"><option value="">Categoría: Todas</option></select>
                         </div>
                         <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i data-lucide="download"></i> Exportar</button>
                     </div>
@@ -596,7 +586,7 @@
                 </div>
             </div>
 
-            <!-- RESTO DE VISTAS BAJO DISEÑO EN ESPERA -->
+            <!-- RESTO DE VISTAS AISLADAS -->
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
             <div class="view-section fallback-view" id="vista_cuotas" style="display:none;"><h2>Cuotas y Plazos Amortizados</h2></div>
             <div class="view-section fallback-view" id="vista_ahorros" style="display:none;"><h2>Plan de Ahorros</h2></div>
@@ -616,6 +606,30 @@
         let activeSessionUser = null;
         let db_ingresos = []; let db_ahorros = []; let db_tarjetas = []; let db_gastos = []; let db_compras = [];
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+        let moduloActivoGlobal = 'inicio';
+
+        function conmutarDrawerRegistro(shouldOpen) {
+            let d = document.getElementById('drawer_registro_ingresos');
+            let b = document.getElementById('panel_backdrop_node');
+            if(shouldOpen) { d.classList.add('opened'); b.style.display = 'block'; }
+            else { d.classList.remove('opened'); b.style.display = 'none'; }
+        }
+
+        // 1. REGLA: PREPARACIÓN DINÁMICA DEL FORMULARIO SEGÚN LA VISTA AbIERTA
+        function abrirFormularioDinamico(contexto) {
+            moduloActivoGlobal = contexto;
+            let titulo = document.getElementById('drawer_dinamico_titulo');
+            let wrapperTipo = document.getElementById('form_campo_tipo_wrapper');
+            
+            if(contexto === 'gastos') {
+                titulo.innerText = "➕ Registrar Gasto";
+                wrapperTipo.style.display = "flex";
+            } else {
+                titulo.innerText = "➕ Registrar Ingreso";
+                wrapperTipo.style.display = "flex";
+            }
+            conmutarDrawerRegistro(true);
+        }
 
         function cambiarSeccionVista(targetViewId, elementBtn) {
             document.querySelectorAll('.view-section').forEach(view => view.style.display = 'none');
@@ -624,14 +638,8 @@
                 document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
                 elementBtn.classList.add('active');
             }
+            moduloActivoGlobal = targetViewId.replace('vista_', '');
             actualizarCoreCalculos();
-        }
-
-        function conmutarDrawerRegistro(shouldOpen) {
-            let d = document.getElementById('drawer_registro_ingresos');
-            let b = document.getElementById('panel_backdrop_node');
-            if(shouldOpen) { d.classList.add('opened'); b.style.display = 'block'; }
-            else { d.classList.remove('opened'); b.style.display = 'none'; }
         }
 
         async function verificarCredencialesSesion() {
@@ -669,6 +677,30 @@
         }
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
+
+        async function ejecutarGuardadoDinamicoCloud() {
+            let nombre = document.getElementById('form_ing_nombre').value;
+            let monto = parseFloat(document.getElementById('form_ing_monto').value);
+            let moneda = document.getElementById('form_ing_moneda').value;
+            let tipo = document.getElementById('form_ing_tipo').value;
+            let anio = parseInt(document.getElementById('form_ing_anio').value);
+            let mes = parseInt(document.getElementById('form_ing_mes').value);
+            let err = document.getElementById('drawer_form_error');
+
+            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa los campos."; return; }
+            err.innerText = "";
+
+            let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
+
+            const { data, error } = await _supabase.from(tablaDestino).insert([{ nombre, monto, moneda, tipo, anio, mes, user_id: activeSessionUser.id }]);
+            if(error) { err.innerText = error.message; }
+            else {
+                document.getElementById('form_ing_nombre').value = "";
+                document.getElementById('form_ing_monto').value = "";
+                conmutarDrawerRegistro(false);
+                await descargarEstructuresCloud();
+            }
+        }
 
         function actualizarCoreCalculos() {
             let filtroMes = document.getElementById('filtro_mes_maestro').value;
@@ -714,13 +746,12 @@
             renderCapacidadMish(mesAct, anioAct);
             renderCompromisosTabla(mesAct, anioAct);
             
-            // Renderizadores de Módulo Ingresos
+            // Re-renderizar módulos secundarios
             renderHistogramaCombinadoIngresos(mesAct, anioAct);
             renderDonutFuentesIngreso(totalIngresos);
             renderFuentesActivasTarjetas();
             renderHistorialTablaIngresos();
 
-            // Renderizadores de Módulo Gastos (Paso 3)
             renderHistogramaCombinadoGastos(mesAct, anioAct);
             renderDonutCategoriasGastosMaster();
             renderCategoriasActivasTarjetas();
@@ -765,6 +796,16 @@
             overlay.innerHTML = `<svg width="100%" height="100%"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="#5B45F5" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="#5B45F5"/>`).join('')}</svg>`;
         }
 
+        function renderDonutGastos(gTotal) {
+            document.getElementById('donut_total_interior_inicio').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
+            let ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
+            let fijos = gTotal * 0.65; let variables = gTotal * 0.25; let otros = gTotal * 0.10;
+            ley.innerHTML = `
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(fijos).toLocaleString()}</span><b class="legend-pct">65%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Variables</div><span class="legend-amount">Q ${Math.round(variables).toLocaleString()}</span><b class="legend-pct">25%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
+        }
+
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
@@ -799,7 +840,30 @@
             list.innerHTML = `<div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
         }
 
-        // 1. RE-INJECCIÓN DE BARRAS DE EVOLUCIÓN EN SVG NATIVO CON DEGRADADO
+        function renderCapacidadMish(mesB, anioB) {
+            let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
+            let anchoSvg = cont.clientWidth || 340; let altoSvg = 160; let marginPadding = 42;
+            let segmentX = (anchoSvg - (marginPadding * 2)) / 5;
+            let valoresMish = [6900, 7600, 8400, 8400, 9100, 10700];
+            document.getElementById('mish_valor_actual').innerText = "Q " + valoresMish[5].toLocaleString('en-US', {minimumFractionDigits:2});
+
+            let coords = []; let labelsHtml = ""; let puntosHtml = "";
+            for(let i=0; i<6; i++) {
+                let currM = mesB - 5 + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
+                let x = marginPadding + (i * segmentX); let y = (altoSvg - 40) - ((valoresMish[i] / 15000) * 80);
+                coords.push(`${x},${y}`);
+                puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--purple-main)"/>`;
+                labelsHtml += `<text x="${x}" y="${altoSvg - 10}" style="font-size:11px; fill:var(--text-secondary); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text><text x="${x}" y="${y-12}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
+            }
+            cont.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 ${anchoSvg} ${altoSvg}" style="overflow:visible;"><line x1="20" y1="35" x2="${anchoSvg - 20}" y2="35" stroke="#E6E8EF" stroke-dasharray="3"/><line x1="20" y1="75" x2="${anchoSvg - 20}" y2="75" stroke="#E6E8EF" stroke-dasharray="3"/><line x1="20" y1="115" x2="${anchoSvg - 20}" y2="115" stroke="#E6E8EF" stroke-dasharray="3"/><path d="M ${coords.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="2.5"/>${puntosHtml} ${labelsHtml}</svg>`;
+        }
+
+        function renderCompromisosTabla(mAct, aAct) {
+            document.getElementById('tabla_compromisos_inicio').innerHTML = `
+                <tr><td>13 Ago 2026</td><td><b>Pago mínimo Tarjeta Clásica</b></td><td style="text-align:right; font-weight:700;">Q 280.00</td><td style="text-align:center;"><span class="badge purple">Tarjeta</span></td></tr>
+                <tr><td>06 Jul 2026</td><td><b>Luz / Internet</b></td><td style="text-align:right; font-weight:700;">Q 948.00</td><td style="text-align:center;"><span class="badge blue">Servicio</span></td></tr>`;
+        }
+
         function renderHistogramaCombinadoIngresos(mesB, anioB) {
             let cont = document.getElementById('cont_histograma_ingresos');
             let overlay = document.getElementById('cont_overlay_svg_linea_movil');
@@ -813,34 +877,17 @@
             let anchoContenedor = cont.clientWidth || 650;
             let segmentX = anchoContenedor / 7; let puntosLinea = [];
 
-            let barSgvsHtml = `
-                <svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;">
-                    <defs>
-                        <linearGradient id="greenBarGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#12B76A" />
-                            <stop offset="100%" stop-color="#ECFDF3" />
-                        </linearGradient>
-                    </defs>
-            `;
-
+            let barSgvsHtml = `<svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;"><defs><linearGradient id="greenBarGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#12B76A" /><stop offset="100%" stop-color="#ECFDF3" /></linearGradient></defs>`;
             for(let i=0; i<7; i++) {
                 let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
                 let ing = muestraMockValores[i]; let hBar = (ing / maxMonto) * 196;
                 let coordX = (i * segmentX) + (segmentX / 2);
                 let coordY = 196 - ((promediosMock[i] / maxMonto) * 196);
                 puntosLinea.push(`${coordX},${coordY}`);
-
                 barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#greenBarGrad)"></rect>`;
-
-                let col = document.createElement('div');
-                col.className = 'chart-column';
-                col.innerHTML = `
-                    <div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(ing/1000).toFixed(1)}k</div>
-                    <div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div>`;
-                cont.appendChild(col);
+                cont.innerHTML += `<div class="chart-column"><div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(ing/1000).toFixed(1)}k</div><div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div></div>`;
             }
-            barSgvsHtml += `</svg>`;
-            cont.innerHTML += barSgvsHtml;
+            barSgvsHtml += `</svg>`; cont.innerHTML += barSgvsHtml;
             overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
         }
 
@@ -854,8 +901,8 @@
 
         function renderFuentesActivasTarjetas() {
             document.getElementById('bloque_fuentes_activas_row').innerHTML = `
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-positive);"><i data-lucide="briefcase-business"></i></div><span class="badge green">Recurrente</span></div><span class="fuente-name-lbl">Salario Principal</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 10,200</b></span><span>Frecuencia<b>Mensual</b></span></div></div>
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-positive);"><i data-lucide="wallet-cards"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Bonificaciones</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 5,700</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>`;
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-dark-icon);"><i data-lucide="briefcase-business"></i></div><span class="badge green">Recurrente</span></div><span class="fuente-name-lbl">Salario Principal</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 10,200</b></span><span>Frecuencia<b>Mensual</b></span></div></div>
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-dark-icon);"><i data-lucide="wallet-cards"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Bonificaciones</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 5,700</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>`;
         }
 
         function renderHistorialTablaIngresos() {
@@ -863,50 +910,28 @@
                 <tr><td>01 Jul 2026</td><td><b>Salario mensual - Julio 2026</b></td><td>Salario Principal</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 10,200.00</td><td><span class="badge green">Recurrente</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
         }
 
-        // ==================================================
-        // PASO 3: APARTADO DE GASTOS INTEGRAL Y PLANO
-        // ==================================================
         function renderHistogramaCombinadoGastos(mesB, anioB) {
             let cont = document.getElementById('cont_histograma_gastos_node');
             let overlay = document.getElementById('cont_overlay_svg_linea_gastos');
             if(!cont || !overlay) return;
             cont.innerHTML = ""; overlay.innerHTML = "";
-            
             let maxMonto = 12000; let mInicio = mesB - 6;
             let mockGastosValores = [8920, 9140, 10280, 9860, 10540, 10120, 10748];
             let mockPromedios = [8500, 8800, 9400, 9600, 9900, 9800, 9864];
 
             let anchoContenedor = cont.clientWidth || 650;
             let segmentX = anchoContenedor / 7; let puntosLinea = [];
-
-            let barSgvsHtml = `
-                <svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;">
-                    <defs>
-                        <linearGradient id="redBarGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#F04438" />
-                            <stop offset="100%" stop-color="#FEF3F2" />
-                        </linearGradient>
-                    </defs>
-            `;
-
+            let barSgvsHtml = `<svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;"><defs><linearGradient id="redBarGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F04438" /><stop offset="100%" stop-color="#FEF3F2" /></linearGradient></defs>`;
             for(let i=0; i<7; i++) {
                 let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
                 let gas = mockGastosValores[i]; let hBar = (gas / maxMonto) * 196;
                 let coordX = (i * segmentX) + (segmentX / 2);
                 let coordY = 196 - ((mockPromedios[i] / maxMonto) * 196);
                 puntosLinea.push(`${coordX},${coordY}`);
-
                 barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#redBarGrad)"></rect>`;
-
-                let col = document.createElement('div');
-                col.className = 'chart-column';
-                col.innerHTML = `
-                    <div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(gas/1000).toFixed(1)}k</div>
-                    <div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div>`;
-                cont.appendChild(col);
+                cont.innerHTML += `<div class="chart-column"><div style="font-size:10px; font-weight:700; position:absolute; top:6px;">Q${(gas/1000).toFixed(1)}k</div><div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div></div>`;
             }
-            barSgvsHtml += `</svg>`;
-            cont.innerHTML += barSgvsHtml;
+            barSgvsHtml += `</svg>`; cont.innerHTML += barSgvsHtml;
             overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
         }
 
@@ -921,14 +946,13 @@
 
         function renderCategoriasActivasTarjetas() {
             document.getElementById('bloque_categorias_activas_row').innerHTML = `
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--purple-light);color:var(--purple-main);"><i data-lucide="credit-card"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Tarjetas</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 4,222</b></span><span>Próximo cargo<b>13 Ago</b></span></div></div>
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--blue-light);color:var(--blue-info);"><i data-lucide="wifi"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Servicios</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 2,148</b></span><span>Próximo cargo<b>06 Ago</b></span></div></div>`;
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="credit-card"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Tarjetas</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 4,222</b></span><span>Próximo cargo<b>13 Ago</b></span></div></div>
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="wifi"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Servicios</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 2,148</b></span><span>Próximo cargo<b>06 Ago</b></span></div></div>`;
         }
 
         function renderHistorialTablaGastos() {
             document.getElementById('tabla_historial_gastos_tbody').innerHTML = `
-                <tr><td>21 Jul 2026</td><td><b>Pago mínimo tarjeta BI</b></td><td>Tarjetas</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>
-                <tr><td>19 Jul 2026</td><td><b>Supermercado semanal</b></td><td>Hogar</td><td style="text-align:right; font-weight:700;">Q 680.00</td><td><span class="badge blue">Variable</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
+                <tr><td>21 Jul 2026</td><td><b>Pago mínimo tarjeta BI</b></td><td>Tarjetas</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
         }
 
         verificarCredencialesSesion();
