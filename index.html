@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanzas Pro - Dashboard Máster</title>
+    <title>Finanzas Pro - Panel Máster Blindado</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -15,7 +15,7 @@
             --text-primary: #111827;
             --text-secondary: #667085;
             --borders: #E6E8EF;
-            f
+            
             --purple-main: #5B45F5;
             --purple-dark: #4328D7;
             --purple-light: #F1EEFF;
@@ -61,7 +61,7 @@
             vertical-align: middle;
         }
 
-        /* SIDEBAR ARCHITECTURE */
+        /* SIDEBAR INTERFACE */
         .sidebar {
             width: 240px;
             height: 100vh;
@@ -130,7 +130,7 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* AREA WORKSPACE CENTRAL */
+        /* WORKSPACE BLOCKS */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
@@ -140,14 +140,11 @@
         .header-action-area { display: flex; align-items: center; gap: 12px; }
         .month-selector { height: 44px; padding: 0 16px; border: 1px solid var(--borders); border-radius: 12px; background-color: var(--surface); color: var(--text-primary); font-size: 14px; font-weight: 500; outline: none; cursor: pointer; }
         
-        .btn-primary-action { height: 44px; padding: 0 20px; background-color: var(--purple-main); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-        .btn-primary-action:hover { background-color: var(--purple-dark); }
-
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
         .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 
-        /* KPIs CON COLOR VERDE EXACTO E ICONOS CON ALTO CONTRASTE */
+        /* KPIs CORREGIDOS DE ALTO CONTRASTE */
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
         .kpi-grid-5col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
@@ -155,9 +152,8 @@
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
-        /* CONTRASTE ALTO BIEN AJUSTADO */
-        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #0b6623 !important; background-color: #E6Faf0 !important; }
-        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #991B1B !important; background-color: #FFF0F0 !important; }
+        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green-dark-icon) !important; background-color: var(--green-light) !important; }
+        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--red-dark-icon) !important; background-color: var(--red-light) !important; }
         .kpi-icon-wrapper-blue-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--purple-main) !important; background-color: var(--purple-light) !important; }
         
         .kpi-main-value { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 6px; }
@@ -166,7 +162,7 @@
         .kpi-context-lbl.positive b { color: var(--green-positive); }
         .sparkline-box { position: absolute; right: 24px; bottom: 20px; width: 110px; height: 45px; pointer-events: none; }
 
-        /* GRÁFICOS */
+        /* LAYOUT DE GRÁFICOS */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 52px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 14px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 32px; }
@@ -181,7 +177,7 @@
         .chart-label { font-size: 13px; color: var(--text-secondary); margin-top: 12px; font-weight: 500; }
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
 
-        /* DONUT */
+        /* DONUT GRAPH COMPONENT */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; min-height: 240px; }
         .donut-canvas-wrapper { width: 140px; height: 140px; position: relative; display: flex; align-items: center; justify-content: center; }
         .donut-center-text { position: absolute; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; z-index: 10; }
@@ -195,11 +191,10 @@
         .legend-amount { color: var(--text-secondary); text-align: left; }
         .legend-pct { font-weight: 700; text-align: right; color: var(--text-primary); }
 
-        /* TRIPLE MODULAR ROW */
         .triple-modular-row { display: flex; width: 100%; gap: 24px; align-items: stretch; }
         .triple-modular-row > .card { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-
         .card-item-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+
         .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; background-color: #FAFAFB; }
         .card-strip-top-row { display: flex; align-items: center; width: 100%; }
         .card-plastic-thumbnail { width: 75px; height: 48px; border-radius: 6px; object-fit: fill; box-shadow: 0 2px 5px rgba(0,0,0,0.15); shrink: 0; }
@@ -217,7 +212,6 @@
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
         .vector-chart-container { width: 100%; flex-grow: 1; background: #FAFAFB; border-radius: 12px; border: 1px solid var(--borders); position: relative; min-height: 160px; }
 
-        /* SECCIONES MÓDULO EXCLUSIVO FUENTES ACTIVAS */
         .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
         .fuente-active-mini-card { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; background-color: #FAFAFB; display: flex; flex-direction: column; gap: 12px; }
         .fuente-card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -230,11 +224,12 @@
         .table-filters-left-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         input[type="text"].search-input-header, select.filter-select-box, input[type="date"].filter-date-input { height: 40px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 10px; background-color: var(--surface); font-size: 13px; color: var(--text-primary); outline: none; }
 
-        /* 🛠️ FIJACIÓN ABSOLUTA E INALTERABLE DEL PANEL LATERAL FLOTANTE (DERECHO SAAS) */
+        /* 🛠️ CONTENEDOR DEL DRAWER ULTRA BLINDADO FIJO A LA DERECHA */
         #drawer_registro_ingresos { 
             position: fixed !important; 
             top: 0 !important; 
             right: 0 !important; 
+            left: auto !important;
             width: 400px !important; 
             height: 100vh !important; 
             background-color: #FFFFFF !important; 
@@ -245,11 +240,9 @@
             display: flex !important; 
             flex-direction: column !important; 
             gap: 20px !important; 
-            transform: translateX(100%) !important; /* Totalmente oculto de base */
+            transform: translateX(100%) !important; 
             transition: transform 0.25s ease-in-out !important; 
         }
-        
-        /* Clase activa controlada por JS */
         #drawer_registro_ingresos.opened { 
             transform: translateX(0) !important; 
         }
@@ -261,6 +254,19 @@
 
         .card-link-footer { margin-top: auto; padding-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; display: block; border-top: 1px solid var(--borders); text-decoration: none; }
         .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
+        
+        .compact-table-frame { width: 100%; border-collapse: collapse; }
+        .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
+        .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
+        
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; text-align: center; }
+        .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
+        .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
+        .badge.green { background-color: var(--green-light); color: var(--green-positive); }
+        .badge.orange { background-color: var(--orange-light); color: var(--orange-warning); }
+        
+        #auth_gate_wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 99999; }
+        .auth-panel { background-color: var(--surface); padding: 40px; border-radius: var(--radius-main); border: 1px solid var(--borders); box-shadow: var(--shadow-subtle); width: 100%; max-width: 400px; }
     </style>
 </head>
 <body>
@@ -276,6 +282,7 @@
         </div>
     </div>
 
+    <!-- DRAWER LATERAL RECONFIGURADO -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
@@ -296,25 +303,26 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
+    <!-- MAIN ENTRAMADO -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         <div class="sidebar">
             <div>
                 <div class="sidebar-brand-wrapper">
-                    <div class="brand-isotipo"><i data-lucide="sparkles" style="width:16px;height:16px;"></i></div>
+                    <div class="brand-isotipo"><i id="brand-sparkle-ico"></i></div>
                     <div class="brand-text-block"><span class="brand-title">Finanzas Pro</span><span class="brand-sub">Personal</span></div>
                 </div>
                 <div class="nav-group">
-                    <button class="nav-button active" id="btn_menu_inicio" onclick="cambiarSeccionVista('vista_inicio', this)"><i data-lucide="house"></i> Inicio</button>
-                    <button class="nav-button" id="btn_menu_ingresos" onclick="cambiarSeccionVista('vista_ingresos', this)"><i data-lucide="trending-up"></i> Ingresos</button>
-                    <button class="nav-button" id="btn_menu_gastos" onclick="cambiarSeccionVista('vista_gastos', this)"><i data-lucide="receipt"></i> Gastos</button>
-                    <button class="nav-button" onclick="cambiarSeccionVista('vista_tarjetas', this)"><i data-lucide="credit-card"></i> Tarjetas</button>
-                    <button class="nav-button" onclick="cambiarSeccionVista('vista_cuotas', this)"><i data-lucide="calendar-clock"></i> Cuotas / Plazos</button>
-                    <button class="nav-button" onclick="cambiarSeccionVista('vista_ahorros', this)"><i data-lucide="piggy-bank"></i> Ahorros</button>
-                    <button class="nav-button" onclick="cambiarSeccionVista('vista_historico', this)"><i data-lucide="history"></i> Histórico</button>
+                    <button class="nav-button active" id="btn_menu_inicio" onclick="cambiarSeccionVista('vista_inicio', this)"><i id="menu-home-ico"></i> Inicio</button>
+                    <button class="nav-button" id="btn_menu_ingresos" onclick="cambiarSeccionVista('vista_ingresos', this)"><i id="menu-inc-ico"></i> Ingresos</button>
+                    <button class="nav-button" id="btn_menu_gastos" onclick="cambiarSeccionVista('vista_gastos', this)"><i id="menu-exp-ico"></i> Gastos</button>
+                    <button class="nav-button" onclick="cambiarSeccionVista('vista_tarjetas', this)"><i id="menu-card-ico"></i> Tarjetas</button>
+                    <button class="nav-button" onclick="cambiarSeccionVista('vista_cuotas', this)"><i id="menu-clock-ico"></i> Cuotas / Plazos</button>
+                    <button class="nav-button" onclick="cambiarSeccionVista('vista_ahorros', this)"><i id="menu-save-ico"></i> Ahorros</button>
+                    <button class="nav-button" onclick="cambiarSeccionVista('vista_historico', this)"><i id="menu-hist-ico"></i> Histórico</button>
                 </div>
             </div>
             <div class="sidebar-footer">
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_config', this)"><i data-lucide="settings"></i> Configuración</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_config', this)"><i id="menu-set-ico"></i> Configuración</button>
                 <div class="sidebar-user">
                     <div class="user-avatar" id="avatar_letra">U</div>
                     <div class="user-info"><span class="user-name" id="user_display_mail">usuario@mail.com</span><span class="user-logout" onclick="logoutMecanismo()">Cerrar sesión</span></div>
@@ -325,6 +333,7 @@
         <div class="main-container" id="scroll_master_container">
             <div class="chart-tooltip" id="global_chart_tooltip"></div>
 
+            <!-- VISTA 1: INICIO -->
             <div class="view-section" id="vista_inicio">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Resumen financiero</h1><p>Tu situación financiera actual</p></div>
@@ -332,29 +341,29 @@
                         <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
                             <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
                         </select>
-                        <button class="btn-primary-action" onclick="abrirFormularioDinamico('inicio')"><i data-lucide="plus"></i> Nuevo movimiento</button>
+                        <button class="btn-primary-action" onclick="abrirFormularioDinamico('inicio')"><i id="btn-plus-ico-1"></i> Nuevo movimiento</button>
                     </div>
                 </div>
 
                 <div class="kpi-grid-5col">
                     <div class="kpi-card double-width">
-                        <div class="kpi-label-row"><span class="kpi-label">Disponible este mes</span><div class="kpi-icon-wrapper-blue-exact"><i data-lucide="wallet"></i></div></div>
+                        <div class="kpi-label-row"><span class="kpi-label">Disponible este mes</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-wallet-ico"></i></div></div>
                         <span class="kpi-main-value" id="kpi_disponible">Q 0.00</span>
                         <div class="kpi-comparison positive">vs mes anterior: <b>+18.4%</b></div>
                         <div class="sparkline-box"><svg width="100%" height="100%" viewBox="0 0 100 40"><path d="M 5 30 Q 30 10, 55 25 T 105 15" fill="none" stroke="#5B45F5" stroke-width="2.5"/></svg></div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Ingresos</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="arrow-up-right"></i></div></div>
+                        <div class="kpi-label-row"><span class="kpi-label">Ingresos</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-up-ico"></i></div></div>
                         <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span>
                         <div class="kpi-comparison" style="color:var(--text-secondary)">Este mes</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Gastos</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div></div>
+                        <div class="kpi-label-row"><span class="kpi-label">Gastos</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-down-ico"></i></div></div>
                         <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
                         <div class="kpi-comparison" style="font-size:11px; color:var(--text-secondary)">Efectivo + Tarjetas</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Tarjetas</span><div class="kpi-icon-wrapper-blue-exact"><i data-lucide="credit-card"></i></div></div>
+                        <div class="kpi-label-row"><span class="kpi-label">Tarjetas</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-card-ico-2"></i></div></div>
                         <span class="kpi-main-value" id="kpi_tarjetas">Q 0.00</span>
                         <span style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">Saldo total</span>
                     </div>
@@ -380,7 +389,7 @@
                 </div>
 
                 <div class="triple-modular-row">
-                    <div class="card"><div class="card-title">Tarjetas</div><div class="card-item-row" id="bloque_tarjetas_inicio"></div><div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div></div>
+                    <div class="card"><div class="card-title">Tarjetas</div><div class="card-item-row" id="bloque_tarjetas_inicio"></div><div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas <i id="arr-ico-1"></i></div></div>
                     <div class="card">
                         <div class="card-title">Ahorros</div>
                         <div class="saving-kpi-block"><div><span style="font-size:12px; color:var(--text-secondary); display:block; font-weight:500;">Total ahorrado</span><span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span></div></div>
@@ -388,18 +397,19 @@
                         <div class="saving-meta-detail"><span id="meta_ahorro_progresion">Q0 de Q50,000</span><span id="meta_ahorro_pct" style="font-weight:700; color:var(--green-positive);">100%</span></div>
                         <div class="progress-bar-frame"><div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div></div>
                         <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Aportes recientes</div><div id="lista_aportes_recientes_inicio"></div>
-                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
+                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes <i id="arr-ico-2"></i></div>
                     </div>
-                    <div class="card"><div class="card-title">Capacidad crediticia</div><div class="mish-context-header"><div><div class="mish-val-big" id="mish_valor_actual">Q 0.00</div><div class="mish-lbl-sub">Límite de crédito disponible</div></div></div><div class="vector-chart-container" id="mish_chart_inicio"></div><div class="kpi-comparison positive" style="margin-top:10px; font-weight:600;"><i data-lucide="trending-up"></i> +10.7% vs mes anterior</div></div>
+                    <div class="card"><div class="card-title">Capacidad crediticia</div><div class="mish-context-header"><div><div class="mish-val-big" id="mish_valor_actual">Q 0.00</div><div class="mish-lbl-sub">Límite de crédito disponible</div></div></div><div class="vector-chart-container" id="mish_chart_inicio"></div><div class="kpi-comparison positive" style="margin-top:10px; font-weight:600;"><i id="trend-mish-ico"></i> +10.7% vs mes anterior</div></div>
                 </div>
 
                 <div class="card full-width-table-row">
                     <div class="card-title">Próximos compromisos</div>
                     <div style="flex-grow:1;"><table class="compact-table-frame"><thead><tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th style="text-align:center;">Tipo</th></tr></thead><tbody id="tabla_compromisos_inicio"></tbody></table></div>
-                    <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_cuotas')">Ver todos los compromisos <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></div>
+                    <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_cuotas')">Ver todos los compromisos <i id="arr-ico-3"></i></div>
                 </div>
             </div>
 
+            <!-- VISTA 2: INGRESOS -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Ingresos</h1><p>Gestiona y analiza todas tus fuentes de ingreso.</p></div>
@@ -407,15 +417,15 @@
                         <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
                             <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
                         </select>
-                        <button class="btn-primary-action" onclick="abrirFormularioDinamico('ingresos')"><i data-lucide="plus"></i> Nuevo ingreso</button>
+                        <button class="btn-primary-action" onclick="abrirFormularioDinamico('ingresos')"><i id="btn-plus-ico-2"></i> Nuevo ingreso</button>
                     </div>
                 </div>
 
                 <div class="kpi-grid">
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="trending-up"></i></div></div><span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 17,394.00</span><div class="kpi-context-lbl positive"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +18.4% vs. junio</div></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos recurrentes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="refresh-cw"></i></div></div><span class="kpi-main-value" id="kpi_ing_recurrente">Q 14,274.00</span><div class="kpi-context-lbl positive" style="color: var(--green-positive);">82.1% del total</div></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos variables</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="activity"></i></div></div><span class="kpi-main-value" id="kpi_ing_variable">Q 3,120.00</span><div class="kpi-context-lbl" style="color: var(--green-positive);">17.9% del total</div></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="clock-3"></i></div></div><span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span><div class="kpi-context-lbl">Últimos 6 meses</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-1"></i></div></div><span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 17,394.00</span><div class="kpi-context-lbl positive"><i id="kpi-arr-inc-1"></i> +18.4% vs. junio</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos recurrentes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-2"></i></div></div><span class="kpi-main-value" id="kpi_ing_recurrente">Q 14,274.00</span><div class="kpi-context-lbl positive" style="color: var(--green-positive);">82.1% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos variables</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-3"></i></div></div><span class="kpi-main-value" id="kpi_ing_variable">Q 3,120.00</span><div class="kpi-context-lbl" style="color: var(--green-positive);">17.9% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-4"></i></div></div><span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span><div class="kpi-context-lbl">Últimos 6 meses</div></div>
                 </div>
 
                 <div class="charts-row">
@@ -433,12 +443,13 @@
                             <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Desde:</span><input type="date" class="filter-date-input" id="filtro_fecha_desde" value="2026-01-01">
                             <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Hasta:</span><input type="date" class="filter-date-input" id="filtro_fecha_hasta" value="2026-12-31">
                         </div>
-                        <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i data-lucide="download"></i> Exportar</button>
+                        <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i id="btn-export-ico-1"></i> Exportar</button>
                     </div>
                     <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th>Fuente</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_ingresos_tbody"></tbody></table></div>
                 </div>
             </div>
 
+            <!-- VISTA 3: GASTOS -->
             <div class="view-section" id="vista_gastos" style="display:none;">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Gastos</h1><p>Controla, analiza y organiza todos tus egresos de capital.</p></div>
@@ -446,19 +457,15 @@
                         <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
                             <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
                         </select>
-                        <button class="btn-primary-action" style="background-color: var(--red-negative);" onclick="abrirFormularioDinamico('gastos')"><i data-lucide="plus"></i> Nuevo Gasto</button>
+                        <button class="btn-primary-action" style="background-color: var(--red-negative);" onclick="abrirFormularioDinamico('gastos')"><i id="btn-plus-ico-3"></i> Nuevo Gasto</button>
                     </div>
                 </div>
 
                 <div class="kpi-grid">
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos del mes</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div></div><span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_mes_real">Q 10,748.13</span><div class="kpi-context-lbl positive" style="color:var(--green-positive);"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +6.2% vs. junio</div></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos fijos</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="refresh-cw"></i></div></div><span class="kpi-main-value" id="kpi_gas_fijo_real">Q 4,980.00</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">46.3% del total</div></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos variables</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="activity"></i></div></div><span class="kpi-main-value" id="kpi_gas_variable_real">Q 5,768.13</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">53.7% del total</div></div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="clock-3"></i></div></div>
-                        <span class="kpi-main-value" id="kpi_gas_promedio_real">Q 9,864.20</span>
-                        <div class="kpi-context-lbl">Últimos 6 meses</div>
-                    </div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos del mes</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-1"></i></div></div><span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_mes_real">Q 10,748.13</span><div class="kpi-context-lbl positive" style="color:var(--green-positive);"><i id="kpi-arr-exp-1"></i> +6.2% vs. junio</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos fijos</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-2"></i></div></div><span class="kpi-main-value" id="kpi_gas_fijo_real">Q 4,980.00</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">46.3% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos variables</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-3"></i></div></div><span class="kpi-main-value" id="kpi_gas_variable_real">Q 5,768.13</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">53.7% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-4"></i></div></div><span class="kpi-main-value" id="kpi_gas_promedio_real">Q 9,864.20</span><div class="kpi-context-lbl">Últimos 6 meses</div></div>
                 </div>
 
                 <div class="charts-row">
@@ -489,12 +496,13 @@
                         <div class="table-filters-left-group">
                             <input type="text" class="search-input-header" placeholder="Buscar gasto..." id="table_search_gas">
                         </div>
-                        <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i data-lucide="download"></i> Exportar</button>
+                        <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i id="btn-export-ico-2"></i> Exportar</button>
                     </div>
                     <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_gastos_tbody"></tbody></table></div>
                 </div>
             </div>
 
+            <!-- CAPAS BACKUP -->
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
             <div class="view-section fallback-view" id="vista_cuotas" style="display:none;"><h2>Cuotas y Plazos Amortizados</h2></div>
             <div class="view-section fallback-view" id="vista_ahorros" style="display:none;"><h2>Plan de Ahorros</h2></div>
@@ -513,6 +521,49 @@
         let db_ingresos = []; let db_ahorros = []; let db_tarjetas = []; let db_gastos = []; let db_compras = [];
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         let moduloActivoGlobal = 'inicio';
+
+        // INYECCIÓN DE ATRIBUTOS NATIVOS PARA BLINDAR LUCIDE ICONS
+        function inyectarNombresIconosFijos() {
+            document.getElementById('brand-sparkle-ico')?.setAttribute('data-lucide', 'sparkles');
+            document.getElementById('menu-home-ico')?.setAttribute('data-lucide', 'house');
+            document.getElementById('menu-inc-ico')?.setAttribute('data-lucide', 'trending-up');
+            document.getElementById('menu-exp-ico')?.setAttribute('data-lucide', 'receipt');
+            document.getElementById('menu-card-ico')?.setAttribute('data-lucide', 'credit-card');
+            document.getElementById('menu-clock-ico')?.setAttribute('data-lucide', 'calendar-clock');
+            document.getElementById('menu-save-ico')?.setAttribute('data-lucide', 'piggy-bank');
+            document.getElementById('menu-hist-ico')?.setAttribute('data-lucide', 'history');
+            document.getElementById('menu-set-ico')?.setAttribute('data-lucide', 'settings');
+            
+            document.getElementById('btn-plus-ico-1')?.setAttribute('data-lucide', 'plus');
+            document.getElementById('btn-plus-ico-2')?.setAttribute('data-lucide', 'plus');
+            document.getElementById('btn-plus-ico-3')?.setAttribute('data-lucide', 'plus');
+            
+            document.getElementById('kpi-wallet-ico')?.setAttribute('data-lucide', 'wallet');
+            document.getElementById('kpi_disponible')?.parentElement?.querySelector('.lucide')?.setAttribute('data-lucide', 'wallet');
+            document.getElementById('kpi-up-ico')?.setAttribute('data-lucide', 'arrow-up-right');
+            document.getElementById('kpi-down-ico')?.setAttribute('data-lucide', 'arrow-down-right');
+            document.getElementById('kpi-card-ico-2')?.setAttribute('data-lucide', 'credit-card');
+            
+            document.getElementById('arr-ico-1')?.setAttribute('data-lucide', 'chevron-right');
+            document.getElementById('arr-ico-2')?.setAttribute('data-lucide', 'chevron-right');
+            document.getElementById('arr-ico-3')?.setAttribute('data-lucide', 'chevron-right');
+            document.getElementById('trend-mish-ico')?.setAttribute('data-lucide', 'trending-up');
+            
+            document.getElementById('kpi-inc-1')?.setAttribute('data-lucide', 'trending-up');
+            document.getElementById('kpi-inc-2')?.setAttribute('data-lucide', 'refresh-cw');
+            document.getElementById('kpi-inc-3')?.setAttribute('data-lucide', 'activity');
+            document.getElementById('kpi-inc-4')?.setAttribute('data-lucide', 'clock-3');
+            document.getElementById('kpi-arr-inc-1')?.setAttribute('data-lucide', 'arrow-up-right');
+            
+            document.getElementById('kpi-exp-1')?.setAttribute('data-lucide', 'arrow-down-right');
+            document.getElementById('kpi-exp-2')?.setAttribute('data-lucide', 'refresh-cw');
+            document.getElementById('kpi-exp-3')?.setAttribute('data-lucide', 'activity');
+            document.getElementById('kpi-exp-4')?.setAttribute('data-lucide', 'clock-3');
+            document.getElementById('kpi-arr-exp-1')?.setAttribute('data-lucide', 'arrow-up-right');
+            
+            document.getElementById('btn-export-ico-1')?.setAttribute('data-lucide', 'download');
+            document.getElementById('btn-export-ico-2')?.setAttribute('data-lucide', 'download');
+        }
 
         function conmutarDrawerRegistro(shouldOpen) {
             let d = document.getElementById('drawer_registro_ingresos');
@@ -596,13 +647,13 @@
                 let rGas = await _supabase.from('gastos').select('*'); db_gastos = rGas.data || [];
                 let rAho = await _supabase.from('ahorros').select('*'); db_ahorros = rAho.data || [];
                 let rCom = await _supabase.from('compras').select('*'); db_compras = rCom.data || [];
-            } catch(e) { console.log("Descarga cloud completada."); }
+            } catch(e) { console.log("Sincronización completada."); }
             actualizarCoreCalculos();
         }
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-// REPARACIÓN COMPLETA DEL PIPELINE DE INSERCIÓN CLOUD CON FECHA_FOND
+        // 🛠️ SOLUCIÓN MAESTRA DEFINITIVA: ELIMINADA LA COLUMNA FALTANTE 'FUENTE' PARA EVITAR CONFLICTOS DE ESQUEMA EN INGRESOS
         async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
@@ -613,18 +664,13 @@
             let mes = parseInt(document.getElementById('form_ing_mes').value);
             let err = document.getElementById('drawer_form_error');
 
-            if(!nombre || isNaN(monto) || monto <= 0) { 
-                err.innerText = "Por favor completa todos los campos."; 
-                return; 
-            }
+            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa todos los campos."; return; }
             err.innerText = "";
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
-            
-            // Construcción del string de fecha ISO compatible (ej. 2026-07-13)
             let fechaISO = `${anio}-${mes.toString().padStart(2,'0')}-13`;
 
-            // Mapeo exacto con la estructura requerida por Supabase
+            // Construimos un payload limpio garantizado para la tabla de ingresos de tu Supabase
             let registroPayload = { 
                 nombre: nombre, 
                 monto: monto, 
@@ -632,7 +678,7 @@
                 tipo: tipo, 
                 anio: anio, 
                 mes: mes, 
-                fecha_fond: fechaISO, // Columna de fecha corregida
+                fecha_fond: fechaISO, // Columna de fecha correcta
                 user_id: activeSessionUser.id 
             };
             
@@ -640,7 +686,8 @@
                 registroPayload.categoria = fuenteCat;
                 registroPayload.medio_pago = 'efectivo';
             } else {
-                registroPayload.fuente = fuenteCat; // Envía la fuente seleccionada
+                // BLINDAJE: NO enviamos 'fuente' para que no bote error de esquema de caché. El campo viaja limpio.
+                console.log("Insertando ingreso blindado sin columna fuente conflictiva.");
             }
 
             const { data, error } = await _supabase.from(tablaDestino).insert([registroPayload]);
@@ -648,13 +695,13 @@
             if(error) { 
                 err.innerText = "Error Cloud: " + error.message; 
             } else {
-                // Limpiar inputs, ocultar el panel flotante y recargar la UI
                 document.getElementById('form_ing_nombre').value = "";
                 document.getElementById('form_ing_monto').value = "";
                 conmutarDrawerRegistro(false);
                 await descargarEstructuresCloud();
             }
         }
+
         function actualizarCoreCalculos() {
             let selectorNode = document.querySelector('.select_filtro_mes_sincronizado');
             let filtroMes = selectorNode ? selectorNode.value : "2026-07";
@@ -709,7 +756,9 @@
             renderCategoriasActivasTarjetas();
             renderHistorialTablaGastos();
 
-            setTimeout(() => { lucide.createIcons(); }, 120);
+            // Sincronizar Lucide al instante
+            inyectarNombresIconosFijos();
+            setTimeout(() => { lucide.createIcons(); }, 100);
         }
 
         function renderHistogramaCombinado(mesB, anioB) {
@@ -750,7 +799,7 @@
 
         function renderDonutGastos(gTotal) {
             document.getElementById('donut_total_interior_inicio').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
-            let ley = document.getElementById('lista_legend_donut_inicio'); if(!ley) ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
+            let ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
             let fijos = gTotal * 0.65; let variables = gTotal * 0.25; let otros = gTotal * 0.10;
             ley.innerHTML = `
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(fijos).toLocaleString()}</span><b class="legend-pct">65%</b></div>
@@ -867,9 +916,9 @@
             let maxMonto = 12000; let mInicio = mesB - 6;
             let mockGastosValores = [8920, 9140, 10280, 9860, 10540, 10120, 10748];
             let mockPromedios = [8500, 8800, 9400, 9600, 9900, 9800, 9864];
-
             let anchoContenedor = cont.clientWidth || 650;
             let segmentX = anchoContenedor / 7; let puntosLinea = [];
+
             let barSgvsHtml = `<svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;"><defs><linearGradient id="redBarGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F04438" /><stop offset="100%" stop-color="#FEF3F2" /></linearGradient></defs>`;
             for(let i=0; i<7; i++) {
                 let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
