@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control Financiero - Resumen Ejecutivo</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CONFIGURACIÓN DEL SISTEMA VISUAL MAESTRO */
+        /* 2. SISTEMA VISUAL GENERAL Y PALETA BASE */
         :root {
             --bg-main: #F7F8FC;
             --surface: #FFFFFF;
@@ -40,7 +40,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
@@ -57,7 +57,7 @@
             height: 100vh;
             background-color: var(--surface);
             border-right: 1px solid var(--borders);
-            padding: 28px 20px;
+            padding: 24px 16px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -136,8 +136,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 14px;
-            margin-top: 8px;
+            padding: 8px 12px;
+            margin-top: 4px;
         }
 
         .user-avatar {
@@ -162,6 +162,10 @@
             font-size: 13px;
             font-weight: 600;
             color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
         }
 
         .user-logout {
@@ -171,7 +175,7 @@
             font-weight: 500;
         }
 
-        /* ÁREA DE CONTENIDO CENTRAL */
+        /* 1. APROVECHAR MEJOR EL ANCHO DISPONIBLE */
         .main-container {
             flex-grow: 1;
             height: 100vh;
@@ -180,11 +184,10 @@
             flex-direction: column;
         }
 
-        /* CONTENEDOR DE LA VISTA ACTIVA */
         .view-section {
-            padding: 32px;
+            padding: 32px 40px;
             width: 100%;
-            max-width: 1300px;
+            max-width: 1560px; /* Ancho amplio y equilibrado sin verse comprimido */
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -201,14 +204,14 @@
         }
 
         .header-title-area h1 {
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.5px;
         }
 
         .header-title-area p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
             margin-top: 2px;
         }
@@ -251,7 +254,7 @@
             background-color: var(--purple-dark);
         }
 
-        /* 4. CONTENEDORES ESTÁNDAR (TARJETAS VISUALES) */
+        /* 4. CONTENEDORES ESTÁNDAR Y TARJETAS */
         .card {
             background-color: var(--surface);
             border: 1px solid var(--borders);
@@ -260,20 +263,21 @@
             box-shadow: var(--shadow-subtle);
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .card-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
-        /* 6. GRID DE KPIs PRINCIPALES */
+        /* 2. MEJORAR LA JERARQUÍA DE LOS KPIs */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
+            gap: 24px;
             width: 100%;
         }
 
@@ -281,7 +285,7 @@
             background-color: var(--surface);
             border: 1px solid var(--borders);
             border-radius: var(--radius-main);
-            padding: 20px;
+            padding: 24px;
             box-shadow: var(--shadow-subtle);
             display: flex;
             flex-direction: column;
@@ -290,41 +294,28 @@
 
         .kpi-card.double-width {
             grid-column: span 2;
-        }
-
-        .kpi-label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+            background-color: #F9F8FF; /* Tratamiento visual sutil */
+            border-color: #DCD6FF;
         }
 
         .kpi-label {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
             color: var(--text-secondary);
-        }
-
-        .kpi-icon-badge {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+            margin-bottom: 8px;
         }
 
         .kpi-main-value {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.5px;
+            line-height: 1.2;
         }
 
         .kpi-comparison {
-            font-size: 12px;
-            margin-top: 6px;
+            font-size: 13px;
+            margin-top: 8px;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -336,79 +327,142 @@
 
         .sparkline-box {
             position: absolute;
-            right: 20px;
-            bottom: 20px;
-            width: 90px;
-            height: 35px;
+            right: 24px;
+            bottom: 24px;
+            width: 100px;
+            height: 40px;
         }
 
-        /* 7 Y 8. FILA DE BLOQUES COMPUESTOS (GRÁFICAS) */
+        /* 3 Y 4. FILA DE BLOQUES COMPUESTOS (GRÁFICAS) */
         .charts-row {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1.8fr 1.2fr;
             gap: 24px;
             width: 100%;
         }
 
-        /* ELEMENTOS DEL HISTOGRAMA COMBINADO */
+        /* 3. CORREGIR EL GRÁFICO "FLUJO DE CAJA" (COMBINADO COMPLETO) */
         .combined-chart-frame {
             display: flex;
             align-items: flex-end;
             justify-content: space-around;
-            height: 240px;
+            height: 280px;
             background-color: #FAFAFB;
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 12px;
+            border-radius: 14px;
+            padding: 24px 16px 16px 48px;
             position: relative;
+            border: 1px solid var(--borders);
+        }
+
+        .chart-y-axis-labels {
+            position: absolute;
+            left: 12px;
+            top: 24px;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: right;
+            width: 28px;
+        }
+
+        .chart-grid-lines {
+            position: absolute;
+            left: 48px;
+            right: 16px;
+            top: 24px;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .grid-line-h {
+            width: 100%;
+            border-top: 1px dashed #E2E4EB;
         }
 
         .chart-column {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 12%;
+            width: 14%;
             height: 100%;
             justify-content: flex-end;
+            z-index: 2;
         }
 
         .bars-container {
             display: flex;
-            gap: 4px;
+            gap: 8px; /* Barras más anchas y separadas */
             width: 100%;
-            height: 80%;
+            height: 85%;
             align-items: flex-end;
             justify-content: center;
+            position: relative;
         }
 
         .v-bar {
-            width: 10px;
+            width: 18px; /* Mayor grosor y presencia */
             border-radius: 4px 4px 0 0;
+            transition: transform 0.2s;
+            cursor: pointer;
         }
-
-        .v-bar.income { background-color: var(--green-positive); }
-        .v-bar.expense { background-color: var(--red-negative); }
+        .v-bar:hover { transform: scaleY(1.05); }
+        .v-bar.income { background-color: #12B76A; }
+        .v-bar.expense { background-color: #F04438; }
 
         .chart-label {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-secondary);
-            margin-top: 8px;
+            margin-top: 12px;
             font-weight: 500;
         }
 
-        /* 8. DONUT CHART DE GASTOS */
+        /* CAPA SVG PARA LA LÍNEA MORADA DEL DISPONIBLE */
+        .svg-line-overlay {
+            position: absolute;
+            left: 48px;
+            right: 16px;
+            top: 24px;
+            height: 216px; /* Sincronizado con el área interna de barras */
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* TOOLTIP INTEGRADO */
+        .chart-tooltip {
+            position: absolute;
+            background: #111827;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            display: none;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            line-height: 1.5;
+        }
+
+        /* 4. MEJORAR "DISTRIBUCIÓN DE GASTOS" (DONUT CHART AMPLIO) */
         .donut-container-layout {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
-            margin-top: 16px;
+            justify-content: center;
+            gap: 24px;
+            height: 100%;
         }
 
         .donut-visual-mock {
-            width: 120px;
-            height: 120px;
+            width: 150px; /* Incremento de escala */
+            height: 150px;
             border-radius: 50%;
-            border: 16px solid var(--borders);
+            border: 22px solid var(--borders); /* Mayor grosor de anillo */
             border-top-color: var(--red-negative);
             border-right-color: var(--orange-warning);
             border-bottom-color: var(--blue-info);
@@ -416,20 +470,31 @@
             align-items: center;
             justify-content: center;
             shrink: 0;
+            position: relative;
         }
 
         .donut-center-value {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
             text-align: center;
+            line-height: 1.2;
+        }
+
+        .donut-center-value span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: block;
+            font-weight: 500;
         }
 
         .donut-legend-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            flex-grow: 1;
+            gap: 12px;
+            width: 100%;
+            border-top: 1px solid var(--borders);
+            padding-top: 16px;
         }
 
         .legend-item {
@@ -442,13 +507,14 @@
         .legend-color-dot {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             color: var(--text-primary);
+            font-weight: 500;
         }
 
-        .color-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .color-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-        /* MULTI-GRID INFERIOR (TARJETAS, AHORROS, CAPACIDAD, COMPROMISOS) */
+        /* MULTI-GRID INFERIOR BALANCEADO */
         .bottom-sections-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -456,21 +522,21 @@
             width: 100%;
         }
 
-        /* 9. RESUMEN DE TARJETAS */
+        /* 5. MEJORAR EL RESUMEN DE TARJETAS (ESTILO EMBEBIDO) */
         .card-item-row {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin-top: 8px;
         }
 
         .credit-card-strip {
             border: 1px solid var(--borders);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
+            background-color: #FAFAFB;
         }
 
         .card-strip-header {
@@ -479,42 +545,69 @@
             align-items: center;
         }
 
+        .bank-brand-logo {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--purple-main);
+            background: #EFEBFF;
+            padding: 4px 8px;
+            border-radius: 6px;
+            letter-spacing: -0.5px;
+        }
+
         .bank-identity {
             display: flex;
             flex-direction: column;
+            margin-right: auto;
+            margin-left: 12px;
         }
 
-        .bank-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .bank-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
         .card-digits { font-size: 12px; color: var(--text-secondary); }
 
         .card-utilization-bar-frame {
             width: 100%;
-            height: 6px;
-            background-color: var(--bg-main);
-            border-radius: 3px;
+            height: 8px;
+            background-color: #E6E8EF;
+            border-radius: 4px;
             overflow: hidden;
         }
 
-        .card-utilization-fill { height: 100%; border-radius: 3px; }
+        .card-utilization-fill { height: 100%; border-radius: 4px; }
 
         .card-strip-metrics {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             font-size: 12px;
             color: var(--text-secondary);
+            border-top: 1px solid var(--borders);
+            padding-top: 10px;
+        }
+        .card-strip-metrics span b { color: var(--text-primary); display: block; font-size: 13px; margin-top: 2px;}
+
+        /* 6. MEJORAR EL RESUMEN DE AHORROS */
+        .saving-kpi-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+        .saving-meta-detail {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 4px;
         }
 
-        .card-strip-metrics span b { color: var(--text-primary); }
-
-        /* 10. RESUMEN DE AHORROS */
         .progress-bar-frame {
             width: 100%;
             height: 8px;
-            background-color: var(--bg-main);
+            background-color: #E6E8EF;
             border-radius: 4px;
             overflow: hidden;
-            margin-top: 12px;
-            margin-bottom: 16px;
+            margin: 8px 0 16px 0;
         }
 
         .progress-bar-fill {
@@ -523,20 +616,31 @@
             border-radius: 4px;
         }
 
-        /* 12. TABLA DE COMPROMISOS */
+        /* 7. MEJORAR CAPACIDAD CREDITICIA */
+        .mish-context-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        .mish-val-big { font-size: 28px; font-weight: 700; color: var(--text-primary); }
+        .mish-lbl-sub { font-size: 13px; color: var(--text-secondary); }
+
+        /* 8. MEJORAR "PRÓXIMOS COMPROMISOS" (TABLA COMPACTA LIMPIA) */
         .compact-table-frame {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 8px;
         }
 
         .compact-table-frame th {
             text-align: left;
             font-size: 12px;
             color: var(--text-secondary);
-            font-weight: 500;
-            padding: 8px 12px;
+            font-weight: 600;
+            padding: 10px 12px;
             border-bottom: 1px solid var(--borders);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .compact-table-frame td {
@@ -544,6 +648,7 @@
             padding: 12px;
             border-bottom: 1px solid var(--borders);
             color: var(--text-primary);
+            vertical-align: middle;
         }
 
         .badge {
@@ -552,6 +657,7 @@
             font-size: 11px;
             font-weight: 600;
             display: inline-block;
+            text-align: center;
         }
         .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
@@ -560,7 +666,7 @@
 
         .card-link-footer {
             margin-top: auto;
-            padding-top: 14px;
+            padding-top: 16px;
             text-align: center;
             font-size: 13px;
             font-weight: 600;
@@ -568,9 +674,11 @@
             cursor: pointer;
             text-decoration: none;
             display: block;
+            border-top: 1px solid var(--borders);
         }
+        .card-link-footer:hover { color: var(--purple-dark); }
 
-        /* 13. ASISTENTE IA FLOTANTE INTERACTIVO */
+        /* 13. ASISTENTE IA EN ESQUINA INFERIOR DERECHA */
         .ai-floating-trigger {
             position: fixed;
             bottom: 32px;
@@ -578,23 +686,20 @@
             background-color: var(--purple-main);
             color: white;
             border: none;
-            padding: 14px 22px;
+            padding: 14px 24px;
             border-radius: 100px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(91, 69, 245, 0.25);
+            box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3);
             display: flex;
             align-items: center;
             gap: 8px;
             z-index: 1000;
         }
+        .ai-floating-trigger:hover { background-color: var(--purple-dark); }
 
-        .ai-floating-trigger:hover {
-            background-color: var(--purple-dark);
-        }
-
-        /* PANTALLA DE ACCESO */
+        /* GATE DE AUTENTICACIÓN */
         #auth_gate_wrapper {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -615,21 +720,15 @@
             max-width: 400px;
         }
 
-        /* VISTAS TEMPORALES EN DESARROLLO */
-        .fallback-view {
-            padding: 40px;
-            text-align: center;
-            color: var(--text-secondary);
-        }
+        .fallback-view { padding: 40px; text-align: center; color: var(--text-secondary); }
     </style>
 </head>
 <body>
 
-    <!-- CAPA DE LOGEO MAESTRA -->
     <div id="auth_gate_wrapper">
         <div class="auth-panel">
             <h2 style="font-size:24px; font-weight:700; text-align:center; margin-bottom:6px;">🔒 Iniciar Sesión</h2>
-            <p style="font-size:13px; color:var(--text-secondary); text-align:center; margin-bottom:24px;">Ingresa tus credenciales para sincronizar con Supabase Cloud</p>
+            <p style="font-size:13px; color:var(--text-secondary); text-align:center; margin-bottom:24px;">Sincronización segura con Supabase Cloud</p>
             <div style="margin-bottom:14px;"><label>Correo Electrónico</label><input type="email" id="auth_user_email" placeholder="ejemplo@correo.com"></div>
             <div style="margin-bottom:20px;"><label>Contraseña</label><input type="password" id="auth_user_password" placeholder="••••••••"></div>
             <button class="btn-primary-action" style="width:100%; justify-content:center;" onclick="loginMecanismo()">Entrar de forma segura</button>
@@ -637,24 +736,22 @@
         </div>
     </div>
 
-    <!-- ENTORNO INTEGRAL DEL PRODUCTO -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         
-        <!-- 1. ARQUITECTURA DE NAVEGACIÓN FIJA -->
         <div class="sidebar">
             <div class="nav-group">
                 <div class="sidebar-brand">Finanzas<span>Pro</span></div>
-                <button class="nav-button active" onclick="cambiarSeccionVista('vista_inicio', this)">📊 Inicio</button>
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_ingresos', this)">💵 Ingresos</button>
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_gastos', this)">🛒 Gastos</button>
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_tarjetas', this)">💳 Tarjetas</button>
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_cuotas', this)">🛍️ Cuotas / Plazos</button>
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_ahorros', this)">🏦 Ahorros</button>
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_historico', this)">🕒 Histórico</button>
+                <button class="nav-button active" onclick="cambiarSeccionVista('vista_inicio', this)">Inicio</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_ingresos', this)">Ingresos</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_gastos', this)">Gastos</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_tarjetas', this)">Tarjetas</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_cuotas', this)">Cuotas / Plazos</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_ahorros', this)">Ahorros</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_historico', this)">Histórico</button>
             </div>
             
             <div class="sidebar-footer">
-                <button class="nav-button" onclick="cambiarSeccionVista('vista_config', this)">⚙️ Configuración</button>
+                <button class="nav-button" onclick="cambiarSeccionVista('vista_config', this)">Configuración</button>
                 <div class="sidebar-user">
                     <div class="user-avatar" id="avatar_letra">U</div>
                     <div class="user-info">
@@ -665,15 +762,11 @@
             </div>
         </div>
 
-        <!-- AREA EXCLUSIVA DE LAS VISTAS DINÁMICAS -->
         <div class="main-container" id="scroll_master_container">
-            
-            <!-- ================================================== -->
-            <!-- VISTA 1: INICIO / RESUMEN FINANCIERO (REDISÉÑADA) -->
-            <!-- ================================================== -->
+            <div class="chart-tooltip" id="global_chart_tooltip"></div>
+
             <div class="view-section" id="vista_inicio">
                 
-                <!-- 5. ENCABEZADO DE LA VISTA INICIO -->
                 <div class="view-header">
                     <div class="header-title-area">
                         <h1>Resumen financiero</h1>
@@ -685,396 +778,56 @@
                             <option value="2026-07">Julio 2026</option>
                             <option value="2026-08">Agosto 2026</option>
                         </select>
-                        <button class="btn-primary-action">⚡ + Nuevo movimiento</button>
+                        <button class="btn-primary-action">+ Nuevo movimiento</button>
                     </div>
                 </div>
 
-                <!-- 6. PRIMERA FILA — KPIs PRINCIPALES -->
                 <div class="kpi-grid">
                     <div class="kpi-card double-width">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Disponible este mes</span>
-                            <div class="kpi-icon-badge" style="background-color: var(--purple-light); color: var(--purple-main);">💰</div>
-                        </div>
+                        <span class="kpi-label">Disponible este mes</span>
                         <span class="kpi-main-value" id="kpi_disponible">Q 0.00</span>
                         <div class="kpi-comparison positive" id="kpi_disp_comp">vs mes anterior: <b>+0.0%</b></div>
                         <div class="sparkline-box">
-                            <svg width="100%" height="100%" viewBox="0 0 90 35">
-                                <path d="M 5 25 Q 25 10, 45 20 T 85 10" fill="none" stroke="#5B45F5" stroke-width="2"/>
+                            <svg width="100%" height="100%" viewBox="0 0 100 40">
+                                <path d="M 5 30 Q 30 10, 55 25 T 95 12" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
                             </svg>
                         </div>
                     </div>
                     
                     <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Ingresos</span>
-                            <div class="kpi-icon-badge" style="background-color: var(--green-light); color: var(--green-positive);">📥</div>
-                        </div>
+                        <span class="kpi-label">Ingresos</span>
                         <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span>
-                        <div class="kpi-comparison" id="kpi_ing_comp">Estable</div>
+                        <div class="kpi-comparison positive" id="kpi_ing_comp">Estable</div>
                     </div>
 
                     <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Gastos</span>
-                            <div class="kpi-icon-badge" style="background-color: var(--red-light); color: var(--red-negative);">📤</div>
-                        </div>
-                        <span class="kpi-main-value" id="kpi_gastos">Q 0.00</span>
+                        <span class="kpi-label">Gastos</span>
+                        <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
                         <div class="kpi-comparison" id="kpi_gas_comp">Estable</div>
                     </div>
 
                     <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Tarjetas</span>
-                            <div class="kpi-icon-badge" style="background-color: var(--orange-light); color: var(--orange-warning);">💳</div>
-                        </div>
+                        <span class="kpi-label">Tarjetas</span>
                         <span class="kpi-main-value" id="kpi_tarjetas">Q 0.00</span>
-                        <div class="kpi-comparison" style="font-size:11px;">Carga amortizada total</div>
+                        <span style="font-size: 11px; color: var(--text-secondary); margin-top: 6px;">Saldo utilizado</span>
                     </div>
                 </div>
 
-                <!-- 7 Y 8. FILA DE GRÁFICOS (FLUJO DE CAJA COMBINADO Y DONUT DE GASTOS) -->
                 <div class="charts-row">
                     <div class="card">
                         <div class="card-title">Flujo de caja</div>
-                        <div style="font-size:12px; color:var(--text-secondary); margin-top:-8px;">Resumen combinado de los últimos 6 meses operativos</div>
-                        <div class="combined-chart-frame" id="contenedor_histograma"></div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title">Distribución de gastos</div>
-                        <div class="donut-container-layout">
-                            <div class="donut-visual-mock">
-                                <div class="donut-center-value" id="donut_total_interior">Q0</div>
+                        <div class="combined-chart-frame">
+                            <div class="chart-y-axis-labels">
+                                <div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div>
                             </div>
-                            <div class="donut-legend-list" id="lista_leyenda_donut"></div>
+                            <div class="chart-grid-lines">
+                                <div class="grid-line-h"></div><div class="grid-line-h"></div>
+                                <div class="grid-line-h"></div><div class="grid-line-h"></div>
+                                <div class="grid-line-h"></div>
+                            </div>
+                            <div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="contenedor_histograma"></div>
+                            <div class="svg-line-overlay" id="contenedor_svg_linea_overlay"></div>
                         </div>
                     </div>
-                </div>
 
-                <!-- SECCIONES DE SOPORTE E INFORMACIÓN INFERIOR -->
-                <div class="bottom-sections-grid">
-                    
-                    <!-- 9. RESUMEN DE TARJETAS -->
-                    <div class="card">
-                        <div class="card-header" style="border:none; margin-bottom:10px; padding:0;">
-                            <span style="font-weight:600; font-size:16px;">Resumen de tarjetas</span>
-                        </div>
-                        <div class="card-item-row" id="bloque_tarjetas_inicio"></div>
-                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_tarjetas')">Ver todas mis tarjetas</div>
-                    </div>
-
-                    <!-- 10. RESUMEN DE AHORROS -->
-                    <div class="card">
-                        <div class="card-header" style="border:none; margin-bottom:10px; padding:0;">
-                            <span style="font-weight:600; font-size:16px;">Resumen de ahorros</span>
-                        </div>
-                        <div style="font-size:24px; font-weight:700;" id="ahorro_total_kpi">Q 0.00</div>
-                        <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;" id="meta_ahorro_lbl">Meta activa: Q0.00</div>
-                        <div class="progress-bar-frame">
-                            <div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div>
-                        </div>
-                        <div style="font-size:13px; font-weight:600; color:var(--text-primary); margin-bottom:8px;">Aportes recientes</div>
-                        <ul class="records-list" id="lista_aportes_recientes_inicio" style="max-height:100px;"></ul>
-                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_ahorros')">Ver historial de aportes</div>
-                    </div>
-
-                    <!-- 11. CAPACIDAD CREDITICIA -->
-                    <div class="card">
-                        <div class="card-header" style="border:none; margin-bottom:10px; padding:0;">
-                            <span style="font-weight:600; font-size:16px;">Capacidad crediticia (MISH)</span>
-                        </div>
-                        <div class="vector-chart-container" id="mish_chart_inicio" style="min-height:200px;"></div>
-                    </div>
-
-                    <!-- 12. PRÓXIMOS COMPROMISOS -->
-                    <div class="card">
-                        <div class="card-header" style="border:none; margin-bottom:10px; padding:0;">
-                            <span style="font-weight:600; font-size:16px;">Próximos compromisos</span>
-                        </div>
-                        <table class="compact-table-frame">
-                            <thead>
-                                <tr><th>Fecha</th><th>Concepto</th><th>Monto</th><th>Tipo</th></tr>
-                            </thead>
-                            <tbody id="tabla_compromisos_inicio"></tbody>
-                        </table>
-                        <div class="card-link-footer" onclick="navegarASeccionDirecto('vista_cuotas')">Ver todos los compromisos</div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- VISTAS CAPAS MOCKUP (PASO 1: SE MANTIENEN AISLADAS) -->
-            <div class="view-section fallback-view" id="vista_ingresos" style="display:none;"><h2>Vista de Ingresos</h2><p>Lógica e ingresos intactos en desarrollo.</p></div>
-            <div class="view-section fallback-view" id="vista_gastos" style="display:none;"><h2>Vista de Gastos</h2><p>Lógica y gastos básicos intactos en desarrollo.</p></div>
-            <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2><p>Lógica y plásticos intactos en desarrollo.</p></div>
-            <div class="view-section fallback-view" id="vista_cuotas" style="display:none;"><h2>Cuotas y Plazos Amortizados</h2><p>Lógica de amortización e historial intactos.</p></div>
-            <div class="view-section fallback-view" id="vista_ahorros" style="display:none;"><h2>Plan de Ahorros</h2><p>Lógica de capitalización e historial intactos.</p></div>
-            <div class="view-section fallback-view" id="vista_historico" style="display:none;"><h2>Histórico General</h2><p>Filtros consolidados intactos en desarrollo.</p></div>
-            <div class="view-section fallback-view" id="vista_config" style="display:none;"><h2>Configuración del Sistema</h2><p>Variables globales e índices seguros.</p></div>
-
-        </div>
-
-        <!-- 13. ACCESO PERMANENTE ASISTENTE IA (BURBUJA FLOTANTE ESQUINA INFERIOR DERECHA) -->
-        <button class="ai-floating-trigger" onclick="cambiarSeccionVista('vista_ia_focus', null)">
-            ✨ Preguntar a Finanzas IA
-        </button>
-        
-        <!-- ENTORNO ENFOQUE IA AISLADO -->
-        <div class="view-section fallback-view" id="vista_ia_focus" style="display:none; width:100%;">
-            <h2>Consola Avanzada Finanzas IA</h2>
-            <p>Conectado de forma segura a tus datos maestros en la nube.</p>
-        </div>
-
-    </div>
-
-    <script>
-        // CONFIGURACIONES Y CREDENCIALES DE INFRAESTRUCTURA CLOUD
-        const SUPABASE_URL = "https://ltmvcqkpgrwqsinfqqkt.supabase.co"; 
-        const SUPABASE_ANON_KEY = "sb_publishable_TP5UKKudDEefb5KogaRcsw_Ezn1OxbA"; 
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        let activeSessionUser = null;
-        let db_ingresos = []; let db_ahorros = []; let db_tarjetas = []; let db_gastos = []; let db_compras = [];
-        const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-
-        // 1. CONTROL DE VISTAS INDEPENDIENTES
-        function cambiarSeccionVista(targetViewId, elementBtn) {
-            document.querySelectorAll('.view-section').forEach(view => view.style.display = 'none');
-            let el = document.getElementById(targetViewId);
-            if(el) el.style.display = 'flex';
-            
-            if(elementBtn) {
-                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
-                elementBtn.classList.add('active');
-            }
-            if(targetViewId === 'vista_inicio') {
-                actualizarCoreCalculos();
-            }
-        }
-
-        function navegarASeccionDirecto(viewId) {
-            let itemMenu = Array.from(document.querySelectorAll('.nav-button')).find(btn => btn.innerText.includes(viewId.replace('vista_','').toUpperCase()));
-            cambiarSeccionVista(viewId, itemMenu);
-        }
-
-        // CONTROL DE SESIÓN Y AUTENTICACIÓN
-        async function verificarCredencialesSesion() {
-            const { data: { session } } = await _supabase.auth.getSession();
-            if (session) {
-                activeSessionUser = session.user;
-                document.getElementById('auth_gate_wrapper').style.display = 'none';
-                document.getElementById('app_core_shell').style.display = 'flex';
-                document.getElementById('user_display_mail').innerText = activeSessionUser.email;
-                document.getElementById('avatar_letra').innerText = activeSessionUser.email.charAt(0).toUpperCase();
-                
-                await descargarEstructurasCloud();
-            }
-        }
-
-        async function loginMecanismo() {
-            let email = document.getElementById('auth_user_email').value;
-            let pass = document.getElementById('auth_user_password').value;
-            const { data, error } = await _supabase.auth.signInWithPassword({ email, password: pass });
-            if(error) {
-                document.getElementById('auth_gate_error').innerText = "Credenciales incorrectas.";
-            } else { 
-                activeSessionUser = data.user; 
-                location.reload(); 
-            }
-        }
-
-        async function logoutMecanismo() {
-            await _supabase.auth.signOut();
-            location.reload();
-        }
-
-        async function descargarEstructurasCloud() {
-            if(!activeSessionUser) return;
-            try {
-                let rIng = await _supabase.from('ingresos').select('*'); db_ingresos = rIng.data || [];
-                let rTar = await _supabase.from('tarjetas').select('*'); db_tarjetas = rTar.data || [];
-                let rGas = await _supabase.from('gastos').select('*'); db_gastos = rGas.data || [];
-                let rAho = await _supabase.from('ahorros').select('*'); db_ahorros = rAho.data || [];
-                let rCom = await _supabase.from('compras').select('*'); db_compras = rCom.data || [];
-            } catch(e) {
-                console.log("Tablas vacías iniciales detectadas de forma segura.");
-            }
-            actualizarCoreCalculos();
-        }
-
-        function getTasaCambioEstatica() { return 7.8; }
-        function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * getTasaCambioEstatica() : monto; }
-
-        // CÁLCULOS SEGUROS CON GESTIÓN DE ARRAYS VACÍOS
-        function actualizarCoreCalculos() {
-            let filtroMes = document.getElementById('filtro_mes_maestro').value;
-            if(!filtroMes) return;
-            let piezas = filtroMes.split('-');
-            let anioAct = parseInt(piezas[0]); let mesAct = parseInt(piezas[1]);
-
-            let totalIngresos = (db_ingresos || []).filter(i => (i.tipo==='fijo' && (anioAct>i.anio || (anioAct===i.anio && mesAct>=i.mes))) || (i.tipo==='variable' && i.anio===anioAct && i.mes===mesAct)).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-            let totalGastosEfec = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-            
-            let gastosTarjetasDirectos = (db_gastos || []).filter(g => g.medio_pago !== 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-            let cuotasTarjetasAmortizadas = (db_compras || []).filter(c => {
-                if(!c.fecha_inicio || !c.fecha_fin) return false;
-                let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
-                let act = anioAct * 12 + mesAct;
-                return act >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && act <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
-            }).reduce((a, b) => a + (b.pago_mensual || 0), 0);
-            let totalTarjetasCarga = gastosTarjetasDirectos + cuotasTarjetasAmortizadas;
-
-            let disponibleMes = totalIngresos - (totalGastosEfec + totalTarjetasCarga);
-            if(disponibleMes < 0) disponibleMes = 0;
-
-            document.getElementById('kpi_disponible').innerText = "Q " + disponibleMes.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_ingresos').innerText = "Q " + totalIngresos.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_gastos').innerText = "Q " + totalGastosEfec.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_tarjetas').innerText = "Q " + totalTarjetasCarga.toLocaleString('en-US', {minimumFractionDigits:2});
-
-            renderHistogramaCombinado(mesAct, anioAct);
-            renderDonutGastos(totalGastosEfec);
-            renderTarjetasSaaS();
-            renderModuloAhorros(mesAct, anioAct);
-            renderCapacidadMish(mesAct, anioAct);
-            renderCompromisosTabla(mesAct, anioAct);
-        }
-
-        function renderHistogramaCombinado(mesB, anioB) {
-            let cont = document.getElementById('contenedor_histograma'); if(!cont) return;
-            cont.innerHTML = "";
-            let maxMonto = 1; let mesesData = [];
-            let mInicio = mesB - 5; let aInicio = anioB;
-            while(mInicio <= 0) { mInicio += 12; aInicio--; }
-
-            for(let i=0; i<6; i++) {
-                let currM = mInicio + i; let currA = aInicio;
-                while(currM > 12) { currM -= 12; currA++; }
-                
-                let ing = (db_ingresos || []).filter(inv => (inv.tipo==='fijo' && (currA>inv.anio || (currA===inv.anio && currM>=inv.mes))) || (inv.tipo==='variable' && inv.anio===currA && inv.mes===currM)).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-                let gas = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (currA>g.anio || (currA===g.anio && currM>=g.mes))) || (g.tipo==='variable' && g.anio===currA && g.mes===currM))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-                
-                if(ing > maxMonto) maxMonto = ing;
-                if(gas > maxMonto) maxMonto = gas;
-                mesesData.push({ label: nombresMesesCompleto[currM-1], ing, gas });
-            }
-
-            mesesData.forEach(d => {
-                let hIng = (d.ing / maxMonto) * 140;
-                let hGas = (d.gas / maxMonto) * 140;
-                cont.innerHTML += `
-                    <div class="chart-column">
-                        <div class="bar-top-val" style="font-size:9px;">Q${Math.round(d.ing/1000)}k</div>
-                        <div class="bars-container">
-                            <div class="v-bar income" style="height:${hIng}px;"></div>
-                            <div class="v-bar expense" style="height:${hGas}px;"></div>
-                        </div>
-                        <div class="chart-label">${d.label}</div>
-                    </div>`;
-            });
-        }
-
-        function renderDonutGastos(gTotal) {
-            document.getElementById('donut_total_interior').innerText = "Q " + Math.round(gTotal/1000) + "k";
-            let ley = document.getElementById('lista_leyenda_donut'); if(!ley) return;
-            ley.innerHTML = `
-                <div class="legend-item"><div class="donut-color-dot"><div class="color-dot" style="background-color:var(--red-negative)"></div>Fijos</div><b>65%</b></div>
-                <div class="legend-item"><div class="donut-color-dot"><div class="color-dot" style="background-color:var(--orange-warning)"></div>Variables</div><b>25%</b></div>
-                <div class="legend-item"><div class="donut-color-dot"><div class="color-dot" style="background-color:var(--blue-info)"></div>Otros</div><b>10%</b></div>`;
-        }
-
-        function renderTarjetasSaaS() {
-            let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
-            cont.innerHTML = "";
-            let auxTarjetas = (db_tarjetas || []).slice(0, 2);
-            if(auxTarjetas.length === 0) {
-                cont.innerHTML = `<div style="font-size:12px; color:var(--text-secondary); text-align:center; padding:10px;">No hay tarjetas registradas.</div>`;
-                return;
-            }
-            auxTarjetas.forEach(t => {
-                cont.innerHTML += `
-                    <div class="credit-card-strip">
-                        <div class="card-strip-header">
-                            <div class="bank-identity"><span class="bank-name">${t.nombre}</span><span class="card-digits">•••• 4321</span></div>
-                            <span class="badge purple">Corte: ${t.corte}</span>
-                        </div>
-                        <div class="card-utilization-bar-frame">
-                            <div class="card-utilization-fill" style="width: 25%; background-color:var(--green-positive);"></div>
-                        </div>
-                        <div class="card-strip-metrics">
-                            <span>Utilizado: <b>Q ${formatMoneyCorto(t.lim_cuotas * 0.25)}</b></span>
-                            <span>Límite: <b>Q ${t.lim_cuotas || 0}</b></span>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        function renderModuloAhorros(mAct, aAct) {
-            let baseAhorro = parseFloat(localStorage.getItem('db_a_base')) || 0;
-            let totalAcumulado = baseAhorro + (db_ahorros || []).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-            
-            document.getElementById('ahorro_total_kpi').innerText = "Q " + totalAcumulado.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('meta_ahorro_lbl').innerText = "Meta activa de inversión: Q 50,000.00";
-            
-            let pct = (totalAcumulado / 50000) * 100; if(pct > 100) pct = 100;
-            document.getElementById('barra_progreso_ahorro_fill').style.width = pct + "%";
-
-            let lista = document.getElementById('lista_aportes_recientes_inicio'); if(!lista) return;
-            lista.innerHTML = "";
-            let ultimosAportes = (db_ahorros || []).slice(-2);
-            if(ultimosAportes.length === 0) {
-                lista.innerHTML = `<li style="border:none; padding:4px 0; font-size:12px; color:var(--text-secondary);">Sin aportes históricos aún.</li>`;
-            }
-            ultimosAportes.forEach(ap => {
-                lista.innerHTML += `<li style="padding:6px 0; border-bottom:1px solid var(--borders); display:flex; justify-content:space-between; font-size:12px;"><span>✨ ${ap.nombre}</span><b>Q ${ap.monto}</b></li>`;
-            });
-        }
-
-        function renderCapacidadMish(mesB, anioB) {
-            let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
-            let mInicio = mesB - 5; let aInicio = anioB;
-            while(mInicio <= 0) { mInicio += 12; aInicio--; }
-            
-            let coords = [];
-            for(let i=0; i<6; i++) {
-                let x = 20 + (i * 36);
-                let y = 45 - (i * 4);
-                coords.push(`${x},${y}`);
-            }
-            cont.innerHTML = `
-                <svg width="100%" height="100%" viewBox="0 0 240 80" preserveAspectRatio="none">
-                    <path d="M ${coords.join(' L ')}" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
-                    ${coords.map(c => `<circle cx="${c.split(',')[0]}" cy="${c.split(',')[1]}" r="3.5" fill="#5B45F5"/>`).join('')}
-                </svg>`;
-        }
-
-        function renderCompromisosTabla(mAct, aAct) {
-            let tbody = document.getElementById('tabla_compromisos_inicio'); if(!tbody) return;
-            tbody.innerHTML = "";
-            let muestra = [];
-            (db_gastos || []).filter(g => g.tipo==='fijo').slice(0, 2).forEach(x => muestra.push({ fecha: `10/${mAct}`, concepto: x.nombre, monto: x.monto, tipo: 'Servicio', cls: 'blue' }));
-            (db_compras || []).slice(0, 2).forEach(x => muestra.push({ fecha: `Abono`, concepto: x.concepto, monto: x.pago_mensual, tipo: 'Cuota', cls: 'orange' }));
-            
-            if(muestra.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary); padding:15px;">No hay compromisos estipulados aún.</td></tr>`;
-                return;
-            }
-            muestra.forEach(m => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${m.fecha}</td>
-                        <td><b>${m.concepto}</b></td>
-                        <td>Q ${m.monto.toLocaleString('en-US')}</td>
-                        <td><span class="badge ${m.cls}">${m.tipo}</span></td>
-                    </tr>`;
-            });
-        }
-
-        function formatMoneyCorto(num) { if(isNaN(num) || num <= 0) return "0"; if(num >= 1000) return (num/1000).toFixed(1).replace(/\.0$/, '') + 'k'; return Math.round(num).toString(); }
-
-        verificarCredencialesSesion();
-    </script>
-</body>
-</html>
+                    <div class
