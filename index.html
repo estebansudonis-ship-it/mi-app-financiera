@@ -61,7 +61,7 @@
             vertical-align: middle;
         }
 
-        /* SIDEBAR & BRANDING */
+        /* SIDEBAR ARCHITECTURE */
         .sidebar {
             width: 240px;
             height: 100vh;
@@ -130,7 +130,7 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* CONTENEDOR CENTRAL MAESTRO */
+        /* AREA WORKSPACE CENTRAL */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
@@ -155,7 +155,7 @@
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
-        /* CONTRASTE ALTO BLINDADO PARA LOS ICONOS (LUCIDE FORCE COLOR) */
+        /* CONTRASTE ALTO BIEN AJUSTADO */
         .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #0b6623 !important; background-color: #E6Faf0 !important; }
         .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #991B1B !important; background-color: #FFF0F0 !important; }
         .kpi-icon-wrapper-blue-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--purple-main) !important; background-color: var(--purple-light) !important; }
@@ -217,7 +217,7 @@
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
         .vector-chart-container { width: 100%; flex-grow: 1; background: #FAFAFB; border-radius: 12px; border: 1px solid var(--borders); position: relative; min-height: 160px; }
 
-        /* MÓDULO FUENTES ACTIVAS */
+        /* SECCIONES MÓDULO EXCLUSIVO FUENTES ACTIVAS */
         .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
         .fuente-active-mini-card { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; background-color: #FAFAFB; display: flex; flex-direction: column; gap: 12px; }
         .fuente-card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -229,6 +229,38 @@
         .table-controls-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
         .table-filters-left-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         input[type="text"].search-input-header, select.filter-select-box, input[type="date"].filter-date-input { height: 40px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 10px; background-color: var(--surface); font-size: 13px; color: var(--text-primary); outline: none; }
+
+        /* 🛠️ FIJACIÓN ABSOLUTA E INALTERABLE DEL PANEL LATERAL FLOTANTE (DERECHO SAAS) */
+        #drawer_registro_ingresos { 
+            position: fixed !important; 
+            top: 0 !important; 
+            right: 0 !important; 
+            width: 400px !important; 
+            height: 100vh !important; 
+            background-color: #FFFFFF !important; 
+            border-left: 1px solid var(--borders) !important; 
+            box-shadow: -4px 0 24px rgba(16, 24, 40, 0.16) !important; 
+            z-index: 99999 !important; 
+            padding: 32px 24px !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
+            gap: 20px !important; 
+            transform: translateX(100%) !important; /* Totalmente oculto de base */
+            transition: transform 0.25s ease-in-out !important; 
+        }
+        
+        /* Clase activa controlada por JS */
+        #drawer_registro_ingresos.opened { 
+            transform: translateX(0) !important; 
+        }
+        
+        .drawer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(16, 24, 40, 0.2); z-index: 9998; display: none; }
+        .form-group-field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+        .form-group-field label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .form-group-field input, .form-group-field select { height: 42px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 8px; font-size: 13px; outline: none; width: 100%; background-color: var(--bg-main); color: var(--text-primary); }
+
+        .card-link-footer { margin-top: auto; padding-top: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; display: block; border-top: 1px solid var(--borders); text-decoration: none; }
+        .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -245,19 +277,15 @@
     </div>
 
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
-    <div class="drawer-overlay-panel" id="drawer_registro_ingresos">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px;">
+    <div id="drawer_registro_ingresos">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
             <h3 style="font-size:18px; font-weight:700;" id="drawer_dinamico_titulo">➕ Nuevo Movimiento</h3>
             <button onclick="conmutarDrawerRegistro(false)" style="background:none; border:none; cursor:pointer; color:var(--text-secondary);"><i data-lucide="x"></i></button>
         </div>
         <div class="form-group-field"><label>Concepto / Detalle</label><input type="text" id="form_ing_nombre" placeholder="Ej. Depósito / Gasto Directo"></div>
         <div class="form-group-field" id="form_campo_fuente_select_wrapper">
             <label id="lbl_dinamico_fuente_cat">Fuente / Categoría</label>
-            <select id="form_ing_fuente">
-                <option value="Salario Principal">Salario Principal</option>
-                <option value="Bonificaciones">Bonificaciones</option>
-                <option value="Otros ingresos">Otros ingresos</option>
-            </select>
+            <select id="form_ing_fuente"></select>
         </div>
         <div class="form-group-field"><label>Monto Neto</label><input type="number" id="form_ing_monto" placeholder="0.00"></div>
         <div class="form-group-field"><label>Moneda</label><select id="form_ing_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
@@ -333,15 +361,7 @@
                 </div>
 
                 <div class="charts-row">
-                    <div class="card">
-                        <div class="card-title">Flujo de caja</div>
-                        <div class="combined-chart-frame">
-                            <div class="chart-y-axis-labels"><div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div></div>
-                            <div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div>
-                            <div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="contenedor_histograma"></div>
-                            <div class="svg-line-overlay" id="contenedor_svg_linea_overlay"></div>
-                        </div>
-                    </div>
+                    <div class="card"><div class="card-title">Flujo de caja</div><div class="combined-chart-frame"><div class="chart-y-axis-labels"><div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div></div><div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div><div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="contenedor_histograma"></div><div class="svg-line-overlay" id="contenedor_svg_linea_overlay"></div></div></div>
                     <div class="card">
                         <div class="card-title">Distribución de gastos</div>
                         <div class="donut-container-layout">
@@ -399,30 +419,8 @@
                 </div>
 
                 <div class="charts-row">
-                    <div class="card">
-                        <div class="card-title">Evolución de ingresos</div>
-                        <div class="combined-chart-frame">
-                            <div class="chart-y-axis-labels"><div>Q25k</div><div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div></div>
-                            <div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div>
-                            <div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="cont_histograma_ingresos"></div>
-                            <div class="svg-line-overlay" id="cont_overlay_svg_linea_movil"></div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">Distribución por fuente</div>
-                        <div class="donut-container-layout">
-                            <div class="donut-canvas-wrapper">
-                                <div class="donut-center-text" id="donut_ingresos_centro_val">Q 17.3k<span>Total</span></div>
-                                <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#12B76A" stroke-width="5.5" stroke-dasharray="61.8 38.2" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="21.8 78.2" stroke-dashoffset="63.2"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="16.4 83.6" stroke-dashoffset="41.4"></circle>
-                                </svg>
-                            </div>
-                            <div class="donut-legend-list" id="leyenda_donut_ingresos"></div>
-                        </div>
-                    </div>
+                    <div class="card"><div class="card-title">Evolución de ingresos</div><div class="combined-chart-frame"><div class="chart-y-axis-labels"><div>Q25k</div><div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div></div><div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div><div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="cont_histograma_ingresos"></div><div class="svg-line-overlay" id="cont_overlay_svg_linea_movil"></div></div></div>
+                    <div class="card"><div class="card-title">Distribución por fuente</div><div class="donut-container-layout"><div class="donut-canvas-wrapper"><div class="donut-center-text" id="donut_ingresos_centro_val">Q 17.3k<span>Total</span></div><svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg"><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#12B76A" stroke-width="5.5" stroke-dasharray="61.8 38.2" stroke-dashoffset="25"></circle><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="21.8 78.2" stroke-dashoffset="63.2"></circle><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="16.4 83.6" stroke-dashoffset="41.4"></circle></svg></div><div class="donut-legend-list" id="leyenda_donut_ingresos"></div></div></div>
                 </div>
 
                 <div class="card" style="padding: 20px 24px;"><div class="card-title-row"><span class="card-title">Fuentes activas</span></div><div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div></div>
@@ -445,7 +443,7 @@
                 <div class="view-header">
                     <div class="header-title-area"><h1>Gastos</h1><p>Controla, analiza y organiza todos tus egresos de capital.</p></div>
                     <div class="header-action-area">
-                        <select class="month-selector select_filtro_mes_sincronized" onchange="actualizarMesSincronizadoGlobal(this)">
+                        <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
                             <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
                         </select>
                         <button class="btn-primary-action" style="background-color: var(--red-negative);" onclick="abrirFormularioDinamico('gastos')"><i data-lucide="plus"></i> Nuevo Gasto</button>
@@ -456,19 +454,15 @@
                     <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos del mes</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div></div><span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_mes_real">Q 10,748.13</span><div class="kpi-context-lbl positive" style="color:var(--green-positive);"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +6.2% vs. junio</div></div>
                     <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos fijos</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="refresh-cw"></i></div></div><span class="kpi-main-value" id="kpi_gas_fijo_real">Q 4,980.00</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">46.3% del total</div></div>
                     <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Gastos variables</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="activity"></i></div></div><span class="kpi-main-value" id="kpi_gas_variable_real">Q 5,768.13</span><div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">53.7% del total</div></div>
-                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="clock-3"></i></div></div><span class="kpi-main-value" id="kpi_gas_promedio_real">Q 9,864.20</span><div class="kpi-context-lbl">Últimos 6 meses</div></div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-red-exact"><i data-lucide="clock-3"></i></div></div>
+                        <span class="kpi-main-value" id="kpi_gas_promedio_real">Q 9,864.20</span>
+                        <div class="kpi-context-lbl">Últimos 6 meses</div>
+                    </div>
                 </div>
 
                 <div class="charts-row">
-                    <div class="card">
-                        <div class="card-title">Evolución de gastos</div>
-                        <div class="combined-chart-frame">
-                            <div class="chart-y-axis-labels"><div>Q12k</div><div>Q9k</div><div>Q6k</div><div>Q3k</div><div>Q0</div></div>
-                            <div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div>
-                            <div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="cont_histograma_gastos_node"></div>
-                            <div class="svg-line-overlay" id="cont_overlay_svg_linea_gastos"></div>
-                        </div>
-                    </div>
+                    <div class="card"><div class="card-title">Evolución de gastos</div><div class="combined-chart-frame"><div class="chart-y-axis-labels"><div>Q12k</div><div>Q9k</div><div>Q6k</div><div>Q3k</div><div>Q0</div></div><div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div><div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="cont_histograma_gastos_node"></div><div class="svg-line-overlay" id="cont_overlay_svg_linea_gastos"></div></div></div>
                     <div class="card">
                         <div class="card-title">Distribución por categoría</div>
                         <div class="donut-container-layout">
@@ -555,7 +549,7 @@
         }
 
         function actualizarMesSincronizadoGlobal(selectorNode) {
-            document.querySelectorAll('.select_filtro_mes_sincronizado, .select_filtro_mes_sincronized').forEach(sel => {
+            document.querySelectorAll('.select_filtro_mes_sincronizado').forEach(sel => {
                 sel.value = selectorNode.value;
             });
             actualizarCoreCalculos();
@@ -572,7 +566,7 @@
             actualizarCoreCalculos();
         }
 
-        async function verificarCredencialesSesion() {
+        async function verificarCredentialsSesion() {
             const { data: { session } } = await _supabase.auth.getSession();
             if (session) {
                 activeSessionUser = session.user;
@@ -608,7 +602,7 @@
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-        // CORRECCIÓN INTEGRAL: MAPEADO DEL CAMPO REQUERIDO DE FUENTE / CATEGORÍA EN INSERCIÓN
+        // 🛠️ CORRECCIÓN CLAVE: CONSTRUCCIÓN REQUERIDA DEL CAMPO FECHA_FACT MAESTRO ISO-DATE PARA EVITAR NOT-NULL VIOLATIONS
         async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
@@ -624,7 +618,9 @@
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
             
-            // Configurar el payload dinámico mapeando tanto la columna semántica como el nombre
+            // Re-armar fecha estricta para la columna requerida por tu base de datos cloud
+            let fechaISO = `${anio}-${mes.toString().padStart(2,'0')}-13`;
+
             let registroPayload = { 
                 nombre, 
                 monto, 
@@ -632,6 +628,7 @@
                 tipo, 
                 anio, 
                 mes, 
+                fecha_fact: fechaISO, 
                 user_id: activeSessionUser.id 
             };
             
@@ -747,7 +744,7 @@
 
         function renderDonutGastos(gTotal) {
             document.getElementById('donut_total_interior_inicio').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
-            let ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
+            let ley = document.getElementById('lista_legend_donut_inicio'); if(!ley) ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
             let fijos = gTotal * 0.65; let variables = gTotal * 0.25; let otros = gTotal * 0.10;
             ley.innerHTML = `
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(fijos).toLocaleString()}</span><b class="legend-pct">65%</b></div>
@@ -890,7 +887,6 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Transporte</div><span class="legend-amount">Q 1,198.00</span><b class="legend-pct">11.1%</b></div>`;
         }
 
-        // CORRECCIÓN CONTRASTE FUENTES GASTOS (TRAZO OSCURO ROJO)
         function renderCategoriasActivasTarjetas() {
             document.getElementById('bloque_categorias_activas_row').innerHTML = `
                 <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="credit-card"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Tarjetas</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 4,222</b></span><span>Próximo cargo<b>13 Ago</b></span></div></div>
@@ -902,7 +898,7 @@
                 <tr><td>21 Jul 2026</td><td><b>Pago mínimo tarjeta BI</b></td><td>Tarjetas</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
         }
 
-        verificarCredencialesSesion();
+        verificarCredentialsSesion();
     </script>
 </body>
 </html>
