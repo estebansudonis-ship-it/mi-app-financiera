@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <style>
         :root {
             --bg-main: #F7F8FC;
@@ -15,23 +15,23 @@
             --text-primary: #111827;
             --text-secondary: #667085;
             --borders: #E6E8EF;
-            
+
             --purple-main: #5B45F5;
             --purple-dark: #4328D7;
             --purple-light: #F1EEFF;
-            
+
             --green-positive: #12B76A;
             --green-light: #ECFDF3;
-            
+
             --blue-info: #2E90FA;
             --blue-light: #EFF8FF;
-            
+
             --orange-warning: #F79009;
             --orange-light: #FFFAEB;
-            
+
             --red-negative: #F04438;
             --red-light: #FEF3F2;
-            
+
             --shadow-subtle: 0 1px 3px rgba(16, 24, 40, 0.06);
             --radius-main: 16px;
         }
@@ -137,7 +137,7 @@
         .header-title-area p { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
         .header-action-area { display: flex; align-items: center; gap: 12px; }
         .month-selector { height: 44px; padding: 0 16px; border: 1px solid var(--borders); border-radius: 12px; background-color: var(--surface); color: var(--text-primary); font-size: 14px; font-weight: 500; outline: none; cursor: pointer; }
-        
+
         .btn-primary-action { height: 44px; padding: 0 20px; background-color: var(--purple-main); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .btn-primary-action:hover { background-color: var(--purple-dark); }
 
@@ -149,13 +149,13 @@
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
-        
+
         /* Contenedor del icono con herencia estricta de color */
         .kpi-icon-wrapper { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        
+
         .kpi-main-value { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 8px; }
-        .kpi-context-lbl { font-size: 12px; color: var(--text-secondary); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
-        .kpi-context-lbl.positive b { color: var(--green-positive); }
+        .kpi-comparison { font-size: 12px; color: var(--text-secondary); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+        .kpi-comparison.positive, .kpi-comparison.positive b { color: var(--green-positive); }
         .sparkline-box { position: absolute; right: 24px; bottom: 20px; width: 110px; height: 45px; pointer-events: none; }
 
         /* GRÁFICOS COMBINADOS */
@@ -175,17 +175,18 @@
         .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
         /* 2. RECONSTRUCCIÓN COMPLETA DE LA GRÁFICA DE DISTRIBUCIÓN (DONUT NATIVO EN SVG) */
-        .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; min-height: 280px; }
-        .donut-canvas-wrapper { width: 150px; height: 150px; position: relative; display: flex; align-items: center; justify-content: center; }
+        .donut-container-layout { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; height: 100%; min-height: 220px; }
+        .donut-canvas-wrapper { width: 150px; height: 150px; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .donut-center-text { position: absolute; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; z-index: 10; }
         .donut-center-text span { font-size: 12px; color: var(--text-secondary); display: block; font-weight: 500; margin-top: 2px; }
-        
-        .donut-legend-list { display: flex; flex-direction: column; gap: 12px; width: 100%; border-top: 1px solid var(--borders); padding-top: 16px; }
-        .legend-item { display: grid; grid-template-columns: 1.5fr 1fr 1fr; align-items: center; font-size: 13px; }
+
+        .donut-legend-list { display: flex; flex-direction: column; gap: 14px; flex-grow: 1; min-width: 0; }
+        .legend-item { display: grid; grid-template-columns: 1.5fr 1fr 1fr; align-items: center; font-size: 13px; gap: 8px; }
         .legend-color-dot { display: flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 500; }
-        .color-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
         .legend-amount { color: var(--text-secondary); text-align: left; }
         .legend-pct { font-weight: 700; text-align: right; color: var(--text-primary); }
+        .legend-footnote { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 4px; border-top: 1px solid var(--borders); padding-top: 12px; }
 
         /* TRIPLE MODULAR ROW */
         .triple-modular-row { display: flex; width: 100%; gap: 24px; align-items: stretch; }
@@ -221,7 +222,7 @@
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
         .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
-        
+
         .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; text-align: center; }
         .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
@@ -253,7 +254,7 @@
     </div>
 
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
-        
+
         <div class="sidebar">
             <div>
                 <div class="sidebar-brand-wrapper">
@@ -273,7 +274,7 @@
                     <button class="nav-button" onclick="cambiarSeccionVista('vista_historico', this)"><i data-lucide="history"></i> Histórico</button>
                 </div>
             </div>
-            
+
             <div class="sidebar-footer">
                 <button class="nav-button" onclick="cambiarSeccionVista('vista_config', this)"><i data-lucide="settings"></i> Configuración</button>
                 <div class="sidebar-user">
@@ -290,7 +291,7 @@
             <div class="chart-tooltip" id="global_chart_tooltip"></div>
 
             <div class="view-section" id="vista_inicio">
-                
+
                 <div class="view-header">
                     <div class="header-title-area">
                         <h1>Resumen financiero</h1>
@@ -320,7 +321,7 @@
                             </svg>
                         </div>
                     </div>
-                    
+
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Ingresos</span>
@@ -373,9 +374,7 @@
                                 <div class="donut-center-text" id="donut_total_interior">Q0<span>Total</span></div>
                                 <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
                                     <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F04438" stroke-width="5.5" stroke-dasharray="65 35" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="25 75" stroke-dashoffset="60"></circle>
-                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="10 90" stroke-dashoffset="35"></circle>
+                                    <g id="donut_segments_grupo"></g>
                                 </svg>
                             </div>
                             <div class="donut-legend-list" id="lista_leyenda_donut"></div>
@@ -384,7 +383,7 @@
                 </div>
 
                 <div class="triple-modular-row">
-                    
+
                     <div class="card">
                         <div class="card-title">Tarjetas</div>
                         <div class="card-item-row" id="bloque_tarjetas_inicio"></div>
@@ -459,10 +458,10 @@
     </div>
 
     <script>
-        const SUPABASE_URL = "https://ltmvcqkpgrwqsinfqqkt.supabase.co"; 
-        const SUPABASE_ANON_KEY = "sb_publishable_TP5UKKudDEefb5KogaRcsw_Ezn1OxbA"; 
+        const SUPABASE_URL = "https://ltmvcqkpgrwqsinfqqkt.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_TP5UKKudDEefb5KogaRcsw_Ezn1OxbA";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
+
         let activeSessionUser = null;
         let db_ingresos = []; let db_ahorros = []; let db_tarjetas = []; let db_gastos = []; let db_compras = [];
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
@@ -527,7 +526,7 @@
 
             let totalIngresos = (db_ingresos || []).filter(i => (i.tipo==='fijo' && (anioAct>i.anio || (anioAct===i.anio && mesAct>=i.mes))) || (i.tipo==='variable' && i.anio===anioAct && i.mes===mesAct)).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
             let totalGastosEfec = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
-            
+
             let gastosTarjetasDirectos = (db_gastos || []).filter(g => g.medio_pago !== 'efectivo' && ((g.tipo==='fijo' && (anioAct>g.anio || (anioAct===g.anio && mesAct>=g.mes))) || (g.tipo==='variable' && g.anio===anioAct && g.mes===mesAct))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
             let cuotasTarjetasAmortizadas = (db_compras || []).filter(c => {
                 if(!c.fecha_inicio || !c.fecha_fin) return false;
@@ -546,12 +545,12 @@
             document.getElementById('kpi_tarjetas').innerText = "Q " + totalTarjetasCarga.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 
             renderHistogramaCombinado(mesAct, anioAct);
-            renderDonutGastos(totalGastosEfec + totalTarjetasCarga);
+            renderDonutGastos(totalGastosEfec, gastosTarjetasDirectos, cuotasTarjetasAmortizadas);
             renderTarjetasSaaS();
             renderModuloAhorros(mesAct, anioAct);
             renderCapacidadMish(mesAct, anioAct);
             renderCompromisosTabla(mesAct, anioAct);
-            
+
             lucide.createIcons();
         }
 
@@ -560,7 +559,7 @@
             let overlay = document.getElementById('contenedor_svg_linea_overlay');
             if(!cont || !overlay) return;
             cont.innerHTML = ""; overlay.innerHTML = "";
-            
+
             let maxMonto = 20000; let mesesData = [];
             let mInicio = mesB - 5; let aInicio = anioB;
             while(mInicio <= 0) { mInicio += 12; aInicio--; }
@@ -568,7 +567,7 @@
             for(let i=0; i<6; i++) {
                 let currM = mInicio + i; let currA = aInicio;
                 while(currM > 12) { currM -= 12; currA++; }
-                
+
                 let ing = (db_ingresos || []).filter(inv => (inv.tipo==='fijo' && (currA>inv.anio || (currA===inv.anio && currM>=inv.mes))) || (inv.tipo==='variable' && inv.anio===currA && inv.mes===currM)).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
                 let gas = (db_gastos || []).filter(g => g.medio_pago === 'efectivo' && ((g.tipo==='fijo' && (currA>g.anio || (currA===g.anio && currM>=g.mes))) || (g.tipo==='variable' && g.anio===currA && g.mes===currM))).reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
                 let disp = ing - gas > 0 ? ing - gas : 0;
@@ -585,7 +584,7 @@
             mesesData.forEach((d, idx) => {
                 let hIng = (d.ing / maxMonto) * 200;
                 let hGas = (d.gas / maxMonto) * 200;
-                
+
                 let coordX = (idx * segmentoX) + (segmentoX / 2);
                 let coordY = 216 - ((d.disp / maxMonto) * 200);
                 puntosLinea.push(`${coordX},${coordY}`);
@@ -615,14 +614,33 @@
         }
         function ocultarTooltipChart() { let t = document.getElementById('global_chart_tooltip'); if(t) t.style.display = 'none'; }
 
-        function renderDonutGastos(gTotal) {
-            document.getElementById('donut_total_interior').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
-            let ley = document.getElementById('lista_leyenda_donut'); if(!ley) return;
-            let fijos = gTotal * 0.65; let variables = gTotal * 0.25; let otros = gTotal * 0.10;
-            ley.innerHTML = `
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(fijos).toLocaleString()}</span><b class="legend-pct">65%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Variables</div><span class="legend-amount">Q ${Math.round(variables).toLocaleString()}</span><b class="legend-pct">25%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
+        function renderDonutGastos(efectivo, tarjetas, cuotas) {
+            let gTotal = efectivo + tarjetas + cuotas;
+            document.getElementById('donut_total_interior').innerHTML = "Q " + Math.round(gTotal).toLocaleString() + "<span>Total</span>";
+
+            let categorias = [
+                { label: "Efectivo", valor: efectivo, color: "#F04438" },
+                { label: "Tarjetas", valor: tarjetas, color: "#F79009" },
+                { label: "Cuotas", valor: cuotas, color: "#2E90FA" }
+            ].filter(c => c.valor > 0);
+
+            let grupoSvg = document.getElementById('donut_segments_grupo');
+            let ley = document.getElementById('lista_leyenda_donut');
+            if(!grupoSvg || !ley) return;
+
+            let acumuladoPct = 0; let arcosHtml = ""; let leyendaHtml = "";
+            categorias.forEach(c => {
+                let pct = gTotal > 0 ? (c.valor / gTotal) * 100 : 0;
+                let offset = 25 - acumuladoPct; if(offset < 0) offset += 100;
+                arcosHtml += `<circle cx="21" cy="21" r="15.915" fill="transparent" stroke="${c.color}" stroke-width="5.5" stroke-dasharray="${pct} ${100 - pct}" stroke-dashoffset="${offset}"></circle>`;
+                leyendaHtml += `
+                    <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:${c.color}"></div>${c.label}</div><span class="legend-amount">Q ${Math.round(c.valor).toLocaleString()}</span><b class="legend-pct">${pct.toFixed(1)}%</b></div>`;
+                acumuladoPct += pct;
+            });
+
+            grupoSvg.innerHTML = arcosHtml;
+            leyendaHtml += `<div class="legend-footnote"><i data-lucide="circle-dot" style="width:12px;height:12px;color:var(--green-positive);"></i>${categorias.length} categorías activas</div>`;
+            ley.innerHTML = leyendaHtml;
         }
 
         function renderTarjetasSaaS() {
@@ -636,10 +654,10 @@
                 ];
             }
             auxTarjetas.forEach((t, idx) => {
-                let limite = t.lim_cuotas || 28000; 
+                let limite = t.lim_cuotas || 28000;
                 let utilizado = t.id === 101 ? 9100 : 3122.13;
                 let disponible = limite - utilizado; let pct = (utilizado / limite) * 100;
-                
+
                 let colorRango = "var(--green-positive)";
                 if(pct > 30 && pct <= 60) colorRango = "var(--blue-info)";
                 else if(pct > 60 && pct <= 80) colorRango = "var(--orange-warning)";
@@ -696,15 +714,15 @@
         function renderCapacidadMish(mesB, anioB) {
             let cont = document.getElementById('mish_chart_inicio'); if(!cont) return;
             cont.innerHTML = "";
-            
+
             let mInicio = mesB - 5; let aInicio = anioB;
             while(mInicio <= 0) { mInicio += 12; aInicio--; }
-            
+
             let anchoSvg = cont.clientWidth || 380;
             let altoSvg = 160;
             let marginPadding = 42;
             let segmentX = (anchoSvg - (marginPadding * 2)) / 5;
-            
+
             let valoresMish = [6900, 7600, 8400, 8400, 9100, 10700];
             let coords = []; let labelsHtml = ""; let puntosHtml = "";
 
@@ -713,7 +731,7 @@
                 let x = marginPadding + (i * segmentX);
                 let y = (altoSvg - 40) - ((valoresMish[i] / 15000) * 80);
                 coords.push(`${x},${y}`);
-                
+
                 puntosHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--purple-main)"/>`;
                 labelsHtml += `<text x="${x}" y="${altoSvg - 10}" style="font-size:11px; fill:var(--text-secondary); font-weight:600;" text-anchor="middle">${nombresMesesCompleto[currM-1]}</text>
                                <text x="${x}" y="${y-12}" style="font-size:10px; fill:var(--text-primary); font-weight:700;" text-anchor="middle">Q${(valoresMish[i]/1000).toFixed(1)}k</text>`;
