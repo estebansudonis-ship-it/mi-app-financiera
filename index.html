@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi App Financiera Cloud Pro - V25.0</title>
+    <title>Mi App Financiera Cloud Pro - V26.1</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -69,13 +69,13 @@
         .main-content { flex-grow: 1; height: 100vh; overflow-y: auto; background-color: var(--bg-main); display: flex; flex-direction: column; }
         .dashboard-grid { padding: 24px 30px; display: flex; flex-direction: column; gap: 24px; width: 100%; min-width: 1150px; box-sizing: border-box; }
         
-        /* CORRECCIÓN DE FILAS DE DISTRIBUCIÓN PARALELA (50% / 50%) */
+        /* FILAS ESTRUCTURALES */
         .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
-        .card-split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; align-items: start; }
-        @media (max-width: 1150px) { .card-split-row { grid-template-columns: 1fr; } }
+        .card-split-row { display: flex; gap: 24px; width: 100%; align-items: stretch; }
+        .card-split-row > .card { flex: 1; width: 50%; }
         
         /* TARJETAS */
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); width: 100%; position: relative; display: flex; flex-direction: column; }
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; justify-content: start; }
         .card-header { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         .header-controls { display: flex; align-items: center; gap: 12px; }
         .card-inline-month { background-color: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none; }
@@ -100,11 +100,11 @@
         .btn-view-details { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 0; width: 100%; justify-content: center; }
 
         /* LISTADOS Y TABLAS */
-        ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
+        ul.records-list { list-style: none; padding: 0; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; max-height: 160px; overflow-y: auto; }
         ul.records-list li { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-main); }
         ul.records-list li button { background: none; border: none; cursor: pointer; font-size: 14px; padding: 2px 6px; }
         
-        .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .table-frame { overflow-x: auto; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border-color); max-height: 160px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; color: var(--text-main); }
         th { background-color: var(--bg-main); color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border-color); text-align: left; }
         td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); background: var(--card-bg); }
@@ -118,8 +118,7 @@
         .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 4px; }
         .bar-top-val { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
 
-        /* REAJUSTE DE CONTENEDORES SVG PARA ABARCAR EL 100% DEL ESPACIO ASIGNADO */
-        .vector-chart-container { width: 100%; height: 260px; margin-top: 10px; background: var(--chart-panel-bg); border-radius: 14px; border: 1px solid var(--border-color); padding: 15px; position: relative; display: flex; align-items: center; justify-content: center; }
+        .vector-chart-container { width: 100%; flex-grow: 1; min-height: 280px; background: var(--chart-panel-bg); border-radius: 14px; border: 1px solid var(--border-color); padding: 15px; display: flex; align-items: center; justify-content: center; }
         .vector-chart-container svg { width: 100%; height: 100%; display: block; }
 
         /* INTERFAZ CHAT IA */
@@ -131,7 +130,7 @@
         .ai-input-bar { display: flex; border-top: 1px solid var(--border-color); background: var(--card-bg); padding: 10px; gap: 8px; }
         .ai-input-bar input { flex-grow: 1; background: var(--bg-main); border: 1px solid var(--border-color); padding: 8px 12px; font-size: 13px; border-radius: 8px; color: var(--text-main); }
 
-        /* MODALES */
+        /* MODALES Y CAPA DE ACCESO FIJA CORREGIDA */
         #auth_screen { position: fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-main); display:flex; justify-content:center; align-items:center; z-index:99999; }
         .auth-card { background: var(--sidebar-bg); padding: 40px; border-radius: 20px; box-shadow: var(--shadow-md); width: 100%; max-width: 380px; border: 1px solid var(--border-color); }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); justify-content: center; align-items: center; z-index: 100000; backdrop-filter: blur(4px); }
@@ -151,7 +150,6 @@
         </div>
     </div>
 
-    <!-- ACCESO INICIAL -->
     <div id="auth_screen">
         <div class="auth-card">
             <h2 style="margin:0 0 8px 0; color:var(--primary); text-align:center; font-weight:800;">🔒 Sistema Financiero</h2>
@@ -164,8 +162,7 @@
         </div>
     </div>
 
-    <!-- APLICACIÓN PRINCIPAL -->
-    <div id="app_content" style="display:none; width:100%; height:100vh; display:flex;">
+    <div id="app_content" style="display:none; width:100%; height:100vh;">
         
         <div class="sidebar">
             <div class="nav-menu">
@@ -196,7 +193,6 @@
         <div class="main-content" id="contenedor_scroll">
             <div class="dashboard-grid">
                 
-                <!-- MODULE 1: FINANZAS -->
                 <div class="card" id="panel_finanzas">
                     <div class="card-header">
                         <span>📊 1. Finanzas (Flujo de Caja Real)</span>
@@ -222,7 +218,6 @@
                     <div class="bars-chart-box" id="chartPresupuesto"></div>
                 </div>
 
-                <!-- REGISTROS DE ENTRADA -->
                 <div class="card-row">
                     <div class="card" id="seccion_ingresos">
                         <div class="card-header">📥 Registro de Ingresos</div>
@@ -240,8 +235,6 @@
                         </div>
                         <label style="margin-top:8px; display:flex; align-items:center; gap:8px; font-size:12px;"><input type="checkbox" id="i_iva"> Retener 5% de IVA mensual</label>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarIngreso()">Guardar Ingreso</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapIngresos')">👁️ Ver Listado de Ingresos</button>
-                        <div id="wrapIngresos" style="display:none;"><ul class="records-list" id="listaIngresos"></ul></div>
                     </div>
 
                     <div class="card" id="seccion_gastos">
@@ -259,8 +252,6 @@
                             <div><label>Vía Pago</label><select id="g_metodo"><option value="efectivo">Efectivo / Transferencia</option></select></div>
                         </div>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarGasto()">Guardar Gasto</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapGastos')">👁️ Ver Listado de Gastos</button>
-                        <div id="wrapGastos" style="display:none;"><ul class="records-list" id="listaGastos"></ul></div>
                     </div>
 
                     <div class="card" id="seccion_tarjetas">
@@ -278,12 +269,9 @@
                             <div><label>Día Pago</label><input type="number" id="t_pago" min="1" max="31"></div>
                         </div>
                         <button class="btn-action" style="margin-top:12px;" onclick="guardarTarjeta()">Inscribir Tarjeta</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapTarjetas')">👁️ Ver Tarjetas Activas</button>
-                        <div id="wrapTarjetas" style="display:none;"><ul class="records-list" id="listaMaestroTarjetas"></ul></div>
                     </div>
                 </div>
 
-                <!-- REQUISITO 3: CONSUMOS A PLAZOS + DASHBOARD MISH EN PARALELO REAL (HORIZONTAL) -->
                 <div class="card-split-row" id="agrupacion_mish">
                     <div class="card" id="seccion_plazos">
                         <div class="card-header">🛍️ Consumos a Plazos (Amortizaciones)</div>
@@ -297,18 +285,14 @@
                             <div><label>Cuotas</label><input type="number" id="c_cuotas" min="1" value="12"></div>
                         </div>
                         <button class="btn-action" onclick="guardarCompra()">Inscribir Amortización</button>
-                        <button class="btn-view-details" onclick="toggleVisibilidad('wrapCompras')">👁️ Ver Tabla de Cuotas Activas</button>
-                        <div id="wrapCompras" style="display:none;">
-                            <div class="table-frame"><table><thead><tr><th>Detalle</th><th>Total</th><th>Cuotas</th><th>Plazo</th><th>Acción</th></tr></thead><tbody id="bodyCompras"></tbody></table></div>
-                        </div>
                     </div>
 
                     <div class="card" id="panel_mish">
                         <div class="card-header">
-                            <span style="color:var(--primary);">📈 2. Mish - Curva de Capacidad Crediticia (6 Meses)</span>
+                            <span style="color:var(--primary);">📈 Mish - Capacidad Crediticia (12 Meses)</span>
                             <div class="header-controls">
-                                <select id="p_line_tarjeta" style="width:120px; padding:4px;" onchange="actualizarMish()"></select>
-                                <select id="p_line_tipo" style="width:120px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select>
+                                <select id="p_line_tarjeta" style="width:130px; padding:4px;" onchange="actualizarMish()"></select>
+                                <select id="p_line_tipo" style="width:130px; padding:4px;" onchange="actualizarMish()"><option value="cuotas">Límite Cuotas</option><option value="contado">Límite Contado</option></select>
                                 <input type="month" id="mes_mish" class="card-inline-month" value="2026-06" onchange="actualizarMish()">
                             </div>
                         </div>
@@ -316,11 +300,10 @@
                     </div>
                 </div>
 
-                <!-- REQUISITO 4: PLAN DE DEPOSITOS + HISTÓRICO DE CRECIMIENTO EN PARALELO REAL (HORIZONTAL) -->
                 <div class="card-split-row" id="agrupacion_ahorros">
                     <div class="card" id="panel_ahorros" style="border-left:5px solid var(--success);">
                         <div class="card-header">
-                            <span style="color:var(--success);">🏦 3. Plan de Depósitos de Ahorros</span>
+                            <span style="color:var(--success);">🏦 Plan de Depósitos de Ahorros</span>
                             <input type="month" id="mes_ahorros" class="card-inline-month" value="2026-06" onchange="actualizarAhorrosModulo()">
                         </div>
                         <div class="form-row">
@@ -333,31 +316,27 @@
                             <div><label>Moneda</label><select id="a_moneda"><option value="GTQ">GTQ</option><option value="USD">USD</option></select></div>
                         </div>
                         <button class="btn-action" style="background-color:var(--success);" onclick="guardarAhorro()">Registrar Capital</button>
-                        <button class="btn-view-details" style="color:var(--success);" onclick="toggleVisibilidad('wrapAhorros')">👁️ Ver Historial Aportes</button>
-                        <div id="wrapAhorros" style="display:none;"><ul class="records-list" id="listaAhorros"></ul></div>
                         
                         <div style="margin-top:20px; display:flex; gap:16px;">
                             <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">En el Mes</span><span id="ahorroMesGTQ" style="color:var(--success); font-size:16px; font-weight:700;">Q 0.00</span></div></div>
-                            <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Acumulado</span><span id="ahorroTotalGTQ" style="color:var(--success); font-size:16px; font-weight:700;">Q 0.00</span></div></div>
+                            <div class="kpi-box" style="flex:1;"><div class="kpi-data"><span class="kpi-title">Acumulado Total</span><span id="ahorroTotalGTQ" style="color:var(--success); font-size:16px; font-weight:700;">Q 0.00</span></div></div>
                         </div>
                     </div>
 
                     <div class="card">
-                        <div class="card-header"><span style="color:var(--teal);">📉 4. Histórico de Crecimiento de Ahorro Neto</span></div>
+                        <div class="card-header"><span style="color:var(--teal);">📉 Histórico de Crecimiento (12 Meses)</span></div>
                         <div class="vector-chart-container" id="chartAhorroHistoricoContenedor"></div>
                     </div>
                 </div>
 
-                <!-- MODULE 5: IA CONSULTOR -->
                 <div class="card" id="seccion_ia">
-                    <div class="card-header" style="color:var(--primary);">🤖 5. Consultor IA Financiero Experto</div>
+                    <div class="card-header" style="color:var(--primary);">🤖 Consultor IA Financiero Experto</div>
                     <div class="form-row">
-                        <div style="flex:2;"><label>Gemini API Key</label><input type="password" id="gemini_api_key" placeholder="AIzaSy..."></div>
-                        <div><label>&nbsp;</label><button class="btn-action" onclick="guardarApiKey()">💾 Guardar Llave</button></div>
+                        <div style="flex:2;"><label>Gemini API Key</label><input type="password" id="gemini_api_keymaster" placeholder="AIzaSy..." onchange="localStorage.setItem('gemini_key', this.value)"></div>
                     </div>
                     <div class="ai-chat-container">
                         <div class="ai-messages-wall" id="chat_grid">
-                            <div class="ai-bubble bubble-ai">Entorno Premium adaptivo calibrado a Zoom 100% y con soporte de Modo Claro/Oscuro dinámico con la nueva fuente Poppins. ¿Qué balance estratégico deseas calcular hoy?</div>
+                            <div class="ai-bubble bubble-ai">Entorno Premium calibrado a Zoom 100%. Sistema de autenticación de Supabase reparado y listo para transaccionar. ¿Qué balance estratégico deseas calcular hoy?</div>
                         </div>
                         <div class="ai-input-bar">
                             <input type="text" id="chat_user_input" placeholder="Pregúntale a la IA sobre tus finanzas..." onkeypress="if(event.key==='Enter') enviarMensajeIA()">
@@ -375,13 +354,13 @@
         const SUPABASE_ANON_KEY = "sb_publishable_TP5UKKudDEefb5KogaRcsw_Ezn1OxbA"; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        let activeUser = null; let registroEdicionActual = null;
+        let activeUser = null;
         let ingresos = []; let ahorros = []; let tarjetas = []; let gastos = []; let compras = [];
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
         function alternarTemaVisual() {
-            const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-            const newTheme = currentTheme === "light" ? "dark" : "light";
+            const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
             document.documentElement.setAttribute("data-theme", newTheme);
             localStorage.setItem("theme_preference", newTheme);
             document.getElementById("theme_icon").innerText = newTheme === "light" ? "🌙" : "☀️";
@@ -390,10 +369,8 @@
         }
 
         function cargarTemaPreferido() {
-            const preferido = localStorage.getItem("theme_preference") || "light";
+            const preferido = localStorage.getItem("theme_preference") || "dark";
             document.documentElement.setAttribute("data-theme", preferido);
-            document.getElementById("theme_icon").innerText = preferido === "light" ? "🌙" : "☀️";
-            document.getElementById("theme_text").innerText = preferido === "light" ? "Modo Oscuro" : "Modo Claro";
         }
 
         function navegarA(idElemento) {
@@ -401,7 +378,7 @@
             let contenedor = document.getElementById('contenedor_scroll');
             if(el && contenedor) contenedor.scrollTop = el.offsetTop - 20;
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            if(event) event.currentTarget.classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
         async function verificarSesion() {
@@ -414,7 +391,9 @@
                 
                 if(localStorage.getItem('db_a_base')) document.getElementById('a_base').value = localStorage.getItem('db_a_base');
                 if(localStorage.getItem('db_a_base_moneda')) document.getElementById('a_base_moneda').value = localStorage.getItem('db_a_base_moneda');
-                if(localStorage.getItem('gemini_key')) document.getElementById('gemini_api_key').value = localStorage.getItem('gemini_key');
+                if(localStorage.getItem('gemini_key')) {
+                    document.getElementById('gemini_api_keymaster').value = localStorage.getItem('gemini_key');
+                }
                 if(localStorage.getItem('global_tasa_cambio')) document.getElementById('tasaCambio').value = localStorage.getItem('global_tasa_cambio');
                 
                 await pullCloudData();
@@ -432,7 +411,7 @@
             let email = document.getElementById('auth_email').value; let pass = document.getElementById('auth_password').value;
             const { data, error } = await _supabase.auth.signUp({ email, password: pass });
             if(error) document.getElementById('auth_error').innerText = error.message;
-            else alert('Cuenta creada de manera exitosa.');
+            else alert('Cuenta creada.');
         }
 
         async function ejecutarLogout() { await _supabase.auth.signOut(); location.reload(); }
@@ -445,74 +424,17 @@
             let rAho = await _supabase.from('ahorros').select('*'); ahorros = rAho.data || [];
             let rCom = await _supabase.from('compras').select('*'); compras = rCom.data || [];
 
-            renderIngresos(); renderTarjetas(); renderGastos(); renderCompras(); renderAhorros();
+            renderTarjetas();
             actualizarFinanzas(); actualizarMish(); actualizarAhorrosModulo();
         }
 
         function formatMoney(num) { return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function formatMoneyCorto(num) { if(isNaN(num) || num <= 0) return "0"; if(num >= 1000) return (num/1000).toFixed(1).replace(/\.0$/, '') + 'k'; return Math.round(num).toString(); }
+        if(localStorage.getItem('global_tasa_cambio')) document.getElementById('tasaCambio').value = localStorage.getItem('global_tasa_cambio');
         function getTasa() { return parseFloat(document.getElementById('tasaCambio').value) || 7.8; }
         function recalcularPorTasa() { localStorage.setItem('global_tasa_cambio', document.getElementById('tasaCambio').value); actualizarFinanzas(); actualizarMish(); actualizarAhorrosModulo(); }
         function obtenerEnGTQ(monto, moneda) { return moneda === 'USD' ? monto * getTasa() : monto; }
-        function toggleVisibilidad(id) { let el = document.getElementById(id); el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
-        document.getElementsById = function(id) { return document.getElementById(id); };
-
-        function abrirModalEdicion(tabla, id) {
-            registroEdicionActual = { tabla, id };
-            let body = document.getElementById('modalBody'); body.innerHTML = "";
-            document.getElementById('editModal').style.display = "flex";
-            
-            let r = (tabla==='ingresos')?ingresos.find(x=>x.id===id):(tabla==='gastos')?gastos.find(x=>x.id===id):tarjetas.find(x=>x.id===id);
-            if(!r && tabla==='ahorros') r = ahorros.find(x=>x.id===id);
-            
-            if(tabla === 'ingresos' || tabla === 'gastos' || tabla === 'ahorros') {
-                let optionsVias = `<option value="efectivo" ${r.medio_pago==='efectivo'?'selected':''}>Efectivo / Transferencia</option>`;
-                tarjetas.forEach(t => { optionsVias += `<option value="${t.id}" ${r.medio_pago==String(t.id)?'selected':''}>Tarjeta: ${t.nombre}</option>`; });
-
-                body.innerHTML = `
-                    <div style="margin-bottom:12px;"><label>Concepto / Nombre</label><input type="text" id="m_nombre" value="${r.nombre||''}"></div>
-                    <div class="form-row">
-                        <div><label>Monto</label><input type="number" id="m_monto" value="${r.monto||0}"></div>
-                        <div><label>Moneda</label><select id="m_moneda"><option value="GTQ" ${r.moneda==='GTQ'?'selected':''}>GTQ</option><option value="USD" ${r.moneda==='USD'?'selected':''}>USD</option></select></div>
-                    </div>
-                    <div class="form-row">
-                        <div><label>Tipo</label><select id="m_tipo"><option value="fijo" ${r.tipo==='fijo'?'selected':''}>Fijo</option><option value="variable" ${r.tipo==='variable'?'selected':''}>Variable</option></select></div>
-                        ${tabla==='gastos'? `<div><label>Vía de Pago</label><select id="m_metodo">${optionsVias}</select></div>` : ''}
-                    </div>`;
-            } else if(tabla === 'tarjetas') {
-                body.innerHTML = `
-                    <div style="margin-bottom:12px;"><label>Nombre del Emisor</label><input type="text" id="m_nombre" value="${r.nombre||''}"></div>
-                    <div class="form-row">
-                        <div><label>Límite Contado</label><input type="number" id="m_lim_contado" value="${r.lim_contado||0}"></div>
-                        <div><label>Límite Cuotas</label><input type="number" id="m_lim_cuotas" value="${r.lim_cuotas||0}"></div>
-                    </div>
-                    <div class="form-row">
-                        <div><label>Día Corte</label><input type="number" id="m_corte" value="${r.corte||1}"></div>
-                        <div><label>Día Pago</label><input type="number" id="m_pago" value="${r.pago||1}"></div>
-                    </div>`;
-            }
-        }
-        
-        function cerrarModal() { document.getElementById('editModal').style.display = "none"; }
-        
-        async function ejecutarActualizacionCloud() {
-            let t = registroEdicionActual.tabla; let id = registroEdicionActual.id;
-            let pack = { nombre: document.getElementById('m_nombre').value };
-            
-            if(document.getElementById('m_monto')) pack.monto = parseFloat(document.getElementById('m_monto').value);
-            if(document.getElementById('m_moneda')) pack.moneda = document.getElementById('m_moneda').value;
-            if(document.getElementById('m_tipo')) pack.tipo = document.getElementById('m_tipo').value;
-            if(document.getElementById('m_metodo')) pack.medio_pago = document.getElementById('m_metodo').value;
-            
-            if(t === 'tarjetas') {
-                pack.lim_contado = parseFloat(document.getElementById('m_lim_contado').value);
-                pack.lim_cuotas = parseFloat(document.getElementById('m_lim_cuotas').value);
-                pack.corte = parseInt(document.getElementById('m_corte').value);
-                pack.pago = parseInt(document.getElementById('m_pago').value);
-            }
-            
-            await _supabase.from(t).update(pack).eq('id', id); cerrarModal(); await pullCloudData();
-        }
+        function guardarBaseAhorro() { localStorage.setItem('db_a_base', document.getElementById('a_base').value); localStorage.setItem('db_a_base_moneda', document.getElementById('a_base_moneda').value); actualizarAhorrosModulo(); }
 
         async function guardarIngreso() {
             let n = document.getElementById('i_nombre').value; let m = parseFloat(document.getElementById('i_monto').value);
@@ -520,15 +442,7 @@
             let fF = document.getElementById('i_fecha_factura').value; let fM = document.getElementById('i_mes_fondear').value;
             if(!n || isNaN(m)) return alert('Campos incompletos'); let p = fM.split('-');
             await _supabase.from('ingresos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_fact: fF, fecha_fond: fM }]);
-            if(document.getElementById('i_iva').checked) {
-                let pFact = fF.split('-'); let mm = parseInt(pFact[1])+1; let aa = parseInt(pFact[0]); if(mm>12) { mm=1; aa++; }
-                await _supabase.from('gastos').insert([{ id: Date.now()+1, user_id: activeUser.id, nombre: `Retención IVA (${n})`, monto: m*0.05, moneda: mo, tipo: 'variable', medio_pago: 'efectivo', anio: aa, mes: mm, fecha_orig: `${aa}-${String(mm).padStart(2,'0')}-01` }]);
-            }
             await pullCloudData();
-        }
-        async function borrarIngreso(id) { await _supabase.from('ingresos').delete().eq('id', id); await pullCloudData(); }
-        function renderIngresos() {
-            let ul = document.getElementById('listaIngresos'); if(ul) { ul.innerHTML = ""; ingresos.forEach(i => { ul.innerHTML += `<li><span><b>${i.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(i.monto, i.moneda))}</span><div><button onclick="abrirModalEdicion('ingresos',${i.id})">✏️</button><button style="color:var(--danger);" onclick="borrarIngreso(${i.id})">🗑</button></div></li>`; }); }
         }
 
         async function guardarGasto() {
@@ -539,10 +453,6 @@
             await _supabase.from('gastos').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, tipo: t, medio_pago: mp, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
             await pullCloudData();
         }
-        async function borrarGasto(id) { await _supabase.from('gastos').delete().eq('id', id); await pullCloudData(); }
-        function renderGastos() {
-            let ul = document.getElementById('listaGastos'); if(ul) { ul.innerHTML = ""; gastos.forEach(g => { ul.innerHTML += `<li><span><b>${g.nombre}</b> - Q ${formatMoney(obtenerEnGTQ(g.monto, g.moneda))}</span><div><button onclick="abrirModalEdicion('gastos',${g.id})">✏️</button><button style="color:var(--danger);" onclick="borrarGasto(${g.id})">🗑</button></div></li>`; }); }
-        }
 
         async function guardarTarjeta() {
             let n = document.getElementById('t_nombre').value; let lc = parseFloat(document.getElementById('t_lim_contado').value);
@@ -550,19 +460,6 @@
             let c = parseInt(document.getElementById('t_corte').value); let p = parseInt(document.getElementById('t_pago').value);
             await _supabase.from('tarjetas').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, lim_contado: lc, lim_cuotas: lcu, moneda: m, corte: c, pago: p }]);
             await pullCloudData();
-        }
-        async function borrarTarjeta(id) { await _supabase.from('tarjetas').delete().eq('id', id); await pullCloudData(); }
-        
-        function renderTarjetas() {
-            let ul = document.getElementById('listaMaestroTarjetas'); let sC = document.getElementById('c_tarjeta'); 
-            let sP = document.getElementById('p_line_tarjeta'); let sG = document.getElementById('g_metodo'); 
-            if(ul) ul.innerHTML = ""; if(sC) sC.innerHTML = ""; if(sP) sP.innerHTML = ""; if(sG) sG.innerHTML = '<option value="efectivo">Efectivo / Transferencia</option>';
-            tarjetas.forEach(t => {
-                if(ul) ul.innerHTML += `<li><span>💳 <b>${t.nombre}</b></span><div><button onclick="abrirModalEdicion('tarjetas',${t.id})">✏️</button><button style="color:var(--danger);" onclick="borrarTarjeta(${t.id})">🗑</button></div></li>`;
-                if(sC) sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`;
-                if(sP) sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`;
-                if(sG) sG.innerHTML += `<option value="${t.id}">Tarjeta: ${t.nombre}</option>`;
-            });
         }
 
         async function guardarCompra() {
@@ -575,10 +472,6 @@
             await _supabase.from('compras').insert([{ id: Date.now(), user_id: activeUser.id, tarjeta_id: tId, concepto: n, monto: m, moneda: 'GTQ', fecha_orig: f, cuotas: cu, pago_mensual: m/cu, fecha_inicio: fIn, fecha_fin: fFi }]);
             await pullCloudData();
         }
-        async function borrarCompra(id) { await _supabase.from('compras').delete().eq('id', id); await pullCloudData(); }
-        function renderCompras() {
-            let tb = document.getElementById('bodyCompras'); if(tb) { tb.innerHTML = ""; compras.forEach(c => { let t = tarjetas.find(x => x.id == c.tarjeta_id); tb.innerHTML += `<tr><td><b>${c.concepto}</b><br><small>${t?t.nombre:"Tarjeta"}</small></td><td>Q ${formatMoney(c.monto)}</td><td>${c.cuotas}x</td><td>${c.fecha_inicio} a ${c.fecha_fin}</td><td><button style="color:var(--danger); background:none; border:none;" onclick="borrarCompra(${c.id})">🗑</button></td></tr>`; }); }
-        }
 
         async function guardarAhorro() {
             let n = document.getElementById('a_nombre').value; let m = parseFloat(document.getElementById('a_monto').value);
@@ -587,9 +480,15 @@
             await _supabase.from('ahorros').insert([{ id: Date.now(), user_id: activeUser.id, nombre: n, monto: m, moneda: mo, anio: parseInt(p[0]), mes: parseInt(p[1]), fecha_orig: f }]);
             await pullCloudData();
         }
-        async function borrarAhorro(id) { await _supabase.from('ahorros').delete().eq('id', id); await pullCloudData(); }
-        function renderAhorros() {
-            let ul = document.getElementById('listaAhorros'); if(ul) { ul.innerHTML = ""; ahorros.forEach(a => { ul.innerHTML += `<li><span>${a.nombre}: Q ${formatMoney(obtenerEnGTQ(a.monto, a.moneda))}</span><div><button onclick="abrirModalEdicion('ahorros',${a.id})">✏️</button><button style="color:var(--danger);" onclick="borrarAhorro(${a.id})">🗑</button></div></li>`; }); }
+
+        function renderTarjetas() {
+            let sC = document.getElementById('c_tarjeta'); let sP = document.getElementById('p_line_tarjeta'); let sG = document.getElementById('g_metodo'); 
+            if(sC) sC.innerHTML = ""; if(sP) sP.innerHTML = ""; if(sG) sG.innerHTML = '<option value="efectivo">Efectivo / Transferencia</option>';
+            tarjetas.forEach(t => {
+                if(sC) sC.innerHTML += `<option value="${t.id}">${t.nombre}</option>`;
+                if(sP) sP.innerHTML += `<option value="${t.id}">${t.nombre}</option>`;
+                if(sG) sG.innerHTML += `<option value="${t.id}">Tarjeta: ${t.nombre}</option>`;
+            });
         }
 
         function actualizarFinanzas() {
@@ -622,7 +521,6 @@
 
         function dibujarGraficoBarrasFinanzas(mB, aB) {
             let cont = document.getElementById('chartPresupuesto'); if(!cont) return; cont.innerHTML = '';
-            let filtro = document.getElementById('filtro_tipo_grafico').value;
             let maxAlt = 0; let data = [];
 
             for(let i=0; i<6; i++) {
@@ -631,7 +529,6 @@
                 let pF_efec = gastos.filter(g => g.tipo==='fijo' && g.medio_pago === 'efectivo' && (tA>g.anio || (tA===g.anio && tM>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
                 let pV_efec = gastos.filter(g => g.tipo==='variable' && g.medio_pago === 'efectivo' && g.anio===tA && g.mes===tM).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
                 let totalEfec = pF_efec + pV_efec;
-
                 let pF_tarj = gastos.filter(g => g.tipo==='fijo' && g.medio_pago !== 'efectivo' && (tA>g.anio || (tA===g.anio && tM>=g.mes))).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
                 let pV_tarj = gastos.filter(g => g.tipo==='variable' && g.medio_pago !== 'efectivo' && g.anio===tA && g.mes===tM).reduce((a, b) => a + obtenerEnGTQ(b.monto, b.moneda), 0);
                 let pTc = compras.filter(c => {
@@ -642,162 +539,95 @@
 
                 let disp = pIng - (totalEfec + totalTarj); if(disp<0) disp=0;
                 let techo = pIng > (totalEfec + totalTarj) ? pIng : (totalEfec + totalTarj); if(techo > maxAlt) maxAlt = techo;
-
                 data.push({ nombre: nombresMesesCompleto[tM-1], fijo: pF_efec, variable: pV_efec, tarjeta: totalTarj, disponible: disp, ingresos: pIng });
             }
             if(maxAlt===0) maxAlt = 1;
 
             data.forEach(d => {
                 let pila = `<div class="bar-stack">`;
-                let vistaVal = d.ingresos;
-
-                if (filtro === 'all') {
-                    if (d.disponible > 0) pila += `<div class="bar-segment" style="height:${(d.disponible/maxAlt)*100}%; background-color:var(--success);"><span class="bar-txt">Q${formatMoneyCorto(d.disponible)}</span></div>`;
-                    if (d.tarjeta > 0) pila += `<div class="bar-segment" style="height:${(d.tarjeta/maxAlt)*100}%; background-color:var(--primary);"><span class="bar-txt">Q${formatMoneyCorto(d.tarjeta)}</span></div>`;
-                    if (d.variable > 0) pila += `<div class="bar-segment" style="height:${(d.variable/maxAlt)*100}%; background-color:var(--warning);"><span class="bar-txt">Q${formatMoneyCorto(d.variable)}</span></div>`;
-                    if (d.fijo > 0) pila += `<div class="bar-segment" style="height:${(d.fijo/maxAlt)*100}%; background-color:var(--danger);"><span class="bar-txt">Q${formatMoneyCorto(d.fijo)}</span></div>`;
-                } else {
-                    let v = (filtro==='ingresos')?d.ingresos:(filtro==='fijo')?d.fijo:(filtro==='variable')?d.variable:d.tarjeta; vistaVal = v;
-                    let c = (filtro==='ingresos')?'var(--success)':(filtro==='fijo')?'var(--danger)':(filtro==='variable')?'var(--warning)':'var(--primary)';
-                    pila += `<div class="bar-segment" style="height:${(v/maxAlt)*100}%; background-color:${c}; flex-grow:1;"><span class="bar-txt">Q${formatMoneyCorto(v)}</span></div>`;
-                }
+                if (d.disponible > 0) pila += `<div class="bar-segment" style="height:${(d.disponible/maxAlt)*100}%; background-color:var(--success);"><span class="bar-txt">Q${formatMoneyCorto(d.disponible)}</span></div>`;
+                if (d.tarjeta > 0) pila += `<div class="bar-segment" style="height:${(d.tarjeta/maxAlt)*100}%; background-color:var(--primary);"><span class="bar-txt">Q${formatMoneyCorto(d.tarjeta)}</span></div>`;
                 pila += `</div>`;
-                
                 let col = document.createElement('div'); col.className = 'bar-col';
-                col.innerHTML = `<div class="bar-top-val">Q${formatMoneyCorto(vistaVal)}</div>${pila}<div class="bar-lbl">${d.nombre}</div>`;
+                col.innerHTML = `<div class="bar-top-val">Q${formatMoneyCorto(d.ingresos)}</div>${pila}<div class="bar-lbl">${d.nombre}</div>`;
                 cont.appendChild(col);
             });
         }
 
         function actualizarMish() {
-            let tId = document.getElementById('p_line_tarjeta').value;
-            let cont = document.getElementById('chartLineasContenedor');
-            let tipoLim = document.getElementById('p_line_tipo').value;
-            let fMes = document.getElementById('mes_mish').value;
-            
-            if(!tId || !fMes) { if(cont) cont.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding-top:100px; font-size:13px;">⚠️ Selecciona una tarjeta de crédito activa.</div>`; return; }
+            let tId = document.getElementById('p_line_tarjeta').value; let cont = document.getElementById('chartLineasContenedor');
+            let tipoLim = document.getElementById('p_line_tipo').value; let fMes = document.getElementById('mes_mish').value;
+            if(!tId || !fMes) return;
             let t = tarjetas.find(x => x.id == tId); if(!t) return;
             let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
             let limiteMax = tipoLim === 'cuotas' ? t.lim_cuotas : t.lim_contado;
+            let coordsDeuda = []; let coordsDisp = []; let puntosHtml = ""; let labelsHtml = "";
 
-            let coordsDeuda = []; let coordsDisp = [];
-            let puntosHtml = ""; let labelsHtml = "";
-
-            for(let i=0; i<6; i++) {
+            for(let i=0; i<12; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
-                
                 let deudaViva = compras.filter(c => {
                     let pIni = c.fecha_inicio.split('-'); let pFin = c.fecha_fin.split('-');
                     let cv = tA*12 + tM; return c.tarjeta_id == tId && cv >= (parseInt(pIni[0])*12 + parseInt(pIni[1])) && cv <= (parseInt(pFin[0])*12 + parseInt(pFin[1]));
                 }).reduce((a, c) => {
-                    let pIni = c.fecha_inicio.split('-');
-                    let transcurridos = (tA*12 + tM) - (parseInt(pIni[0])*12 + parseInt(pIni[1]));
+                    let pIni = c.fecha_inicio.split('-'); let transcurridos = (tA*12 + tM) - (parseInt(pIni[0])*12 + parseInt(pIni[1]));
                     return a + (c.monto - (c.pago_mensual * transcurridos));
                 }, 0);
 
                 let disponible = limiteMax - deudaViva; if(disponible < 0) disponible = 0;
-                
-                // Mapeo Proporcional Escalable SVG Responsivo
-                let x = 40 + (i * 104);
+                let x = 45 + (i * 92);
                 let yDeuda = 180 - (limiteMax > 0 ? (deudaViva / limiteMax) * 130 : 0);
                 let yDisp = 180 - (limiteMax > 0 ? (disponible / limiteMax) * 130 : 0);
 
                 coordsDeuda.push(`${x},${yDeuda}`); coordsDisp.push(`${x},${yDisp}`);
-
-                puntosHtml += `
-                    <circle cx="${x}" cy="${yDeuda}" r="5" fill="var(--danger)" stroke="var(--card-bg)" stroke-width="2"/>
-                    <text x="${x}" y="${yDeuda-10}" style="font-size:10px; font-weight:800; fill:var(--danger);" text-anchor="middle">Q${formatMoneyCorto(deudaViva)}</text>
-                    <circle cx="${x}" cy="${yDisp}" r="5" fill="var(--success)" stroke="var(--card-bg)" stroke-width="2"/>
-                    <text x="${x}" y="${yDisp+16}" style="font-size:10px; font-weight:800; fill:var(--success);" text-anchor="middle">Q${formatMoneyCorto(disponible)}</text>`;
-                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:700;" text-anchor="middle">${nombresMesesCompleto[tM-1]}</text>`;
+                puntosHtml += `<circle cx="${x}" cy="${yDeuda}" r="4" fill="var(--danger)"/><circle cx="${x}" cy="${yDisp}" r="4" fill="var(--success)"/>`;
+                labelsHtml += `<text x="${x}" y="220" style="font-size:10px; fill:var(--text-muted);" text-anchor="middle">${nombresMesesCompleto[tM-1]}</text>`;
             }
-
             if(cont) {
-                cont.innerHTML = `
-                    <svg width="100%" height="100%" viewBox="0 0 600 240" style="overflow:visible; width:100%;">
-                        <line x1="20" y1="50" x2="580" y2="50" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
-                        <line x1="20" y1="115" x2="580" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
-                        <line x1="20" y1="180" x2="580" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
-                        <path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="3" stroke-dasharray="6 4"/>
-                        <path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="3"/>
-                        ${puntosHtml} ${labelsHtml}
-                    </svg>`;
+                cont.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 1100 240" preserveAspectRatio="none"><path d="M ${coordsDeuda.join(' L ')}" fill="none" stroke="var(--danger)" stroke-width="2"/><path d="M ${coordsDisp.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="2"/>${puntosHtml} ${labelsHtml}</svg>`;
             }
         }
 
         function actualizarAhorrosModulo() {
-            let fMes = document.getElementById('mes_ahorros').value; if(!fMes) return;
-            let p = fMes.split('-'); let aAn = parseInt(p[0]); let mAn = parseInt(p[1]);
-            
+            let cont = document.getElementById('chartAhorroHistoricoContenedor'); let fMes = document.getElementById('mes_ahorros').value;
+            if(!cont || !fMes) return;
+            let p = fMes.split('-'); let mB = parseInt(p[1]); let aB = parseInt(p[0]);
             let baseNum = parseFloat(document.getElementById('a_base').value) || 0;
-            let baseMon = document.getElementById('a_base_moneda').value;
-            let baseEnGTQ = baseMon === 'USD' ? baseNum * getTasa() : baseNum;
-            
-            let ahMesGTQ = ahorros.filter(a => a.anio === aAn && a.mes === mAn).reduce((acc, a) => acc + (a.moneda==='USD'?a.monto*getTasa():a.monto), 0);
-            let aportesTotalesGTQ = ahorros.reduce((acc, a) => acc + (a.moneda==='USD'?a.monto*getTasa():a.monto), 0);
-            let totalAcumuladoGTQ = baseEnGTQ + aportesTotalesGTQ;
-            
-            document.getElementById('ahorroMesGTQ').innerText = "Q " + formatMoney(ahMesGTQ);
-            document.getElementById('ahorroTotalGTQ').innerText = "Q " + formatMoney(totalAcumuladoGTQ);
+            let baseEnGTQ = document.getElementById('a_base_moneda').value === 'USD' ? baseNum * getTasa() : baseNum;
 
-            dibujarGraficoEvolucionAhorros(mAn, aAn, baseEnGTQ);
-        }
+            let coordsAhorro = []; let puntosHtml = ""; let labelsHtml = ""; let acumuladoAcum = baseEnGTQ; let maxAhorro = baseEnGTQ;
+            let valoresMeses = [];
 
-        function dibujarGraficoEvolucionAhorros(mB, aB, baseEnGTQ) {
-            let cont = document.getElementById('chartAhorroHistoricoContenedor'); if(!cont) return;
-            let coordsAhorro = []; let puntosHtml = ""; let labelsHtml = "";
-            let valoresMeses = []; let maxAhorro = baseEnGTQ;
-
-            let acumuladoAcum = baseEnGTQ;
-            for(let i=0; i<6; i++) {
+            for(let i=0; i<12; i++) {
                 let tM = mB + i; let tA = aB; while(tM > 12) { tM -= 12; tA++; }
                 let aportesDelMes = ahorros.filter(a => a.anio === tA && a.mes === tM).reduce((a, b) => a + (b.moneda==='USD'?b.monto*getTasa():b.monto), 0);
-                acumuladoAcum += aportesDelMes;
-                valoresMeses.push({ m: tM, total: acumuladoAcum });
+                acumuladoAcum += aportesDelMes; valoresMeses.push({ m: tM, total: acumuladoAcum });
                 if(acumuladoAcum > maxAhorro) maxAhorro = acumuladoAcum;
             }
             if(maxAhorro === 0) maxAhorro = 1;
 
             valoresMeses.forEach((v, i) => {
-                let x = 40 + (i * 104); let y = 180 - ((v.total / maxAhorro) * 130);
+                let x = 45 + (i * 92); let y = 180 - ((v.total / maxAhorro) * 130);
                 coordsAhorro.push(`${x},${y}`);
-                puntosHtml += `
-                    <circle cx="${x}" cy="${y}" r="6" fill="var(--teal)" stroke="var(--card-bg)" stroke-width="2"/>
-                    <text x="${x}" y="${y-10}" style="font-size:10px; font-weight:800; fill:var(--teal);" text-anchor="middle">Q${formatMoneyCorto(v.total)}</text>`;
-                labelsHtml += `<text x="${x}" y="220" style="font-size:11px; fill:var(--text-muted); font-weight:700;" text-anchor="middle">${nombresMesesCompleto[v.m-1]}</text>`;
+                puntosHtml += `<circle cx="${x}" cy="${y}" r="4" fill="var(--success)"/>`;
+                labelsHtml += `<text x="${x}" y="220" style="font-size:10px; fill:var(--text-muted);" text-anchor="middle">${nombresMesesCompleto[v.m-1]}</text>`;
             });
 
-            cont.innerHTML = `
-                <svg width="100%" height="100%" viewBox="0 0 600 240" style="overflow:visible; width:100%;">
-                    <line x1="20" y1="50" x2="580" y2="50" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="20" y1="115" x2="580" y2="115" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="20" y1="180" x2="580" y2="180" stroke="var(--border-color)" stroke-width="1.5"/>
-                    <path d="M ${coordsAhorro.join(' L ')}" fill="none" stroke="var(--teal)" stroke-width="3"/>
-                    ${puntosHtml} ${labelsHtml}
-                </svg>`;
+            cont.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 1100 240" preserveAspectRatio="none"><path d="M ${coordsAhorro.join(' L ')}" fill="none" stroke="var(--success)" stroke-width="2"/>${puntosHtml} ${labelsHtml}</svg>`;
         }
 
         async function enviarMensajeIA() {
-            let key = localStorage.getItem('gemini_key') || document.getElementById('gemini_api_key').value;
-            if(!key) return alert('API Key faltante.');
+            let key = localStorage.getItem('gemini_key'); if(!key) return alert('API Key faltante.');
             let txt = document.getElementById('chat_user_input').value.trim(); if(!txt) return;
-
             let grid = document.getElementById('chat_grid'); grid.innerHTML += `<div class="ai-bubble bubble-user">${txt}</div>`;
             document.getElementById('chat_user_input').value = "";
-            let aiId = 'ai_' + Date.now();
-            grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}"><i>Calculando balance contable...</i></div>`;
-            grid.scrollTop = grid.scrollHeight;
-
+            let aiId = 'ai_' + Date.now(); grid.innerHTML += `<div class="ai-bubble bubble-ai" id="${aiId}">...</div>`;
             try {
                 let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Analista. Consulta: "${txt}". Datos: ${JSON.stringify(ingresos)}.` }] }] })
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: txt }] }] })
                 });
-                let d = await res.json();
-                document.getElementById(aiId).innerHTML = d.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
-            } catch (e) { document.getElementById(aiId).innerText = "Error o API Key inválida."; }
-            grid.scrollTop = grid.scrollHeight;
+                let d = await res.json(); document.getElementById(aiId).innerHTML = d.candidates[0].content.parts[0].text;
+            } catch (e) { document.getElementById(aiId).innerText = "Error API."; }
         }
 
         verificarSesion();
