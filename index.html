@@ -160,7 +160,7 @@
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* KPIs SUPERIORES ESTRUCTURADOS */
+        /* KPIs MASTER LAYOUT */
         .kpi-master-grid-layout { 
             display: grid; 
             grid-template-columns: 2fr 1fr 1.2fr 1.2fr; 
@@ -212,7 +212,7 @@
         .legend-amount { font-weight: 600; margin-left: auto; margin-right: 12px; }
         .legend-pct { font-size: 11px; color: var(--text-secondary); width: 32px; text-align: right; }
 
-        /* SECCIONES COMPLEMENTARIAS */
+        /* COMPONENTES MODULARES */
         .triple-modular-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; width: 100%; }
         .tarjetas-paralelo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
 
@@ -240,7 +240,7 @@
         .fuente-metrics-grid span { font-size: 11px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 2px; }
         .fuente-metrics-grid span b { font-size: 13px; color: var(--text-primary); font-weight: 600; }
 
-        /* TABLAS COMPACTAS */
+        /* TABLAS MAESTRAS */
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; }
         .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); }
@@ -250,7 +250,7 @@
         .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
 
-        /* FORMULARIOS DRAWER */
+        /* COMPONENTES FORMULARIOS */
         .form-group-field { display: flex; flex-direction: column; gap: 6px; }
         .form-group-field label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
         .form-group-field input, .form-group-field select { height: 40px; border: 1px solid var(--borders); border-radius: 8px; padding: 0 12px; outline: none; font-size: 14px; background-color: #FAFAFB; }
@@ -271,7 +271,7 @@
         </div>
     </div>
 
-    <!-- DRAWER FORMULARIO -->
+    <!-- DRAWER LATERAL -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
@@ -289,7 +289,7 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
-    <!-- NÚCLEO SHELL -->
+    <!-- CUERPO CORE APP -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         <div class="sidebar">
             <div>
@@ -736,6 +736,16 @@
                 let hBar = m === "Jun" ? 165 : 120;
                 cont.innerHTML += `<div class="chart-column"><div class="bars-container"><div class="v-bar income" style="height:${hBar}px; background: linear-gradient(to top, #12B76A, #A6F4C5);"></div></div><div class="chart-label">${m}</div></div>`;
             });
+        }
+
+        // Recuperar el bloque que dibuja la tabla del historial de compromisos
+        let tablaComp = document.getElementById('tabla_compromisos_inicio');
+        if(tablaComp) {
+            tablaComp.innerHTML = `
+                <tr><td>13 Ago 2026</td><td>Pago mínimo Tarjeta Clásica</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td></tr>
+                <tr><td>13 Ago 2026</td><td>Pago mínimo Tarjeta Platinum</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td></tr>
+                <tr><td>06 Jul 2026</td><td>Luz / Internet</td><td style="text-align:right; font-weight:700;">Q 948.00</td><td><span class="badge blue">Servicio</span></td></tr>
+                <tr><td>03 Jul 2026</td><td>Transferencia a ahorros</td><td style="text-align:right; font-weight:700;">Q 7,400.00</td><td><span class="badge green">Ahorro</span></td></tr>`;
         }
 
         function renderHistogramaCombinadoGastos() {
