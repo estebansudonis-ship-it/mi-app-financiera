@@ -145,17 +145,17 @@
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
         .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 
-        /* 2. REGLA: ICONOS DE ARRIBA SON TODOS VERDES */
+        /* KPIs CORREGIDOS CON COLOR VERDE EXACTO (#12B76A) */
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
         .kpi-grid-5col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
         .kpi-card.double-width { grid-column: span 2; background-color: #F9F8FF; border-color: #DCD6FF; }
-        
         .kpi-label-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
-        /* Contenedores forzados a verde positivo */
-        .kpi-icon-wrapper-green { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green-positive); background-color: var(--green-light); }
+        /* Contenedores forzados con color e icono Lucide heredado */
+        .kpi-icon-wrapper-green-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #12B76A; background-color: #ECFDF3; }
+        .kpi-icon-wrapper-red-exact { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #F04438; background-color: #FEF3F2; }
         
         .kpi-main-value { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.1; margin-top: 6px; }
         .kpi-card.double-width .kpi-main-value { color: var(--purple-main); font-size: 34px; }
@@ -163,7 +163,7 @@
         .kpi-context-lbl.positive b { color: var(--green-positive); }
         .sparkline-box { position: absolute; right: 24px; bottom: 20px; width: 110px; height: 45px; pointer-events: none; }
 
-        /* 1. GRÁFICA EVOLUCIÓN DE INGRESOS CON BARRAS EN DEGRADADO */
+        /* GRÁFICOS Y CONTENEDORES */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 52px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 14px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 32px; }
@@ -171,11 +171,15 @@
         .grid-line-h { width: 100%; border-top: 1px dashed #E2E4EB; }
         
         .chart-column { display: flex; flex-direction: column; align-items: center; width: 14%; height: 100%; justify-content: flex-end; z-index: 2; position: relative; }
+        .bars-container { display: flex; gap: 6px; width: 100%; height: 85%; align-items: flex-end; justify-content: center; position: relative; }
+        .v-bar { width: 22px; border-radius: 4px 4px 0 0; transition: transform 0.15s; cursor: pointer; }
+        .v-bar.income { background-color: #12B76A; }
+        .v-bar.expense { background-color: #F04438; }
         .chart-label { font-size: 13px; color: var(--text-secondary); margin-top: 12px; font-weight: 500; }
         .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
         .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
-        /* 3. RECONSTRUCCIÓN DEL DONUT CHART CON COLORES CORRECTOS */
+        /* DONUT CANVAS */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; min-height: 240px; }
         .donut-canvas-wrapper { width: 140px; height: 140px; position: relative; display: flex; align-items: center; justify-content: center; }
         .donut-center-text { position: absolute; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; z-index: 10; }
@@ -193,7 +197,6 @@
         .triple-modular-row { display: flex; width: 100%; gap: 24px; align-items: stretch; }
         .triple-modular-row > .card { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
-        /* COMPONENTES INFERIORES VISTA INICIO */
         .card-item-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
         .credit-card-strip { border: 1px solid var(--borders); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; background-color: #FAFAFB; }
         .card-strip-top-row { display: flex; align-items: center; width: 100%; }
@@ -212,19 +215,7 @@
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
         .vector-chart-container { width: 100%; flex-grow: 1; background: #FAFAFB; border-radius: 12px; border: 1px solid var(--borders); position: relative; min-height: 160px; }
 
-        /* MÓDULO DE HISTORIAL TABLAS */
-        .full-width-table-row { width: 100%; margin-top: 4px; }
-        .compact-table-frame { width: 100%; border-collapse: collapse; }
-        .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
-        .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
-        
-        .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; text-align: center; }
-        .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
-        .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
-        .badge.green { background-color: var(--green-light); color: var(--green-positive); }
-        .badge.orange { background-color: var(--orange-light); color: var(--orange-warning); }
-
-        /* FUENTES ACTIVAS */
+        /* MÓDULO EXCLUSIVO E FILTROS */
         .fuentes-activas-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
         .fuente-active-mini-card { border: 1px solid var(--borders); border-radius: 14px; padding: 16px; background-color: #FAFAFB; display: flex; flex-direction: column; gap: 12px; }
         .fuente-card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -235,9 +226,9 @@
 
         .table-controls-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
         .table-filters-left-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        input[type="text"].search-input-header, select.filter-select-box { height: 40px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 10px; background-color: var(--surface); font-size: 13px; color: var(--text-primary); outline: none; }
+        input[type="text"].search-input-header, select.filter-select-box, input[type="date"].filter-date-input { height: 40px; padding: 0 14px; border: 1px solid var(--borders); border-radius: 10px; background-color: var(--surface); font-size: 13px; color: var(--text-primary); outline: none; }
 
-        /* DRAWER REGISTRO */
+        /* DRAWER LATERAL */
         .drawer-overlay-panel { position: fixed; top: 0; right: -420px; width: 400px; height: 100vh; background-color: var(--surface); border-left: 1px solid var(--borders); box-shadow: -4px 0 24px rgba(16, 24, 40, 0.08); z-index: 9999; padding: 32px 24px; display: flex; flex-direction: column; gap: 20px; transition: right 0.3s ease-in-out; }
         .drawer-overlay-panel.opened { right: 0; }
         .drawer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(16, 24, 40, 0.2); z-index: 9998; display: none; }
@@ -251,6 +242,7 @@
 </head>
 <body>
 
+    <!-- COMPUERTA DE AUTENTICACIÓN -->
     <div id="auth_gate_wrapper">
         <div class="auth-panel">
             <h2 style="font-size:24px; font-weight:700; text-align:center; margin-bottom:6px;">🔒 Iniciar Sesión</h2>
@@ -262,14 +254,14 @@
         </div>
     </div>
 
-    <!-- DRAWER REGISTRO INGRESOS -->
+    <!-- DRAWER REGISTRO -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div class="drawer-overlay-panel" id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px;">
             <h3 style="font-size:18px; font-weight:700;">➕ Registrar Ingreso</h3>
             <button onclick="conmutarDrawerRegistro(false)" style="background:none; border:none; cursor:pointer; color:var(--text-secondary);"><i data-lucide="x"></i></button>
         </div>
-        <div class="form-group-field"><label>Concepto / Origen</label><input type="text" id="form_ing_nombre" placeholder="Ej. Salario mensual"></div>
+        <div class="form-group-field"><label>Concepto / Origen</label><input type="text" id="form_ing_nombre" placeholder="Ej. Salario Clasico"></div>
         <div class="form-group-field"><label>Monto Neto</label><input type="number" id="form_ing_monto" placeholder="0.00"></div>
         <div class="form-group-field"><label>Moneda</label><select id="form_ing_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
         <div class="form-group-field"><label>Tipo</label><select id="form_ing_tipo"><option value="fijo">Recurrente</option><option value="variable">Variable</option></select></div>
@@ -279,6 +271,7 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
+    <!-- ENTORNO INTEGRAL MAESTRO -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         
         <div class="sidebar">
@@ -293,7 +286,7 @@
                 <div class="nav-group">
                     <button class="nav-button active" id="btn_menu_inicio" onclick="cambiarSeccionVista('vista_inicio', this)"><i data-lucide="house"></i> Inicio</button>
                     <button class="nav-button" id="btn_menu_ingresos" onclick="cambiarSeccionVista('vista_ingresos', this)"><i data-lucide="trending-up"></i> Ingresos</button>
-                    <button class="nav-button" onclick="cambiarSeccionVista('vista_gastos', this)"><i data-lucide="receipt"></i> Gastos</button>
+                    <button class="nav-button" id="btn_menu_gastos" onclick="cambiarSeccionVista('vista_gastos', this)"><i data-lucide="receipt"></i> Gastos</button>
                     <button class="nav-button" onclick="cambiarSeccionVista('vista_tarjetas', this)"><i data-lucide="credit-card"></i> Tarjetas</button>
                     <button class="nav-button" onclick="cambiarSeccionVista('vista_cuotas', this)"><i data-lucide="calendar-clock"></i> Cuotas / Plazos</button>
                     <button class="nav-button" onclick="cambiarSeccionVista('vista_ahorros', this)"><i data-lucide="piggy-bank"></i> Ahorros</button>
@@ -339,7 +332,7 @@
                     <div class="kpi-card double-width">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Disponible este mes</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--purple-main); background: var(--purple-light);"><i data-lucide="wallet"></i></div>
+                            <div class="kpi-icon-wrapper-green" style="color: var(--purple-main); background: var(--purple-light);"><i data-lucide="wallet"></i></div>
                         </div>
                         <span class="kpi-main-value" id="kpi_disponible">Q 0.00</span>
                         <div class="kpi-comparison positive">vs mes anterior: <b>+18.4%</b></div>
@@ -350,7 +343,7 @@
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Ingresos</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--green-positive); background: var(--green-light);"><i data-lucide="arrow-up-right"></i></div>
+                            <div class="kpi-icon-wrapper-green-exact"><i data-lucide="arrow-up-right"></i></div>
                         </div>
                         <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span>
                         <div class="kpi-comparison" style="color:var(--text-secondary)">Este mes</div>
@@ -358,7 +351,7 @@
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Gastos</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--red-negative); background: var(--red-light);"><i data-lucide="arrow-down-right"></i></div>
+                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div>
                         </div>
                         <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
                         <div class="kpi-comparison" style="font-size:11px; color:var(--text-secondary)">Efectivo + Tarjetas</div>
@@ -366,7 +359,7 @@
                     <div class="kpi-card">
                         <div class="kpi-label-row">
                             <span class="kpi-label">Tarjetas</span>
-                            <div class="kpi-icon-wrapper" style="color: var(--blue-info); background: var(--blue-light);"><i data-lucide="credit-card"></i></div>
+                            <div class="kpi-icon-wrapper-green" style="color: var(--blue-info); background: var(--blue-light);"><i data-lucide="credit-card"></i></div>
                         </div>
                         <span class="kpi-main-value" id="kpi_tarjetas">Q 0.00</span>
                         <span style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">Saldo total</span>
@@ -434,7 +427,7 @@
             </div>
 
             <!-- ================================================== -->
-            <!-- VISTA 2: MODULO DE INGRESOS (REFINADO PASO 2)       -->
+            <!-- VISTA 2: MÓDULO DE INGRESOS (REFINADO CON ICONOS)  -->
             <!-- ================================================== -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
@@ -447,40 +440,12 @@
                     </div>
                 </div>
 
-                <!-- 2. CORRECCIÓN: ICONOS KPIs TODOS VERDES CON FONDO VERDE CLARO -->
+                <!-- ICONOS KPIs TOTALMENTE RESTAURADOS EN VERDE REAL -->
                 <div class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Ingresos del mes</span>
-                            <div class="kpi-icon-wrapper-green"><i data-lucide="trending-up"></i></div>
-                        </div>
-                        <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 17,394.00</span>
-                        <div class="kpi-context-lbl positive"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +18.4% vs. junio</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Ingresos recurrentes</span>
-                            <div class="kpi-icon-wrapper-green"><i data-lucide="refresh-cw"></i></div>
-                        </div>
-                        <span class="kpi-main-value" id="kpi_ing_recurrente">Q 14,274.00</span>
-                        <div class="kpi-context-lbl positive" style="color: var(--green-positive);">82.1% del total</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Ingresos variables</span>
-                            <div class="kpi-icon-wrapper-green"><i data-lucide="activity"></i></div>
-                        </div>
-                        <span class="kpi-main-value" id="kpi_ing_variable">Q 3,120.00</span>
-                        <div class="kpi-context-lbl" style="color: var(--green-positive);">17.9% del total</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row">
-                            <span class="kpi-label">Promedio mensual</span>
-                            <div class="kpi-icon-wrapper-green"><i data-lucide="clock-3"></i></div>
-                        </div>
-                        <span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span>
-                        <div class="kpi-context-lbl">Últimos 6 meses</div>
-                    </div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="trending-up"></i></div></div><span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 17,394.00</span><div class="kpi-context-lbl positive"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +18.4% vs. junio</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos recurrentes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="refresh-cw"></i></div></div><span class="kpi-main-value" id="kpi_ing_recurrente">Q 14,274.00</span><div class="kpi-context-lbl positive" style="color: var(--green-positive);">82.1% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Ingresos variables</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="activity"></i></div></div><span class="kpi-main-value" id="kpi_ing_variable">Q 3,120.00</span><div class="kpi-context-lbl" style="color: var(--green-positive);">17.9% del total</div></div>
+                    <div class="kpi-card"><div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="clock-3"></i></div></div><span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span><div class="kpi-context-lbl">Últimos 6 meses</div></div>
                 </div>
 
                 <div class="charts-row">
@@ -493,8 +458,6 @@
                             <div class="svg-line-overlay" id="cont_overlay_svg_linea_movil"></div>
                         </div>
                     </div>
-                    
-                    <!-- 3. DONUT CHART DE INGRESOS CON COLORES Y FUENTES REQUERIDAS -->
                     <div class="card">
                         <div class="card-title">Distribución por fuente</div>
                         <div class="donut-container-layout">
@@ -512,31 +475,128 @@
                     </div>
                 </div>
 
-                <div class="card" style="padding: 20px 24px;">
-                    <div class="card-title-row" style="margin-bottom:14px;"><span class="card-title">Fuentes activas</span></div>
-                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div>
-                </div>
+                <div class="card" style="padding: 20px 24px;"><div class="card-title-row" style="margin-bottom:14px;"><span class="card-title">Fuentes activas</span></div><div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div></div>
 
                 <div class="card">
                     <div class="card-title-row" style="margin-bottom:12px;"><span class="card-title">Historial de ingresos</span></div>
                     <div class="table-controls-bar">
                         <div class="table-filters-left-group">
                             <input type="text" class="search-input-header" placeholder="Buscar ingreso..." id="table_search_ing">
-                            <select class="filter-select-box"><option value="">Tipo: Todos</option></select>
+                            <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Desde:</span>
+                            <input type="date" class="filter-date-input" id="filtro_fecha_desde" value="2026-01-01">
+                            <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Hasta:</span>
+                            <input type="date" class="filter-date-input" id="filtro_fecha_hasta" value="2026-12-31">
                         </div>
                         <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i data-lucide="download"></i> Exportar</button>
                     </div>
-                    <div style="width:100%; overflow-x:auto;">
-                        <table class="compact-table-frame" style="width:100%;">
-                            <thead><tr><th>Fecha</th><th>Concepto</th><th>Fuente</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th><th style="text-align:center;">Acciones</th></tr></thead>
-                            <tbody id="tabla_historial_ingresos_tbody"></tbody>
-                        </table>
-                    </div>
+                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th>Fuente</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_ingresos_tbody"></tbody></table></div>
                 </div>
             </div>
 
-            <!-- RESTO DE MOCKUPS -->
-            <div class="view-section fallback-view" id="vista_gastos" style="display:none;"><h2>Vista de Gastos</h2></div>
+            <!-- ================================================== -->
+            <!-- VISTA 3: MÓDULO DE GASTOS COMPLETO (PASO 2 -> 3)   -->
+            <!-- ================================================== -->
+            <div class="view-section" id="vista_gastos" style="display:none;">
+                <div class="view-header">
+                    <div class="header-title-area">
+                        <h1>Gastos</h1>
+                        <p>Controla, analiza y organiza todos tus egresos de capital.</p>
+                    </div>
+                    <div class="header-action-area">
+                        <button class="btn-primary-action" style="background-color: var(--red-negative);"><i data-lucide="plus"></i> Nuevo gasto</button>
+                    </div>
+                </div>
+
+                <!-- KPIs DE GASTOS CON ICONOS EN ROJO EXTREMO -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Gastos del mes</span>
+                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="arrow-down-right"></i></div>
+                        </div>
+                        <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_mes_real">Q 10,748.13</span>
+                        <div class="kpi-context-lbl positive" style="color:var(--green-positive);"><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> +6.2% vs. junio</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Gastos fijos</span>
+                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="refresh-cw"></i></div>
+                        </div>
+                        <span class="kpi-main-value" id="kpi_gas_fijo_real">Q 4,980.00</span>
+                        <div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">46.3% del total</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Gastos variables</span>
+                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="activity"></i></div>
+                        </div>
+                        <span class="kpi-main-value" id="kpi_gas_variable_real">Q 5,768.13</span>
+                        <div class="kpi-context-lbl" style="color:var(--red-negative); font-weight:600;">53.7% del total</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Promedio mensual</span>
+                            <div class="kpi-icon-wrapper-red-exact"><i data-lucide="clock-3"></i></div>
+                        </div>
+                        <span class="kpi-main-value" id="kpi_gas_promedio_real">Q 9,864.20</span>
+                        <div class="kpi-context-lbl">Últimos 6 meses</div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <!-- EVOLUCIÓN GASTOS DEGRADADO CARMÍN -->
+                    <div class="card">
+                        <div class="card-title">Evolución de gastos</div>
+                        <div class="combined-chart-frame">
+                            <div class="chart-y-axis-labels"><div>Q12k</div><div>Q9k</div><div>Q6k</div><div>Q3k</div><div>Q0</div></div>
+                            <div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div></div>
+                            <div style="display:flex; justify-content:space-around; width:100%; height:100%; align-items:flex-end;" id="cont_histograma_gastos_node"></div>
+                            <div class="svg-line-overlay" id="cont_overlay_svg_linea_gastos"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- DONUT DISTRIBUCIÓN DE GASTOS CON 5 CATEGORÍAS COMPLETO -->
+                    <div class="card">
+                        <div class="card-title">Distribución por categoría</div>
+                        <div class="donut-container-layout">
+                            <div class="donut-canvas-wrapper">
+                                <div class="donut-center-text">Q 10.7k<span>Total</span></div>
+                                <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-chart-svg">
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#5B45F5" stroke-width="5.5" stroke-dasharray="39.3 60.7" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#2E90FA" stroke-width="5.5" stroke-dasharray="20 80" stroke-dashoffset="85.7"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#12B76A" stroke-width="5.5" stroke-dasharray="18.4 81.6" stroke-dashoffset="65.7"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#F79009" stroke-width="5.5" stroke-dasharray="11.1 88.9" stroke-dashoffset="47.3"></circle>
+                                    <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#667085" stroke-width="5.5" stroke-dasharray="11.2 88.8" stroke-dashoffset="36.2"></circle>
+                                </svg>
+                            </div>
+                            <div class="donut-legend-list" id="leyenda_donut_gastos_master"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORÍAS ACTIVAS -->
+                <div class="card" style="padding: 20px 24px;">
+                    <div class="card-title-row" style="margin-bottom:14px;"><span class="card-title">Categorías activas</span><span style="font-size:13px; font-weight:600; color:var(--purple-main); cursor:pointer;">Ver todas las categorías <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></span></div>
+                    <div class="fuentes-activas-grid-row" id="bloque_categorias_activas_row"></div>
+                </div>
+
+                <!-- HISTORIAL GASTOS COMPLETO -->
+                <div class="card">
+                    <div class="card-title-row" style="margin-bottom:12px;"><span class="card-title">Historial de gastos</span></div>
+                    <div class="table-controls-bar">
+                        <div class="table-filters-left-group">
+                            <input type="text" class="search-input-header" placeholder="Buscar gasto..." id="table_search_gas">
+                            <select class="filter-select-box"><option value="">Tipo: Todos</option></select>
+                            <select class="filter-select-box"><option value="">Categoría: Todas</option></select>
+                        </div>
+                        <button class="month-selector" style="display:flex; align-items:center; gap:6px; height:40px;"><i data-lucide="download"></i> Exportar</button>
+                    </div>
+                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th style="text-align:right;">Monto</th><th>Tipo</th><th>Estado</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_gastos_tbody"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- RESTO DE VISTAS BAJO DISEÑO EN ESPERA -->
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
             <div class="view-section fallback-view" id="vista_cuotas" style="display:none;"><h2>Cuotas y Plazos Amortizados</h2></div>
             <div class="view-section fallback-view" id="vista_ahorros" style="display:none;"><h2>Plan de Ahorros</h2></div>
@@ -610,28 +670,6 @@
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-        async function ejecutarGuardadoIngresoCloud() {
-            let nombre = document.getElementById('form_ing_nombre').value;
-            let monto = parseFloat(document.getElementById('form_ing_monto').value);
-            let moneda = document.getElementById('form_ing_moneda').value;
-            let tipo = document.getElementById('form_ing_tipo').value;
-            let anio = parseInt(document.getElementById('form_ing_anio').value);
-            let mes = parseInt(document.getElementById('form_ing_mes').value);
-            let err = document.getElementById('drawer_form_error');
-
-            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa todos los campos."; return; }
-            err.innerText = "";
-
-            const { data, error } = await _supabase.from('ingresos').insert([{ nombre, monto, moneda, tipo, anio, mes, user_id: activeSessionUser.id }]);
-            if(error) { err.innerText = error.message; }
-            else {
-                document.getElementById('form_ing_nombre').value = "";
-                document.getElementById('form_ing_monto').value = "";
-                conmutarDrawerRegistro(false);
-                await descargarEstructuresCloud();
-            }
-        }
-
         function actualizarCoreCalculos() {
             let filtroMes = document.getElementById('filtro_mes_maestro').value;
             if(!filtroMes) return;
@@ -682,6 +720,12 @@
             renderFuentesActivasTarjetas();
             renderHistorialTablaIngresos();
 
+            // Renderizadores de Módulo Gastos (Paso 3)
+            renderHistogramaCombinadoGastos(mesAct, anioAct);
+            renderDonutCategoriasGastosMaster();
+            renderCategoriasActivasTarjetas();
+            renderHistorialTablaGastos();
+
             lucide.createIcons();
         }
 
@@ -721,16 +765,6 @@
             overlay.innerHTML = `<svg width="100%" height="100%"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="#5B45F5" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="#5B45F5"/>`).join('')}</svg>`;
         }
 
-        function renderDonutGastos(gTotal) {
-            document.getElementById('donut_total_interior_inicio').innerHTML = "Q " + Math.round(gTotal/1000) + "k<span>Total</span>";
-            let ley = document.getElementById('lista_leyenda_donut_inicio'); if(!ley) return;
-            let fijos = gTotal * 0.65; let variables = gTotal * 0.25; let otros = gTotal * 0.10;
-            ley.innerHTML = `
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F04438"></div>Fijos</div><span class="legend-amount">Q ${Math.round(fijos).toLocaleString()}</span><b class="legend-pct">65%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Variables</div><span class="legend-amount">Q ${Math.round(variables).toLocaleString()}</span><b class="legend-pct">25%</b></div>
-                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
-        }
-
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
@@ -761,14 +795,11 @@
 
         function renderModuloAhorros(mAct, aAct) {
             let baseAhorro = parseFloat(localStorage.getItem('db_a_base')) || 7400;
-            document.getElementById('ahorro_total_kpi').innerText = "Q " + baseAhorro.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('meta_ahorro_progresion').innerText = `Q ${baseAhorro.toLocaleString()} de Q 50,000`;
-            document.getElementById('barra_progreso_ahorro_fill').style.width = "14.8%";
-            document.getElementById('lista_aportes_recientes_inicio').innerHTML = `
-                <div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
+            let list = document.getElementById('lista_aportes_recientes_inicio'); if(!list) return;
+            list.innerHTML = `<div style="padding:10px 12px; background:#FAFAFB; border-radius:8px; display:flex; justify-content:space-between; font-size:12px; border:1px solid var(--borders);"><span>01/06/2026 &nbsp;&nbsp; Aporte mensual</span><b>Q 7,400.00</b></div>`;
         }
 
-        // 1. PINTO DE BARRAS DE INGRESOS CON DEGRADADO REQUERIDO
+        // 1. RE-INJECCIÓN DE BARRAS DE EVOLUCIÓN EN SVG NATIVO CON DEGRADADO
         function renderHistogramaCombinadoIngresos(mesB, anioB) {
             let cont = document.getElementById('cont_histograma_ingresos');
             let overlay = document.getElementById('cont_overlay_svg_linea_movil');
@@ -782,26 +813,23 @@
             let anchoContenedor = cont.clientWidth || 650;
             let segmentX = anchoContenedor / 7; let puntosLinea = [];
 
-            // Inyectar defs con gradiente de color verde para las barras
             let barSgvsHtml = `
-                <svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none;">
+                <svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;">
                     <defs>
                         <linearGradient id="greenBarGrad" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#12B76A" />
-                            <stop offset="100%" stop-color="#D1FAE5" />
+                            <stop offset="100%" stop-color="#ECFDF3" />
                         </linearGradient>
                     </defs>
             `;
 
             for(let i=0; i<7; i++) {
                 let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
-                let ing = muestraMockValores[i]; 
-                let hBar = (ing / maxMonto) * 196;
+                let ing = muestraMockValores[i]; let hBar = (ing / maxMonto) * 196;
                 let coordX = (i * segmentX) + (segmentX / 2);
                 let coordY = 196 - ((promediosMock[i] / maxMonto) * 196);
                 puntosLinea.push(`${coordX},${coordY}`);
 
-                // Dibujar rectángulos vectoriales nativos para el degradado limpio
                 barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#greenBarGrad)"></rect>`;
 
                 let col = document.createElement('div');
@@ -813,11 +841,9 @@
             }
             barSgvsHtml += `</svg>`;
             cont.innerHTML += barSgvsHtml;
-
             overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
         }
 
-        // 3. COLOR DE CATEGORÍAS CORREGIDO PARA FUENTES REQUERIDAS
         function renderDonutFuentesIngreso(total) {
             document.getElementById('donut_ingresos_centro_val').innerHTML = "Q 17.3k<span>Total</span>";
             document.getElementById('leyenda_donut_ingresos').innerHTML = `
@@ -826,18 +852,83 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Otros ingresos</div><span class="legend-amount">Q 1,494.00</span><b class="legend-pct">5.5%</b></div>`;
         }
 
-        // 4. CAMBIO DE NOMBRE DE FUENTES REQUERIDAS EN TARJETAS
         function renderFuentesActivasTarjetas() {
             document.getElementById('bloque_fuentes_activas_row').innerHTML = `
                 <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-positive);"><i data-lucide="briefcase-business"></i></div><span class="badge green">Recurrente</span></div><span class="fuente-name-lbl">Salario Principal</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 10,200</b></span><span>Frecuencia<b>Mensual</b></span></div></div>
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--blue-light);color:var(--blue-info);"><i data-lucide="wallet-cards"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Bonificaciones</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 5,700</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>
-                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--blue-light);color:var(--blue-info);"><i data-lucide="activity"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Otros ingresos</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 1,494</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>`;
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--green-light);color:var(--green-positive);"><i data-lucide="wallet-cards"></i></div><span class="badge blue">Variable</span></div><span class="fuente-name-lbl">Bonificaciones</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 5,700</b></span><span>Frecuencia<b>Ocasional</b></span></div></div>`;
         }
 
         function renderHistorialTablaIngresos() {
             document.getElementById('tabla_historial_ingresos_tbody').innerHTML = `
-                <tr><td>01 Jul 2026</td><td><b>Salario mensual - Julio 2026</b></td><td>Salario Principal</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 10,200.00</td><td><span class="badge green">Recurrente</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>
-                <tr><td>18 Jul 2026</td><td><b>Bonos extraordinarios</b></td><td>Bonificaciones</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 3,600.00</td><td><span class="badge blue">Variable</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
+                <tr><td>01 Jul 2026</td><td><b>Salario mensual - Julio 2026</b></td><td>Salario Principal</td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q 10,200.00</td><td><span class="badge green">Recurrente</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
+        }
+
+        // ==================================================
+        // PASO 3: APARTADO DE GASTOS INTEGRAL Y PLANO
+        // ==================================================
+        function renderHistogramaCombinadoGastos(mesB, anioB) {
+            let cont = document.getElementById('cont_histograma_gastos_node');
+            let overlay = document.getElementById('cont_overlay_svg_linea_gastos');
+            if(!cont || !overlay) return;
+            cont.innerHTML = ""; overlay.innerHTML = "";
+            
+            let maxMonto = 12000; let mInicio = mesB - 6;
+            let mockGastosValores = [8920, 9140, 10280, 9860, 10540, 10120, 10748];
+            let mockPromedios = [8500, 8800, 9400, 9600, 9900, 9800, 9864];
+
+            let anchoContenedor = cont.clientWidth || 650;
+            let segmentX = anchoContenedor / 7; let puntosLinea = [];
+
+            let barSgvsHtml = `
+                <svg width="100%" height="100%" style="position:absolute; top:0; left:0; z-index:1; pointer-events:none; overflow:visible;">
+                    <defs>
+                        <linearGradient id="redBarGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#F04438" />
+                            <stop offset="100%" stop-color="#FEF3F2" />
+                        </linearGradient>
+                    </defs>
+            `;
+
+            for(let i=0; i<7; i++) {
+                let currM = mInicio + i; while(currM <= 0) currM += 12; while(currM > 12) currM -= 12;
+                let gas = mockGastosValores[i]; let hBar = (gas / maxMonto) * 196;
+                let coordX = (i * segmentX) + (segmentX / 2);
+                let coordY = 196 - ((mockPromedios[i] / maxMonto) * 196);
+                puntosLinea.push(`${coordX},${coordY}`);
+
+                barSgvsHtml += `<rect x="${coordX - 11}" y="${196 - hBar}" width="22" height="${hBar}" rx="4" fill="url(#redBarGrad)"></rect>`;
+
+                let col = document.createElement('div');
+                col.className = 'chart-column';
+                col.innerHTML = `
+                    <div style="font-size:10px; font-weight:700; position:absolute; top:6px; color:var(--text-primary); z-index:5;">Q${(gas/1000).toFixed(1)}k</div>
+                    <div class="chart-label" style="margin-top:auto;">${nombresMesesCompleto[currM-1]}</div>`;
+                cont.appendChild(col);
+            }
+            barSgvsHtml += `</svg>`;
+            cont.innerHTML += barSgvsHtml;
+            overlay.innerHTML = `<svg width="100%" height="100%" style="overflow:visible;"><path d="M ${puntosLinea.join(' L ')}" fill="none" stroke="var(--purple-main)" stroke-width="3"/>${puntosLinea.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4.5" fill="var(--purple-main)"/>`).join('')}</svg>`;
+        }
+
+        function renderDonutCategoriasGastosMaster() {
+            let ley = document.getElementById('leyenda_donut_gastos_master'); if(!ley) return;
+            ley.innerHTML = `
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#5B45F5"></div>Tarjetas</div><span class="legend-amount">Q 4,222.13</span><b class="legend-pct">39.3%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Servicios</div><span class="legend-amount">Q 2,148.00</span><b class="legend-pct">20.0%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#12B76A"></div>Hogar</div><span class="legend-amount">Q 1,980.00</span><b class="legend-pct">18.4%</b></div>
+                <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#F79009"></div>Transporte</div><span class="legend-amount">Q 1,198.00</span><b class="legend-pct">11.1%</b></div>`;
+        }
+
+        function renderCategoriasActivasTarjetas() {
+            document.getElementById('bloque_categorias_activas_row').innerHTML = `
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--purple-light);color:var(--purple-main);"><i data-lucide="credit-card"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Tarjetas</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 4,222</b></span><span>Próximo cargo<b>13 Ago</b></span></div></div>
+                <div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--blue-light);color:var(--blue-info);"><i data-lucide="wifi"></i></div><span class="badge purple">Recurrente</span></div><span class="fuente-name-lbl">Servicios</span><div class="fuente-metrics-grid"><span>Monto actual<b>Q 2,148</b></span><span>Próximo cargo<b>06 Ago</b></span></div></div>`;
+        }
+
+        function renderHistorialTablaGastos() {
+            document.getElementById('tabla_historial_gastos_tbody').innerHTML = `
+                <tr><td>21 Jul 2026</td><td><b>Pago mínimo tarjeta BI</b></td><td>Tarjetas</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>
+                <tr><td>19 Jul 2026</td><td><b>Supermercado semanal</b></td><td>Hogar</td><td style="text-align:right; font-weight:700;">Q 680.00</td><td><span class="badge blue">Variable</span></td><td><span class="badge green">✓ Confirmado</span></td><td style="text-align:center;"><i data-lucide="ellipsis-vertical"></i></td></tr>`;
         }
 
         verificarCredencialesSesion();
