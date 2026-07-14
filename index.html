@@ -653,7 +653,7 @@
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-// 🚀 PIPELINE TOTALMENTE BLINDADO: ENVÍO MASIVO DE COLUMNAS PARA EVITAR NOT-NULL CONSTRAINT
+// 🚀 PIPELINE RECONFIGURADO SEGÚN EL ESQUEMA REAL DE TU BASE DE DATOS CLOUD
         async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
@@ -671,9 +671,11 @@
             err.innerText = "";
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
-            let fechaISO = `${anio}-${mes.toString().padStart(2,'0')}-13`;
+            
+            // Ajuste maestro: Tu base de datos guarda texto en formato YYYY-MM (ej. "2026-07")
+            let periodoTexto = `${anio}-${mes.toString().padStart(2,'0')}`;
 
-            // Enviamos un objeto con TODAS las columnas de fecha posibles que pida tu Supabase
+            // Objeto limpio mapeado de forma idéntica a tus columnas reales de Supabase
             let registroPayload = { 
                 nombre: nombre, 
                 monto: monto, 
@@ -681,45 +683,29 @@
                 tipo: tipo, 
                 anio: anio, 
                 mes: mes, 
-                fecha_fact: fechaISO,  // Re-inyectada por el error de la captura
-                fecha_fond: fechaISO,  // Mantener por el error previo
-                fecha: fechaISO,       // Respaldo por si acaso
+                fecha_fact: periodoTexto, // Formato "YYYY-MM" corregido
+                fecha_fond: periodoTexto, // Formato "YYYY-MM" corregido
                 user_id: activeSessionUser.id 
             };
             
+            // Si es un gasto, añadimos la categoría
             if(tablaDestino === 'gastos') {
                 registroPayload.categoria = fuenteCat;
                 registroPayload.medio_pago = 'efectivo';
-            } else {
-                // Probamos enviarla en múltiples variantes comunes por si tu columna no se llama 'fuente'
-                registroPayload.fuente_ingreso = fuenteCat;
-                registroPayload.tipo_ingreso = fuenteCat;
             }
+            // NOTA: Para ingresos ya NO enviamos la columna "fuente" porque confirmamos que NO existe en tu tabla.
 
-            // Intento de inserción directa
             const { data, error } = await _supabase.from(tablaDestino).insert([registroPayload]);
             
             if(error) { 
-                // Si el esquema sigue molestando por la columna 'fuente_ingreso', la barremos y reintentamos con lo básico
-                if(error.message.includes('column')) {
-                    delete registroPayload.fuente_ingreso;
-                    delete registroPayload.tipo_ingreso;
-                    const reintento = await _supabase.from(tablaDestino).insert([registroPayload]);
-                    if(reintento.error) {
-                        err.innerText = "Error Cloud: " + reintento.error.message;
-                        return;
-                    }
-                } else {
-                    err.innerText = "Error Cloud: " + error.message; 
-                    return;
-                }
+                err.innerText = "Error Cloud: " + error.message; 
+            } else {
+                // Limpiar inputs, cerrar el panel lateral y refrescar datos
+                document.getElementById('form_ing_nombre').value = "";
+                document.getElementById('form_ing_monto').value = "";
+                conmutarDrawerRegistro(false);
+                await descargarEstructuresCloud();
             }
-
-            // Si todo sale bien, limpiamos y cerramos
-            document.getElementById('form_ing_nombre').value = "";
-            document.getElementById('form_ing_monto').value = "";
-            conmutarDrawerRegistro(false);
-            await descargarEstructuresCloud();
         }
 
         function actualizarCoreCalculos() {
