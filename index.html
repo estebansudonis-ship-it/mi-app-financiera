@@ -562,14 +562,6 @@ function actualizarCoreCalculos() {
             
             let gastosEsteMes = (db_gastos || []).filter(g => parseInt(g.anio) === anioAct && parseInt(g.mes) === mesAct);
             let totalGastos = gastosEsteMes.reduce((a, b) => a + normalizar
-
-            document.getElementById('kpi_disponible').innerText = "Q " + (totalIngresosVisual - totalGastosVisual).toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_ingresos').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_gastos').innerText = "Q " + totalGastosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_ing_mes').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_gas_mes_real').innerText = "Q " + totalGastosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
-
-            // EJECUCIÓN SÍNCRONA DE TODO EL ENTORNO GRÁFICO MAESTRO
             renderHistogramaCombinado();
             renderDonutGastos(totalGastosVisual);
             renderHistogramaCombinadoIngresos();
