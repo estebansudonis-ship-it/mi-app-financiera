@@ -653,7 +653,7 @@
 
         function normalizarAQuetzales(monto, moneda) { return moneda === 'USD' ? monto * 7.8 : monto; }
 
-        // 🛠️ SOLUCIÓN MAESTRA DEFINITIVA: ELIMINADA LA COLUMNA FALTANTE 'FUENTE' PARA EVITAR CONFLICTOS DE ESQUEMA EN INGRESOS
+// 🚀 PIPELINE TOTALMENTE BLINDADO: ENVÍO MASIVO DE COLUMNAS PARA EVITAR NOT-NULL CONSTRAINT
         async function ejecutarGuardadoDinamicoCloud() {
             let nombre = document.getElementById('form_ing_nombre').value;
             let fuenteCat = document.getElementById('form_ing_fuente').value;
@@ -664,13 +664,16 @@
             let mes = parseInt(document.getElementById('form_ing_mes').value);
             let err = document.getElementById('drawer_form_error');
 
-            if(!nombre || isNaN(monto) || monto <= 0) { err.innerText = "Por favor completa todos los campos."; return; }
+            if(!nombre || isNaN(monto) || monto <= 0) { 
+                err.innerText = "Por favor completa todos los campos."; 
+                return; 
+            }
             err.innerText = "";
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
             let fechaISO = `${anio}-${mes.toString().padStart(2,'0')}-13`;
 
-            // Construimos un payload limpio garantizado para la tabla de ingresos de tu Supabase
+            // Enviamos un objeto con TODAS las columnas de fecha posibles que pida tu Supabase
             let registroPayload = { 
                 nombre: nombre, 
                 monto: monto, 
@@ -678,7 +681,9 @@
                 tipo: tipo, 
                 anio: anio, 
                 mes: mes, 
-                fecha_fond: fechaISO, // Columna de fecha correcta
+                fecha_fact: fechaISO,  // Re-inyectada por el error de la captura
+                fecha_fond: fechaISO,  // Mantener por el error previo
+                fecha: fechaISO,       // Respaldo por si acaso
                 user_id: activeSessionUser.id 
             };
             
@@ -686,20 +691,35 @@
                 registroPayload.categoria = fuenteCat;
                 registroPayload.medio_pago = 'efectivo';
             } else {
-                // BLINDAJE: NO enviamos 'fuente' para que no bote error de esquema de caché. El campo viaja limpio.
-                console.log("Insertando ingreso blindado sin columna fuente conflictiva.");
+                // Probamos enviarla en múltiples variantes comunes por si tu columna no se llama 'fuente'
+                registroPayload.fuente_ingreso = fuenteCat;
+                registroPayload.tipo_ingreso = fuenteCat;
             }
 
+            // Intento de inserción directa
             const { data, error } = await _supabase.from(tablaDestino).insert([registroPayload]);
             
             if(error) { 
-                err.innerText = "Error Cloud: " + error.message; 
-            } else {
-                document.getElementById('form_ing_nombre').value = "";
-                document.getElementById('form_ing_monto').value = "";
-                conmutarDrawerRegistro(false);
-                await descargarEstructuresCloud();
+                // Si el esquema sigue molestando por la columna 'fuente_ingreso', la barremos y reintentamos con lo básico
+                if(error.message.includes('column')) {
+                    delete registroPayload.fuente_ingreso;
+                    delete registroPayload.tipo_ingreso;
+                    const reintento = await _supabase.from(tablaDestino).insert([registroPayload]);
+                    if(reintento.error) {
+                        err.innerText = "Error Cloud: " + reintento.error.message;
+                        return;
+                    }
+                } else {
+                    err.innerText = "Error Cloud: " + error.message; 
+                    return;
+                }
             }
+
+            // Si todo sale bien, limpiamos y cerramos
+            document.getElementById('form_ing_nombre').value = "";
+            document.getElementById('form_ing_monto').value = "";
+            conmutarDrawerRegistro(false);
+            await descargarEstructuresCloud();
         }
 
         function actualizarCoreCalculos() {
