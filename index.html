@@ -251,17 +251,6 @@
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
 
         /* FORMULARIOS DRAWER */
-        #drawer_registro_ingresos { 
-            position: fixed !important; top: 0 !important; right: 0 !important; left: auto !important;
-            width: 400px !important; height: 100vh !important; background-color: #FFFFFF !important; 
-            border-left: 1px solid var(--borders) !important; box-shadow: -4px 0 24px rgba(16, 24, 40, 0.16) !important; 
-            z-index: 99999 !important; padding: 32px 24px !important; display: flex !important; 
-            flex-direction: column !important; gap: 20px !important; transform: translateX(100%) !important; 
-            transition: transform 0.25s ease-in-out !important; 
-        }
-        #drawer_registro_ingresos.opened { transform: translateX(0) !important; }
-        .drawer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(16, 24, 40, 0.2); z-index: 9998; display: none; }
-        
         .form-group-field { display: flex; flex-direction: column; gap: 6px; }
         .form-group-field label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
         .form-group-field input, .form-group-field select { height: 40px; border: 1px solid var(--borders); border-radius: 8px; padding: 0 12px; outline: none; font-size: 14px; background-color: #FAFAFB; }
@@ -382,7 +371,7 @@
                 </div>
             </div>
 
-            <!-- VISTA 2: INGRESOS RE-ARQUITECTURADA DEFINITIVA -->
+            <!-- VISTA 2: INGRESOS -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Ingresos</h1><p>Gestiona y analiza todas tus fuentes de ingreso.</p></div>
@@ -683,7 +672,6 @@
             document.getElementById('kpi_ing_mes').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
             document.getElementById('kpi_ing_recurrente').innerText = "Q " + totalFijos.toLocaleString('en-US', {minimumFractionDigits:2});
             document.getElementById('kpi_ing_variable').innerText = "Q " + totalVariables.toLocaleString('en-US', {minimumFractionDigits:2});
-            document.getElementById('kpi_gas_mes_real').innerText = "Q " + totalGastosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
             
             let pctFijo = totalIngresosVisual > 0 ? ((totalFijos / totalIngresosVisual) * 100).toFixed(1) : "0.0";
             let pctVar = totalIngresosVisual > 0 ? ((totalVariables / totalIngresosVisual) * 100).toFixed(1) : "0.0";
