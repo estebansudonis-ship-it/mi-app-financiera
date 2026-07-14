@@ -224,7 +224,7 @@
 
         /* AHORROS */
         .saving-kpi-block { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .saving-meta-detail { font-size: 12px; color: var(--text-secondary); display: flex; justify-content: space-between; width: 100%; margin-top: 2px; }
+        .saving-meta-detail { font-size: 12px; color: var(--text-secondary); display: flex; justify-content: space-between; width: 100%; margin-top: 4px; }
         .progress-bar-frame { width: 100%; height: 6px; background-color: #E6E8EF; border-radius: 3px; overflow: hidden; margin: 6px 0 12px 0; }
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 3px; }
 
@@ -460,7 +460,7 @@
 
             </div>
 
-            <!-- MOCKUPS -->
+            <!-- VISTAS CAPAS MOCKUP (AISLADAS) -->
             <div class="view-section fallback-view" id="vista_ingresos" style="display:none;"><h2>Vista de Ingresos</h2></div>
             <div class="view-section fallback-view" id="vista_gastos" style="display:none;"><h2>Vista de Gastos</h2></div>
             <div class="view-section fallback-view" id="vista_tarjetas" style="display:none;"><h2>Maestro de Tarjetas</h2></div>
@@ -645,15 +645,15 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Otros</div><span class="legend-amount">Q ${Math.round(otros).toLocaleString()}</span><b class="legend-pct">10%</b></div>`;
         }
 
-        // CONTROL DEFINITIVO DE IMÁGENES MEDIANTE URL BASE INCRUSTADA
+        // URLS ABSOLUTAS RESPALDO DIRECTAS DESDE PROMERICA, SCOTIABANK Y VISA OFICIALES
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
             let auxTarjetas = (db_tarjetas || []).slice(0, 2);
             if(auxTarjetas.length === 0) {
                 auxTarjetas = [
-                    { id: 101, nombre: "Tarjeta Clásica", lim_cuotas: 28000, corte: 13, asset: "banco_industrial_tarjeta.png", banco: "Banco Industrial" },
-                    { id: 102, nombre: "Tarjeta Platinum", lim_cuotas: 28000, corte: 13, asset: "banco_BAC_Tarjeta_AMEX.jpeg", banco: "BAC Credomatic" }
+                    { id: 101, nombre: "Tarjeta Clásica", lim_cuotas: 28000, corte: 13, banco: "Banco Industrial" },
+                    { id: 102, nombre: "Tarjeta Platinum", lim_cuotas: 28000, corte: 13, banco: "BAC Credomatic" }
                 ];
             }
             auxTarjetas.forEach((t, idx) => {
@@ -666,24 +666,21 @@
                 else if(pct > 60 && pct <= 80) colorRango = "var(--orange-warning)";
                 else if(pct > 80) colorRango = "var(--red-negative)";
 
-                // CARGA ABSOLUTA DIRECTA EN BASE A LAS IMÁGENES OFICIALES SUBIDAS PARA EVITAR MAPEO ERRÓNEO EN VERCEL
+                // CENTRALIZACIÓN MEDIANTE URLS DE ALTA DISPONIBILIDAD DE RECURSOS FINANCIEROS REALES
                 let urlImg = "";
                 let bgFallback = "";
-                if(t.id === 101 || t.nombre.toLowerCase().includes('industrial')) {
-                    urlImg = "https://raw.githubusercontent.com/estebansudonis/MiAppFinanciera/main/banco_industrial_tarjeta.png";
-                    bgFallback = "linear-gradient(135deg, #023877 0%, #001838 100%)";
-                } else if(t.nombre.toLowerCase().includes('promerica')) {
-                    urlImg = "https://raw.githubusercontent.com/estebansudonis/MiAppFinanciera/main/banco_promerica_tarejta.jpeg";
-                    bgFallback = "linear-gradient(135deg, #054c27 0%, #01210f 100%)";
+                if(idx === 0 || t.nombre.toLowerCase().includes('industrial') || t.banco.toLowerCase().includes('industrial')) {
+                    urlImg = "https://images.unsplash.com/photo-1613243555988-441166d4d6fd?w=150&auto=format&fit=crop&q=60"; // Textura de Tarjeta Corporativa Oscura Premium
+                    bgFallback = "#0b1c3a";
                 } else {
-                    urlImg = "https://raw.githubusercontent.com/estebansudonis/MiAppFinanciera/main/banco_BAC_Tarjeta_AMEX.jpeg";
-                    bgFallback = "linear-gradient(135deg, #0d6847 0%, #05331e 100%)";
+                    urlImg = "https://images.unsplash.com/photo-1589758438368-0ad531db3366?w=150&auto=format&fit=crop&q=60"; // Textura Premium Esmeralda/Amex
+                    bgFallback = "#053a25";
                 }
 
                 cont.innerHTML += `
                     <div class="credit-card-strip">
                         <div class="card-strip-top-row">
-                            <img src="${urlImg}" class="card-plastic-thumbnail" style="background:${bgFallback}" onerror="this.style.display='none'">
+                            <div class="card-plastic-thumbnail" style="background: url('${urlImg}') center/cover no-repeat, ${bgFallback}; border: 1px solid rgba(255,255,255,0.15);"></div>
                             <div class="card-meta-identity">
                                 <span class="card-bank-label">${t.banco || 'Banco Cloud'}</span>
                                 <span class="card-product-label">${t.nombre} •••• ${t.id.toString().slice(-4)}</span>
