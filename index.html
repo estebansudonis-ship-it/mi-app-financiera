@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanzas Pro - Dashboard Máster Consolidado</title>
+    <title>Finanzas Pro - Panel Máster Consolidado</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -160,12 +160,15 @@
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* KPIs COMPONENTES CON DIFUMINADOS Y RECTIFICACIONES */
-        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
-        .kpi-grid-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
+        /* NUEVA DISTRIBUCIÓN RECTIFICADA DE KPIs SUPERIORES */
+        .kpi-master-grid-layout { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr 1.2fr 1.2fr; 
+            gap: 24px; 
+            width: 100%; 
+        }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; justify-content: space-between; height: 132px; }
         
-        /* DISEÑO RECTIFICADO PREMIUM DISPONIBLE */
         .kpi-card-premium-gradient { 
             background: linear-gradient(135deg, #ffffff, #F4F1FF) !important; 
             border: 1px solid #DCD6FF !important; 
@@ -193,9 +196,8 @@
         .v-bar.income { background-color: #12B76A; }
         .v-bar.expense { background-color: #F04438; }
         .chart-label { font-size: 12px; color: var(--text-secondary); margin-top: 12px; font-weight: 500; }
-        .svg-line-overlay { position: absolute; left: 52px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
 
-        /* DONUT GRAPHS */
+        /* DONUT GRAPH COMPONENT */
         .donut-container-layout { display: flex; align-items: center; gap: 24px; justify-content: center; width: 100%; min-height: 200px; }
         .donut-canvas-wrapper { width: 140px; height: 140px; position: relative; flex-shrink: 0; }
         .donut-chart-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
@@ -209,10 +211,11 @@
         .legend-amount { font-weight: 600; margin-left: auto; margin-right: 12px; }
         .legend-pct { font-size: 11px; color: var(--text-secondary); width: 32px; text-align: right; }
 
-        /* TRIPLE MODULAR ROW (TARJETAS PREMIUM CON IMÁGENES NATIVAS) */
-        .triple-modular-row { display: flex; width: 100%; gap: 24px; align-items: stretch; }
-        .triple-modular-row > .card { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-        .card-item-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        /* SECCIÓN INFERIOR DINÁMICA MODULAR */
+        .triple-modular-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; width: 100%; }
+        
+        /* CONTENEDOR EN PARALELO PARA TARJETAS MAESTRO */
+        .tarjetas-paralelo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
 
         .credit-card-strip { border: 1px solid var(--borders); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
         .card-strip-top-row { display: flex; align-items: center; width: 100%; }
@@ -249,7 +252,7 @@
         .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
 
-        /* DRAWER ACCESOS ABSOLUTOS */
+        /* DRAWER LATERAL CONTROL */
         #drawer_registro_ingresos { 
             position: fixed !important; top: 0 !important; right: 0 !important; left: auto !important;
             width: 400px !important; height: 100vh !important; background-color: #FFFFFF !important; 
@@ -261,6 +264,10 @@
         #drawer_registro_ingresos.opened { transform: translateX(0) !important; }
         .drawer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(16, 24, 40, 0.2); z-index: 9998; display: none; }
         
+        .form-group-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-group-field label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+        .form-group-field input, .form-group-field select { height: 40px; border: 1px solid var(--borders); border-radius: 8px; padding: 0 12px; outline: none; font-size: 14px; background-color: #FAFAFB; }
+
         #auth_gate_wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 99999; }
         .auth-panel { background-color: var(--surface); padding: 40px; border-radius: var(--radius-main); border: 1px solid var(--borders); width: 100%; max-width: 400px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; gap: 16px; }
     </style>
@@ -277,6 +284,7 @@
         </div>
     </div>
 
+    <!-- DRAWER LATERAL -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
@@ -294,6 +302,7 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
+    <!-- CUERPO CORE APP -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         <div class="sidebar">
             <div>
@@ -316,6 +325,7 @@
         </div>
 
         <div class="main-container">
+            <!-- VISTA 1: INICIO CON KPI ANCHO MODIFICADO -->
             <div class="view-section" id="vista_inicio">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Resumen financiero</h1><p>Tu situación financiera actual</p></div>
@@ -327,7 +337,8 @@
                     </div>
                 </div>
 
-                <div class="kpi-grid-3col">
+                <!-- 🛠️ DETALLE 1: GRId MODIFICADO CON MÓDULO DISPONIBLE MÁS ANCHO (2fr) -->
+                <div class="kpi-master-grid-layout">
                     <div class="kpi-card kpi-card-premium-gradient">
                         <div class="kpi-label-row"><span class="kpi-label" style="color:var(--purple-main);">Disponible este mes</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-wallet-ico"></i></div></div>
                         <span class="kpi-main-value" id="kpi_disponible" style="color:var(--purple-main); font-size:34px;">Q 0.00</span>
@@ -338,10 +349,16 @@
                         <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ingresos">Q 0.00</span>
                         <div style="font-size:11px; color:var(--text-secondary);">Este mes</div>
                     </div>
+                    <!-- 🛠️ DETALLE 2: DESGLOSE DE CUOTAS Y CRÉDITO JUNTO A GASTOS -->
                     <div class="kpi-card">
                         <div class="kpi-label-row"><span class="kpi-label">Gastos</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-down-ico"></i></div></div>
                         <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
-                        <div style="font-size:11px; color:var(--text-secondary);">Efectivo + Tarjetas</div>
+                        <div style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Efectivo Q948.00 • Tarjetas Q9,800.13</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Tarjetas</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-card-ico-top"></i></div></div>
+                        <span class="kpi-main-value" id="kpi_tarjetas_top_kpi">Q 4,222.13</span>
+                        <div style="font-size:11px; color:var(--text-secondary);">Saldo total</div>
                     </div>
                 </div>
 
@@ -350,8 +367,10 @@
                     <div class="card"><div class="card-title">Distribución de gastos</div><div id="lista_leyenda_donut_inicio"></div></div>
                 </div>
 
+                <!-- SECCIÓN TRIPLE PREMIUM: MULTIPLICADOR DE ANCHO DE GRILA (2fr 1fr 1fr) -->
                 <div class="triple-modular-row">
-                    <div class="card"><div class="card-title">Tarjetas</div><div class="card-item-row" id="bloque_tarjetas_inicio"></div></div>
+                    <!-- 🛠️ DETALLE 3: TARJETAS EN FILA UNA AL LADO DE LA OTRA (Grilla Paralela interna) -->
+                    <div class="card"><div class="card-title">Tarjetas</div><div class="tarjetas-paralelo-grid" id="bloque_tarjetas_inicio"></div></div>
                     <div class="card">
                         <div class="card-title">Ahorros</div>
                         <div class="saving-kpi-block"><div><span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span></div></div>
@@ -369,6 +388,7 @@
                 </div>
             </div>
 
+            <!-- VISTA 2: INGRESOS -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
                     <div class="header-title-area"><h1>Ingresos</h1><p>Gestiona y analiza todas tus fuentes de ingreso.</p></div>
@@ -410,9 +430,10 @@
                 </div>
             </div>
 
+            <!-- VISTA 3: GASTOS -->
             <div class="view-section" id="vista_gastos" style="display:none;">
                 <div class="view-header">
-                    <div class="header-title-area"><h1>Gastos</h1><p>Controla y organiza tus egresos de capital.</p></div>
+                    <div class="header-title-area"><h1>Gastos</h1><p>Controla y organiza tus egresos.</p></div>
                     <div class="header-action-area">
                         <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
                             <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
@@ -474,6 +495,7 @@
             document.getElementById('kpi-wallet-ico')?.setAttribute('data-lucide', 'wallet');
             document.getElementById('kpi-up-ico')?.setAttribute('data-lucide', 'arrow-up-right');
             document.getElementById('kpi-down-ico')?.setAttribute('data-lucide', 'arrow-down-right');
+            document.getElementById('kpi-card-ico-top')?.setAttribute('data-lucide', 'credit-card');
             document.getElementById('kpi-inc-1')?.setAttribute('data-lucide', 'trending-up');
             document.getElementById('kpi-inc-4')?.setAttribute('data-lucide', 'clock-3');
             document.getElementById('kpi-exp-1')?.setAttribute('data-lucide', 'arrow-down-right');
@@ -623,7 +645,7 @@
                     </div>`;
             }
 
-            // C. MAESTRO DE TARJETAS CON IMÁGENES NATIVAS DE ALTO IMPACTO
+            // C. MAESTRO DE TARJETAS EN FILA HORIZONTAL DE ALTO IMPACTO
             let contTarjetas = document.getElementById('bloque_tarjetas_inicio');
             if(contTarjetas) {
                 contTarjetas.innerHTML = `
@@ -634,16 +656,16 @@
                         </div>
                         <div class="card-utilization-bar-frame" style="background:#334155; margin:8px 0;"><div class="card-utilization-fill" style="width: 32%; background-color:#12B76A;"></div></div>
                         <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8;"><span>Utilizado: <b>Q9,100 (32%)</b></span><span>Disponible: <b>Q18,900</b></span></div>
-                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; border-top:1px dashed #334155; margin-top:8px; padding-top:6px;"><span>Próximo pago: <b>13 Ago 2026</b></span><span>Mínimo: <b>Q280.00</b></span></div>
+                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; border-top:1px dashed #334155; margin-top:8px; padding-top:6px;"><span>Próximo pago: <b>13 Ago</b></span><span>Mínimo: <b>Q280.00</b></span></div>
                     </div>
-                    <div class="credit-card-strip" style="background:#0284c7; color:#ffffff; border:none; border-radius:12px; padding:16px; margin-top:12px;">
+                    <div class="credit-card-strip" style="background:#0284c7; color:#ffffff; border:none; border-radius:12px; padding:16px;">
                         <div class="card-strip-top-row">
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTYYRvw79V0GFsDvZLWiYgviytrojDRXAgwITx7IFtVA&s=10" class="card-plastic-thumbnail">
                             <div class="card-meta-identity" style="margin-left:12px;"><span class="card-bank-label" style="color:#fff;">Tarjeta Platinum</span><span class="card-product-label" style="color:#e0f2fe;">Límite: Q28,000</span></div>
                         </div>
                         <div class="card-utilization-bar-frame" style="background:#0369a1; margin:8px 0;"><div class="card-utilization-fill" style="width: 11%; background-color:#fff;"></div></div>
                         <div style="display:flex; justify-content:space-between; font-size:11px; color:#e0f2fe;"><span>Utilizado: <b>Q3,122.13 (11%)</b></span><span>Disponible: <b>Q24,877.87</b></span></div>
-                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#e0f2fe; border-top:1px dashed #0369a1; margin-top:8px; padding-top:6px;"><span>Próximo pago: <b>13 Ago 2026</b></span><span>Mínimo: <b>Q280.00</b></span></div>
+                        <div style="display:flex; justify-content:space-between; font-size:11px; color:#e0f2fe; border-top:1px dashed #0369a1; margin-top:8px; padding-top:6px;"><span>Próximo pago: <b>13 Ago</b></span><span>Mínimo: <b>Q280.00</b></span></div>
                     </div>`;
             }
 
