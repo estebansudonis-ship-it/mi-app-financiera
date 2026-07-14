@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
+        /* 4. PALETA BASE Y ESTILO VISUAL EXTRAÍDO DE LA IMAGEN DE REFERENCIA */
         :root {
             --bg-main: #F7F8FC;
             --surface: #FFFFFF;
@@ -169,7 +170,7 @@
         .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
         .user-logout { font-size: 11px; color: var(--red-negative); cursor: pointer; font-weight: 500; }
 
-        /* CONTENEDOR PRINCIPAL */
+        /* 2. COMPOSICIÓN GENERAL PANORÁMICA */
         .main-container { flex-grow: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
         .view-section { padding: 32px 40px; width: 100%; max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; }
 
@@ -185,7 +186,7 @@
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* KPI GRID */
+        /* 3. PROPORCIONES DE GRID DE KPIs */
         .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; width: 100%; }
         .kpi-card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .kpi-card.double-width { grid-column: span 2; background-color: #F9F8FF; border-color: #DCD6FF; }
@@ -200,7 +201,7 @@
         .kpi-comparison.negative b { color: var(--red-negative); }
         .sparkline-box { position: absolute; right: 24px; bottom: 24px; width: 100px; height: 40px; }
 
-        /* GRÁFICAS */
+        /* 5. SECCIÓN DE GRÁFICOS RECONFIGURADA */
         .charts-row { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; width: 100%; }
         .combined-chart-frame { display: flex; align-items: flex-end; justify-content: space-around; height: 280px; background-color: #FAFAFB; border-radius: 14px; padding: 24px 16px 16px 48px; position: relative; border: 1px solid var(--borders); }
         .chart-y-axis-labels { position: absolute; left: 12px; top: 24px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--text-secondary); text-align: right; width: 28px; }
@@ -216,7 +217,7 @@
         .svg-line-overlay { position: absolute; left: 48px; right: 16px; top: 24px; height: 216px; pointer-events: none; z-index: 5; }
         .chart-tooltip { position: absolute; background: #111827; color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; display: none; pointer-events: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); line-height: 1.5; }
 
-        /* DONUT GASTOS */
+        /* DISTRIBUCIÓN DE GASTOS AMPLIA */
         .donut-container-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; height: 100%; }
         .donut-visual-mock { width: 150px; height: 150px; border-radius: 50%; border: 22px solid var(--borders); border-top-color: var(--red-negative); border-right-color: var(--orange-warning); border-bottom-color: var(--blue-info); display: flex; align-items: center; justify-content: center; shrink: 0; position: relative; }
         .donut-center-value { font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.2; }
@@ -226,11 +227,11 @@
         .legend-color-dot { display: flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 500; }
         .color-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-        /* GRID INFERIOR Y NUEVAS TARJETAS DE ALTA FIDELIDAD */
+        /* SECCIÓN INFERIOR COMPUESTA */
         .bottom-sections-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; width: 100%; }
         .card-item-row { display: flex; flex-direction: column; gap: 16px; }
         
-        /* CONTENEDOR DE TARJETA CON RENDERIZACIÓN DE IMAGEN CORPORATIVA PERMANENTE */
+        /* 6. MAQUETACIÓN DE TARJETAS BASADA EN LA IMAGEN DE REFERENCIA */
         .credit-card-strip {
             border: 1px solid var(--borders);
             border-radius: 14px;
@@ -258,7 +259,7 @@
             border-radius: 6px;
             object-fit: cover;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); /* Respaldo elegante si no encuentra el archivo */
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         }
 
         .bank-identity {
@@ -275,18 +276,18 @@
         .card-strip-metrics { display: grid; grid-template-columns: repeat(3, 1fr); font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--borders); padding-top: 10px; }
         .card-strip-metrics span b { color: var(--text-primary); display: block; font-size: 13px; margin-top: 2px;}
 
-        /* AHORROS */
+        /* 7. RESUMEN DE AHORROS COMPACTO */
         .saving-kpi-block { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
         .saving-meta-detail { font-size: 13px; color: var(--text-secondary); display: flex; justify-content: space-between; width: 100%; margin-top: 4px; }
         .progress-bar-frame { width: 100%; height: 8px; background-color: #E6E8EF; border-radius: 4px; overflow: hidden; margin: 8px 0 16px 0; }
         .progress-bar-fill { height: 100%; background-color: var(--green-positive); border-radius: 4px; }
 
-        /* CAPACIDAD */
+        /* CAPACIDAD CREDITICIA */
         .mish-context-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
         .mish-val-big { font-size: 28px; font-weight: 700; color: var(--text-primary); }
         .mish-lbl-sub { font-size: 13px; color: var(--text-secondary); }
 
-        /* TABLA COMPROMISOS */
+        /* TABLA DE COMPROMISOS REFINADA */
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 10px 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; letter-spacing: 0.5px; }
         .compact-table-frame td { font-size: 13px; padding: 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); vertical-align: middle; }
@@ -300,7 +301,7 @@
         .card-link-footer { margin-top: auto; padding-top: 16px; text-align: center; font-size: 13px; font-weight: 600; color: var(--purple-main); cursor: pointer; text-decoration: none; display: block; border-top: 1px solid var(--borders); }
         .card-link-footer:hover { color: var(--purple-dark); }
 
-        /* FLOTANTE IA */
+        /* ASISTENTE IA FLOTANTE */
         .ai-floating-trigger { position: fixed; bottom: 32px; right: 32px; background-color: var(--purple-main); color: white; border: none; padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(91, 69, 245, 0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; }
         .ai-floating-trigger:hover { background-color: var(--purple-dark); }
 
@@ -708,16 +709,14 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:var(--blue-info)"></div>Otros</div><span style="color:var(--text-secondary)">Q ${Math.round(otros).toLocaleString()}</span><b>10%</b></div>`;
         }
 
-        // CONTROL DINÁMICO E INDEXACIÓN DE IMÁGENES PERMANENTES EN TARJETAS
         function renderTarjetasSaaS() {
             let cont = document.getElementById('bloque_tarjetas_inicio'); if(!cont) return;
             cont.innerHTML = "";
             let auxTarjetas = (db_tarjetas || []).slice(0, 2);
             if(auxTarjetas.length === 0) {
-                // Mocks informativos pre-vinculados a tus imágenes de assets estables
                 auxTarjetas = [
-                    { id: 101, nombre: "Visa Infinit BI", lim_cuotas: 25000, corte: 15, pago: 5, asset: "banco_industrial.png", banco: "Banco Industrial" },
-                    { id: 102, nombre: "Amex Oro BAC", lim_cuotas: 15000, corte: 22, pago: 12, asset: "amex.jpeg", banco: "American Express" }
+                    { id: 101, nombre: "Visa Infinit BI", lim_cuotas: 25000, corte: 15, p: 5, asset: "banco_industrial.png", banco: "Banco Industrial" },
+                    { id: 102, nombre: "Amex Oro BAC", lim_cuotas: 15000, corte: 22, p: 12, asset: "amex.jpeg", banco: "American Express" }
                 ];
             }
             auxTarjetas.forEach(t => {
@@ -727,7 +726,6 @@
                 else if(pct > 60 && pct <= 80) colorRango = "var(--orange-warning)";
                 else if(pct > 80) colorRango = "var(--red-negative)";
 
-                // Si es dinámico puro asignamos herencia lógica por nombre
                 let assetRuta = t.asset || (t.nombre.toLowerCase().includes('promerica') ? 'promerica.jpeg' : t.nombre.toLowerCase().includes('industrial') ? 'banco_industrial.png' : 'amex.jpeg');
                 let bancoNombre = t.banco || (t.nombre.toLowerCase().includes('promerica') ? 'Banco Promerica' : t.nombre.toLowerCase().includes('industrial') ? 'Banco Industrial' : 'BAC Credomatic');
 
