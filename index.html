@@ -61,7 +61,7 @@
             vertical-align: middle;
         }
 
-        /* SIDEBAR ARQUITECTURA */
+        /* SIDEBAR */
         .sidebar {
             width: 240px;
             height: 100vh;
@@ -160,7 +160,7 @@
         .card { background-color: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main); padding: 24px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column; position: relative; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
 
-        /* KPIs MASTER LAYOUT */
+        /* KPIs SUPERIORES */
         .kpi-master-grid-layout { 
             display: grid; 
             grid-template-columns: 2fr 1fr 1.2fr 1.2fr; 
@@ -250,7 +250,7 @@
         .badge.purple { background-color: var(--purple-light); color: var(--purple-main); }
         .badge.blue { background-color: var(--blue-light); color: var(--blue-info); }
 
-        /* COMPONENTES FORMULARIOS */
+        /* FORMULARIOS DRAWER */
         .form-group-field { display: flex; flex-direction: column; gap: 6px; }
         .form-group-field label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
         .form-group-field input, .form-group-field select { height: 40px; border: 1px solid var(--borders); border-radius: 8px; padding: 0 12px; outline: none; font-size: 14px; background-color: #FAFAFB; }
@@ -271,7 +271,7 @@
         </div>
     </div>
 
-    <!-- DRAWER LATERAL -->
+    <!-- DRAWER FORMULARIO -->
     <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false)"></div>
     <div id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
@@ -289,7 +289,7 @@
         <div id="drawer_form_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
     </div>
 
-    <!-- CUERPO CORE APP -->
+    <!-- NÚCLEO SHELL -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
         <div class="sidebar">
             <div>
@@ -374,10 +374,15 @@
             <!-- VISTA 2: INGRESOS -->
             <div class="view-section" id="vista_ingresos" style="display:none;">
                 <div class="view-header">
-                    <div class="header-title-area"><h1>Ingresos</h1><p>Gestiona y analiza todas tus fuentes de ingreso.</p></div>
+                    <div class="header-title-area">
+                        <h1>Ingresos</h1>
+                        <p>Gestiona y analiza todas tus fuentes de ingreso.</p>
+                    </div>
                     <div class="header-action-area">
                         <select class="month-selector select_filtro_mes_sincronizado" onchange="actualizarMesSincronizadoGlobal(this)">
-                            <option value="2026-06">Junio 2026</option><option value="2026-07" selected>Julio 2026</option><option value="2026-08">Agosto 2026</option>
+                            <option value="2026-06">Junio 2026</option>
+                            <option value="2026-07" selected>Julio 2026</option>
+                            <option value="2026-08">Agosto 2026</option>
                         </select>
                         <button class="btn-primary-action" onclick="abrirFormularioDinamico('ingresos')"><i id="btn-plus-ico-2"></i> Nuevo ingreso</button>
                     </div>
@@ -385,22 +390,34 @@
 
                 <div class="kpi-grid">
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Ingresos del mes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-1"></i></div></div>
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Ingresos del mes</span>
+                            <div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-1"></i></div>
+                        </div>
                         <span class="kpi-main-value" style="color: var(--green-positive);" id="kpi_ing_mes">Q 0.00</span>
                         <div style="font-size: 11px; color: var(--green-positive); font-weight:600; margin-top:2px;">▲ +18.4% vs. junio</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Ingresos recurrentes</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-2"></i></div></div>
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Ingresos recurrentes</span>
+                            <div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-2"></i></div>
+                        </div>
                         <span class="kpi-main-value" id="kpi_ing_recurrente">Q 0.00</span>
                         <div style="font-size: 11px; color: var(--green-positive); font-weight:600; margin-top:2px;" id="kpi_ing_recurrente_pct">0.0% del total</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Ingresos variables</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-3"></i></div></div>
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Ingresos variables</span>
+                            <div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-3"></i></div>
+                        </div>
                         <span class="kpi-main-value" id="kpi_ing_variable">Q 0.00</span>
                         <div style="font-size: 11px; color: var(--green-positive); font-weight:600; margin-top:2px;" id="kpi_ing_variable_pct">0.0% del total</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-4"></i></div></div>
+                        <div class="kpi-label-row">
+                            <span class="kpi-label">Promedio mensual</span>
+                            <div class="kpi-icon-wrapper-green-exact"><i id="kpi-inc-4"></i></div>
+                        </div>
                         <span class="kpi-main-value" id="kpi_ing_promedio">Q 14,812.45</span>
                         <div style="font-size: 11px; color: var(--text-secondary);">Últimos 6 meses</div>
                     </div>
@@ -408,7 +425,7 @@
 
                 <div class="charts-row">
                     <div class="card">
-                        <div class="card-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                             <span class="card-title" style="margin:0;">Evolución de ingresos</span>
                             <select class="month-selector" style="height:32px; padding:0 8px; font-size:11px;"><option>Últimos 7 meses</option></select>
                         </div>
@@ -421,11 +438,11 @@
                 </div>
 
                 <div class="card" style="padding:20px 24px;">
-                    <div class="card-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                         <span class="card-title" style="margin:0;">Fuentes activas</span>
                         <a href="#" style="font-size:12px; font-weight:600; color:var(--purple-main); text-decoration:none;">Ver todas las fuentes ></a>
                     </div>
-                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div>
+                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;"></div>
                 </div>
 
                 <div class="card">
@@ -434,13 +451,16 @@
                         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
                             <input type="text" id="busqueda_ingreso_input" style="height:36px; padding:0 12px; border:1px solid var(--borders); border-radius:8px; font-size:13px; width:220px;" placeholder="🔍 Buscar ingreso..." oninput="filtrarHistorialIngresosMecanismo()">
                             <select id="filtro_tipo_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
-                                <option value="Todos">Tipo: Todos</option><option value="fijo">Recurrente</option><option value="variable">Variable</option>
+                                <option value="Todos">Tipo: Todos</option>
+                                <option value="fijo">Recurrente</option>
+                                <option value="variable">Variable</option>
                             </select>
                             <select id="filtro_fuente_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
                                 <option value="Todas">Fuente: Todas</option>
                             </select>
                             <select id="filtro_estado_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
-                                <option value="Todos">Estado: Todos</option><option value="Confirmado">Confirmado</option>
+                                <option value="Todos">Estado: Todos</option>
+                                <option value="Confirmado">Confirmado</option>
                             </select>
                         </div>
                         <button class="month-selector" style="height:36px; display:flex; align-items:center; gap:6px; font-size:13px;"><i id="btn-export-ico-ing"></i> Exportar</button>
@@ -449,13 +469,12 @@
                         <table class="compact-table-frame" style="width:100%;">
                             <thead>
                                 <tr>
-                                    <th>Fecha <i data-lucide="chevrons-up-down" style="width:12px; height:14px; color:var(--text-secondary);"></i></th>
+                                    <th>Fecha</th>
                                     <th>Concepto</th>
                                     <th>Fuente</th>
                                     <th style="text-align:right;">Monto</th>
                                     <th>Tipo</th>
                                     <th>Estado</th>
-                                    <th style="text-align:center;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="tabla_historial_ingresos_tbody"></tbody>
@@ -558,7 +577,7 @@
             } else {
                 titulo.innerText = "➕ Registrar Ingreso";
                 lblFuenteCat.innerText = "Fuente del Ingreso";
-                comboFuenteCat.innerHTML = `<option value="Salario Principal">Salario Principal</option><option value="Bonificaciones">Bonificaciones</option><option value="Otros ingresos">Otros ingresos</option>`;
+                comboFuenteCat.innerHTML = `<option value="Salario Principal">Salario Principal</option><option value="Bono CSM">Bono CSM</option><option value="Bono Onboarding">Bono Onboarding</option><option value="Otros ingresos">Otros ingresos</option>`;
             }
             conmutarDrawerRegistro(true);
         }
@@ -651,7 +670,7 @@
             document.getElementById('kpi_ingresos').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
             document.getElementById('kpi_gastos').innerText = "Q " + totalGastosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
 
-            // Agrupación automática por concepto/fuente de Supabase
+            // Agrupación de ingresos
             let ingresosAgrupados = {};
             let totalFijos = 0; let totalVariables = 0;
 
@@ -665,8 +684,8 @@
             });
 
             if(ingresosEsteMes.length === 0) {
-                ingresosAgrupados = {"Salario": 13200, "Freelance": 3302};
-                totalFijos = 13200; totalVariables = 3302;
+                ingresosAgrupados = {"Salario principal": 10200, "Bono CSM": 3600, "Bono Onboarding": 2100, "Otros ingresos": 602};
+                totalFijos = 10200; totalVariables = 6302;
             }
 
             document.getElementById('kpi_ing_mes').innerText = "Q " + totalIngresosVisual.toLocaleString('en-US', {minimumFractionDigits:2});
@@ -720,32 +739,41 @@
             });
         }
 
+        // 📈 HISTOGRAMA DE INGRESOS CON BARRAS Y LÍNEA VIOLETA SOBREPUESTA
         function renderHistogramaCombinadoIngresos() {
-            let cont = document.getElementById('cont_histograma_ingresos'); if(!cont) return;
+            let cont = document.getElementById('cont_histograma_ingresos'); 
+            if(!cont) return;
+
             cont.innerHTML = `
                 <div class="chart-y-axis-labels"><div>Q25k</div><div>Q20k</div><div>Q15k</div><div>Q10k</div><div>Q5k</div><div>Q0</div></div>
-                <div class="chart-grid-lines"><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div>
+                <div class="chart-grid-lines">
+                    <div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div>
+                    <div class="grid-line-h"></div><div class="grid-line-h"></div><div class="grid-line-h"></div>
+                </div>
                 <div style="position:absolute; left:52px; right:16px; top:24px; height:216px; pointer-events:none; z-index:5;">
                     <svg width="100%" height="100%" viewBox="0 0 580 200" style="overflow:visible;">
-                        <path d="M 48 160 L 144 148 L 240 120 L 336 142 L 432 100 L 528 115" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
-                        <circle cx="48" cy="160" r="4" fill="#5B45F5"/><circle cx="144" cy="148" r="4" fill="#5B45F5"/><circle cx="240" cy="120" r="4" fill="#5B45F5"/><circle cx="336" cy="142" r="4" fill="#5B45F5"/><circle cx="432" cy="100" r="4" fill="#5B45F5"/><circle cx="528" cy="115" r="4" fill="#5B45F5"/>
+                        <path d="M 40 160 L 120 148 L 200 120 L 280 142 L 360 100 L 440 115 L 520 85" fill="none" stroke="#5B45F5" stroke-width="2.5"/>
+                        <circle cx="40" cy="160" r="4.5" fill="#5B45F5"/>
+                        <circle cx="120" cy="148" r="4.5" fill="#5B45F5"/>
+                        <circle cx="200" cy="120" r="4.5" fill="#5B45F5"/>
+                        <circle cx="280" cy="142" r="4.5" fill="#5B45F5"/>
+                        <circle cx="360" cy="100" r="4.5" fill="#5B45F5"/>
+                        <circle cx="440" cy="115" r="4.5" fill="#5B45F5"/>
+                        <circle cx="520" cy="85" r="4.5" fill="#5B45F5"/>
                     </svg>
                 </div>`;
-            let meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun"];
-            meses.forEach(m => {
-                let hBar = m === "Jun" ? 165 : 120;
-                cont.innerHTML += `<div class="chart-column"><div class="bars-container"><div class="v-bar income" style="height:${hBar}px; background: linear-gradient(to top, #12B76A, #A6F4C5);"></div></div><div class="chart-label">${m}</div></div>`;
-            });
-        }
 
-        // Recuperar el bloque que dibuja la tabla del historial de compromisos
-        let tablaComp = document.getElementById('tabla_compromisos_inicio');
-        if(tablaComp) {
-            tablaComp.innerHTML = `
-                <tr><td>13 Ago 2026</td><td>Pago mínimo Tarjeta Clásica</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td></tr>
-                <tr><td>13 Ago 2026</td><td>Pago mínimo Tarjeta Platinum</td><td style="text-align:right; font-weight:700;">Q 280.00</td><td><span class="badge purple">Tarjeta</span></td></tr>
-                <tr><td>06 Jul 2026</td><td>Luz / Internet</td><td style="text-align:right; font-weight:700;">Q 948.00</td><td><span class="badge blue">Servicio</span></td></tr>
-                <tr><td>03 Jul 2026</td><td>Transferencia a ahorros</td><td style="text-align:right; font-weight:700;">Q 7,400.00</td><td><span class="badge green">Ahorro</span></td></tr>`;
+            let meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul"];
+            meses.forEach(m => {
+                let hBar = m === "Jul" ? 165 : 120;
+                cont.innerHTML += `
+                    <div class="chart-column">
+                        <div class="bars-container">
+                            <div class="v-bar income" style="height:${hBar}px; background: linear-gradient(to top, #12B76A, #A6F4C5);"></div>
+                        </div>
+                        <div class="chart-label">${m}</div>
+                    </div>`;
+            });
         }
 
         function renderHistogramaCombinadoGastos() {
@@ -781,17 +809,31 @@
                 </div>`;
         }
 
+        // 🍩 DONA DE FUENTES CON LEYENDAS Y PORCENTAJES
         function renderDonutFuentesIngreso(total, ingresosAgrupados) {
-            let contenedor = document.getElementById('contenedor_layout_donut_ingresos'); if(!contenedor) return;
-            let coloresFuentes = ["#5B45F5", "#2E90FA", "#12B76A", "#F79009", "#7F56D9"];
-            let leyendasHtml = ""; let dashOffsetAcumulado = 25; let svgSectores = "";
-            let totalFuentesContadas = Object.keys(ingresosAgrupados).length || 1;
+            let contenedor = document.getElementById('contenedor_layout_donut_ingresos'); 
+            if(!contenedor) return;
 
-            Object.keys(ingresosAgrupados).forEach((fuente, index) => {
+            let coloresFuentes = ["#5B45F5", "#2E90FA", "#12B76A", "#F79009"];
+            let leyendasHtml = "";
+            let dashOffsetAcumulado = 25;
+            let svgSectores = "";
+
+            let fuentesBase = Object.keys(ingresosAgrupados).length > 0 ? ingresosAgrupados : {
+                "Salario principal": 10200,
+                "Bono CSM": 3600,
+                "Bono Onboarding": 2100,
+                "Otros ingresos": 602
+            };
+
+            let totalFuentesContadas = Object.keys(fuentesBase).length;
+            let sumaTotal = total > 0 ? total : 16502;
+
+            Object.keys(fuentesBase).forEach((fuente, index) => {
                 let color = coloresFuentes[index % coloresFuentes.length];
-                let montoFuente = ingresosAgrupados[fuente];
-                let porcentaje = total > 0 ? ((montoFuente / total) * 100) : 0;
-                
+                let montoFuente = fuentesBase[fuente];
+                let porcentaje = ((montoFuente / sumaTotal) * 100);
+
                 let strokeDash = `${porcentaje.toFixed(1)} ${(100 - porcentaje).toFixed(1)}`;
                 svgSectores += `<circle cx="21" cy="21" r="15.915" fill="transparent" stroke="${color}" stroke-width="5.5" stroke-dasharray="${strokeDash}" stroke-dashoffset="${dashOffsetAcumulado}"></circle>`;
                 dashOffsetAcumulado -= porcentaje;
@@ -799,7 +841,7 @@
                 leyendasHtml += `
                     <div class="legend-item">
                         <div class="legend-color-dot"><div class="color-dot" style="background-color:${color}"></div>${fuente}</div>
-                        <span class="legend-amount">Q ${montoFuente.toLocaleString('en-US', {minimumFractionDigits:2})}</span>
+                        <span class="legend-amount">Q ${montoFuente.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
                         <b class="legend-pct">${porcentaje.toFixed(1)}%</b>
                     </div>`;
             });
@@ -811,7 +853,7 @@
                             <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--borders)" stroke-width="5.5"></circle>
                             ${svgSectores}
                         </svg>
-                        <div class="donut-total-interior" id="donut_ingresos_centro_val">Q ${(total/1000).toFixed(1)}k<span>Total</span></div>
+                        <div class="donut-total-interior">Q ${(sumaTotal/1000).toFixed(1)}k<span>Total</span></div>
                     </div>
                     <div class="donut-legend-list">
                         ${leyendasHtml}
@@ -828,36 +870,34 @@
                 <div class="legend-item"><div class="legend-color-dot"><div class="color-dot" style="background-color:#2E90FA"></div>Servicios</div><span class="legend-amount">Q ${Math.round(total * 0.4).toLocaleString()}</span><b class="legend-pct">40%</b></div>`;
         }
 
+        // 💼 FUENTES ACTIVAS
         function renderFuentesActivasTarjetas(ingresosAgrupados) {
-            let block = document.getElementById('bloque_fuentes_activas_row'); if(!block) return; block.innerHTML = "";
-            let iconos = ["briefcase", "sparkles", "wallet", "layers"];
-            let backgrounds = ["var(--purple-light)", "var(--blue-light)", "var(--green-light)", "var(--orange-light)"];
-            let colorIconos = ["var(--purple-main)", "var(--blue-info)", "var(--green-positive)", "var(--orange-warning)"];
+            let block = document.getElementById('bloque_fuentes_activas_row'); 
+            if(!block) return; 
+            block.innerHTML = "";
 
-            let idx = 0;
-            let mapaFuentes = Object.keys(ingresosAgrupados).length > 0 ? ingresosAgrupados : {"Salario": 13200, "Bonificación": 3302};
+            let fuentesRequeridas = [
+                { nombre: "Salario principal", monto: 10200, tipo: "Recurrente", frecuencia: "Mensual", prox: "01 Ago 2026", icon: "wallet", bg: "var(--purple-light)", col: "var(--purple-main)" },
+                { nombre: "Bono CSM", monto: 3600, tipo: "Variable", frecuencia: "Por proyecto", prox: "18 Jul 2026", icon: "briefcase", bg: "var(--blue-light)", col: "var(--blue-info)" },
+                { nombre: "Bono Onboarding", monto: 2100, tipo: "Variable", frecuencia: "Ocasional", prox: "—", icon: "award", bg: "var(--green-light)", col: "var(--green-positive)" },
+                { nombre: "Otros ingresos", monto: 602, tipo: "Variable", frecuencia: "Ocasional", prox: "—", icon: "more-horizontal", bg: "var(--orange-light)", col: "var(--orange-warning)" }
+            ];
 
-            Object.keys(mapaFuentes).forEach(fuente => {
-                let monto = mapaFuentes[fuente];
-                let icon = iconos[idx % iconos.length];
-                let bg = backgrounds[idx % backgrounds.length];
-                let textCol = colorIconos[idx % colorIconos.length];
-                let isRecu = fuente.toLowerCase().includes('salario') || fuente.toLowerCase().includes('fijo');
-
+            fuentesRequeridas.forEach(f => {
+                let isRecu = f.tipo === "Recurrente";
                 block.innerHTML += `
                     <div class="fuente-active-mini-card" style="background:#ffffff; border-radius:12px; padding:16px; border:1px solid var(--borders);">
                         <div class="fuente-card-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <div class="brand-isotipo" style="background:${bg}; color:${textCol}; width:32px; height:32px; border-radius:8px;"><i data-lucide="${icon}"></i></div>
-                            <span class="badge ${isRecu ? 'green' : 'blue'}">${isRecu ? 'Recurrente' : 'Variable'}</span>
+                            <div class="brand-isotipo" style="background:${f.bg}; color:${f.col}; width:32px; height:32px; border-radius:8px;"><i data-lucide="${f.icon}"></i></div>
+                            <span class="badge ${isRecu ? 'green' : 'blue'}">${f.tipo}</span>
                         </div>
-                        <span class="fuente-name-lbl" style="font-size:14px; font-weight:700; display:block;">${fuente}</span>
-                        <b style="font-size:16px; font-weight:700; color:var(--text-primary); display:block; margin:2px 0;">Q ${monto.toLocaleString('en-US', {minimumFractionDigits:2})}</b>
+                        <span class="fuente-name-lbl" style="font-size:14px; font-weight:700; display:block;">${f.nombre}</span>
+                        <b style="font-size:16px; font-weight:700; color:var(--text-primary); display:block; margin:2px 0;">Q ${f.monto.toLocaleString('en-US', {minimumFractionDigits:2})}</b>
                         <div class="fuente-metrics-grid" style="display:flex; justify-content:space-between; border-top:1px dashed var(--borders); padding-top:8px; margin-top:4px; font-size:11px; color:var(--text-secondary);">
-                            <span>Frecuencia<b>${isRecu ? 'Mensual' : 'Ocasional'}</b></span>
-                            <span>Próximo ingreso<b>${isRecu ? '01 Ago 2026' : '—'}</b></span>
+                            <span>Frecuencia<b>${f.frecuencia}</b></span>
+                            <span>Próximo ingreso<b>${f.prox}</b></span>
                         </div>
                     </div>`;
-                idx++;
             });
         }
 
@@ -866,16 +906,33 @@
             block.innerHTML = `<div class="fuente-active-mini-card"><div class="fuente-card-header"><div class="brand-isotipo" style="background:var(--red-light);color:var(--red-dark-icon);"><i data-lucide="credit-card"></i></div><span class="badge purple">Activa</span></div><span class="fuente-name-lbl">Tarjetas Maestro</span><div class="fuente-metrics-grid"><span>Uso<b>Frecuente</b></span><span>Estado<b>Al día</b></span></div></div>`;
         }
 
+        // 📋 HISTORIAL CON COLUMNAS EXACTAS
         function renderHistorialTablaIngresos(ingresos) {
-            let tbody = document.getElementById('tabla_historial_ingresos_tbody'); if(!tbody) return; tbody.innerHTML = "";
-            let dataFinal = ingresos.length > 0 ? ingresos : [
-                { nombre: "Bono Junio", monto: 400, moneda: "USD", tipo: "variable", fecha_fact: "2026-06" },
-                { nombre: "Bono CSM", monto: 500, moneda: "USD", tipo: "variable", fecha_fact: "2026-07" },
-                { nombre: "Test", monto: 1, moneda: "USD", tipo: "variable", fecha_fact: "2026-07" }
+            let tbody = document.getElementById('tabla_historial_ingresos_tbody'); 
+            if(!tbody) return; 
+            tbody.innerHTML = "";
+
+            let dataFinal = (ingresos && ingresos.length > 0) ? ingresos : [
+                { fecha_fact: "2026-07-01", nombre: "Salario mensual - Julio 2026", fuente: "Salario principal", monto: 10200, tipo: "fijo", estado: "Confirmado" },
+                { fecha_fact: "2026-07-18", nombre: "Pago proyecto diseño web", fuente: "Bono CSM", monto: 3600, tipo: "variable", estado: "Confirmado" },
+                { fecha_fact: "2026-07-15", nombre: "Bonificación por desempeño", fuente: "Bono Onboarding", monto: 2100, tipo: "variable", estado: "Confirmado" },
+                { fecha_fact: "2026-07-10", nombre: "Reembolso de gastos", fuente: "Otros ingresos", monto: 602, tipo: "variable", estado: "Confirmado" }
             ];
+
             dataFinal.forEach(ing => {
                 let m = normalizarAQuetzales(ing.monto, ing.moneda);
-                tbody.innerHTML += `<tr><td>${ing.fecha_fact}</td><td><b>${ing.nombre}</b></td><td style="text-align:right; font-weight:700; color:var(--green-positive);">Q ${m.toLocaleString()}</td><td><span class="badge purple">${ing.tipo}</span></td><td><span class="badge green">✓ Verificado</span></td></tr>`;
+                let esRecu = ing.tipo === 'fijo' || ing.tipo === 'Recurrente';
+                let fuenteNombre = ing.fuente || ing.nombre.split(' ')[0] || "Salario principal";
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${ing.fecha_fact || '2026-07-01'}</td>
+                        <td><b>${ing.nombre}</b></td>
+                        <td>${fuenteNombre}</td>
+                        <td style="text-align:right; font-weight:700; color:var(--text-primary);">Q ${m.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td><span class="badge ${esRecu ? 'green' : 'blue'}">${esRecu ? 'Recurrente' : 'Variable'}</span></td>
+                        <td><span class="badge green">✓ Confirmado</span></td>
+                    </tr>`;
             });
         }
 
