@@ -470,7 +470,7 @@
         .badge.red { background-color: var(--red-light); color: var(--red-negative); }
 
         /* FORMULARIOS DRAWER */
-        #drawer_registro_ingresos, #drawer_registro_cuotas, #drawer_detalle_tarjeta {
+        #drawer_registro_ingresos, #drawer_registro_cuotas, #drawer_detalle_tarjeta, #drawer_meta_ahorro, #drawer_aporte_ahorro {
             position: fixed; top: 0; right: 0; left: auto;
             width: 400px; height: 100vh; background-color: var(--surface);
             border-left: 1px solid var(--borders); box-shadow: -4px 0 24px rgba(16, 24, 40, 0.16);
@@ -478,7 +478,7 @@
             flex-direction: column; gap: 20px; transform: translateX(100%);
             transition: transform 0.25s ease-in-out; overflow-y: auto;
         }
-        #drawer_registro_ingresos.opened, #drawer_registro_cuotas.opened, #drawer_detalle_tarjeta.opened { transform: translateX(0); }
+        #drawer_registro_ingresos.opened, #drawer_registro_cuotas.opened, #drawer_detalle_tarjeta.opened, #drawer_meta_ahorro.opened, #drawer_aporte_ahorro.opened { transform: translateX(0); }
         .drawer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(16, 24, 40, 0.2); z-index: 9998; display: none; }
 
         /* VISTA TARJETAS */
@@ -530,7 +530,7 @@
         #chat_ia_fab:hover { transform: scale(1.06); }
 
         #chat_ia_panel {
-            position: fixed; bottom: 96px; right: 24px; width: 360px; height: 520px; max-height: calc(100vh - 120px);
+            position: fixed; bottom: 96px; right: 24px; width: 400px; height: 560px; max-height: calc(100vh - 120px);
             background: var(--surface); border: 1px solid var(--borders); border-radius: var(--radius-main);
             box-shadow: 0 8px 32px rgba(16, 24, 40, 0.18); z-index: 99997;
             display: none; flex-direction: column; overflow: hidden;
@@ -539,12 +539,73 @@
 
         #chat_ia_panel_header {
             background: var(--purple-main); color: #fff; padding: 14px 16px; font-size: 14px; font-weight: 700;
-            display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0;
         }
-        #chat_ia_panel_header i { cursor: pointer; width: 18px; height: 18px; }
+        .chat-ia-header-titulo-grupo { display: flex; align-items: center; gap: 10px; overflow: hidden; min-width: 0; }
+        .chat-ia-header-titulo-grupo span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-ia-header-acciones { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+        .chat-ia-header-btn { cursor: pointer; width: 18px; height: 18px; flex-shrink: 0; }
+        .chat-ia-header-nueva-btn {
+            display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.16); border: none; border-radius: 8px;
+            color: #fff; font-size: 12px; font-weight: 700; padding: 6px 10px; cursor: pointer; flex-shrink: 0;
+        }
+        .chat-ia-header-nueva-btn i { width: 14px; height: 14px; }
 
-        #chat_ia_mensajes { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 14px; }
+        #chat_ia_mensajes { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; padding: 14px; }
         #chat_ia_error { font-size: 12px; color: var(--red-negative); font-weight: 600; padding: 0 14px; }
+
+        #chat_ia_lista_busqueda { display: flex; align-items: center; gap: 8px; margin: 10px 12px 0; padding: 0 10px; height: 36px; border: 1px solid var(--borders); border-radius: 9px; flex-shrink: 0; }
+        #chat_ia_lista_busqueda i { width: 15px; height: 15px; color: var(--text-secondary); flex-shrink: 0; }
+        #chat_ia_lista_busqueda input { flex: 1; border: none; outline: none; background: transparent; font-size: 12.5px; color: var(--text-primary); height: 100%; }
+
+        #chat_ia_lista_conversaciones { flex: 1; overflow-y: auto; padding: 10px; }
+        .chat-conv-seccion-titulo { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-secondary); padding: 12px 8px 6px; }
+        .chat-conv-seccion-titulo:first-child { padding-top: 6px; }
+        .chat-conv-fila { position: relative; display: flex; align-items: center; gap: 10px; padding: 9px 8px; border-radius: 8px; cursor: pointer; }
+        .chat-conv-fila:hover { background: var(--purple-light); }
+        .chat-conv-fila.activa { background: var(--purple-light); }
+        .chat-conv-icono { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--purple-light); color: var(--purple-main); display: flex; align-items: center; justify-content: center; }
+        .chat-conv-icono i { width: 16px; height: 16px; }
+        .chat-conv-info { flex: 1; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+        .chat-conv-titulo-fila { display: flex; align-items: center; gap: 5px; }
+        .chat-conv-titulo { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-conv-titulo-input { font: inherit; font-size: 13px; font-weight: 600; color: var(--text-primary); border: 1px solid var(--purple-main); border-radius: 5px; padding: 1px 4px; width: 100%; outline: none; }
+        .chat-conv-fav-ico { width: 12px; height: 12px; color: #F5A524; fill: #F5A524; flex-shrink: 0; }
+        .chat-conv-fecha { font-size: 11px; color: var(--text-secondary); }
+        .chat-conv-menu-trigger { flex-shrink: 0; width: 16px; height: 16px; color: var(--text-secondary); cursor: pointer; }
+        .chat-conv-menu {
+            position: absolute; top: 34px; right: 8px; background: var(--surface); border: 1px solid var(--borders);
+            border-radius: 8px; box-shadow: 0 4px 16px rgba(16,24,40,0.15); z-index: 10; min-width: 150px; overflow: hidden;
+        }
+        .chat-conv-menu-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; font-size: 12.5px; font-weight: 600; color: var(--text-primary); cursor: pointer; }
+        .chat-conv-menu-item:hover { background: var(--purple-light); }
+        .chat-conv-menu-item.peligro { color: var(--red-negative); }
+        .chat-conv-menu-item i { width: 14px; height: 14px; }
+        #chat_ia_lista_vacia { font-size: 12.5px; color: var(--text-secondary); text-align: center; padding: 24px 12px; }
+
+        #chat_ia_bienvenida { padding: 10px 8px 18px; text-align: center; }
+        #chat_ia_bienvenida .chat-ia-bienvenida-ico { width: 44px; height: 44px; border-radius: 50%; background: var(--purple-light); color: var(--purple-main); display: flex; align-items: center; justify-content: center; margin: 4px auto 12px; }
+        #chat_ia_bienvenida .chat-ia-bienvenida-ico i { width: 22px; height: 22px; }
+        #chat_ia_bienvenida h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin: 0 0 4px; }
+        #chat_ia_bienvenida p { font-size: 12.5px; color: var(--text-secondary); margin: 0 0 16px; }
+        .chat-ia-bienvenida-chips { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+        .chat-ia-bienvenida-chip {
+            display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--borders); border-radius: 10px;
+            cursor: pointer; background: var(--surface);
+        }
+        .chat-ia-bienvenida-chip:hover { background: var(--purple-light); border-color: var(--purple-main); }
+        .chat-ia-bienvenida-chip i:first-child { width: 16px; height: 16px; color: var(--purple-main); flex-shrink: 0; }
+        .chat-ia-bienvenida-chip span { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+
+        .chat-msg-hora { font-size: 10px; color: var(--text-secondary); padding: 0 4px; }
+        .chat-msg-hora.propia { align-self: flex-end; }
+
+        .chat-tabla-wrap { overflow-x: auto; margin: 6px 0; max-width: 100%; }
+        .chat-tabla { border-collapse: collapse; font-size: 11.5px; white-space: nowrap; }
+        .chat-tabla th { text-align: left; font-weight: 700; color: var(--text-primary); padding: 5px 8px; border-bottom: 1px solid var(--purple-main); }
+        .chat-tabla td { padding: 5px 8px; border-bottom: 1px solid var(--borders); color: var(--text-primary); }
+        .chat-tabla tr:last-child td { border-bottom: none; }
+
         #chat_ia_input_row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--borders); flex-shrink: 0; }
         #chat_ia_input_row input { flex: 1; height: 40px; border: 1px solid var(--borders); border-radius: 10px; padding: 0 12px; font-size: 13px; outline: none; }
         #chat_ia_input_row button { height: 40px; width: 40px; padding: 0; display: flex; align-items: center; justify-content: center; }
@@ -559,23 +620,52 @@
 
     <div id="auth_gate_wrapper">
         <div class="auth-panel">
-            <h2 style="font-size:24px; font-weight:700; text-align:center;">🔒 Iniciar Sesión</h2>
-            <p style="font-size:13px; color:var(--text-secondary); text-align:center; margin-top:-8px;">Sincronización segura con Supabase Cloud</p>
-            <div><label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Correo Electrónico</label><input type="email" id="auth_user_email" placeholder="ejemplo@correo.com" onkeydown="if(event.key==='Enter') loginMecanismo()"></div>
-            <div>
-                <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Contraseña</label>
-                <div class="auth-panel-password-wrapper">
-                    <input type="password" id="auth_user_password" placeholder="••••••••" onkeydown="if(event.key==='Enter') loginMecanismo()">
-                    <button type="button" class="auth-panel-toggle-password" id="btn_ver_password_login" onclick="alternarVerPasswordLogin()" tabindex="-1"><i data-lucide="eye" style="width:18px; height:18px;"></i></button>
+
+            <div id="auth_vista_login" style="display:flex; flex-direction:column; gap:16px;">
+                <h2 style="font-size:24px; font-weight:700; text-align:center;">🔒 Iniciar Sesión</h2>
+                <p style="font-size:13px; color:var(--text-secondary); text-align:center; margin-top:-8px;">Sincronización segura con Supabase Cloud</p>
+                <div><label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Correo Electrónico</label><input type="email" id="auth_user_email" placeholder="ejemplo@correo.com" onkeydown="if(event.key==='Enter') loginMecanismo()"></div>
+                <div>
+                    <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Contraseña</label>
+                    <div class="auth-panel-password-wrapper">
+                        <input type="password" id="auth_user_password" placeholder="••••••••" onkeydown="if(event.key==='Enter') loginMecanismo()">
+                        <button type="button" class="auth-panel-toggle-password" onclick="alternarVerPassword('auth_user_password', this)" tabindex="-1"><i data-lucide="eye" style="width:18px; height:18px;"></i></button>
+                    </div>
                 </div>
+                <div style="text-align:right; margin-top:-8px;"><span onclick="mostrarVistaAuth('forgot')" style="font-size:12px; color:var(--purple-main); cursor:pointer; font-weight:600;">¿Olvidaste tu contraseña?</span></div>
+                <button class="btn-primary-action" id="btn_login_submit" style="width:100%; justify-content:center;" onclick="loginMecanismo()">Entrar de forma segura</button>
+                <div id="auth_login_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative);"></div>
             </div>
-            <button class="btn-primary-action" id="btn_login_submit" style="width:100%; justify-content:center;" onclick="loginMecanismo()">Entrar de forma segura</button>
-            <div id="auth_login_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative);"></div>
+
+            <div id="auth_vista_forgot" style="display:none; flex-direction:column; gap:16px;">
+                <h2 style="font-size:24px; font-weight:700; text-align:center;">🔑 Recuperar contraseña</h2>
+                <p style="font-size:13px; color:var(--text-secondary); text-align:center; margin-top:-8px;">Te mandamos un enlace a tu correo para poner una nueva.</p>
+                <div><label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Correo Electrónico</label><input type="email" id="auth_forgot_email" placeholder="ejemplo@correo.com" onkeydown="if(event.key==='Enter') enviarRecuperacionMecanismo()"></div>
+                <button class="btn-primary-action" id="btn_forgot_submit" style="width:100%; justify-content:center;" onclick="enviarRecuperacionMecanismo()">Enviar enlace de recuperación</button>
+                <div style="text-align:center;"><span onclick="mostrarVistaAuth('login')" style="font-size:12px; color:var(--purple-main); cursor:pointer; font-weight:600;">Volver a iniciar sesión</span></div>
+                <div id="auth_forgot_msg" style="font-size:12px; text-align:center; font-weight:600;"></div>
+            </div>
+
+            <div id="auth_vista_reset" style="display:none; flex-direction:column; gap:16px;">
+                <h2 style="font-size:24px; font-weight:700; text-align:center;">🔐 Nueva contraseña</h2>
+                <p style="font-size:13px; color:var(--text-secondary); text-align:center; margin-top:-8px;">Escribe tu nueva contraseña.</p>
+                <div>
+                    <label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Nueva contraseña</label>
+                    <div class="auth-panel-password-wrapper">
+                        <input type="password" id="auth_reset_password" placeholder="••••••••" onkeydown="if(event.key==='Enter') actualizarPasswordMecanismo()">
+                        <button type="button" class="auth-panel-toggle-password" onclick="alternarVerPassword('auth_reset_password', this)" tabindex="-1"><i data-lucide="eye" style="width:18px; height:18px;"></i></button>
+                    </div>
+                </div>
+                <div><label style="font-size:12px; font-weight:600; color:var(--text-secondary);">Confirmar contraseña</label><input type="password" id="auth_reset_password_confirm" placeholder="••••••••" onkeydown="if(event.key==='Enter') actualizarPasswordMecanismo()"></div>
+                <button class="btn-primary-action" id="btn_reset_submit" style="width:100%; justify-content:center;" onclick="actualizarPasswordMecanismo()">Guardar nueva contraseña</button>
+                <div id="auth_reset_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative);"></div>
+            </div>
+
         </div>
     </div>
 
     <!-- DRAWER FORMULARIO -->
-    <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false); conmutarDrawerCuotas(false); conmutarDrawerDetalleTarjeta(false);"></div>
+    <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false); conmutarDrawerCuotas(false); conmutarDrawerDetalleTarjeta(false); conmutarDrawerMetaAhorro(false); conmutarDrawerAporteAhorro(false);"></div>
     <div id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
             <h3 style="font-size:18px; font-weight:700;" id="drawer_dinamico_titulo">➕ Nuevo Movimiento</h3>
@@ -651,6 +741,35 @@
         </div>
     </div>
 
+    <div id="drawer_meta_ahorro">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
+            <h3 style="font-size:18px; font-weight:700;" id="drawer_meta_ahorro_titulo">🎯 Nueva meta de ahorro</h3>
+            <button onclick="conmutarDrawerMetaAhorro(false)" style="background:none; border:none; cursor:pointer; color:var(--text-secondary);"><i data-lucide="x"></i></button>
+        </div>
+        <input type="hidden" id="form_meta_id">
+        <div class="form-group-field"><label>Nombre de la meta</label><input type="text" id="form_meta_nombre" placeholder="Ej. Viaje a Europa"></div>
+        <div class="form-group-field"><label>Emoji (opcional)</label><input type="text" id="form_meta_emoji" placeholder="🎯" maxlength="4"></div>
+        <div class="form-group-field"><label>Monto objetivo</label><input type="number" id="form_meta_monto" placeholder="0.00"></div>
+        <div class="form-group-field"><label>Moneda</label><select id="form_meta_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
+        <div class="form-group-field"><label>Fecha meta (opcional)</label><input type="month" id="form_meta_fecha"></div>
+        <button class="btn-primary-action" style="width:100%; justify-content:center; margin-top:12px;" onclick="guardarMetaAhorroMecanismo()"><i data-lucide="check"></i> Guardar meta</button>
+        <div id="drawer_meta_ahorro_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
+    </div>
+
+    <div id="drawer_aporte_ahorro">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
+            <h3 style="font-size:18px; font-weight:700;" id="drawer_aporte_ahorro_titulo">💰 Nuevo aporte</h3>
+            <button onclick="conmutarDrawerAporteAhorro(false)" style="background:none; border:none; cursor:pointer; color:var(--text-secondary);"><i data-lucide="x"></i></button>
+        </div>
+        <input type="hidden" id="form_aporte_meta_id">
+        <div class="form-group-field"><label>Monto del aporte</label><input type="number" id="form_aporte_monto" placeholder="0.00"></div>
+        <div class="form-group-field"><label>Moneda</label><select id="form_aporte_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
+        <div class="form-group-field"><label>Fecha</label><input type="date" id="form_aporte_fecha"></div>
+        <div class="form-group-field"><label>Nota (opcional)</label><input type="text" id="form_aporte_nota" placeholder="Ej. Aguinaldo"></div>
+        <button class="btn-primary-action" style="width:100%; justify-content:center; margin-top:12px;" onclick="guardarAporteAhorroMecanismo()"><i data-lucide="check"></i> Registrar aporte</button>
+        <div id="drawer_aporte_ahorro_error" style="font-size:12px; text-align:center; font-weight:600; color:var(--red-negative)"></div>
+    </div>
+
     <!-- 📅 Popup de calendario de meses para "Rango de fechas fijo" — una sola instancia compartida
          por todos los filtros de periodo, reposicionada según cuál botón la abrió. -->
     <div id="popup_calendario_rango" style="display:none; position:fixed; z-index:999998; background:var(--surface); border:1px solid var(--borders); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.25); padding:16px; width:250px;">
@@ -669,7 +788,7 @@
             <p id="texto_modal_confirmacion" style="font-size:14px; color:var(--text-primary); margin:0 0 20px; line-height:1.5;"></p>
             <div style="display:flex; gap:10px; justify-content:flex-end;">
                 <button type="button" onclick="cerrarModalConfirmacion(false)" style="padding:10px 16px; border-radius:8px; border:1px solid var(--borders); background:var(--surface); cursor:pointer; font-size:13px; font-weight:600; color:var(--text-primary);">Cancelar</button>
-                <button type="button" onclick="cerrarModalConfirmacion(true)" style="padding:10px 16px; border-radius:8px; border:none; background:var(--red-negative); color:#fff; cursor:pointer; font-size:13px; font-weight:600;">Sí, eliminar</button>
+                <button type="button" id="btn_confirmar_modal_confirmacion" onclick="cerrarModalConfirmacion(true)" style="padding:10px 16px; border-radius:8px; border:none; color:#fff; cursor:pointer; font-size:13px; font-weight:600;">Confirmar</button>
             </div>
         </div>
     </div>
@@ -687,6 +806,7 @@
                     <button class="nav-button" id="btn_menu_ingresos" onclick="cambiarSeccionVista('vista_ingresos', this)"><i id="menu-inc-ico"></i> Ingresos</button>
                     <button class="nav-button" id="btn_menu_gastos" onclick="cambiarSeccionVista('vista_gastos', this)"><i id="menu-exp-ico"></i> Gastos</button>
                     <button class="nav-button" id="btn_menu_tarjetas" onclick="cambiarSeccionVista('vista_tarjetas', this)"><i id="menu-tar-ico"></i> Tarjetas</button>
+                    <button class="nav-button" id="btn_menu_ahorros" onclick="cambiarSeccionVista('vista_ahorros', this)"><i id="menu-aho-ico"></i> Ahorros</button>
                     <button class="nav-button" id="btn_menu_fiscal" onclick="cambiarSeccionVista('vista_fiscal', this)"><i id="menu-fis-ico"></i> Bitácora fiscal</button>
                 </div>
                 <div class="nav-group" style="margin-top:16px; padding-top:16px; border-top:1px solid var(--borders);">
@@ -761,7 +881,7 @@
                     <div class="card">
                         <div class="card-title">Ahorros</div>
                         <div class="saving-kpi-block"><div><span style="font-size:26px; font-weight:700; color:var(--green-positive);" id="ahorro_total_kpi">Q 0.00</span></div></div>
-                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%; margin-top:8px;"><span>Meta mensual</span><span id="meta_ahorro_pct" style="color:var(--green-positive); font-weight:700;">0%</span></div>
+                        <div style="font-size:13px; font-weight:600; display:flex; justify-content:space-between; width:100%; margin-top:8px;"><span>Progreso total</span><span id="meta_ahorro_pct" style="color:var(--green-positive); font-weight:700;">0%</span></div>
                         <div class="progress-bar-frame" style="margin: 6px 0;"><div class="progress-bar-fill" id="barra_progreso_ahorro_fill" style="width: 0%;"></div></div>
                         <div class="saving-meta-detail" id="meta_ahorro_progresion" style="font-size:12px; color:var(--text-secondary);">Q0 de Q50,000</div>
                         <div id="lista_aportes_recientes_inicio" style="margin-top:10px;"></div>
@@ -792,6 +912,9 @@
                             </select>
                             <button type="button" class="month-selector filtro_periodo_rango_boton" style="display:none;" onclick="abrirCalendarioRangoV2(event, 'ingresos')">Selecciona un rango</button>
                         </div>
+                        <select id="filtro_categoria_top_ingresos" class="month-selector" onchange="cambiarCategoriaFiltroTop(this, 'ingresos')">
+                            <option value="Todas">Categoría: Todas</option>
+                        </select>
                         <button class="month-selector" style="display:flex; align-items:center; gap:6px;" onclick="exportarTodoIngresos()"><i id="btn-export-ico-todo-ing"></i> Exportar</button>
                         <button class="btn-primary-action" onclick="abrirFormularioDinamico('ingresos')"><i id="btn-plus-ico-2"></i> Nuevo ingreso</button>
                     </div>
@@ -844,14 +967,14 @@
                         <div class="combined-chart-frame" id="cont_histograma_ingresos"></div>
                     </div>
                     <div class="card">
-                        <div class="card-title">Distribución por fuente</div>
+                        <div class="card-title">Distribución por categoría</div>
                         <div id="contenedor_layout_donut_ingresos"></div>
                     </div>
                 </div>
 
                 <div class="card" style="padding:20px 24px;">
                     <div style="margin-bottom:16px;">
-                        <span class="card-title" style="margin:0;">Fuentes activas</span>
+                        <span class="card-title" style="margin:0;">Categorías de Ingreso Activas</span>
                     </div>
                     <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;"></div>
                 </div>
@@ -870,9 +993,6 @@
                                 <option value="Todos">Tipo: Todos</option>
                                 <option value="fijo">Recurrente</option>
                                 <option value="variable">Variable</option>
-                            </select>
-                            <select id="filtro_fuente_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
-                                <option value="Todas">Fuente: Todas</option>
                             </select>
                             <select id="filtro_estado_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
                                 <option value="Todos">Estado: Todos</option>
@@ -914,6 +1034,9 @@
                             </select>
                             <button type="button" class="month-selector filtro_periodo_rango_boton" style="display:none;" onclick="abrirCalendarioRangoV2(event, 'gastos')">Selecciona un rango</button>
                         </div>
+                        <select id="filtro_categoria_top_gastos" class="month-selector" onchange="cambiarCategoriaFiltroTop(this, 'gastos')">
+                            <option value="Todas">Categoría: Todas</option>
+                        </select>
                         <button class="btn-primary-action" style="background:var(--surface); color:var(--purple-main); border:1px solid var(--purple-main); box-shadow:none;" onclick="abrirFormularioCuotas()"><i data-lucide="layers"></i> Compra en cuotas</button>
                         <button class="month-selector" style="display:flex; align-items:center; gap:6px;" onclick="exportarTodoGastos()"><i id="btn-export-ico-todo-gas"></i> Exportar</button>
                         <button class="btn-primary-action" onclick="abrirFormularioDinamico('gastos')"><i id="btn-plus-ico-3"></i> Nuevo Gasto</button>
@@ -1023,9 +1146,6 @@
                                 <option value="fijo">Recurrente</option>
                                 <option value="variable">Variable</option>
                             </select>
-                            <select id="filtro_categoria_gasto" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialGastosMecanismo()">
-                                <option value="Todas">Categoría: Todas</option>
-                            </select>
                         </div>
                     </div>
                     <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Periodo</th><th>Concepto / Detalle</th><th>Categoría</th><th style="text-align:right;">Monto (GTQ)</th><th style="text-align:right;">Monto (USD)</th><th>Tipo</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_gastos_tbody"></tbody></table></div>
@@ -1040,6 +1160,15 @@
                         <p>Gestiona tus tarjetas de crédito y controla tu utilización.</p>
                     </div>
                     <div class="header-action-area">
+                        <div class="filtro-periodo-grupo" id="filtro_periodo_wrapper_tarjetas" style="display:flex; align-items:center; gap:6px; position:relative;">
+                            <select class="month-selector filtro_periodo_tipo" onchange="cambiarTipoFiltroPeriodo(this, 'tarjetas')">
+                                <option value="mes">Este mes</option>
+                                <option value="mes_anterior">Mes anterior</option>
+                                <option value="anio">Este año</option>
+                                <option value="rango">Rango de fechas fijo</option>
+                            </select>
+                            <button type="button" class="month-selector filtro_periodo_rango_boton" style="display:none;" onclick="abrirCalendarioRangoV2(event, 'tarjetas')">Selecciona un rango</button>
+                        </div>
                         <button class="btn-primary-action" onclick="abrirFormularioDinamico('tarjetas')"><i data-lucide="plus"></i> Agregar tarjeta</button>
                     </div>
                 </div>
@@ -1076,19 +1205,9 @@
                 </div>
 
                 <div class="card" style="margin-bottom:20px;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:4px;">
-                        <div>
-                            <div class="card-title" style="margin-bottom:2px;">Balance mensual: disponible vs. comprometido</div>
-                            <p style="font-size:11px; color:var(--text-secondary); margin:0;">Proyección basada en el calendario real de tus cuotas activas. El saldo al contado se asume fijo.</p>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                            <select class="month-selector" id="tarjetas_grafica_filtro_tarjeta" onchange="renderGraficaBalanceTarjetas()">
-                                <option value="">Todas las tarjetas</option>
-                            </select>
-                            <input type="month" class="month-selector" id="tarjetas_grafica_filtro_desde" onchange="renderGraficaBalanceTarjetas()">
-                            <span style="font-size:12px; color:var(--text-secondary);">a</span>
-                            <input type="month" class="month-selector" id="tarjetas_grafica_filtro_hasta" onchange="renderGraficaBalanceTarjetas()">
-                        </div>
+                    <div style="margin-bottom:4px;">
+                        <div class="card-title" style="margin-bottom:2px;">Balance mensual: disponible vs. comprometido</div>
+                        <p style="font-size:11px; color:var(--text-secondary); margin:0;">Proyección basada en el calendario real de tus cuotas activas. El saldo al contado se asume fijo.</p>
                     </div>
                     <div class="combined-chart-frame" id="cont_grafica_balance_tarjetas" style="margin-top:16px;"></div>
                 </div>
@@ -1108,6 +1227,44 @@
                             <tbody id="tabla_proximos_pagos_tarjetas_30d"></tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            <!-- VISTA: AHORROS -->
+            <div class="view-section" id="vista_ahorros" style="display:none;">
+                <div class="view-header">
+                    <div class="header-title-area">
+                        <h1>Ahorros</h1>
+                        <p>Ponte metas y deja que la app te diga cuánto ahorrar cada mes para llegar.</p>
+                    </div>
+                    <div class="header-action-area">
+                        <button class="btn-primary-action" onclick="abrirFormularioMetaAhorro()"><i data-lucide="plus"></i> Nueva meta</button>
+                    </div>
+                </div>
+
+                <div class="kpi-master-grid-layout" style="margin-bottom:20px;">
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Total ahorrado</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="piggy-bank"></i></div></div>
+                        <span class="kpi-main-value" style="color:var(--green-positive);" id="ahorros_kpi_total">Q 0.00</span>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Metas activas</span><div class="kpi-icon-wrapper-blue-exact"><i data-lucide="target"></i></div></div>
+                        <span class="kpi-main-value" id="ahorros_kpi_metas_activas">0</span>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Meta más cercana</span><div class="kpi-icon-wrapper-blue-exact"><i data-lucide="flag"></i></div></div>
+                        <span class="kpi-main-value" style="font-size:16px;" id="ahorros_kpi_meta_cercana">—</span>
+                        <div style="font-size:10px; color:var(--text-secondary);" id="ahorros_kpi_meta_cercana_sub">—</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Aportes este mes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="trending-up"></i></div></div>
+                        <span class="kpi-main-value" id="ahorros_kpi_aportes_mes">Q 0.00</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Mis metas de ahorro</div>
+                    <div id="bloque_metas_ahorro" style="display:flex; flex-direction:column; gap:14px; margin-top:12px;"></div>
                 </div>
             </div>
 
@@ -1249,10 +1406,12 @@
         <i id="chat-ia-fab-ico"></i>
     </div>
     <div id="chat_ia_panel">
-        <div id="chat_ia_panel_header">
-            <span>Asistente financiero IA</span>
-            <i id="chat-ia-close-ico" onclick="alternarChatIA()"></i>
+        <div id="chat_ia_panel_header"></div>
+        <div id="chat_ia_lista_busqueda" style="display:none;">
+            <i data-lucide="search"></i>
+            <input type="text" id="input_buscar_conversaciones" placeholder="Buscar conversaciones..." oninput="filtroListaConversacionesIA = this.value; renderListaConversacionesIA();">
         </div>
+        <div id="chat_ia_lista_conversaciones" style="display:none;"></div>
         <div id="chat_ia_mensajes"></div>
         <div id="chat_ia_error"></div>
         <div id="chat_ia_input_row">
@@ -1265,14 +1424,32 @@
         const SUPABASE_URL = "https://ltmvcqkpgrwqsinfqqkt.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_TP5UKKudDEefb5KogaRcsw_Ezn1OxbA"; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
+
+        // Recuperar contraseña: el enlace del correo regresa aquí con "type=recovery" en el hash.
+        // Se detecta de una vez para no mostrar el dashboard normal ni el login por accidente.
+        let vieneDeRecuperacionPassword = window.location.hash.includes('type=recovery');
+        _supabase.auth.onAuthStateChange((event) => {
+            if(event === 'PASSWORD_RECOVERY') {
+                document.getElementById('app_core_shell').style.display = 'none';
+                document.getElementById('auth_gate_wrapper').style.display = 'flex';
+                mostrarVistaAuth('reset');
+            }
+        });
+
         // El asistente financiero llama a Gemini a través de la Edge Function "gemini-proxy" —
         // la API key vive solo del lado del servidor (secret de Supabase), nunca en este archivo.
         let chatHistorialIA = [];
         let chatIAEnviando = false;
+        let conversacionActivaId = null;
+        let db_conversaciones_ia = [];
+        let chatIAInicializado = false;
+        let vistaChatIAActual = 'lista';
+        let menuConversacionAbiertoId = null;
+        let conversacionEnRenombreId = null;
+        let filtroListaConversacionesIA = '';
 
         let activeSessionUser = null;
-        let db_ingresos = []; let db_gastos = []; let db_tarjetas = []; let db_categorias = []; let db_ingresos_recurrentes = []; let db_gastos_recurrentes = []; let db_gastos_cuotas = []; let db_bitacora_fiscal = [];
+        let db_ingresos = []; let db_gastos = []; let db_tarjetas = []; let db_categorias = []; let db_ingresos_recurrentes = []; let db_gastos_recurrentes = []; let db_gastos_cuotas = []; let db_bitacora_fiscal = []; let db_metas_ahorro = []; let db_aportes_ahorro = [];
         let tasaCambioActual = 7.4;
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         let moduloActivoGlobal = 'inicio';
@@ -1284,10 +1461,10 @@
             document.getElementById('menu-inc-ico')?.setAttribute('data-lucide', 'trending-up');
             document.getElementById('menu-exp-ico')?.setAttribute('data-lucide', 'receipt');
             document.getElementById('menu-tar-ico')?.setAttribute('data-lucide', 'credit-card');
+            document.getElementById('menu-aho-ico')?.setAttribute('data-lucide', 'piggy-bank');
             document.getElementById('menu-fis-ico')?.setAttribute('data-lucide', 'landmark');
             document.getElementById('menu-config-ico')?.setAttribute('data-lucide', 'settings');
             document.getElementById('chat-ia-fab-ico')?.setAttribute('data-lucide', 'bot');
-            document.getElementById('chat-ia-close-ico')?.setAttribute('data-lucide', 'x');
             document.getElementById('btn-chat-ia-send-ico')?.setAttribute('data-lucide', 'send');
             document.getElementById('btn-plus-ico-1')?.setAttribute('data-lucide', 'plus');
             document.getElementById('btn-plus-ico-2')?.setAttribute('data-lucide', 'plus');
@@ -1324,6 +1501,20 @@
 
         function conmutarDrawerDetalleTarjeta(shouldOpen) {
             let d = document.getElementById('drawer_detalle_tarjeta');
+            let b = document.getElementById('panel_backdrop_node');
+            if(shouldOpen) { d.classList.add('opened'); b.style.display = 'block'; }
+            else { d.classList.remove('opened'); b.style.display = 'none'; }
+        }
+
+        function conmutarDrawerMetaAhorro(shouldOpen) {
+            let d = document.getElementById('drawer_meta_ahorro');
+            let b = document.getElementById('panel_backdrop_node');
+            if(shouldOpen) { d.classList.add('opened'); b.style.display = 'block'; }
+            else { d.classList.remove('opened'); b.style.display = 'none'; }
+        }
+
+        function conmutarDrawerAporteAhorro(shouldOpen) {
+            let d = document.getElementById('drawer_aporte_ahorro');
             let b = document.getElementById('panel_backdrop_node');
             if(shouldOpen) { d.classList.add('opened'); b.style.display = 'block'; }
             else { d.classList.remove('opened'); b.style.display = 'none'; }
@@ -1533,13 +1724,89 @@
             }
         }
 
-        function alternarVerPasswordLogin() {
-            let input = document.getElementById('auth_user_password');
-            let boton = document.getElementById('btn_ver_password_login');
+        function alternarVerPassword(inputId, boton) {
+            let input = document.getElementById(inputId);
             let mostrando = input.type === 'text';
             input.type = mostrando ? 'password' : 'text';
             boton.innerHTML = `<i data-lucide="${mostrando ? 'eye' : 'eye-off'}" style="width:18px; height:18px;"></i>`;
             lucide.createIcons();
+        }
+
+        // Alterna entre las 3 pantallas del panel de acceso: iniciar sesión, pedir enlace de
+        // recuperación, y poner contraseña nueva (esta última solo se activa desde el enlace del correo).
+        function mostrarVistaAuth(vista) {
+            document.getElementById('auth_vista_login').style.display = vista === 'login' ? 'flex' : 'none';
+            document.getElementById('auth_vista_forgot').style.display = vista === 'forgot' ? 'flex' : 'none';
+            document.getElementById('auth_vista_reset').style.display = vista === 'reset' ? 'flex' : 'none';
+            if(vista === 'forgot') {
+                document.getElementById('auth_forgot_msg').innerText = '';
+                let emailActual = document.getElementById('auth_user_email').value;
+                if(emailActual) document.getElementById('auth_forgot_email').value = emailActual;
+            }
+        }
+
+        async function enviarRecuperacionMecanismo() {
+            let email = document.getElementById('auth_forgot_email').value.trim();
+            let msgBox = document.getElementById('auth_forgot_msg');
+            let boton = document.getElementById('btn_forgot_submit');
+            msgBox.style.color = 'var(--red-negative)';
+            msgBox.innerText = '';
+
+            if(!email) { msgBox.innerText = 'Ingresa tu correo.'; return; }
+
+            boton.innerText = 'Enviando...';
+            boton.disabled = true;
+
+            try {
+                const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + window.location.pathname
+                });
+                if(error) {
+                    msgBox.innerText = 'Error: ' + error.message;
+                } else {
+                    msgBox.style.color = 'var(--green-positive)';
+                    msgBox.innerText = `Listo — revisa ${email} para el enlace de recuperación.`;
+                }
+            } catch(e) {
+                msgBox.innerText = 'Error de conexión: ' + e.message;
+            } finally {
+                boton.innerText = 'Enviar enlace de recuperación';
+                boton.disabled = false;
+            }
+        }
+
+        async function actualizarPasswordMecanismo() {
+            let pass1 = document.getElementById('auth_reset_password').value;
+            let pass2 = document.getElementById('auth_reset_password_confirm').value;
+            let errorBox = document.getElementById('auth_reset_error');
+            let boton = document.getElementById('btn_reset_submit');
+            errorBox.innerText = '';
+
+            if(!pass1 || !pass2) { errorBox.innerText = 'Completa ambos campos.'; return; }
+            if(pass1 !== pass2) { errorBox.innerText = 'Las contraseñas no coinciden.'; return; }
+            if(pass1.length < 6) { errorBox.innerText = 'La contraseña debe tener al menos 6 caracteres.'; return; }
+
+            boton.innerText = 'Guardando...';
+            boton.disabled = true;
+
+            try {
+                const { error } = await _supabase.auth.updateUser({ password: pass1 });
+                if(error) {
+                    errorBox.innerText = 'Error: ' + error.message;
+                    boton.innerText = 'Guardar nueva contraseña';
+                    boton.disabled = false;
+                    return;
+                }
+                // Ya quedó la contraseña nueva — se limpia el enlace de recuperación de la URL y se
+                // cierra esa sesión temporal para que el usuario entre de nuevo ya con su contraseña nueva.
+                history.replaceState(null, '', window.location.pathname);
+                await _supabase.auth.signOut();
+                location.reload();
+            } catch(e) {
+                errorBox.innerText = 'Error de conexión: ' + e.message;
+                boton.innerText = 'Guardar nueva contraseña';
+                boton.disabled = false;
+            }
         }
 
         async function loginMecanismo() {
@@ -1587,6 +1854,8 @@
                 let rRecG = await _supabase.from('gastos_recurrentes').select('*'); db_gastos_recurrentes = rRecG.data || [];
                 let rCuo = await _supabase.from('gastos_cuotas').select('*'); db_gastos_cuotas = rCuo.data || [];
                 let rFis = await _supabase.from('bitacora_fiscal').select('*'); db_bitacora_fiscal = rFis.data || [];
+                let rMetas = await _supabase.from('metas_ahorro').select('*'); db_metas_ahorro = rMetas.data || [];
+                let rAportes = await _supabase.from('aportes_ahorro').select('*'); db_aportes_ahorro = rAportes.data || [];
                 await cargarConfiguracionUsuario();
                 await sembrarCategoriasPorDefectoSiVacio();
                 await sincronizarIngresosRecurrentes();
@@ -2251,7 +2520,12 @@
 
         let _resolverConfirmacion = null;
 
-        function confirmarAccion(mensaje) {
+        function confirmarAccion(mensaje, opciones) {
+            opciones = opciones || {};
+            let boton = document.getElementById('btn_confirmar_modal_confirmacion');
+            boton.innerText = opciones.textoBoton || (opciones.destructivo ? 'Sí, eliminar' : 'Confirmar');
+            boton.style.background = opciones.destructivo ? 'var(--red-negative)' : 'var(--purple-main)';
+
             return new Promise(resolve => {
                 document.getElementById('texto_modal_confirmacion').innerText = mensaje;
                 document.getElementById('modal_confirmacion').style.display = 'flex';
@@ -2338,6 +2612,41 @@
             };
         }
 
+        // 🎯 Ahorros: el "actual" de cada meta se calcula SIEMPRE sumando sus aportes reales (ledger),
+        // nunca se guarda como un número manual — mismo criterio que ya se usa para tarjetas.
+        function calcularProgresoMeta(meta) {
+            let aportes = (db_aportes_ahorro || []).filter(a => String(a.meta_id) === String(meta.id));
+            let actual = aportes.reduce((s, a) => s + normalizarAQuetzales(a.monto, a.moneda), 0);
+            let objetivo = normalizarAQuetzales(meta.monto_objetivo, meta.moneda);
+            let restante = Math.max(0, objetivo - actual);
+            let pct = objetivo > 0 ? Math.min(100, (actual / objetivo) * 100) : 0;
+
+            let { anio: anioHoy, mes: mesHoy } = obtenerAnioMesReal();
+            let mesesRestantes = null;
+            let vencida = false;
+            if(meta.anio_meta && meta.mes_meta) {
+                mesesRestantes = (meta.anio_meta - anioHoy) * 12 + (meta.mes_meta - mesHoy);
+                if(mesesRestantes < 0) { vencida = true; mesesRestantes = 0; }
+            }
+            // Cuánto aportar cada mes para llegar a tiempo — si ya no queda tiempo (mes de la meta es
+            // este mes o ya pasó) pide todo lo que falta de una vez, en vez de dividir entre 0/negativo.
+            let aportarPorMes = restante > 0 ? ((mesesRestantes && mesesRestantes > 0) ? restante / mesesRestantes : restante) : 0;
+
+            let aportesEsteMes = aportes.filter(a => {
+                let [fAnio, fMes] = a.fecha.split('-').map(Number);
+                return fAnio === anioHoy && fMes === mesHoy;
+            }).reduce((s, a) => s + normalizarAQuetzales(a.monto, a.moneda), 0);
+
+            return {
+                meta, aportes, actual, objetivo, restante, pct, mesesRestantes, vencida, aportarPorMes, aportesEsteMes,
+                cumplida: objetivo > 0 && actual >= objetivo
+            };
+        }
+
+        function obtenerMetasAhorroActivas() {
+            return (db_metas_ahorro || []).filter(m => m.activa !== false).map(calcularProgresoMeta);
+        }
+
         // 📈 Proyección mensual del balance de tarjetas (todas, o una específica si se pasa tarjetaId): el
         // "comprometido" en cuotas baja conforme se van completando (calendario real), el "al contado" se
         // asume fijo porque no tiene fecha de pago. Rango [anioInicio,mesInicio] a [anioFin,mesFin] inclusive.
@@ -2377,9 +2686,20 @@
         // contra la fecha real de hoy — no hay selector de mes/año libre, por diseño.
         let filtroRangoFijoPorScope = {}; // { [scope]: {anioInicio, mesInicio, anioFin, mesFin} }
 
+        // Filtro maestro de Categoría (al lado del filtro de fecha) para Ingresos y Gastos — afecta
+        // KPIs, gráficas, tarjetas de "Categorías activas" e Historial de esa vista, todo junto.
+        let filtroCategoriaPorScope = {}; // { ingresos: 'Todas'|nombre, gastos: 'Todas'|nombre }
+        function obtenerCategoriaFiltro(scope) {
+            return filtroCategoriaPorScope[scope] || 'Todas';
+        }
+        function cambiarCategoriaFiltroTop(selectNode, scope) {
+            filtroCategoriaPorScope[scope] = selectNode.value;
+            actualizarCoreCalculos();
+        }
+
         function inicializarFiltroPeriodo() {
             document.querySelectorAll('.filtro_periodo_tipo').forEach(el => el.value = 'mes');
-            ['inicio', 'ingresos', 'gastos'].forEach(sincronizarVisibilidadFiltroPeriodo);
+            ['inicio', 'ingresos', 'gastos', 'tarjetas'].forEach(sincronizarVisibilidadFiltroPeriodo);
         }
 
         // Cada vista/tabla tiene su PROPIO filtro, sin sincronizar entre sí
@@ -2708,7 +3028,235 @@
 
         async function eliminarRegistro(tabla, id) {
             let etiqueta = tabla === 'ingresos' ? 'este ingreso' : (tabla === 'gastos' ? 'este gasto' : 'esta tarjeta');
-            let confirmado = await confirmarAccion(`¿Seguro que quieres eliminar ${etiqueta}? Esta acción no se puede deshacer.`);
+            let confirmado = await confirmarAccion(`¿Seguro que quieres eliminar ${etiqueta}? Esta acción no se puede deshacer.`, { destructivo: true });
+            if(!confirmado) return;
+
+            const { error } = await _supabase.from(tabla).delete().eq('id', id);
+            if(error) { alert('Error al eliminar: ' + error.message); return; }
+            await descargarEstructuresCloud();
+        }
+
+        // 🎯 AHORROS — KPIs, tarjetas de meta con asesoría de cuánto ahorrar al mes, y formularios.
+        function renderWidgetAhorroInicio(progresos) {
+            let elTotal = document.getElementById('ahorro_total_kpi');
+            if(!elTotal) return;
+            let fmt = v => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            let totalAhorrado = progresos.reduce((s, p) => s + p.actual, 0);
+            let totalObjetivo = progresos.reduce((s, p) => s + p.objetivo, 0);
+            let pct = totalObjetivo > 0 ? Math.min(100, (totalAhorrado / totalObjetivo) * 100) : 0;
+
+            elTotal.innerText = "Q " + fmt(totalAhorrado);
+            document.getElementById('meta_ahorro_pct').innerText = pct.toFixed(0) + '%';
+            document.getElementById('barra_progreso_ahorro_fill').style.width = pct.toFixed(0) + '%';
+            document.getElementById('meta_ahorro_progresion').innerText = progresos.length > 0
+                ? `Q ${fmt(totalAhorrado)} de Q ${fmt(totalObjetivo)}`
+                : 'Crea tu primera meta en Ahorros';
+
+            let todosAportes = [];
+            progresos.forEach(p => p.aportes.forEach(a => todosAportes.push({ ...a, metaNombre: p.meta.nombre, metaEmoji: p.meta.emoji })));
+            todosAportes.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+            let elLista = document.getElementById('lista_aportes_recientes_inicio');
+            if(todosAportes.length === 0) {
+                elLista.innerHTML = '';
+            } else {
+                elLista.innerHTML = todosAportes.slice(0, 3).map(a => `
+                    <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0;">
+                        <span>${a.metaEmoji || '🎯'} ${escaparHtml(a.metaNombre)}</span>
+                        <b style="color:var(--green-positive);">+${a.moneda === 'USD' ? '$' : 'Q'} ${fmt(a.monto)}</b>
+                    </div>`).join('');
+            }
+        }
+
+        function renderKpisAhorro(progresos) {
+            let elTotal = document.getElementById('ahorros_kpi_total');
+            if(!elTotal) return;
+            let fmt = v => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            let totalAhorrado = progresos.reduce((s, p) => s + p.actual, 0);
+            let aportesEsteMes = progresos.reduce((s, p) => s + p.aportesEsteMes, 0);
+            elTotal.innerText = "Q " + fmt(totalAhorrado);
+            document.getElementById('ahorros_kpi_metas_activas').innerText = progresos.filter(p => !p.cumplida).length;
+            document.getElementById('ahorros_kpi_aportes_mes').innerText = "Q " + fmt(aportesEsteMes);
+
+            let elCercanaTitulo = document.getElementById('ahorros_kpi_meta_cercana');
+            let elCercanaSub = document.getElementById('ahorros_kpi_meta_cercana_sub');
+            let pendientesConFecha = progresos.filter(p => !p.cumplida && p.mesesRestantes !== null).sort((a, b) => a.mesesRestantes - b.mesesRestantes);
+            if(pendientesConFecha.length > 0) {
+                let cercana = pendientesConFecha[0];
+                elCercanaTitulo.innerText = `${cercana.meta.emoji || '🎯'} ${cercana.meta.nombre}`;
+                elCercanaSub.innerText = `${cercana.pct.toFixed(0)}% completada`;
+            } else {
+                elCercanaTitulo.innerText = '—';
+                elCercanaSub.innerText = progresos.length > 0 ? 'Sin fecha límite' : 'Crea tu primera meta';
+            }
+        }
+
+        function renderMetasAhorro(progresos) {
+            let block = document.getElementById('bloque_metas_ahorro');
+            if(!block) return;
+
+            if(progresos.length === 0) {
+                block.innerHTML = `<div style="font-size:13px; color:var(--text-secondary); text-align:center; padding:24px 0;">Todavía no tienes metas de ahorro — crea la primera arriba.</div>`;
+                return;
+            }
+
+            let fmt = v => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            block.innerHTML = progresos.map(p => {
+                let m = p.meta;
+                // p.actual/objetivo/restante/aportarPorMes vienen normalizados a quetzales (calcularProgresoMeta usa
+                // normalizarAQuetzales), así que siempre se muestran con Q — aunque la meta esté en USD.
+                let colorBarra = p.cumplida ? 'var(--color-success)' : (p.vencida ? 'var(--color-danger)' : 'var(--color-primary)');
+                let fechaTexto = (m.anio_meta && m.mes_meta) ? `Meta para ${nombresMesesCompleto[m.mes_meta - 1]} ${m.anio_meta}` : 'Sin fecha límite';
+
+                let asesoriaHtml;
+                if(p.cumplida) {
+                    asesoriaHtml = `<span style="color:var(--color-success); font-weight:600;">🎉 ¡Meta cumplida!</span>`;
+                } else if(p.vencida) {
+                    asesoriaHtml = `<span style="color:var(--color-danger); font-weight:600;">La fecha meta ya pasó — te faltan Q ${fmt(p.restante)} para completarla.</span>`;
+                } else if(p.mesesRestantes !== null) {
+                    asesoriaHtml = `Para llegar a tiempo, ahorra <b>Q ${fmt(p.aportarPorMes)}/mes</b> los próximos ${p.mesesRestantes} mes${p.mesesRestantes === 1 ? '' : 'es'}.`;
+                } else {
+                    asesoriaHtml = `Te faltan Q ${fmt(p.restante)} — ponle fecha meta para que te diga cuánto ahorrar al mes.`;
+                }
+
+                let aportesHtml = p.aportes.length > 0
+                    ? p.aportes.slice().sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).map(a => `
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding:6px 0; border-bottom:1px dashed var(--borders);">
+                            <span>${a.fecha}${a.nota ? ' · ' + escaparHtml(a.nota) : ''}</span>
+                            <span style="display:flex; align-items:center; gap:8px;">
+                                <b style="color:var(--color-success);">+${a.moneda === 'USD' ? '$' : 'Q'} ${fmt(a.monto)}</b>
+                                <i data-lucide="trash-2" style="width:12px; height:12px; cursor:pointer; color:var(--text-secondary);" onclick="eliminarRegistroAhorro('aportes_ahorro', '${a.id}')"></i>
+                            </span>
+                        </div>`).join('')
+                    : `<div style="font-size:12px; color:var(--text-secondary); padding:6px 0;">Sin aportes todavía.</div>`;
+
+                return `
+                    <div style="border:1px solid var(--borders); border-radius:12px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="font-size:24px;">${m.emoji || '🎯'}</span>
+                                <div>
+                                    <div style="font-size:15px; font-weight:700;">${escaparHtml(m.nombre)}</div>
+                                    <div style="font-size:11px; color:var(--text-secondary);">${fechaTexto}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <button class="month-selector" style="padding:6px 10px; font-size:12px;" onclick="abrirFormularioAporte('${m.id}')"><i data-lucide="plus" style="width:13px; height:13px;"></i> Aporte</button>
+                                <i data-lucide="pencil" style="width:15px; height:15px; cursor:pointer; color:var(--text-secondary);" onclick="abrirFormularioMetaAhorro('${m.id}')"></i>
+                                <i data-lucide="trash-2" style="width:15px; height:15px; cursor:pointer; color:var(--red-negative);" onclick="eliminarRegistroAhorro('metas_ahorro', '${m.id}')"></i>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-top:14px; margin-bottom:4px;">
+                            <span>Q ${fmt(p.actual)} de Q ${fmt(p.objetivo)}</span>
+                            <span style="color:${colorBarra};">${p.pct.toFixed(0)}%</span>
+                        </div>
+                        <div class="progress-bar-frame"><div class="progress-bar-fill" style="width:${p.pct.toFixed(0)}%; background-color:${colorBarra};"></div></div>
+
+                        <div style="font-size:12px; color:var(--text-secondary); margin-top:10px;">${asesoriaHtml}</div>
+
+                        <div style="margin-top:10px;">
+                            <span onclick="alternarAportesMeta('${m.id}')" style="font-size:12px; color:var(--purple-main); cursor:pointer; font-weight:600;">Ver aportes (${p.aportes.length})</span>
+                            <div id="aportes_meta_${m.id}" style="display:none; margin-top:8px;">${aportesHtml}</div>
+                        </div>
+                    </div>`;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function alternarAportesMeta(metaId) {
+            let el = document.getElementById('aportes_meta_' + metaId);
+            if(el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function abrirFormularioMetaAhorro(id) {
+            document.getElementById('drawer_meta_ahorro_error').innerText = '';
+            let meta = id ? (db_metas_ahorro || []).find(m => String(m.id) === String(id)) : null;
+
+            document.getElementById('form_meta_id').value = meta ? meta.id : '';
+            document.getElementById('drawer_meta_ahorro_titulo').innerText = meta ? '🎯 Editar meta' : '🎯 Nueva meta de ahorro';
+            document.getElementById('form_meta_nombre').value = meta ? meta.nombre : '';
+            document.getElementById('form_meta_emoji').value = meta ? (meta.emoji || '') : '';
+            document.getElementById('form_meta_monto').value = meta ? meta.monto_objetivo : '';
+            document.getElementById('form_meta_moneda').value = meta ? meta.moneda : 'GTQ';
+            document.getElementById('form_meta_fecha').value = (meta && meta.anio_meta && meta.mes_meta) ? `${meta.anio_meta}-${String(meta.mes_meta).padStart(2, '0')}` : '';
+
+            conmutarDrawerMetaAhorro(true);
+        }
+
+        async function guardarMetaAhorroMecanismo() {
+            let id = document.getElementById('form_meta_id').value;
+            let nombre = document.getElementById('form_meta_nombre').value.trim();
+            let emoji = document.getElementById('form_meta_emoji').value.trim() || '🎯';
+            let monto = parseFloat(document.getElementById('form_meta_monto').value);
+            let moneda = document.getElementById('form_meta_moneda').value;
+            let fechaVal = document.getElementById('form_meta_fecha').value;
+            let errorBox = document.getElementById('drawer_meta_ahorro_error');
+            errorBox.innerText = '';
+
+            if(!nombre) { errorBox.innerText = 'Ponle un nombre a la meta.'; return; }
+            if(!monto || monto <= 0) { errorBox.innerText = 'El monto objetivo debe ser mayor a 0.'; return; }
+
+            let payload = {
+                nombre, emoji, monto_objetivo: monto, moneda,
+                anio_meta: null, mes_meta: null,
+                user_id: activeSessionUser.id
+            };
+            if(fechaVal) {
+                let [anio, mes] = fechaVal.split('-').map(Number);
+                payload.anio_meta = anio; payload.mes_meta = mes;
+            }
+
+            const resultado = id
+                ? await _supabase.from('metas_ahorro').update(payload).eq('id', id)
+                : await _supabase.from('metas_ahorro').insert([payload]);
+
+            if(resultado.error) { errorBox.innerText = 'Error: ' + resultado.error.message; return; }
+
+            conmutarDrawerMetaAhorro(false);
+            await descargarEstructuresCloud();
+        }
+
+        function abrirFormularioAporte(metaId) {
+            document.getElementById('drawer_aporte_ahorro_error').innerText = '';
+            document.getElementById('form_aporte_meta_id').value = metaId;
+            document.getElementById('form_aporte_monto').value = '';
+            document.getElementById('form_aporte_moneda').value = 'GTQ';
+            let hoy = new Date();
+            document.getElementById('form_aporte_fecha').value = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
+            document.getElementById('form_aporte_nota').value = '';
+            conmutarDrawerAporteAhorro(true);
+        }
+
+        async function guardarAporteAhorroMecanismo() {
+            let metaId = document.getElementById('form_aporte_meta_id').value;
+            let monto = parseFloat(document.getElementById('form_aporte_monto').value);
+            let moneda = document.getElementById('form_aporte_moneda').value;
+            let fecha = document.getElementById('form_aporte_fecha').value;
+            let nota = document.getElementById('form_aporte_nota').value.trim() || null;
+            let errorBox = document.getElementById('drawer_aporte_ahorro_error');
+            errorBox.innerText = '';
+
+            if(!monto || monto <= 0) { errorBox.innerText = 'El monto debe ser mayor a 0.'; return; }
+            if(!fecha) { errorBox.innerText = 'Elige una fecha.'; return; }
+
+            const { error } = await _supabase.from('aportes_ahorro').insert([{
+                meta_id: metaId, monto, moneda, fecha, nota, user_id: activeSessionUser.id
+            }]);
+
+            if(error) { errorBox.innerText = 'Error: ' + error.message; return; }
+
+            conmutarDrawerAporteAhorro(false);
+            await descargarEstructuresCloud();
+        }
+
+        async function eliminarRegistroAhorro(tabla, id) {
+            let etiqueta = tabla === 'metas_ahorro' ? 'esta meta (se borran también sus aportes)' : 'este aporte';
+            let confirmado = await confirmarAccion(`¿Seguro que quieres eliminar ${etiqueta}? Esta acción no se puede deshacer.`, { destructivo: true });
             if(!confirmado) return;
 
             const { error } = await _supabase.from(tabla).delete().eq('id', id);
@@ -2761,6 +3309,14 @@
             let categoriasIngresoDisponibles = (db_categorias || []).filter(c => c.tipo === 'ingreso').map(c => c.nombre).join(', ') || 'ninguna registrada';
             let tarjetasDisponibles = (db_tarjetas || []).map(t => `${t.nombre} (id ${t.id})`).join(', ') || 'ninguna registrada';
 
+            let progresosAhorro = obtenerMetasAhorroActivas();
+            let lineasMetasAhorro = progresosAhorro.map(p => {
+                let m = p.meta;
+                let estado = p.cumplida ? 'CUMPLIDA' : (p.vencida ? 'VENCIDA' : (p.mesesRestantes !== null ? `necesita Q${p.aportarPorMes.toFixed(2)}/mes por ${p.mesesRestantes} mes(es) para llegar a tiempo` : 'sin fecha meta definida'));
+                let fecha = (m.anio_meta && m.mes_meta) ? `${nombresMesesCompleto[m.mes_meta - 1]} ${m.anio_meta}` : 'sin fecha';
+                return `- ${m.nombre} (id ${m.id}): Q${p.actual.toFixed(2)} de Q${p.objetivo.toFixed(2)} (${p.pct.toFixed(0)}%), meta para ${fecha} — ${estado}`;
+            }).join('\n') || '- Sin metas de ahorro registradas';
+
             return `Mes actual: ${nombresMesesCompleto[mesHoy - 1]} ${anioHoy}.
 
 DISPONIBLE DEL MES (flujo de caja: ingreso del mes anterior - gastos de este mes): Q${disponibleDelMes.toFixed(2)}
@@ -2779,6 +3335,9 @@ ${lineasCuotas}
 RECURRENTES ACTIVOS (suscripciones, salarios, etc.):
 ${lineasRecurrentes}
 
+METAS DE AHORRO (usa registrar_aporte_ahorro con el id numérico correspondiente):
+${lineasMetasAhorro}
+
 Categorías de gasto disponibles (usar EXACTAMENTE uno de estos nombres, nunca inventar uno nuevo): ${categoriasGastoDisponibles}
 Categorías de ingreso disponibles (usar EXACTAMENTE uno de estos nombres, nunca inventar uno nuevo): ${categoriasIngresoDisponibles}
 Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarjetasDisponibles}`;
@@ -2789,23 +3348,30 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             let rangoInicio = calcularRangoPeriodo('inicio');
             let rangoIngresos = calcularRangoPeriodo('ingresos');
             let rangoGastos = calcularRangoPeriodo('gastos');
+            let rangoTarjetas = calcularRangoPeriodo('tarjetas');
+            let categoriaFiltroIngresos = obtenerCategoriaFiltro('ingresos');
+            let categoriaFiltroGastos = obtenerCategoriaFiltro('gastos');
 
-            // ---- Datos del PERÍODO de la página Ingresos ----
-            let ingresosPeriodo = (db_ingresos || []).filter(i => estaEnRango(i.anio, i.mes, rangoIngresos));
+            // ---- Datos del PERÍODO de la página Ingresos (+ filtro de categoría, si hay uno elegido) ----
+            let ingresosPeriodo = (db_ingresos || []).filter(i => estaEnRango(i.anio, i.mes, rangoIngresos)
+                && (categoriaFiltroIngresos === 'Todas' || (i.categoria || 'Sin categoría') === categoriaFiltroIngresos));
             let totalIngresos = ingresosPeriodo.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
             let mesPrevIng = rangoIngresos.mesInicio - 1; let anioPrevIng = rangoIngresos.anioInicio;
             if(mesPrevIng < 1) { mesPrevIng = 12; anioPrevIng -= 1; }
-            let totalIngresosPeriodoPrev = (db_ingresos || []).filter(i => parseInt(i.anio) === anioPrevIng && parseInt(i.mes) === mesPrevIng)
+            let totalIngresosPeriodoPrev = (db_ingresos || []).filter(i => parseInt(i.anio) === anioPrevIng && parseInt(i.mes) === mesPrevIng
+                && (categoriaFiltroIngresos === 'Todas' || (i.categoria || 'Sin categoría') === categoriaFiltroIngresos))
                 .reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
             // ---- Datos del PERÍODO de la página Gastos: por fecha de PAGO efectivo, no de compra (misma lógica que Inicio) ----
-            let gastosPeriodo = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return estaEnRango(p.anio, p.mes, rangoGastos); });
+            let gastosPeriodo = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return estaEnRango(p.anio, p.mes, rangoGastos)
+                && (categoriaFiltroGastos === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltroGastos); });
             let totalGastos = gastosPeriodo.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
             let mesPrevGas = rangoGastos.mesInicio - 1; let anioPrevGas = rangoGastos.anioInicio;
             if(mesPrevGas < 1) { mesPrevGas = 12; anioPrevGas -= 1; }
-            let totalGastosPeriodoPrev = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return p.anio === anioPrevGas && p.mes === mesPrevGas; })
+            let totalGastosPeriodoPrev = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return p.anio === anioPrevGas && p.mes === mesPrevGas
+                && (categoriaFiltroGastos === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltroGastos); })
                 .reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
             // ---- Datos del PERÍODO de Inicio (para su propia dona "Distribución de gastos") ----
@@ -2920,17 +3486,17 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             document.getElementById('kpi_ing_promedio').innerText = "Q " + promedioMensualIngresos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('kpi_ing_promedio_usd').innerText = "$ " + normalizarAUsd(promedioMensualIngresos, 'GTQ').toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 
-            let comboF = document.getElementById('filtro_fuente_ingreso');
-            if(comboF && comboF.options.length <= 1) {
-                Object.keys(ingresosAgrupados).forEach(f => {
-                    comboF.innerHTML += `<option value="${f}">${f}</option>`;
+            let comboCategoriaTopIngresos = document.getElementById('filtro_categoria_top_ingresos');
+            if(comboCategoriaTopIngresos && comboCategoriaTopIngresos.options.length <= 1) {
+                (db_categorias || []).filter(c => c.tipo === 'ingreso').forEach(c => {
+                    comboCategoriaTopIngresos.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
                 });
             }
 
-            let comboCatGasto = document.getElementById('filtro_categoria_gasto');
-            if(comboCatGasto && comboCatGasto.options.length <= 1) {
-                Object.keys(gastosAgrupados).forEach(c => {
-                    comboCatGasto.innerHTML += `<option value="${c}">${c}</option>`;
+            let comboCategoriaTopGastos = document.getElementById('filtro_categoria_top_gastos');
+            if(comboCategoriaTopGastos && comboCategoriaTopGastos.options.length <= 1) {
+                (db_categorias || []).filter(c => c.tipo === 'gasto').forEach(c => {
+                    comboCategoriaTopGastos.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
                 });
             }
 
@@ -2961,8 +3527,13 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             renderResumenTarjetas(db_tarjetas);
             renderAlertaUtilizacionTarjetas(db_tarjetas);
             renderCarruselTarjetas(db_tarjetas);
-            renderGraficaBalanceTarjetas();
+            renderGraficaBalanceTarjetas(rangoTarjetas);
             renderProximosPagosTarjetas30d(db_tarjetas);
+
+            let progresosAhorro = obtenerMetasAhorroActivas();
+            renderWidgetAhorroInicio(progresosAhorro);
+            renderKpisAhorro(progresosAhorro);
+            renderMetasAhorro(progresosAhorro);
 
             let sumaSaldosTarjetas = (db_tarjetas || []).reduce((a, t) => a + calcularDisponibleTarjeta(t).utilizadoTotal, 0);
             document.getElementById('kpi_tarjetas_top_kpi').innerText = (db_tarjetas && db_tarjetas.length > 0)
@@ -3473,7 +4044,9 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
         // 📈 EVOLUCIÓN DE INGRESOS: barras apiladas por fuente + promedio móvil de 3 meses
         function renderHistogramaCombinadoIngresos(rango) {
             let meses = obtenerMesesEnRango(rango);
-            let series = calcularSeriesPorCategoria(db_ingresos, meses);
+            let categoriaFiltro = obtenerCategoriaFiltro('ingresos');
+            let ingresosFiltrados = categoriaFiltro === 'Todas' ? db_ingresos : (db_ingresos || []).filter(i => (i.categoria || 'Sin categoría') === categoriaFiltro);
+            let series = calcularSeriesPorCategoria(ingresosFiltrados, meses);
             let totalesPorMes = meses.map((_, i) => Object.keys(series).reduce((s, c) => s + (series[c][i] || 0), 0));
             renderGraficoBarrasApiladas('cont_histograma_ingresos', meses, series, {
                 mostrarLinea: true, serieLinea: calcularPromedioMovil(totalesPorMes, 3), mostrarUsd: true, tipo: 'ingreso'
@@ -3483,7 +4056,9 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
         // 📉 EVOLUCIÓN DE GASTOS: barras apiladas por categoría, por mes de PAGO (igual que el resto de la página)
         function renderHistogramaCombinadoGastos(rango) {
             let meses = obtenerMesesEnRango(rango);
-            let series = calcularSeriesPorCategoriaPagoEfectivo(db_gastos, meses);
+            let categoriaFiltro = obtenerCategoriaFiltro('gastos');
+            let gastosFiltrados = categoriaFiltro === 'Todas' ? db_gastos : (db_gastos || []).filter(g => (g.categoria || 'Sin categoría') === categoriaFiltro);
+            let series = calcularSeriesPorCategoriaPagoEfectivo(gastosFiltrados, meses);
             let totalesPorMes = meses.map((_, i) => Object.keys(series).reduce((s, c) => s + (series[c][i] || 0), 0));
             renderGraficoBarrasApiladas('cont_histograma_gastos_node', meses, series, {
                 mostrarLinea: true, serieLinea: calcularPromedioMovil(totalesPorMes, 3), tipo: 'gasto'
@@ -3570,7 +4145,10 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 leyendasHtml += `
                     <div class="legend-item">
                         <div class="legend-color-dot"><div class="color-dot" style="background-color:${color}"></div>${clave}</div>
-                        <span class="legend-amount">Q ${monto.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+                        <span class="legend-amount" style="display:flex; flex-direction:column; align-items:flex-end; line-height:1.3;">
+                            <span>Q ${monto.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+                            <span style="font-size:11px; font-weight:500; color:var(--text-secondary);">$ ${normalizarAUsd(monto, 'GTQ').toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+                        </span>
                         <b class="legend-pct">${porcentaje.toFixed(1)}%</b>
                     </div>`;
             });
@@ -4202,46 +4780,14 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             conmutarDrawerDetalleTarjeta(true);
         }
 
-        // Arma "YYYY-MM" de un mes real desplazado n meses (n puede ser negativo)
-        function formatearMesISO(anioBase, mesBase, desplazamiento) {
-            let mes = mesBase + desplazamiento;
-            let anio = anioBase;
-            while(mes > 12) { mes -= 12; anio += 1; }
-            while(mes < 1) { mes += 12; anio -= 1; }
-            return `${anio}-${String(mes).padStart(2, '0')}`;
-        }
+        // Balance mensual: ya no tiene filtro propio — sigue el filtro general de la vista Tarjetas
+        // (mismo mecanismo que Inicio/Ingresos/Gastos), siempre con todas las tarjetas juntas.
+        function renderGraficaBalanceTarjetas(rango) {
+            let meses = obtenerMesesEnRango(rango);
+            if(meses.length === 0) return;
+            let primero = meses[0], ultimo = meses[meses.length - 1];
 
-        function inicializarFiltrosGraficaTarjetas() {
-            let selectTarjeta = document.getElementById('tarjetas_grafica_filtro_tarjeta');
-            let inputDesde = document.getElementById('tarjetas_grafica_filtro_desde');
-            let inputHasta = document.getElementById('tarjetas_grafica_filtro_hasta');
-            if(!selectTarjeta || !inputDesde || !inputHasta) return;
-
-            if(selectTarjeta.options.length <= 1) {
-                (db_tarjetas || []).forEach(t => selectTarjeta.innerHTML += `<option value="${t.id}">${t.nombre}</option>`);
-            }
-
-            if(!inputDesde.value || !inputHasta.value) {
-                let { anio: anioHoy, mes: mesHoy } = obtenerAnioMesReal();
-                inputDesde.value = formatearMesISO(anioHoy, mesHoy, 0);
-                inputHasta.value = formatearMesISO(anioHoy, mesHoy, 5);
-            }
-        }
-
-        function renderGraficaBalanceTarjetas() {
-            inicializarFiltrosGraficaTarjetas();
-
-            let selectTarjeta = document.getElementById('tarjetas_grafica_filtro_tarjeta');
-            let inputDesde = document.getElementById('tarjetas_grafica_filtro_desde');
-            let inputHasta = document.getElementById('tarjetas_grafica_filtro_hasta');
-            if(!selectTarjeta || !inputDesde || !inputHasta || !inputDesde.value || !inputHasta.value) return;
-
-            let tarjetaId = selectTarjeta.value || null;
-            let [anioInicio, mesInicio] = inputDesde.value.split('-').map(Number);
-            let [anioFin, mesFin] = inputHasta.value.split('-').map(Number);
-            if(anioFin < anioInicio || (anioFin === anioInicio && mesFin < mesInicio)) { anioFin = anioInicio; mesFin = mesInicio; }
-
-            let proyeccion = calcularProyeccionComprometido(anioInicio, mesInicio, anioFin, mesFin, tarjetaId);
+            let proyeccion = calcularProyeccionComprometido(primero.anio, primero.mes, ultimo.anio, ultimo.mes, null);
             let etiquetas = proyeccion.map(p => `${p.label} '${String(p.anio).slice(2)}`);
             let serieDisponible = proyeccion.map(p => p.disponible);
             let serieComprometido = proyeccion.map(p => p.comprometido);
@@ -4461,13 +5007,15 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
         function filtrarHistorialIngresosMecanismo() {
             let busqueda = document.getElementById('busqueda_ingreso_input').value.toLowerCase();
             let tipo = document.getElementById('filtro_tipo_ingreso').value;
+            let categoria = obtenerCategoriaFiltro('ingresos');
             let rango = calcularRangoPeriodo('ingresos');
 
             let baseFiltrada = db_ingresos.filter(i => {
                 let matchesBusqueda = i.nombre.toLowerCase().includes(busqueda);
                 let matchesTipo = (tipo === "Todos" || i.tipo === tipo);
+                let matchesCategoria = (categoria === "Todas" || (i.categoria || 'Sin categoría') === categoria);
                 let matchesPeriodo = estaEnRango(i.anio, i.mes, rango);
-                return matchesBusqueda && matchesTipo && matchesPeriodo;
+                return matchesBusqueda && matchesTipo && matchesCategoria && matchesPeriodo;
             });
             renderHistorialTablaIngresos(baseFiltrada);
         }
@@ -4475,7 +5023,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
         function filtrarHistorialGastosMecanismo() {
             let busqueda = document.getElementById('busqueda_gasto_input').value.toLowerCase();
             let tipo = document.getElementById('filtro_tipo_gasto').value;
-            let categoria = document.getElementById('filtro_categoria_gasto').value;
+            let categoria = obtenerCategoriaFiltro('gastos');
             let rango = calcularRangoPeriodo('gastos');
 
             let baseFiltrada = db_gastos.filter(g => {
@@ -4515,7 +5063,9 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
 
         function exportarTodoIngresos() {
             let rango = calcularRangoPeriodo('ingresos');
-            let ingresosPeriodo = (db_ingresos || []).filter(i => estaEnRango(i.anio, i.mes, rango));
+            let categoriaFiltro = obtenerCategoriaFiltro('ingresos');
+            let ingresosPeriodo = (db_ingresos || []).filter(i => estaEnRango(i.anio, i.mes, rango)
+                && (categoriaFiltro === 'Todas' || (i.categoria || 'Sin categoría') === categoriaFiltro));
 
             let secciones = [];
             secciones.push(`HISTORIAL DE INGRESOS - ${rango.etiqueta}`);
@@ -4544,7 +5094,9 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
 
         function exportarTodoGastos() {
             let rango = calcularRangoPeriodo('gastos');
-            let gastosPeriodo = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return estaEnRango(p.anio, p.mes, rango); });
+            let categoriaFiltro = obtenerCategoriaFiltro('gastos');
+            let gastosPeriodo = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return estaEnRango(p.anio, p.mes, rango)
+                && (categoriaFiltro === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltro); });
 
             let secciones = [];
             secciones.push(`HISTORIAL DE GASTOS - ${rango.etiqueta}`);
@@ -4610,15 +5162,20 @@ Reglas de comportamiento:
 4. La aplicación ya se encarga de pedirle confirmación al usuario ANTES de ejecutar cualquier función de registro — eso ocurre de forma automática en cuanto llamas la función, tú no necesitas pedir confirmación por tu cuenta. Si la respuesta de la función indica éxito, el registro YA quedó guardado en la base de datos: dilo de forma clara y en pasado ("ya quedó registrado"), nunca pidas que "lo confirme en la pantalla" de nuevo. Si la respuesta indica "cancelado_por_usuario", informa que no se guardó nada. Si indica otro error, explica el problema.
 5. Actúa como un analista crítico, no pasivo: si detectas patrones preocupantes en el contexto financiero (gastos variables que superan a los fijos, una tarjeta con uso por encima del 80%, cuotas acumulándose, o una compra que no encaja con el patrón normal de gasto del usuario) señálalo de forma proactiva, incluso si no te lo preguntaron directamente.
 6. Sé breve y concreto. Usa cifras en quetzales (Q) salvo que el usuario hable en dólares. No repitas disclaimers genéricos de "no soy asesor financiero licenciado" en cada respuesta.
-7. Esto es un chat, no un documento: responde en 2-5 líneas para preguntas simples, y como máximo un par de párrafos cortos con 2-3 viñetas para un análisis más completo. NUNCA uses encabezados markdown ("#", "##", "###"), ni líneas separadoras ("---"), ni estructura de reporte con muchas secciones. Puedes usar **negritas** solo para resaltar una cifra o palabra puntual, con moderación.
+7. Esto es un chat, no un documento: responde en 2-5 líneas para preguntas simples, y como máximo un par de párrafos cortos con 2-3 viñetas para un análisis más completo. NUNCA uses encabezados markdown ("#", "##", "###"), ni líneas separadoras ("---"), ni estructura de reporte con muchas secciones. Puedes usar **negritas** solo para resaltar una cifra o palabra puntual, con moderación. Cuando compares varios meses, categorías o registros con las mismas columnas, usa SIEMPRE una tabla markdown (formato "| Columna | Columna |" con la fila separadora "| --- | --- |") en vez de una lista o párrafo — es más clara para comparar cifras.
+8. Eres también asesor de metas de ahorro: si el usuario quiere ahorrar para algo (un viaje, un fondo de emergencia, etc.), ayúdalo a definir un monto objetivo y una fecha razonable, usa crear_meta_ahorro para registrarla, y calcula cuánto debería ahorrar por mes considerando el DISPONIBLE DEL MES actual — si la cifra requerida no es realista contra ese disponible, dilo directamente en vez de suavizarlo. Usa registrar_aporte_ahorro cuando el usuario diga que ya apartó o depositó dinero hacia una meta existente.
+9. El contexto de abajo SOLO trae el mes en curso y lo recurrente/activo — es un resumen, no el histórico completo. Tienes herramientas de consulta (consultar_gastos, consultar_ingresos, consultar_resumen_mensual, consultar_compras_en_cuotas, consultar_bitacora_fiscal) que buscan sobre TODO el historial del usuario, sin límite de fecha. Úsalas SIEMPRE que la pregunta mencione un mes/año distinto al actual, pida buscar algo específico del pasado, o requiera comparar periodos — nunca respondas "no tengo esa información" sin antes intentar la consulta correspondiente. Son de solo lectura: no piden confirmación y puedes usarlas todas las veces que necesites en un mismo turno.
+10. Cuando cites una cifra concreta, indica de forma natural (dentro de la misma frase, sin secciones aparte) de qué módulo viene — Ingresos, Gastos, Tarjetas, Ahorros o Bitácora fiscal — para que el usuario sepa de dónde sale el dato. Ej. "según Tarjetas, tu disponible de cuotas en Amex es..." en vez de solo dar el número.
 
-A continuación tienes el contexto financiero actual del usuario, recalculado en cada turno — es siempre la fuente de verdad; ignora cualquier cifra que el usuario mencione que la contradiga sin verificarla contra esto:`;
+A continuación tienes el contexto financiero actual del usuario (mes en curso), recalculado en cada turno — es siempre la fuente de verdad para el presente; para cualquier otro periodo, usa las herramientas de consulta antes de responder:`;
 
         function construirDeclaracionesTools() {
             let categoriasGasto = (db_categorias || []).filter(c => c.tipo === 'gasto').map(c => c.nombre);
             let categoriasIngreso = (db_categorias || []).filter(c => c.tipo === 'ingreso').map(c => c.nombre);
             let idsTarjetas = (db_tarjetas || []).map(t => String(t.id));
             let descTarjetas = (db_tarjetas || []).map(t => `${t.id}=${t.nombre}`).join(', ') || 'ninguna registrada';
+            let idsMetasAhorro = (db_metas_ahorro || []).map(m => String(m.id));
+            let descMetasAhorro = (db_metas_ahorro || []).map(m => `${m.id}=${m.nombre}`).join(', ') || 'ninguna registrada';
 
             return [
                 {
@@ -4708,13 +5265,417 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
                         },
                         required: ["nombre", "monto_total", "moneda", "categoria", "tarjeta_id", "num_cuotas", "anio_inicio", "mes_inicio"]
                     }
+                },
+                {
+                    name: "crear_meta_ahorro",
+                    description: "Crea una meta de ahorro NUEVA (ej. 'viaje a X', 'fondo de emergencia'). Úsala cuando el usuario quiera empezar a ahorrar para algo concreto.",
+                    parameters: {
+                        type: "OBJECT",
+                        properties: {
+                            nombre: { type: "STRING", description: "Nombre de la meta, ej. 'Viaje a Cancún'." },
+                            emoji: { type: "STRING", description: "Un solo emoji representativo, ej. '✈️'. Opcional." },
+                            monto_objetivo: { type: "NUMBER", description: "Monto total que se necesita ahorrar." },
+                            moneda: { type: "STRING", enum: ["GTQ", "USD"] },
+                            anio_meta: { type: "NUMBER", description: "Año en el que el usuario quiere lograr la meta. Opcional, pero sin esto no se puede calcular cuánto ahorrar al mes." },
+                            mes_meta: { type: "NUMBER", description: "Mes (1-12) en el que el usuario quiere lograr la meta. Opcional." }
+                        },
+                        required: ["nombre", "monto_objetivo", "moneda"]
+                    }
+                },
+                {
+                    name: "registrar_aporte_ahorro",
+                    description: "Registra un aporte (depósito) a una meta de ahorro que ya existe.",
+                    parameters: {
+                        type: "OBJECT",
+                        properties: {
+                            meta_id: { type: "STRING", enum: idsMetasAhorro, description: `Metas de ahorro existentes: ${descMetasAhorro}` },
+                            monto: { type: "NUMBER" },
+                            moneda: { type: "STRING", enum: ["GTQ", "USD"] },
+                            fecha: { type: "STRING", description: "Fecha en formato YYYY-MM-DD. Si el usuario no la menciona, usa la fecha de hoy." },
+                            nota: { type: "STRING", description: "Nota opcional." }
+                        },
+                        required: ["meta_id", "monto", "moneda", "fecha"]
+                    }
+                },
+                {
+                    name: "consultar_gastos",
+                    description: "Busca en TODO el historial de gastos del usuario (no solo el mes actual). Úsala siempre que la pregunta sea sobre gastos pasados, una categoría específica, un mes anterior, o buscar un gasto por nombre — el contexto del sistema solo trae el mes en curso.",
+                    parameters: {
+                        type: "OBJECT",
+                        properties: {
+                            anio: { type: "NUMBER", description: "Filtra por año. Opcional." },
+                            mes: { type: "NUMBER", description: "Filtra por mes (1-12). Opcional." },
+                            categoria: { type: "STRING", enum: categoriasGasto, description: "Filtra por categoría exacta. Opcional." },
+                            medio_pago: { type: "STRING", enum: ["efectivo", "tarjeta"], description: "Opcional." },
+                            texto: { type: "STRING", description: "Busca este texto dentro del nombre/concepto del gasto. Opcional." }
+                        }
+                    }
+                },
+                {
+                    name: "consultar_ingresos",
+                    description: "Busca en TODO el historial de ingresos del usuario (no solo el mes actual). Úsala para preguntas sobre ingresos pasados, una fuente/categoría específica, o un mes anterior.",
+                    parameters: {
+                        type: "OBJECT",
+                        properties: {
+                            anio: { type: "NUMBER", description: "Filtra por año. Opcional." },
+                            mes: { type: "NUMBER", description: "Filtra por mes (1-12). Opcional." },
+                            categoria: { type: "STRING", enum: categoriasIngreso, description: "Filtra por categoría/fuente exacta. Opcional." },
+                            texto: { type: "STRING", description: "Busca este texto dentro del nombre/concepto del ingreso. Opcional." }
+                        }
+                    }
+                },
+                {
+                    name: "consultar_resumen_mensual",
+                    description: "Devuelve el resumen financiero completo (ingresos, gastos, disponible, desglose por categoría) de un mes específico, pasado o presente. Úsala para comparar meses o responder cómo estuvo el presupuesto en un mes que no es el actual.",
+                    parameters: {
+                        type: "OBJECT",
+                        properties: {
+                            anio: { type: "NUMBER" },
+                            mes: { type: "NUMBER", description: "Mes en número (1-12)." }
+                        },
+                        required: ["anio", "mes"]
+                    }
+                },
+                {
+                    name: "consultar_compras_en_cuotas",
+                    description: "Devuelve el historial COMPLETO de compras en cuotas, incluyendo las ya terminadas/pagadas (no solo las activas). Útil para preguntas como '¿cuánto pagué en total por X compra?' o '¿cuándo termino de pagar Y?'.",
+                    parameters: {
+                        type: "OBJECT",
+                        properties: {
+                            tarjeta_id: { type: "STRING", enum: idsTarjetas, description: `Filtra por tarjeta. Opcional. Tarjetas: ${descTarjetas}` },
+                            solo_activas: { type: "BOOLEAN", description: "Si es true, solo devuelve las que aún tienen cuotas pendientes. Opcional." }
+                        }
+                    }
+                },
+                {
+                    name: "consultar_bitacora_fiscal",
+                    description: "Devuelve el historial COMPLETO de cumplimiento fiscal mes a mes (facturas, declaraciones, impuesto calculado, si quedó pendiente o completo). Úsala para preguntas sobre meses fiscales pasados.",
+                    parameters: {
+                        type: "OBJECT",
+                        properties: {
+                            anio: { type: "NUMBER", description: "Filtra por año. Opcional — si se omite, devuelve todos los meses disponibles." }
+                        }
+                    }
                 }
             ];
         }
 
-        function alternarChatIA() {
-            document.getElementById('chat_ia_panel').classList.toggle('opened');
+        // 💬 Historial de conversaciones del asistente — cada conversación agrupa sus mensajes en
+        // chat_conversaciones/chat_mensajes; "parts" se guarda crudo (incluye functionCall/functionResponse)
+        // para que al reabrir una conversación el modelo recupere el contexto completo, no solo el texto visible.
+        const ICONO_PALABRA_CLAVE_CHAT = [
+            [/tarjeta|cuota/, 'credit-card'],
+            [/gasto|categor/, 'bar-chart-3'],
+            [/ingreso|salario|sueldo/, 'trending-up'],
+            [/ahorro|meta/, 'target'],
+            [/impuesto|fiscal|declarac/, 'file-text'],
+            [/presupuesto|resumen|balance/, 'pie-chart']
+        ];
+        function iconoParaConversacion(titulo) {
+            let clave = (titulo || '').toLowerCase();
+            let coincidencia = ICONO_PALABRA_CLAVE_CHAT.find(([regex]) => regex.test(clave));
+            return coincidencia ? coincidencia[1] : 'message-circle';
         }
+
+        async function cargarConversacionesIA() {
+            let { data, error } = await _supabase.from('chat_conversaciones').select('*').order('updated_at', { ascending: false });
+            if(error) { console.log(error); return; }
+            db_conversaciones_ia = data || [];
+        }
+
+        async function crearNuevaConversacionIA() {
+            const { data, error } = await _supabase.from('chat_conversaciones').insert([{ user_id: activeSessionUser.id }]).select().single();
+            if(error) { console.log(error); return; }
+
+            db_conversaciones_ia.unshift(data);
+            conversacionActivaId = data.id;
+            chatHistorialIA = [];
+            menuConversacionAbiertoId = null;
+            conversacionEnRenombreId = null;
+
+            document.getElementById('chat_ia_mensajes').innerHTML = '';
+            mostrarVistaChatIA();
+            renderBienvenidaChatIA();
+        }
+
+        async function abrirConversacionIA(id) {
+            let { data, error } = await _supabase.from('chat_mensajes').select('*').eq('conversacion_id', id).order('created_at', { ascending: true });
+            if(error) { console.log(error); return; }
+
+            conversacionActivaId = id;
+            menuConversacionAbiertoId = null;
+            conversacionEnRenombreId = null;
+            chatHistorialIA = (data || []).map(m => ({ role: m.role, parts: m.parts }));
+
+            document.getElementById('chat_ia_mensajes').innerHTML = '';
+            mostrarVistaChatIA();
+
+            let huboTexto = false;
+            (data || []).forEach(m => {
+                let texto = (m.parts || []).filter(p => p.text).map(p => p.text).join('\n').trim();
+                if(texto) { renderMensajeChat(m.role === 'user' ? 'user' : 'ia', texto, m.created_at); huboTexto = true; }
+            });
+            if(!huboTexto) renderBienvenidaChatIA();
+        }
+
+        async function eliminarConversacionIA(id) {
+            let confirmado = await confirmarAccion('¿Seguro que quieres eliminar esta conversación? Esta acción no se puede deshacer.', { destructivo: true });
+            if(!confirmado) return;
+
+            const { error } = await _supabase.from('chat_conversaciones').delete().eq('id', id);
+            if(error) { alert('Error al eliminar: ' + error.message); return; }
+
+            db_conversaciones_ia = db_conversaciones_ia.filter(c => c.id !== id);
+            if(conversacionActivaId === id) conversacionActivaId = null;
+            menuConversacionAbiertoId = null;
+            renderListaConversacionesIA();
+        }
+
+        function mostrarVistaListaIA() {
+            vistaChatIAActual = 'lista';
+            menuConversacionAbiertoId = null;
+            conversacionEnRenombreId = null;
+            filtroListaConversacionesIA = '';
+            document.getElementById('input_buscar_conversaciones').value = '';
+            document.getElementById('chat_ia_lista_busqueda').style.display = 'flex';
+            document.getElementById('chat_ia_lista_conversaciones').style.display = 'block';
+            document.getElementById('chat_ia_mensajes').style.display = 'none';
+            document.getElementById('chat_ia_input_row').style.display = 'none';
+            document.getElementById('chat_ia_error').innerText = '';
+            renderListaConversacionesIA();
+            renderHeaderChatIA();
+        }
+
+        function mostrarVistaChatIA() {
+            vistaChatIAActual = 'chat';
+            document.getElementById('chat_ia_lista_busqueda').style.display = 'none';
+            document.getElementById('chat_ia_lista_conversaciones').style.display = 'none';
+            document.getElementById('chat_ia_mensajes').style.display = 'flex';
+            document.getElementById('chat_ia_input_row').style.display = 'flex';
+            document.getElementById('chat_ia_error').innerText = '';
+            renderHeaderChatIA();
+        }
+
+        function renderHeaderChatIA() {
+            let header = document.getElementById('chat_ia_panel_header');
+            if(!header) return;
+
+            if(vistaChatIAActual === 'lista') {
+                header.innerHTML = `
+                    <div class="chat-ia-header-titulo-grupo"><span>Conversaciones</span></div>
+                    <div class="chat-ia-header-acciones">
+                        <button class="chat-ia-header-nueva-btn" onclick="crearNuevaConversacionIA()"><i data-lucide="plus"></i>Nueva</button>
+                        <i class="chat-ia-header-btn" data-lucide="minus" onclick="alternarChatIA()" title="Minimizar"></i>
+                        <i class="chat-ia-header-btn" data-lucide="x" onclick="alternarChatIA()" title="Cerrar"></i>
+                    </div>`;
+            } else {
+                let conv = db_conversaciones_ia.find(c => c.id === conversacionActivaId);
+                let titulo = conv ? conv.titulo : 'Nueva conversación';
+                header.innerHTML = `
+                    <div class="chat-ia-header-titulo-grupo">
+                        <i class="chat-ia-header-btn" data-lucide="arrow-left" onclick="mostrarVistaListaIA()" title="Conversaciones"></i>
+                        <span>${escaparHtml(titulo)}</span>
+                    </div>
+                    <div class="chat-ia-header-acciones">
+                        <i class="chat-ia-header-btn" data-lucide="square-pen" onclick="crearNuevaConversacionIA()" title="Nueva conversación"></i>
+                        <i class="chat-ia-header-btn" data-lucide="minus" onclick="alternarChatIA()" title="Minimizar"></i>
+                        <i class="chat-ia-header-btn" data-lucide="x" onclick="alternarChatIA()" title="Cerrar"></i>
+                    </div>`;
+            }
+            lucide.createIcons();
+        }
+
+        function renderListaConversacionesIA() {
+            let cont = document.getElementById('chat_ia_lista_conversaciones');
+            if(!cont) return;
+
+            if(db_conversaciones_ia.length === 0) {
+                cont.innerHTML = `<div id="chat_ia_lista_vacia">Todavía no tienes conversaciones.</div>`;
+                return;
+            }
+
+            let filtro = filtroListaConversacionesIA.trim().toLowerCase();
+            let conversaciones = !filtro ? db_conversaciones_ia : db_conversaciones_ia.filter(c => (c.titulo || '').toLowerCase().includes(filtro));
+
+            if(conversaciones.length === 0) {
+                cont.innerHTML = `<div id="chat_ia_lista_vacia">No hay conversaciones que coincidan con "${escaparHtml(filtroListaConversacionesIA.trim())}".</div>`;
+                return;
+            }
+
+            let ahora = new Date();
+            let inicioHoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+            let inicioSemana = new Date(inicioHoy); inicioSemana.setDate(inicioSemana.getDate() - 7);
+
+            let favoritas = conversaciones.filter(c => c.favorita);
+            let resto = conversaciones.filter(c => !c.favorita);
+            let hoy = resto.filter(c => new Date(c.updated_at) >= inicioHoy);
+            let semana = resto.filter(c => new Date(c.updated_at) < inicioHoy && new Date(c.updated_at) >= inicioSemana);
+            let anteriores = resto.filter(c => new Date(c.updated_at) < inicioSemana);
+
+            let html = '';
+            [['Favoritas', favoritas], ['Hoy', hoy], ['Esta semana', semana], ['Anteriores', anteriores]].forEach(([nombre, lista]) => {
+                if(lista.length === 0) return;
+                html += `<div class="chat-conv-seccion-titulo">${nombre}</div>`;
+                html += lista.map(c => renderFilaConversacionIA(c)).join('');
+            });
+
+            cont.innerHTML = html;
+            lucide.createIcons();
+
+            if(conversacionEnRenombreId) {
+                let input = document.getElementById('input_renombre_' + conversacionEnRenombreId);
+                if(input) { input.focus(); input.select(); }
+            }
+        }
+
+        function renderFilaConversacionIA(c) {
+            let fecha = new Date(c.updated_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+            let activa = c.id === conversacionActivaId ? 'activa' : '';
+            let icono = iconoParaConversacion(c.titulo);
+            let enRenombre = conversacionEnRenombreId === c.id;
+            let menuAbierto = menuConversacionAbiertoId === c.id;
+
+            let tituloHtml = enRenombre
+                ? `<input class="chat-conv-titulo-input" id="input_renombre_${c.id}" value="${escaparHtml(c.titulo)}" onclick="event.stopPropagation()" onkeydown="if(event.key==='Enter') guardarRenombreConversacionIA(${c.id}); if(event.key==='Escape') cancelarRenombreConversacionIA();" onblur="guardarRenombreConversacionIA(${c.id})">`
+                : `<span class="chat-conv-titulo">${escaparHtml(c.titulo)}</span>${c.favorita ? '<i class="chat-conv-fav-ico" data-lucide="star"></i>' : ''}`;
+
+            let menuHtml = !menuAbierto ? '' : `
+                <div class="chat-conv-menu" onclick="event.stopPropagation()">
+                    <div class="chat-conv-menu-item" onclick="renombrarConversacionIA(${c.id})"><i data-lucide="pencil"></i>Renombrar</div>
+                    <div class="chat-conv-menu-item" onclick="toggleFavoritaConversacionIA(${c.id})"><i data-lucide="star"></i>${c.favorita ? 'Quitar de favoritas' : 'Marcar como favorita'}</div>
+                    <div class="chat-conv-menu-item peligro" onclick="eliminarConversacionIA(${c.id})"><i data-lucide="trash-2"></i>Eliminar</div>
+                </div>`;
+
+            return `
+                <div class="chat-conv-fila ${activa}" onclick="${enRenombre ? '' : `abrirConversacionIA(${c.id})`}">
+                    <div class="chat-conv-icono"><i data-lucide="${icono}"></i></div>
+                    <div class="chat-conv-info">
+                        <div class="chat-conv-titulo-fila">${tituloHtml}</div>
+                        <span class="chat-conv-fecha">${fecha}</span>
+                    </div>
+                    <i class="chat-conv-menu-trigger" data-lucide="more-vertical" onclick="event.stopPropagation(); alternarMenuConversacionIA(${c.id})"></i>
+                    ${menuHtml}
+                </div>`;
+        }
+
+        function alternarMenuConversacionIA(id) {
+            menuConversacionAbiertoId = menuConversacionAbiertoId === id ? null : id;
+            renderListaConversacionesIA();
+        }
+
+        function renombrarConversacionIA(id) {
+            menuConversacionAbiertoId = null;
+            conversacionEnRenombreId = id;
+            renderListaConversacionesIA();
+        }
+
+        function cancelarRenombreConversacionIA() {
+            conversacionEnRenombreId = null;
+            renderListaConversacionesIA();
+        }
+
+        async function guardarRenombreConversacionIA(id) {
+            if(conversacionEnRenombreId !== id) return;
+            let input = document.getElementById('input_renombre_' + id);
+            if(!input) return;
+            let nuevoTitulo = input.value.trim();
+            conversacionEnRenombreId = null;
+            if(!nuevoTitulo) { renderListaConversacionesIA(); return; }
+
+            const { error } = await _supabase.from('chat_conversaciones').update({ titulo: nuevoTitulo }).eq('id', id);
+            if(error) { alert('Error al renombrar: ' + error.message); return; }
+
+            let conv = db_conversaciones_ia.find(c => c.id === id);
+            if(conv) conv.titulo = nuevoTitulo;
+            renderListaConversacionesIA();
+            if(id === conversacionActivaId && vistaChatIAActual === 'chat') renderHeaderChatIA();
+        }
+
+        async function toggleFavoritaConversacionIA(id) {
+            menuConversacionAbiertoId = null;
+            let conv = db_conversaciones_ia.find(c => c.id === id);
+            if(!conv) return;
+            let nuevoValor = !conv.favorita;
+
+            const { error } = await _supabase.from('chat_conversaciones').update({ favorita: nuevoValor }).eq('id', id);
+            if(error) { alert('Error: ' + error.message); return; }
+
+            conv.favorita = nuevoValor;
+            renderListaConversacionesIA();
+        }
+
+        const SUGERENCIAS_BIENVENIDA_IA = [
+            ['trending-up', '¿Cómo estoy este mes?'],
+            ['bar-chart-3', 'Analiza mis gastos por categoría'],
+            ['credit-card', 'Revisa mis tarjetas'],
+            ['target', '¿Cuánto debería ahorrar para mi próxima meta?']
+        ];
+
+        function renderBienvenidaChatIA() {
+            let cont = document.getElementById('chat_ia_mensajes');
+            if(!cont) return;
+
+            cont.innerHTML = `
+                <div id="chat_ia_bienvenida">
+                    <div class="chat-ia-bienvenida-ico"><i data-lucide="sparkles"></i></div>
+                    <h3>¡Hola! Soy tu asistente financiero</h3>
+                    <p>Puedo analizar tus finanzas, registrar movimientos y responder preguntas sobre tu historial.</p>
+                    <div class="chat-ia-bienvenida-chips">
+                        ${SUGERENCIAS_BIENVENIDA_IA.map(([ico, texto]) => `
+                            <div class="chat-ia-bienvenida-chip" onclick="rellenarInputChatIA('${texto.replace(/'/g, "\\'")}')">
+                                <i data-lucide="${ico}"></i><span>${escaparHtml(texto)}</span>
+                            </div>`).join('')}
+                    </div>
+                </div>`;
+            lucide.createIcons();
+        }
+
+        function rellenarInputChatIA(texto) {
+            let input = document.getElementById('chat_ia_input');
+            input.value = texto;
+            input.focus();
+        }
+
+        async function guardarTurnoChat(role, parts) {
+            chatHistorialIA.push({ role, parts });
+            if(!conversacionActivaId) return;
+
+            await _supabase.from('chat_mensajes').insert([{ conversacion_id: conversacionActivaId, user_id: activeSessionUser.id, role, parts }]);
+            await _supabase.from('chat_conversaciones').update({ updated_at: new Date().toISOString() }).eq('id', conversacionActivaId);
+
+            let conv = db_conversaciones_ia.find(c => c.id === conversacionActivaId);
+
+            // Título truncado del primer mensaje — instantáneo y sin gastar cuota de IA
+            // (antes había una llamada extra a Gemini para un título "inteligente"; se quitó
+            // porque duplicaba el consumo de la cuota gratuita diaria).
+            if(conv && conv.titulo === 'Nueva conversación' && role === 'user') {
+                let texto = (parts || []).filter(p => p.text).map(p => p.text).join(' ').trim();
+                if(texto) {
+                    let tituloNuevo = texto.length > 40 ? texto.slice(0, 40) + '…' : texto;
+                    conv.titulo = tituloNuevo;
+                    await _supabase.from('chat_conversaciones').update({ titulo: tituloNuevo }).eq('id', conversacionActivaId);
+                    if(vistaChatIAActual === 'chat') renderHeaderChatIA();
+                }
+            }
+        }
+
+        async function alternarChatIA() {
+            document.getElementById('chat_ia_panel').classList.toggle('opened');
+
+            if(!chatIAInicializado) {
+                chatIAInicializado = true;
+                await cargarConversacionesIA();
+                if(db_conversaciones_ia.length > 0) mostrarVistaListaIA();
+                else await crearNuevaConversacionIA();
+            }
+        }
+
+        document.addEventListener('click', (evento) => {
+            if(menuConversacionAbiertoId !== null && !evento.target.closest('.chat-conv-menu') && !evento.target.closest('.chat-conv-menu-trigger')) {
+                menuConversacionAbiertoId = null;
+                renderListaConversacionesIA();
+            }
+        });
 
         function escaparHtml(texto) {
             let div = document.createElement('div');
@@ -4724,48 +5685,84 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
 
         // Convierte el markdown ligero que devuelve Gemini (**negrita**, listas con "- "/"* ", encabezados "#", "---")
         // en HTML simple, sin depender de una librería externa. Escapa el texto primero para evitar HTML inyectado.
+        // Una fila "| --- | :--: |" (el separador que Markdown exige entre encabezado y cuerpo de tabla).
+        function esFilaSeparadorTablaMd(linea) {
+            let celdas = linea.split('|').map(c => c.trim()).filter(c => c !== '');
+            return celdas.length > 0 && celdas.every(c => /^:?-{2,}:?$/.test(c));
+        }
+
+        function celdasFilaTablaMd(linea) {
+            let celdas = linea.trim().split('|').map(c => c.trim());
+            if(celdas[0] === '') celdas.shift();
+            if(celdas[celdas.length - 1] === '') celdas.pop();
+            return celdas;
+        }
+
+        function formatearInlineMd(texto) {
+            return escaparHtml(texto).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+        }
+
         function formatearMarkdownLigero(texto) {
             let lineas = texto.split('\n');
             let html = '';
             let dentroLista = false;
+            let i = 0;
+            let cerrarLista = () => { if(dentroLista) { html += '</ul>'; dentroLista = false; } };
 
-            lineas.forEach(linea => {
-                let limpia = linea.trim();
+            while(i < lineas.length) {
+                let limpia = lineas[i].trim();
 
-                if(limpia === '') {
-                    if(dentroLista) { html += '</ul>'; dentroLista = false; }
-                    return;
-                }
-                if(/^-{3,}$/.test(limpia)) {
-                    if(dentroLista) { html += '</ul>'; dentroLista = false; }
-                    return;
+                if(limpia === '' || /^-{3,}$/.test(limpia)) { cerrarLista(); i++; continue; }
+
+                // Tabla: fila "| a | b |" seguida de su separador "| --- | --- |".
+                if(/^\|.*\|$/.test(limpia) && i + 1 < lineas.length && esFilaSeparadorTablaMd(lineas[i + 1])) {
+                    cerrarLista();
+                    let encabezados = celdasFilaTablaMd(limpia);
+                    let filas = [];
+                    i += 2;
+                    while(i < lineas.length && /^\|.*\|$/.test(lineas[i].trim())) {
+                        filas.push(celdasFilaTablaMd(lineas[i]));
+                        i++;
+                    }
+                    html += '<div class="chat-tabla-wrap"><table class="chat-tabla"><thead><tr>' +
+                        encabezados.map(h => `<th>${formatearInlineMd(h)}</th>`).join('') +
+                        '</tr></thead><tbody>' +
+                        filas.map(fila => '<tr>' + fila.map(c => `<td>${formatearInlineMd(c)}</td>`).join('') + '</tr>').join('') +
+                        '</tbody></table></div>';
+                    continue;
                 }
 
                 let esItem = /^[\*\-]\s+/.test(limpia);
                 let esEncabezado = /^#{1,6}\s/.test(limpia);
-                let contenido = limpia.replace(/^#{1,6}\s*/, '').replace(/^[\*\-]\s+/, '');
-                contenido = escaparHtml(contenido).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+                let contenido = formatearInlineMd(limpia.replace(/^#{1,6}\s*/, '').replace(/^[\*\-]\s+/, ''));
 
                 if(esItem) {
                     if(!dentroLista) { html += '<ul>'; dentroLista = true; }
                     html += `<li>${contenido}</li>`;
                 } else {
-                    if(dentroLista) { html += '</ul>'; dentroLista = false; }
+                    cerrarLista();
                     html += esEncabezado ? `<div style="font-weight:700; margin-top:2px;">${contenido}</div>` : `<div>${contenido}</div>`;
                 }
-            });
+                i++;
+            }
 
-            if(dentroLista) html += '</ul>';
+            cerrarLista();
             return html;
         }
 
-        function renderMensajeChat(rol, texto) {
+        function renderMensajeChat(rol, texto, cuando) {
             let cont = document.getElementById('chat_ia_mensajes');
             let div = document.createElement('div');
             div.className = rol === 'user' ? 'chat-msg-user' : 'chat-msg-ia';
             if(rol === 'user') div.textContent = texto;
             else div.innerHTML = formatearMarkdownLigero(texto);
             cont.appendChild(div);
+
+            let hora = document.createElement('div');
+            hora.className = 'chat-msg-hora' + (rol === 'user' ? ' propia' : '');
+            hora.innerText = (cuando ? new Date(cuando) : new Date()).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            cont.appendChild(hora);
+
             cont.scrollTop = cont.scrollHeight;
         }
 
@@ -4814,7 +5811,7 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
         }
 
         async function enviarRespuestaFuncionIA(nombreFuncion, resultado) {
-            chatHistorialIA.push({ role: 'user', parts: [{ functionResponse: { name: nombreFuncion, response: resultado } }] });
+            await guardarTurnoChat('user', [{ functionResponse: { name: nombreFuncion, response: resultado } }]);
             await procesarSiguienteTurnoIA();
         }
 
@@ -4832,6 +5829,34 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
 
             if(name === 'registrar_compra_en_cuotas') {
                 await manejarRegistroCuotasIA(args);
+                return;
+            }
+            if(name === 'crear_meta_ahorro') {
+                await manejarCrearMetaAhorroIA(args);
+                return;
+            }
+            if(name === 'registrar_aporte_ahorro') {
+                await manejarRegistrarAporteAhorroIA(args);
+                return;
+            }
+            if(name === 'consultar_gastos') {
+                await manejarConsultaGastosIA(args);
+                return;
+            }
+            if(name === 'consultar_ingresos') {
+                await manejarConsultaIngresosIA(args);
+                return;
+            }
+            if(name === 'consultar_resumen_mensual') {
+                await manejarConsultaResumenMensualIA(args);
+                return;
+            }
+            if(name === 'consultar_compras_en_cuotas') {
+                await manejarConsultaComprasEnCuotasIA(args);
+                return;
+            }
+            if(name === 'consultar_bitacora_fiscal') {
+                await manejarConsultaBitacoraFiscalIA(args);
                 return;
             }
 
@@ -4917,6 +5942,173 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
                 : { ok: false, error: resultado.error });
         }
 
+        async function manejarCrearMetaAhorroIA(args) {
+            let fechaTxt = (args.anio_meta && args.mes_meta) ? `, con fecha meta ${nombresMesesCompleto[args.mes_meta - 1]} ${args.anio_meta}` : '';
+            let resumen = `¿Confirmas crear la meta de ahorro "${args.nombre}" por ${args.moneda} ${Number(args.monto_objetivo).toFixed(2)}${fechaTxt}?`;
+
+            let confirmado = await confirmarAccion(resumen);
+            if(!confirmado) {
+                await enviarRespuestaFuncionIA('crear_meta_ahorro', { ok: false, error: 'cancelado_por_usuario' });
+                return;
+            }
+
+            const { error } = await _supabase.from('metas_ahorro').insert([{
+                nombre: args.nombre, emoji: args.emoji || '🎯', monto_objetivo: args.monto_objetivo, moneda: args.moneda,
+                anio_meta: args.anio_meta || null, mes_meta: args.mes_meta || null, user_id: activeSessionUser.id
+            }]);
+
+            if(!error) await descargarEstructuresCloud();
+            await enviarRespuestaFuncionIA('crear_meta_ahorro', !error
+                ? { ok: true, mensaje: 'El usuario ya confirmó y la meta de ahorro quedó creada exitosamente.' }
+                : { ok: false, error: error.message });
+        }
+
+        async function manejarRegistrarAporteAhorroIA(args) {
+            let meta = (db_metas_ahorro || []).find(m => String(m.id) === String(args.meta_id));
+            if(!meta) {
+                await enviarRespuestaFuncionIA('registrar_aporte_ahorro', { ok: false, error: `La meta de ahorro "${args.meta_id}" no existe.` });
+                return;
+            }
+
+            let resumen = `¿Confirmas registrar un aporte de ${args.moneda} ${Number(args.monto).toFixed(2)} a la meta "${meta.nombre}"?`;
+            let confirmado = await confirmarAccion(resumen);
+            if(!confirmado) {
+                await enviarRespuestaFuncionIA('registrar_aporte_ahorro', { ok: false, error: 'cancelado_por_usuario' });
+                return;
+            }
+
+            const { error } = await _supabase.from('aportes_ahorro').insert([{
+                meta_id: meta.id, monto: args.monto, moneda: args.moneda, fecha: args.fecha, nota: args.nota || null, user_id: activeSessionUser.id
+            }]);
+
+            if(!error) await descargarEstructuresCloud();
+            await enviarRespuestaFuncionIA('registrar_aporte_ahorro', !error
+                ? { ok: true, mensaje: 'El usuario ya confirmó y el aporte quedó registrado exitosamente.' }
+                : { ok: false, error: error.message });
+        }
+
+        // 🔎 Herramientas de CONSULTA para la IA — de solo lectura, nunca piden confirmación, y buscan
+        // sobre los arrays completos ya cargados en el cliente (todo el histórico, no solo el mes actual).
+        const LIMITE_RESULTADOS_CONSULTA_IA = 60;
+
+        async function manejarConsultaGastosIA(args) {
+            args = args || {};
+            let resultados = (db_gastos || []).filter(g => {
+                if(args.anio && parseInt(g.anio) !== args.anio) return false;
+                if(args.mes && parseInt(g.mes) !== args.mes) return false;
+                if(args.categoria && g.categoria !== args.categoria) return false;
+                if(args.medio_pago && g.medio_pago !== args.medio_pago) return false;
+                if(args.texto && !(g.nombre || '').toLowerCase().includes(args.texto.toLowerCase())) return false;
+                return true;
+            });
+            resultados.sort((a, b) => (parseInt(b.anio) * 12 + parseInt(b.mes)) - (parseInt(a.anio) * 12 + parseInt(a.mes)));
+            let totalGtq = resultados.reduce((s, g) => s + normalizarAQuetzales(g.monto, g.moneda), 0);
+
+            await enviarRespuestaFuncionIA('consultar_gastos', {
+                ok: true,
+                total_encontrados: resultados.length,
+                total_monto_gtq: Number(totalGtq.toFixed(2)),
+                mostrando: Math.min(resultados.length, LIMITE_RESULTADOS_CONSULTA_IA),
+                resultados: resultados.slice(0, LIMITE_RESULTADOS_CONSULTA_IA).map(g => ({
+                    nombre: g.nombre, monto: g.monto, moneda: g.moneda, anio: g.anio, mes: g.mes,
+                    categoria: g.categoria, medio_pago: g.medio_pago
+                }))
+            });
+        }
+
+        async function manejarConsultaIngresosIA(args) {
+            args = args || {};
+            let resultados = (db_ingresos || []).filter(i => {
+                if(args.anio && parseInt(i.anio) !== args.anio) return false;
+                if(args.mes && parseInt(i.mes) !== args.mes) return false;
+                if(args.categoria && i.categoria !== args.categoria) return false;
+                if(args.texto && !(i.nombre || '').toLowerCase().includes(args.texto.toLowerCase())) return false;
+                return true;
+            });
+            resultados.sort((a, b) => (parseInt(b.anio) * 12 + parseInt(b.mes)) - (parseInt(a.anio) * 12 + parseInt(a.mes)));
+            let totalGtq = resultados.reduce((s, i) => s + normalizarAQuetzales(i.monto, i.moneda), 0);
+
+            await enviarRespuestaFuncionIA('consultar_ingresos', {
+                ok: true,
+                total_encontrados: resultados.length,
+                total_monto_gtq: Number(totalGtq.toFixed(2)),
+                mostrando: Math.min(resultados.length, LIMITE_RESULTADOS_CONSULTA_IA),
+                resultados: resultados.slice(0, LIMITE_RESULTADOS_CONSULTA_IA).map(i => ({
+                    nombre: i.nombre, monto: i.monto, moneda: i.moneda, anio: i.anio, mes: i.mes, categoria: i.categoria
+                }))
+            });
+        }
+
+        async function manejarConsultaResumenMensualIA(args) {
+            let gastosMes = (db_gastos || []).filter(g => parseInt(g.anio) === args.anio && parseInt(g.mes) === args.mes);
+            let ingresosMes = (db_ingresos || []).filter(i => parseInt(i.anio) === args.anio && parseInt(i.mes) === args.mes);
+            let totalGastos = gastosMes.reduce((s, g) => s + normalizarAQuetzales(g.monto, g.moneda), 0);
+            let totalIngresos = ingresosMes.reduce((s, i) => s + normalizarAQuetzales(i.monto, i.moneda), 0);
+
+            let categoriasAgrupadas = {};
+            gastosMes.forEach(g => {
+                let clave = g.categoria || 'Sin categoría';
+                categoriasAgrupadas[clave] = (categoriasAgrupadas[clave] || 0) + normalizarAQuetzales(g.monto, g.moneda);
+            });
+            let porCategoria = Object.entries(categoriasAgrupadas).sort((a, b) => b[1] - a[1])
+                .map(([categoria, monto_gtq]) => ({ categoria, monto_gtq: Number(monto_gtq.toFixed(2)) }));
+
+            await enviarRespuestaFuncionIA('consultar_resumen_mensual', {
+                ok: true,
+                anio: args.anio, mes: args.mes,
+                total_ingresos_gtq: Number(totalIngresos.toFixed(2)),
+                total_gastos_gtq: Number(totalGastos.toFixed(2)),
+                disponible_gtq: Number((totalIngresos - totalGastos).toFixed(2)),
+                cantidad_gastos: gastosMes.length,
+                cantidad_ingresos: ingresosMes.length,
+                gastos_por_categoria: porCategoria
+            });
+        }
+
+        async function manejarConsultaComprasEnCuotasIA(args) {
+            args = args || {};
+            let { anio: anioHoy, mes: mesHoy } = obtenerAnioMesReal();
+            let reglas = (db_gastos_cuotas || []).filter(c => {
+                if(args.tarjeta_id && String(c.tarjeta_id) !== String(args.tarjeta_id)) return false;
+                return true;
+            });
+
+            let resultados = reglas.map(c => {
+                let estado = calcularEstadoCuota(c, anioHoy, mesHoy);
+                let tarjeta = (db_tarjetas || []).find(t => String(t.id) === String(c.tarjeta_id));
+                return {
+                    nombre: c.nombre, tarjeta: tarjeta ? tarjeta.nombre : null, moneda: c.moneda,
+                    monto_cuota: c.monto_cuota, num_cuotas: c.num_cuotas,
+                    monto_total: Number((c.monto_cuota * c.num_cuotas).toFixed(2)),
+                    anio_inicio: c.anio_inicio, mes_inicio: c.mes_inicio,
+                    cuotas_pagadas: estado.cuotasPagadas, cuotas_pendientes: estado.cuotasPendientes,
+                    activa: estado.cuotasPendientes > 0
+                };
+            }).filter(r => !args.solo_activas || r.activa);
+
+            await enviarRespuestaFuncionIA('consultar_compras_en_cuotas', {
+                ok: true, total_encontrados: resultados.length, resultados
+            });
+        }
+
+        async function manejarConsultaBitacoraFiscalIA(args) {
+            args = args || {};
+            let meses = obtenerMesesBitacoraFiscal().filter(m => !args.anio || m.anio === args.anio);
+
+            await enviarRespuestaFuncionIA('consultar_bitacora_fiscal', {
+                ok: true,
+                total_encontrados: meses.length,
+                resultados: meses.map(m => ({
+                    anio: m.anio, mes: m.mes,
+                    base_facturable_gtq: Number(m.baseFacturable.toFixed(2)),
+                    impuesto_gtq: Number(m.impuesto.toFixed(2)),
+                    factura_subida: m.facturaReal, declaracion_subida: m.declaracionReal,
+                    marcado_sin_factura: m.sinFactura, marcado_sin_declaracion: m.sinDeclaracion,
+                    cumplido: m.cumplido
+                }))
+            });
+        }
+
         async function procesarSiguienteTurnoIA() {
             mostrarIndicadorEscribiendoIA();
             try {
@@ -4925,7 +6117,7 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
 
                 let parteFuncion = partes.find(p => p.functionCall);
                 if(parteFuncion) {
-                    chatHistorialIA.push({ role: 'model', parts: partes });
+                    await guardarTurnoChat('model', partes);
                     await manejarLlamadaFuncionIA(parteFuncion.functionCall);
                     return;
                 }
@@ -4933,17 +6125,26 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
                 let texto = partes.filter(p => p.text).map(p => p.text).join('\n').trim();
                 if(texto) {
                     renderMensajeChat('ia', texto);
-                    chatHistorialIA.push({ role: 'model', parts: [{ text: texto }] });
+                    await guardarTurnoChat('model', [{ text: texto }]);
                 }
             } catch(e) {
                 ocultarIndicadorEscribiendoIA();
                 document.getElementById('chat_ia_error').innerHTML =
-                    `No se pudo contactar al asistente: ${e.message} — <span style="text-decoration:underline; cursor:pointer; font-weight:700;" onclick="document.getElementById('chat_ia_error').innerHTML=''; procesarSiguienteTurnoIA();">Reintentar</span>`;
+                    `${interpretarErrorChatIA(e)} — <span style="text-decoration:underline; cursor:pointer; font-weight:700;" onclick="document.getElementById('chat_ia_error').innerHTML=''; procesarSiguienteTurnoIA();">Reintentar</span>`;
             }
         }
 
+        // Traduce errores técnicos a mensajes que el usuario puede entender y accionar —
+        // distingue "no hay conexión" de "el servicio no respondió" en vez de mostrar el error crudo.
+        function interpretarErrorChatIA(e) {
+            let esErrorDeRed = e instanceof TypeError || e?.name === 'FunctionsFetchError';
+            if(esErrorDeRed) return 'No se pudo conectar con el asistente. Revisa tu conexión a internet.';
+            if(e?.name === 'FunctionsHttpError' || e?.name === 'FunctionsRelayError') return 'El asistente no pudo responder en este momento (posible falla temporal del servicio). Intenta de nuevo en unos segundos.';
+            return `Ocurrió un problema inesperado: ${e?.message || 'error desconocido'}.`;
+        }
+
         async function enviarTurnoIA(mensajeUsuario) {
-            chatHistorialIA.push({ role: 'user', parts: [{ text: mensajeUsuario }] });
+            await guardarTurnoChat('user', [{ text: mensajeUsuario }]);
             await procesarSiguienteTurnoIA();
         }
 
@@ -4955,17 +6156,23 @@ A continuación tienes el contexto financiero actual del usuario, recalculado en
 
             input.value = '';
             document.getElementById('chat_ia_error').innerText = '';
-            renderMensajeChat('user', texto);
 
             chatIAEnviando = true;
             try {
+                if(!conversacionActivaId) await crearNuevaConversacionIA();
+                document.getElementById('chat_ia_bienvenida')?.remove();
+                renderMensajeChat('user', texto);
                 await enviarTurnoIA(texto);
             } finally {
                 chatIAEnviando = false;
             }
         }
 
-        verificarCredentialsSesion();
+        if(vieneDeRecuperacionPassword) {
+            mostrarVistaAuth('reset');
+        } else {
+            verificarCredentialsSesion();
+        }
         lucide.createIcons();
     </script>
 </body>
