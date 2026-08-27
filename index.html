@@ -651,6 +651,11 @@
             .form-grid-2col { grid-template-columns: 1fr; }
             .fuentes-activas-grid-row { grid-template-columns: repeat(2, 1fr); }
 
+            /* Donut + leyenda: en fila se apretaban (nombre/monto/% en ~180px). En columna, la
+               leyenda usa el ancho completo de la tarjeta. */
+            .donut-container-layout { flex-direction: column; }
+            .donut-legend-list { width: 100%; }
+
             /* "Grid blowout": una columna 1fr igual se expande al ancho mínimo del contenido
                (ej. un gráfico) si no se le dice explícitamente que puede encogerse. */
             .kpi-master-grid-layout > *, .kpi-grid > *, .charts-row > *, .triple-modular-row > *,
@@ -1027,7 +1032,7 @@
                     <div style="margin-bottom:16px;">
                         <span class="card-title" style="margin:0;">Categorías de Ingreso Activas</span>
                     </div>
-                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;"></div>
+                    <div class="fuentes-activas-grid-row" id="bloque_fuentes_activas_row"></div>
                 </div>
 
                 <div class="card">
