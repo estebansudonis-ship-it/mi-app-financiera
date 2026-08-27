@@ -639,6 +639,8 @@
 
             .view-section { padding: 72px 16px 16px; gap: 16px; }
             .view-header { flex-wrap: wrap; gap: 12px; }
+            .header-action-area { flex-wrap: wrap; width: 100%; }
+            .filtro-periodo-grupo { flex-wrap: wrap; }
             .header-title-area h1 { font-size: 22px; }
 
             .kpi-master-grid-layout,
@@ -648,6 +650,11 @@
             .tarjetas-paralelo-grid,
             .form-grid-2col { grid-template-columns: 1fr; }
             .fuentes-activas-grid-row { grid-template-columns: repeat(2, 1fr); }
+
+            /* "Grid blowout": una columna 1fr igual se expande al ancho mínimo del contenido
+               (ej. un gráfico) si no se le dice explícitamente que puede encogerse. */
+            .kpi-master-grid-layout > *, .kpi-grid > *, .charts-row > *, .triple-modular-row > *,
+            .tarjetas-paralelo-grid > *, .form-grid-2col > *, .fuentes-activas-grid-row > * { min-width: 0; }
 
             #drawer_registro_ingresos, #drawer_registro_cuotas, #drawer_detalle_tarjeta, #drawer_meta_ahorro, #drawer_aporte_ahorro {
                 width: 100%;
