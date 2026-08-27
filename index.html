@@ -271,9 +271,16 @@
         }
 
         /* SIDEBAR */
+        #btn_hamburguesa_movil {
+            display: none; position: fixed; top: 16px; left: 16px; z-index: 10001;
+            width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--borders);
+            background: var(--surface); color: var(--text-primary); align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: var(--shadow-subtle);
+        }
         .sidebar {
             width: 240px;
             height: 100vh;
+            height: 100dvh;
             background-color: var(--surface);
             border-right: 1px solid var(--borders);
             padding: 24px 16px;
@@ -472,7 +479,7 @@
         /* FORMULARIOS DRAWER */
         #drawer_registro_ingresos, #drawer_registro_cuotas, #drawer_detalle_tarjeta, #drawer_meta_ahorro, #drawer_aporte_ahorro {
             position: fixed; top: 0; right: 0; left: auto;
-            width: 400px; height: 100vh; background-color: var(--surface);
+            width: 400px; height: 100vh; height: 100dvh; background-color: var(--surface);
             border-left: 1px solid var(--borders); box-shadow: -4px 0 24px rgba(16, 24, 40, 0.16);
             z-index: 99999; padding: 32px 24px; display: flex;
             flex-direction: column; gap: 20px; transform: translateX(100%);
@@ -509,6 +516,7 @@
         .tarjeta-visual-card .tv-ver-detalles:hover { background: rgba(255,255,255,0.3); }
 
         .form-group-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
         .form-group-field label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
         .form-group-field input, .form-group-field select { height: 40px; border: 1px solid var(--borders); border-radius: 8px; padding: 0 12px; outline: none; font-size: 14px; background-color: var(--bg-main); color: var(--text-primary); }
 
@@ -614,6 +622,41 @@
         .chat-msg-ia { align-self: flex-start; background: var(--purple-light); color: var(--text-primary); border-radius: var(--radius-main) var(--radius-main) var(--radius-main) 4px; padding: 9px 13px; max-width: 88%; font-size: 13.5px; line-height: 1.5; }
         .chat-msg-ia ul { margin: 2px 0 2px 16px; padding: 0; }
         .chat-msg-loading { align-self: flex-start; background: var(--purple-light); color: var(--text-secondary); border-radius: var(--radius-main) var(--radius-main) var(--radius-main) 4px; padding: 9px 13px; font-size: 12.5px; font-style: italic; }
+
+        /* ============================================================
+           RESPONSIVE — teléfono (≤768px). Todo lo de escritorio arriba
+           se queda igual; esto solo reacomoda el layout en pantallas angostas.
+           ============================================================ */
+        @media (max-width: 768px) {
+            #btn_hamburguesa_movil { display: flex; }
+
+            .sidebar {
+                position: fixed; top: 0; left: 0; z-index: 10000;
+                transform: translateX(-100%); transition: transform 0.25s ease-in-out;
+                box-shadow: 4px 0 24px rgba(16, 24, 40, 0.2);
+            }
+            .sidebar.mobile-open { transform: translateX(0); }
+
+            .view-section { padding: 72px 16px 16px; gap: 16px; }
+            .view-header { flex-wrap: wrap; gap: 12px; }
+            .header-title-area h1 { font-size: 22px; }
+
+            .kpi-master-grid-layout,
+            .kpi-grid,
+            .charts-row,
+            .triple-modular-row,
+            .tarjetas-paralelo-grid,
+            .form-grid-2col { grid-template-columns: 1fr; }
+            .fuentes-activas-grid-row { grid-template-columns: repeat(2, 1fr); }
+
+            #drawer_registro_ingresos, #drawer_registro_cuotas, #drawer_detalle_tarjeta, #drawer_meta_ahorro, #drawer_aporte_ahorro {
+                width: 100%;
+            }
+
+            #chat_ia_panel {
+                width: 100vw; height: 100vh; height: 100dvh; max-height: none; bottom: 0; right: 0; left: 0; top: 0; border-radius: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -665,7 +708,7 @@
     </div>
 
     <!-- DRAWER FORMULARIO -->
-    <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false); conmutarDrawerCuotas(false); conmutarDrawerDetalleTarjeta(false); conmutarDrawerMetaAhorro(false); conmutarDrawerAporteAhorro(false);"></div>
+    <div class="drawer-backdrop" id="panel_backdrop_node" onclick="conmutarDrawerRegistro(false); conmutarDrawerCuotas(false); conmutarDrawerDetalleTarjeta(false); conmutarDrawerMetaAhorro(false); conmutarDrawerAporteAhorro(false); alternarSidebarMovil(false);"></div>
     <div id="drawer_registro_ingresos">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borders); padding-bottom:16px; width:100%;">
             <h3 style="font-size:18px; font-weight:700;" id="drawer_dinamico_titulo">➕ Nuevo Movimiento</h3>
@@ -795,6 +838,7 @@
 
     <!-- NÚCLEO SHELL -->
     <div id="app_core_shell" style="display:none; width:100%; height:100vh; display:flex;">
+        <button id="btn_hamburguesa_movil" onclick="alternarSidebarMovil()"><i data-lucide="menu"></i></button>
         <div class="sidebar">
             <div>
                 <div class="sidebar-brand-wrapper">
@@ -1341,7 +1385,7 @@
 
                 <div class="card">
                     <div class="card-title">Perfil</div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:560px;">
+                    <div class="form-grid-2col" style="max-width:560px;">
                         <div class="form-group-field"><label>Nombre</label><input type="text" id="config_nombre" placeholder="Tu nombre"></div>
                         <div class="form-group-field"><label>Correo</label><input type="text" id="config_correo" disabled style="opacity:0.7;"></div>
                         <div class="form-group-field"><label>Teléfono</label><input type="text" id="config_telefono" placeholder="Ej. 5555 5555"></div>
@@ -1351,7 +1395,7 @@
 
                 <div class="card">
                     <div class="card-title">Preferencias</div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:560px; margin-bottom:12px;">
+                    <div class="form-grid-2col" style="max-width:560px; margin-bottom:12px;">
                         <div class="form-group-field">
                             <label>Moneda principal</label>
                             <select id="config_moneda_principal" onchange="alternarNotaMonedaPrincipal()">
@@ -1518,6 +1562,15 @@
             let b = document.getElementById('panel_backdrop_node');
             if(shouldOpen) { d.classList.add('opened'); b.style.display = 'block'; }
             else { d.classList.remove('opened'); b.style.display = 'none'; }
+        }
+
+        // Menú hamburguesa (solo aparece en mobile vía CSS) — sin argumento alterna, con argumento fuerza el estado.
+        function alternarSidebarMovil(shouldOpen) {
+            let sidebar = document.querySelector('.sidebar');
+            let b = document.getElementById('panel_backdrop_node');
+            let abrir = shouldOpen === undefined ? !sidebar.classList.contains('mobile-open') : shouldOpen;
+            if(abrir) { sidebar.classList.add('mobile-open'); b.style.display = 'block'; }
+            else { sidebar.classList.remove('mobile-open'); b.style.display = 'none'; }
         }
 
         function abrirFormularioCuotas() {
@@ -1709,6 +1762,7 @@
             }
             moduloActivoGlobal = targetViewId.replace('vista_', '');
             actualizarCoreCalculos();
+            alternarSidebarMovil(false);
         }
 
         async function verificarCredentialsSesion() {
