@@ -748,11 +748,12 @@
             <span style="font-size:11px; color:var(--text-secondary);">Monto que nunca te llega al banco. No cambia el ingreso registrado, solo reduce la base del 5% en Bitácora fiscal.</span>
         </div>
         <div class="form-group-field" id="form_campo_moneda_wrapper"><label>Moneda</label><select id="form_ing_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
-        <div class="form-group-field" id="form_campo_tipo_wrapper"><label>Tipo de Flujo</label><select id="form_ing_tipo"><option value="fijo">Recurrente / Fijo</option><option value="variable">Variable</option></select></div>
+        <div class="form-group-field" id="form_campo_tipo_wrapper"><label>Tipo de Flujo</label><select id="form_ing_tipo" onchange="actualizarLabelMesSegunTipo()"><option value="fijo">Recurrente / Fijo</option><option value="variable">Variable</option></select></div>
         <div class="form-group-field" id="form_campo_medio_pago_wrapper" style="display:none;"><label>Medio de Pago</label><select id="form_ing_medio_pago" onchange="conmutarSelectorTarjetaGasto()"><option value="efectivo">Efectivo</option><option value="tarjeta">Tarjeta</option></select></div>
         <div class="form-group-field" id="form_campo_tarjeta_gasto_wrapper" style="display:none;"><label>¿Con qué tarjeta?</label><select id="form_ing_tarjeta_id"></select></div>
         <div class="form-group-field" id="form_campo_dia_compra_wrapper" style="display:none;"><label>Día de la compra (1-31)</label><input type="number" id="form_ing_dia_compra" placeholder="Ej. 15" min="1" max="31"></div>
-        <div class="form-group-field" id="form_campo_mes_wrapper"><label>Mes de Aplicación</label><input type="month" id="form_ing_mes_aplicacion"></div>
+        <div class="form-group-field" id="form_campo_mes_wrapper"><label id="lbl_dinamico_mes">Mes de Aplicación</label><input type="month" id="form_ing_mes_aplicacion"></div>
+        <div class="form-group-field" id="form_campo_mes_fin_wrapper" style="display:none;"><label>Fecha de fin (opcional)</label><input type="month" id="form_ing_mes_fin"><p style="font-size:11px; color:var(--text-secondary); margin:4px 0 0;">Ej. si tiene meses gratis antes de empezar a cobrar, pon el "Mes de inicio" más adelante.</p></div>
         <div class="form-group-field" id="form_campo_lim_contado_wrapper" style="display:none;"><label>Límite de pago de contado</label><input type="number" id="form_tarjeta_lim_contado" placeholder="0.00"></div>
         <div class="form-group-field" id="form_campo_lim_cuotas_wrapper" style="display:none;"><label>Límite de cuotas</label><input type="number" id="form_tarjeta_lim_cuotas" placeholder="0.00"></div>
         <div class="form-group-field" id="form_campo_corte_wrapper" style="display:none;"><label>Día de corte (1-31)</label><input type="number" id="form_tarjeta_corte" placeholder="Ej. 15" min="1" max="31"></div>
@@ -1711,6 +1712,7 @@
                 tarjetaGasto: document.getElementById('form_campo_tarjeta_gasto_wrapper'),
                 diaCompra: document.getElementById('form_campo_dia_compra_wrapper'),
                 mes: document.getElementById('form_campo_mes_wrapper'),
+                mesFin: document.getElementById('form_campo_mes_fin_wrapper'),
                 limContado: document.getElementById('form_campo_lim_contado_wrapper'),
                 limCuotas: document.getElementById('form_campo_lim_cuotas_wrapper'),
                 corte: document.getElementById('form_campo_corte_wrapper'),
@@ -1761,7 +1763,19 @@
                 wrappers.mes.style.display = 'flex';
                 wrappers.descuentoNomina.style.display = 'flex';
             }
+            if(contexto !== 'tarjetas') actualizarLabelMesSegunTipo();
             conmutarDrawerRegistro(true);
+        }
+
+        // El campo de mes cambia de sentido según el tipo: para "Variable" es el mes puntual del
+        // movimiento; para "Recurrente/Fijo" es desde cuándo empieza (puede ser un mes futuro, ej. un
+        // servicio con meses gratis antes de empezar a cobrar) — por eso también aparece fecha de fin.
+        function actualizarLabelMesSegunTipo() {
+            let esFijo = document.getElementById('form_ing_tipo').value === 'fijo';
+            document.getElementById('lbl_dinamico_mes').innerText = esFijo ? 'Mes de inicio' : 'Mes de Aplicación';
+            let wrapperFin = document.getElementById('form_campo_mes_fin_wrapper');
+            wrapperFin.style.display = esFijo ? 'flex' : 'none';
+            if(!esFijo) document.getElementById('form_ing_mes_fin').value = '';
         }
 
 
@@ -2943,10 +2957,11 @@
         // 💾 Núcleo de guardado de ingresos/gastos, sin acoplarse al DOM — recibe datos, no lee inputs.
         // Reutilizado tanto por el formulario manual (ejecutarGuardadoDinamicoCloud) como por el asistente IA.
         // datos: { tablaDestino:'ingresos'|'gastos', nombre, monto, moneda, tipo, anio, mes, categoria,
-        //          medio_pago, tarjeta_id, dia_compra, descuento_nomina, registroEditandoId, userId }
+        //          medio_pago, tarjeta_id, dia_compra, descuento_nomina, anio_fin, mes_fin, registroEditandoId, userId }
+        // anio_fin/mes_fin solo aplican al crear una regla recurrente nueva (tipo:'fijo').
         // retorna { ok:true, modo:'recurrente'|'directo', data } o { ok:false, error }
         async function guardarMovimientoCore(datos) {
-            let { tablaDestino, nombre, monto, moneda, tipo, anio, mes, categoria, medio_pago, tarjeta_id, dia_compra, descuento_nomina, registroEditandoId, userId } = datos;
+            let { tablaDestino, nombre, monto, moneda, tipo, anio, mes, categoria, medio_pago, tarjeta_id, dia_compra, descuento_nomina, anio_fin, mes_fin, registroEditandoId, userId } = datos;
             let fechaISO = `${anio}-${String(mes).padStart(2, '0')}`;
             let tarjetaFinal = medio_pago === 'tarjeta' ? tarjeta_id : null;
             let diaCompraFinal = medio_pago === 'tarjeta' ? dia_compra : null;
@@ -2960,8 +2975,8 @@
             if(!registroEditandoId && tipo === 'fijo') {
                 let tablaRecurrente = tablaDestino === 'gastos' ? 'gastos_recurrentes' : 'ingresos_recurrentes';
                 let reglaPayload = tablaDestino === 'gastos'
-                    ? { nombre, monto, moneda, categoria, medio_pago, tarjeta_id: tarjetaFinal, dia_compra: diaCompraFinal, anio_inicio: anio, mes_inicio: mes, user_id: userId }
-                    : { nombre, monto, moneda, categoria, anio_inicio: anio, mes_inicio: mes, user_id: userId };
+                    ? { nombre, monto, moneda, categoria, medio_pago, tarjeta_id: tarjetaFinal, dia_compra: diaCompraFinal, anio_inicio: anio, mes_inicio: mes, anio_fin: anio_fin || null, mes_fin: mes_fin || null, user_id: userId }
+                    : { nombre, monto, moneda, categoria, anio_inicio: anio, mes_inicio: mes, anio_fin: anio_fin || null, mes_fin: mes_fin || null, user_id: userId };
                 const { error } = await _supabase.from(tablaRecurrente).insert([reglaPayload]);
                 if(error) return { ok: false, error: error.message };
                 return { ok: true, modo: 'recurrente' };
@@ -3036,10 +3051,14 @@
                 ? (parseFloat(document.getElementById('form_ing_descuento_nomina').value) || 0)
                 : 0;
 
+            let mesFinVal = document.getElementById('form_ing_mes_fin').value;
+            let anioFin = null, mesFin = null;
+            if(tipo === 'fijo' && mesFinVal) { [anioFin, mesFin] = mesFinVal.split('-').map(Number); }
+
             let resultado = await guardarMovimientoCore({
                 tablaDestino, nombre, monto, moneda, tipo, anio, mes, categoria: fuenteCat,
                 medio_pago: medioPagoSel, tarjeta_id: tarjetaSeleccionada, dia_compra: diaCompra,
-                descuento_nomina: descuentoNominaVal,
+                descuento_nomina: descuentoNominaVal, anio_fin: anioFin, mes_fin: mesFin,
                 registroEditandoId: registroEditando ? registroEditando.id : null,
                 userId: activeSessionUser.id
             });
@@ -4340,10 +4359,62 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             renderGastosRecurrentesActivos();
         }
 
-        // Se usa tanto para reglas de ingresos como de gastos — cambiar el monto de un recurrente
-        // (ej. un aumento de sueldo) es: ponerle fecha de fin a la regla vieja y crear una regla nueva
-        // desde el mes del cambio. No regenera ni borra filas ya creadas — eso se ajusta a mano si hace falta.
         let errorEdicionFechasRecurrente = '';
+        let idCambioMontoRecurrente = null;
+        let errorCambioMontoRecurrente = '';
+
+        function activarCambioMontoRecurrente(id) {
+            idCambioMontoRecurrente = id;
+            errorCambioMontoRecurrente = '';
+            renderRecurrentesActivos();
+            renderGastosRecurrentesActivos();
+        }
+
+        function cancelarCambioMontoRecurrente() {
+            idCambioMontoRecurrente = null;
+            errorCambioMontoRecurrente = '';
+            renderRecurrentesActivos();
+            renderGastosRecurrentesActivos();
+        }
+
+        // Cambiar el monto de un recurrente (ej. un aumento de sueldo) sin corromper lo ya generado:
+        // se le pone fecha de fin a la regla vieja (el mes justo antes del cambio) y se crea una regla
+        // nueva desde el mes indicado, copiando categoría/medio de pago/tarjeta. No regenera ni borra
+        // filas ya creadas — esas se ajustan a mano si hace falta.
+        async function guardarCambioMontoRecurrente(tabla, id) {
+            let nuevoMonto = parseFloat(document.getElementById(`cambio_monto_valor_${id}`).value);
+            let mesDesdeVal = document.getElementById(`cambio_monto_desde_${id}`).value;
+            errorCambioMontoRecurrente = '';
+
+            if(!nuevoMonto || nuevoMonto <= 0) { errorCambioMontoRecurrente = 'El nuevo monto debe ser mayor a 0.'; renderRecurrentesActivos(); renderGastosRecurrentesActivos(); return; }
+            if(!mesDesdeVal) { errorCambioMontoRecurrente = 'Elige desde qué mes aplica el nuevo monto.'; renderRecurrentesActivos(); renderGastosRecurrentesActivos(); return; }
+
+            let [anioDesde, mesDesde] = mesDesdeVal.split('-').map(Number);
+            let arregloDatos = tabla === 'gastos_recurrentes' ? db_gastos_recurrentes : db_ingresos_recurrentes;
+            let regla = (arregloDatos || []).find(r => String(r.id) === String(id));
+            if(!regla) return;
+
+            let mesFinAnterior = mesDesde - 1, anioFinAnterior = anioDesde;
+            if(mesFinAnterior < 1) { mesFinAnterior = 12; anioFinAnterior -= 1; }
+
+            let confirmado = await confirmarAccion(`¿Confirmas cambiar el monto de "${regla.nombre}" a ${regla.moneda} ${nuevoMonto.toFixed(2)} a partir de ${nombresMesesCompleto[mesDesde - 1]} ${anioDesde}? La regla actual se cierra en ${nombresMesesCompleto[mesFinAnterior - 1]} ${anioFinAnterior} — los meses ya generados no cambian.`);
+            if(!confirmado) return;
+
+            const { error: errorCierre } = await _supabase.from(tabla).update({ anio_fin: anioFinAnterior, mes_fin: mesFinAnterior }).eq('id', id);
+            if(errorCierre) { errorCambioMontoRecurrente = errorCierre.message; renderRecurrentesActivos(); renderGastosRecurrentesActivos(); return; }
+
+            let nuevaRegla = tabla === 'gastos_recurrentes'
+                ? { nombre: regla.nombre, monto: nuevoMonto, moneda: regla.moneda, categoria: regla.categoria, medio_pago: regla.medio_pago, tarjeta_id: regla.tarjeta_id, dia_compra: regla.dia_compra, anio_inicio: anioDesde, mes_inicio: mesDesde, user_id: activeSessionUser.id }
+                : { nombre: regla.nombre, monto: nuevoMonto, moneda: regla.moneda, categoria: regla.categoria, anio_inicio: anioDesde, mes_inicio: mesDesde, user_id: activeSessionUser.id };
+
+            const { error: errorNueva } = await _supabase.from(tabla).insert([nuevaRegla]);
+            if(errorNueva) { errorCambioMontoRecurrente = errorNueva.message; renderRecurrentesActivos(); renderGastosRecurrentesActivos(); return; }
+
+            idCambioMontoRecurrente = null;
+            await descargarEstructuresCloud();
+            renderRecurrentesActivos();
+            renderGastosRecurrentesActivos();
+        }
 
         async function guardarFechasRecurrente(tabla, id) {
             let inputInicio = document.getElementById(`edit_inicio_${id}`).value;
@@ -4388,8 +4459,28 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                     </div>
                 </div>`;
             }
+            if(idCambioMontoRecurrente === r.id) {
+                return `<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; max-width:280px;">
+                    <div>
+                        <label style="font-size:10px; color:var(--text-secondary); display:block; margin-bottom:2px;">Nuevo monto</label>
+                        <input type="number" step="0.01" id="cambio_monto_valor_${r.id}" placeholder="0.00" style="width:100%; font-size:12px; padding:5px 7px; border:1px solid var(--borders); border-radius:6px; box-sizing:border-box;">
+                    </div>
+                    <div>
+                        <label style="font-size:10px; color:var(--text-secondary); display:block; margin-bottom:2px;">Desde qué mes aplica</label>
+                        <input type="month" id="cambio_monto_desde_${r.id}" style="width:100%; font-size:12px; padding:5px 7px; border:1px solid var(--borders); border-radius:6px; box-sizing:border-box;">
+                    </div>
+                    <div style="grid-column: 1 / -1; font-size:10.5px; color:var(--text-secondary);">Esto cierra la regla actual justo antes de ese mes y crea una nueva con el monto nuevo — lo ya generado no cambia.</div>
+                    ${errorCambioMontoRecurrente ? `<div style="grid-column: 1 / -1; font-size:11px; color:var(--red-negative); font-weight:600;">⚠ ${errorCambioMontoRecurrente}</div>` : ''}
+                    <div style="grid-column: 1 / -1; display:flex; gap:12px; margin-top:2px;">
+                        <span onclick="guardarCambioMontoRecurrente('${tabla}', '${r.id}')" style="font-size:12px; font-weight:600; color:var(--purple-main); cursor:pointer;">Confirmar cambio</span>
+                        <span onclick="cancelarCambioMontoRecurrente()" style="font-size:12px; color:var(--text-secondary); cursor:pointer;">Cancelar</span>
+                    </div>
+                </div>`;
+            }
             let textoFin = r.mes_fin ? ` hasta ${nombresMesesCompleto[r.mes_fin - 1]} ${r.anio_fin}` : '';
-            return `<span>Desde ${nombresMesesCompleto[r.mes_inicio - 1]} ${r.anio_inicio}${textoFin}</span> <i data-lucide="pencil" style="width:11px; height:11px; cursor:pointer; vertical-align:middle;" onclick="activarEdicionFechasRecurrente('${r.id}')"></i>`;
+            return `<span>Desde ${nombresMesesCompleto[r.mes_inicio - 1]} ${r.anio_inicio}${textoFin}</span>
+                <i data-lucide="pencil" style="width:11px; height:11px; cursor:pointer; vertical-align:middle;" title="Editar fechas" onclick="activarEdicionFechasRecurrente('${r.id}')"></i>
+                <i data-lucide="trending-up" style="width:11px; height:11px; cursor:pointer; vertical-align:middle; margin-left:6px;" title="Cambiar monto desde una fecha" onclick="activarCambioMontoRecurrente('${r.id}')"></i>`;
         }
 
         // Única fuente de verdad para "seguir activa": la fecha de fin (si existe). Ya no hay botón "Detener" —
