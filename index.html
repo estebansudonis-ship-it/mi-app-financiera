@@ -748,10 +748,11 @@
             <span style="font-size:11px; color:var(--text-secondary);">Monto que nunca te llega al banco. No cambia el ingreso registrado, solo reduce la base del 5% en Bitácora fiscal.</span>
         </div>
         <div class="form-group-field" id="form_campo_moneda_wrapper"><label>Moneda</label><select id="form_ing_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
-        <div class="form-group-field" id="form_campo_tipo_wrapper"><label>Tipo de Flujo</label><select id="form_ing_tipo" onchange="actualizarLabelMesSegunTipo()"><option value="fijo">Recurrente / Fijo</option><option value="variable">Variable</option></select></div>
+        <div class="form-group-field" id="form_campo_tipo_wrapper"><label>Tipo de Flujo</label><select id="form_ing_tipo" onchange="actualizarLabelMesSegunTipo(); conmutarSelectorTarjetaGasto();"><option value="fijo">Recurrente / Fijo</option><option value="variable">Variable</option></select></div>
         <div class="form-group-field" id="form_campo_medio_pago_wrapper" style="display:none;"><label>Medio de Pago</label><select id="form_ing_medio_pago" onchange="conmutarSelectorTarjetaGasto()"><option value="efectivo">Efectivo</option><option value="tarjeta">Tarjeta</option></select></div>
         <div class="form-group-field" id="form_campo_tarjeta_gasto_wrapper" style="display:none;"><label>¿Con qué tarjeta?</label><select id="form_ing_tarjeta_id"></select></div>
         <div class="form-group-field" id="form_campo_dia_compra_wrapper" style="display:none;"><label>Día de la compra (1-31)</label><input type="number" id="form_ing_dia_compra" placeholder="Ej. 15" min="1" max="31"></div>
+        <div class="form-group-field" id="form_campo_fecha_compra_wrapper" style="display:none;"><label>Fecha de la compra</label><input type="date" id="form_ing_fecha_compra"></div>
         <div class="form-group-field" id="form_campo_mes_wrapper"><label id="lbl_dinamico_mes">Mes de Aplicación</label><input type="month" id="form_ing_mes_aplicacion"></div>
         <div class="form-group-field" id="form_campo_mes_fin_wrapper" style="display:none;"><label>Fecha de fin (opcional)</label><input type="month" id="form_ing_mes_fin"><p style="font-size:11px; color:var(--text-secondary); margin:4px 0 0;">Ej. si tiene meses gratis antes de empezar a cobrar, pon el "Mes de inicio" más adelante.</p></div>
         <div class="form-group-field" id="form_campo_lim_contado_wrapper" style="display:none;"><label>Límite de pago de contado</label><input type="number" id="form_tarjeta_lim_contado" placeholder="0.00"></div>
@@ -906,12 +907,12 @@
                         <div style="font-size:11px; color:var(--text-secondary);">Ingreso del mes anterior</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Gastos</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-down-ico"></i></div></div>
+                        <div class="kpi-label-row"><span class="kpi-label">Qué debo pagar</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-down-ico"></i></div></div>
                         <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gastos">Q 0.00</span>
                         <div style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="kpi_gastos_split">Sin datos este mes</div>
                     </div>
                     <div class="kpi-card kpi-card-premium-gradient">
-                        <div class="kpi-label-row"><span class="kpi-label" style="color:var(--purple-main);">Disponible − Gastos</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-wallet-ico"></i></div></div>
+                        <div class="kpi-label-row"><span class="kpi-label" style="color:var(--purple-main);">Disponible − Debo pagar</span><div class="kpi-icon-wrapper-blue-exact"><i id="kpi-wallet-ico"></i></div></div>
                         <span class="kpi-main-value" id="kpi_disponible" style="color:var(--purple-main); font-size:34px;">Q 0.00</span>
                         <div style="font-size: 11px; color: var(--green-positive); font-weight:600; margin-top:2px;" id="kpi_disponible_delta">—</div>
                     </div>
@@ -947,7 +948,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">Próximos compromisos</div>
+                    <div class="card-title" id="titulo_tabla_compromisos_inicio">Qué debo pagar este mes</div>
                     <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame"><thead><tr><th>Fecha</th><th>Concepto</th><th style="text-align:right;">Monto</th><th style="text-align:center;">Tipo</th></tr></thead><tbody id="tabla_compromisos_inicio"></tbody></table></div>
                 </div>
             </div>
@@ -1102,9 +1103,14 @@
 
                 <div class="kpi-grid">
                     <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Gastos del mes</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-1"></i></div></div>
+                        <div class="kpi-label-row"><span class="kpi-label">Gasté</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-1"></i></div></div>
                         <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_mes_real">Q 0.00</span>
                         <div style="font-size: 11px; color: var(--text-secondary); font-weight:600; margin-top:2px;" id="kpi_gastos_mes_delta">—</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label-row"><span class="kpi-label">Qué debo pagar</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-debo-pagar"></i></div></div>
+                        <span class="kpi-main-value" style="color: var(--red-negative);" id="kpi_gas_debo_pagar">Q 0.00</span>
+                        <div style="font-size: 11px; color: var(--text-secondary); font-weight:600; margin-top:2px;" id="kpi_gas_debo_pagar_delta">—</div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-label-row"><span class="kpi-label">Gastos fijos</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-2"></i></div></div>
@@ -1116,10 +1122,26 @@
                         <span class="kpi-main-value" id="kpi_gas_variables">Q 0.00</span>
                         <div style="font-size: 11px; color: var(--text-secondary); font-weight:600; margin-top:2px;" id="kpi_gas_variables_pct">0.0% del total</div>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label-row"><span class="kpi-label">Promedio mensual</span><div class="kpi-icon-wrapper-red-exact"><i id="kpi-exp-4"></i></div></div>
-                        <span class="kpi-main-value" id="kpi_gas_promedio">Q 0.00</span>
-                        <div style="font-size: 11px; color: var(--text-secondary);">Últimos 6 meses</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" id="titulo_tabla_debo_pagar_gastos">Qué debo pagar este mes</div>
+                    <p style="font-size:12px; color:var(--text-secondary); margin:-8px 0 16px;">Incluye compras de meses anteriores cuyo pago cae en este período — por eso puede no coincidir con el Historial de abajo.</p>
+                    <div style="width:100%; overflow-x:auto;">
+                        <table class="compact-table-frame" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Categoría</th>
+                                    <th style="text-align:right;">Monto (GTQ)</th>
+                                    <th style="text-align:right;">Monto (USD)</th>
+                                    <th>Medio</th>
+                                    <th>Fecha de compra</th>
+                                    <th>Fecha de pago</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla_debo_pagar_gastos"></tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -1140,30 +1162,6 @@
                 <div class="card">
                     <div class="card-title">Categorías de Gasto Activas</div>
                     <div class="fuentes-activas-grid-row" id="bloque_categorias_activas_row"></div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Próximos pagos</div>
-                    <div style="margin-bottom:16px;">
-                        <input type="text" id="busqueda_proximos_pagos_input" style="height:36px; padding:0 12px; border:1px solid var(--borders); border-radius:8px; font-size:13px; width:220px;" placeholder="🔍 Buscar..." oninput="filtrarProximosPagosGeneralesMecanismo()">
-                    </div>
-                    <div style="width:100%; overflow-x:auto;">
-                        <table class="compact-table-frame" style="width:100%;">
-                            <thead>
-                                <tr>
-                                    <th>Fecha de compra</th>
-                                    <th>Concepto</th>
-                                    <th>Categoría</th>
-                                    <th style="text-align:right;">Monto (GTQ)</th>
-                                    <th style="text-align:right;">Monto (USD)</th>
-                                    <th>Tarjeta</th>
-                                    <th>Fecha de pago</th>
-                                    <th style="text-align:center;">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla_proximos_pagos_generales"></tbody>
-                        </table>
-                    </div>
                 </div>
 
                 <div class="card">
@@ -1303,6 +1301,7 @@
                     <div class="kpi-card">
                         <div class="kpi-label-row"><span class="kpi-label">Total ahorrado</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="piggy-bank"></i></div></div>
                         <span class="kpi-main-value" style="color:var(--green-positive);" id="ahorros_kpi_total">Q 0.00</span>
+                        <div style="font-size: 11px; color: var(--text-secondary); font-weight:600; margin-top:1px;" id="ahorros_kpi_total_usd">$ 0.00</div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-label-row"><span class="kpi-label">Metas activas</span><div class="kpi-icon-wrapper-blue-exact"><i data-lucide="target"></i></div></div>
@@ -1316,6 +1315,7 @@
                     <div class="kpi-card">
                         <div class="kpi-label-row"><span class="kpi-label">Aportes este mes</span><div class="kpi-icon-wrapper-green-exact"><i data-lucide="trending-up"></i></div></div>
                         <span class="kpi-main-value" id="ahorros_kpi_aportes_mes">Q 0.00</span>
+                        <div style="font-size: 11px; color: var(--text-secondary); font-weight:600; margin-top:1px;" id="ahorros_kpi_aportes_mes_usd">$ 0.00</div>
                     </div>
                 </div>
 
@@ -1535,9 +1535,9 @@
             document.getElementById('kpi-inc-3')?.setAttribute('data-lucide', 'activity');
             document.getElementById('kpi-inc-4')?.setAttribute('data-lucide', 'clock-3');
             document.getElementById('kpi-exp-1')?.setAttribute('data-lucide', 'arrow-down-right');
+            document.getElementById('kpi-exp-debo-pagar')?.setAttribute('data-lucide', 'calendar-clock');
             document.getElementById('kpi-exp-2')?.setAttribute('data-lucide', 'wallet');
             document.getElementById('kpi-exp-3')?.setAttribute('data-lucide', 'activity');
-            document.getElementById('kpi-exp-4')?.setAttribute('data-lucide', 'clock-3');
             document.getElementById('btn-export-ico-todo-ing')?.setAttribute('data-lucide', 'download');
             document.getElementById('btn-export-ico-todo-gas')?.setAttribute('data-lucide', 'download');
         }
@@ -1693,6 +1693,11 @@
             document.getElementById('form_ing_nombre').value = '';
             document.getElementById('form_ing_monto').value = '';
             document.getElementById('form_ing_descuento_nomina').value = '';
+            document.getElementById('form_ing_medio_pago').value = 'efectivo';
+            document.getElementById('form_ing_tipo').value = 'fijo';
+            document.getElementById('form_ing_dia_compra').value = '';
+            document.getElementById('form_ing_fecha_compra').value = '';
+            document.getElementById('form_ing_mes_fin').value = '';
             let scopeFormulario = (contexto === 'ingresos' || contexto === 'gastos') ? contexto : 'inicio';
             let rangoActivoFormulario = calcularRangoPeriodo(scopeFormulario);
             document.getElementById('form_ing_mes_aplicacion').value = `${rangoActivoFormulario.anioInicio}-${String(rangoActivoFormulario.mesInicio).padStart(2, '0')}`;
@@ -1711,6 +1716,7 @@
                 medioPago: document.getElementById('form_campo_medio_pago_wrapper'),
                 tarjetaGasto: document.getElementById('form_campo_tarjeta_gasto_wrapper'),
                 diaCompra: document.getElementById('form_campo_dia_compra_wrapper'),
+                fechaCompra: document.getElementById('form_campo_fecha_compra_wrapper'),
                 mes: document.getElementById('form_campo_mes_wrapper'),
                 mesFin: document.getElementById('form_campo_mes_fin_wrapper'),
                 limContado: document.getElementById('form_campo_lim_contado_wrapper'),
@@ -2104,7 +2110,9 @@
                     // "sin factura/declaración" cierra la tarea pendiente (deja de aparecer como alerta),
                     // pero SÍ cuenta como incumplimiento en el KPI de Cumplimiento — no es lo mismo que "Completo".
                     let faltaFactura = mesTerminado && !facturaReal && !sinFactura;
-                    let faltaDeclaracion = mesTerminado && !declaracionReal && !sinDeclaracion && !sinFactura && facturaReal;
+                    // La declaración es una obligación mensual independiente de si facturaste o no
+                    // (aplica incluso "en cero"), así que no depende de facturaReal/sinFactura.
+                    let faltaDeclaracion = mesTerminado && !declaracionReal && !sinDeclaracion;
                     let cumplido = mesTerminado && facturaReal && declaracionReal;
                     // El monto real (de Declaraguate) ya trae la tasa de cambio de referencia de SAT
                     // incorporada — cuando existe, manda por completo sobre el estimado (que usa una
@@ -2264,11 +2272,14 @@
 
         function obtenerEstadoBitacoraMes(m) {
             if(m.esMesActual) return ['blue', 'En curso'];
-            if(m.facturaReal && m.declaracionReal) return ['green', 'Completo'];
-            if(m.sinFactura) return ['red', 'No facturado'];
+            // Factura y declaración son obligaciones independientes — primero lo que aún está pendiente
+            // de acción (naranja), luego lo que se cerró como "no aplica" pero sigue siendo incumplimiento
+            // (rojo), y solo si ambas están resueltas con documento real se considera Completo.
             if(m.faltaFactura) return ['orange', 'Falta factura'];
-            if(m.sinDeclaracion) return ['red', 'No declarado'];
             if(m.faltaDeclaracion) return ['orange', 'Falta declaración'];
+            if(m.sinFactura && m.sinDeclaracion) return ['red', 'No facturado ni declarado'];
+            if(m.sinFactura) return ['red', 'No facturado'];
+            if(m.sinDeclaracion) return ['red', 'No declarado'];
             return ['green', 'Completo'];
         }
 
@@ -2293,11 +2304,9 @@
                 ? `<tr><td colspan="8" style="text-align:center; color:var(--text-secondary); padding:20px;">Aún no hay ingresos registrados</td></tr>`
                 : meses.map(m => {
                     let [colorEstado, textoEstado] = obtenerEstadoBitacoraMes(m);
-                    let celdaDeclaracion = m.facturaReal
-                        ? renderCeldaArchivoFiscal(m, 'declaracion')
-                        : m.sinFactura
-                            ? `<span style="font-size:11px; color:var(--text-secondary);">No aplica (no facturaste)</span>`
-                            : `<span style="font-size:11px; color:var(--text-secondary);">Emite la factura primero</span>`;
+                    // La declaración es una obligación mensual aparte de la factura — se puede adjuntar
+                    // siempre, hayas facturado o no (aplica incluso "en cero").
+                    let celdaDeclaracion = renderCeldaArchivoFiscal(m, 'declaracion');
                     return `
                     <tr>
                         <td><b>${nombresMesesCompleto[m.mes - 1]} ${m.anio}</b></td>
@@ -2618,18 +2627,32 @@
             if(_resolverConfirmacion) { _resolverConfirmacion(resultado); _resolverConfirmacion = null; }
         }
 
+        // El día de la compra sirve para dos cosas distintas según el tipo: en un gasto puntual
+        // (variable) es UNA fecha concreta -> un solo calendario junto con mes/año. En un recurrente
+        // (fijo) es "qué día del mes se cobra" cada vez -> sigue siendo un campo de día aparte, porque
+        // no hay una única fecha que fijar.
         function conmutarSelectorTarjetaGasto() {
             let medioPago = document.getElementById('form_ing_medio_pago').value;
+            let tipo = document.getElementById('form_ing_tipo').value;
             let wrapper = document.getElementById('form_campo_tarjeta_gasto_wrapper');
             let wrapperDia = document.getElementById('form_campo_dia_compra_wrapper');
+            let wrapperFecha = document.getElementById('form_campo_fecha_compra_wrapper');
+            let wrapperMes = document.getElementById('form_campo_mes_wrapper');
+
             if(medioPago === 'tarjeta') {
                 wrapper.style.display = 'flex';
-                wrapperDia.style.display = 'flex';
                 let combo = document.getElementById('form_ing_tarjeta_id');
                 combo.innerHTML = (db_tarjetas || []).map(t => `<option value="${t.id}">${t.nombre}</option>`).join('');
+
+                let esCompraPuntual = tipo === 'variable';
+                wrapperDia.style.display = esCompraPuntual ? 'none' : 'flex';
+                wrapperMes.style.display = esCompraPuntual ? 'none' : 'flex';
+                wrapperFecha.style.display = esCompraPuntual ? 'flex' : 'none';
             } else {
                 wrapper.style.display = 'none';
                 wrapperDia.style.display = 'none';
+                wrapperFecha.style.display = 'none';
+                wrapperMes.style.display = 'flex';
             }
         }
 
@@ -2642,10 +2665,10 @@
         }
 
         // 💳 Utilizado al CONTADO: gastos con tarjeta que NO son cuota, cuya fecha de pago efectiva aún no ha
-        // pasado. Lo que ya pasó su fecha de pago se asume pagado — mismo criterio que "Próximos pagos".
+        // pasado. Lo que ya pasó su fecha de pago se asume pagado.
         // Para suscripciones recurrentes, cuenta SOLO la próxima ocurrencia pendiente (no todos los meses
-        // futuros que el motor de recurrentes ya pre-generó como colchón/proyección) — mismo agrupamiento
-        // que usa renderProximosPagosGenerales, para no sumar cargos que todavía no han ocurrido.
+        // futuros que el motor de recurrentes ya pre-generó como colchón/proyección), para no sumar
+        // cargos que todavía no han ocurrido.
         function calcularUtilizadoContado(tarjeta) {
             let { anio: anioHoy, mes: mesHoy } = obtenerAnioMesReal();
             let claveHoy = anioHoy * 12 + mesHoy;
@@ -2954,6 +2977,19 @@
             return resultado;
         }
 
+        // 🏷️ Título dinámico para las tablas de "qué debo pagar", según el filtro de período elegido
+        // (mismo rango que ya usan los KPIs — "mes" cubre tanto "Este mes" como "Mes anterior", así que
+        // hay que comparar contra el mes real de hoy para saber si hablar en presente o en pasado).
+        function etiquetaQueDeboPagar(rango) {
+            let { anio: anioHoy, mes: mesHoy } = obtenerAnioMesReal();
+            if(rango.tipo === 'mes') {
+                if(rango.anioInicio === anioHoy && rango.mesInicio === mesHoy) return 'Qué debo pagar este mes';
+                return `Qué debía pagar — ${nombresMesesCompleto[rango.mesInicio - 1]} ${rango.anioInicio}`;
+            }
+            if(rango.tipo === 'anio') return 'Qué debo pagar este año';
+            return `Qué debo pagar — ${rango.etiqueta}`;
+        }
+
         // 💾 Núcleo de guardado de ingresos/gastos, sin acoplarse al DOM — recibe datos, no lee inputs.
         // Reutilizado tanto por el formulario manual (ejecutarGuardadoDinamicoCloud) como por el asistente IA.
         // datos: { tablaDestino:'ingresos'|'gastos', nombre, monto, moneda, tipo, anio, mes, categoria,
@@ -3025,26 +3061,37 @@
             let monto = parseFloat(document.getElementById('form_ing_monto').value);
             let moneda = document.getElementById('form_ing_moneda').value;
             let tipo = document.getElementById('form_ing_tipo').value;
-            let fechaISO = document.getElementById('form_ing_mes_aplicacion').value || obtenerMesActualISO();
-            let piezasFecha = fechaISO.split('-');
-            let anio = parseInt(piezasFecha[0]);
-            let mes = parseInt(piezasFecha[1]);
 
             let tablaDestino = (moduloActivoGlobal === 'gastos') ? 'gastos' : 'ingresos';
-            let medioPagoSel = null, tarjetaSeleccionada = null, diaCompra = null;
+            let medioPagoSel = null, tarjetaSeleccionada = null, diaCompra = null, anio, mes;
 
             if(tablaDestino === 'gastos') {
                 medioPagoSel = document.getElementById('form_ing_medio_pago').value;
                 tarjetaSeleccionada = document.getElementById('form_ing_tarjeta_id').value;
-                diaCompra = parseInt(document.getElementById('form_ing_dia_compra').value) || null;
+
+                if(tipo === 'variable' && medioPagoSel === 'tarjeta') {
+                    // Compra puntual con tarjeta: un solo calendario da día + mes + año de una vez,
+                    // en vez de escribir el día aparte y elegir mes/año por otro lado.
+                    let fechaCompraVal = document.getElementById('form_ing_fecha_compra').value;
+                    if(!fechaCompraVal) { errorBox.innerText = 'Elige la fecha de la compra.'; return; }
+                    [anio, mes, diaCompra] = fechaCompraVal.split('-').map(Number);
+                } else {
+                    let fechaISO = document.getElementById('form_ing_mes_aplicacion').value || obtenerMesActualISO();
+                    [anio, mes] = fechaISO.split('-').map(Number);
+                    diaCompra = parseInt(document.getElementById('form_ing_dia_compra').value) || null;
+                }
+
                 if(medioPagoSel === 'tarjeta' && !tarjetaSeleccionada) {
                     errorBox.innerText = 'Elige con qué tarjeta pagaste.';
                     return;
                 }
-                if(medioPagoSel === 'tarjeta' && !diaCompra) {
+                if(medioPagoSel === 'tarjeta' && tipo === 'fijo' && !diaCompra) {
                     errorBox.innerText = 'Ingresa el día de la compra.';
                     return;
                 }
+            } else {
+                let fechaISO = document.getElementById('form_ing_mes_aplicacion').value || obtenerMesActualISO();
+                [anio, mes] = fechaISO.split('-').map(Number);
             }
 
             let descuentoNominaVal = tablaDestino === 'ingresos'
@@ -3099,13 +3146,20 @@
                 document.getElementById('form_ing_mes_aplicacion').value = `${registro.anio}-${registro.mes.toString().padStart(2,'0')}`;
                 if(tabla === 'ingresos') {
                     document.getElementById('form_ing_descuento_nomina').value = registro.descuento_nomina || '';
+                    actualizarLabelMesSegunTipo();
                 }
                 if(tabla === 'gastos') {
                     document.getElementById('form_ing_medio_pago').value = registro.medio_pago || 'efectivo';
+                    actualizarLabelMesSegunTipo();
                     conmutarSelectorTarjetaGasto();
                     if(registro.medio_pago === 'tarjeta') {
                         document.getElementById('form_ing_tarjeta_id').value = registro.tarjeta_id || '';
-                        document.getElementById('form_ing_dia_compra').value = registro.dia_compra || '';
+                        if(registro.tipo === 'variable') {
+                            let diaCompraVal = (registro.dia_compra || 1).toString().padStart(2,'0');
+                            document.getElementById('form_ing_fecha_compra').value = `${registro.anio}-${registro.mes.toString().padStart(2,'0')}-${diaCompraVal}`;
+                        } else {
+                            document.getElementById('form_ing_dia_compra').value = registro.dia_compra || '';
+                        }
                     }
                 }
             }
@@ -3162,8 +3216,10 @@
             let totalAhorrado = progresos.reduce((s, p) => s + p.actual, 0);
             let aportesEsteMes = progresos.reduce((s, p) => s + p.aportesEsteMes, 0);
             elTotal.innerText = "Q " + fmt(totalAhorrado);
+            document.getElementById('ahorros_kpi_total_usd').innerText = "$ " + fmt(normalizarAUsd(totalAhorrado, 'GTQ'));
             document.getElementById('ahorros_kpi_metas_activas').innerText = progresos.filter(p => !p.cumplida).length;
             document.getElementById('ahorros_kpi_aportes_mes').innerText = "Q " + fmt(aportesEsteMes);
+            document.getElementById('ahorros_kpi_aportes_mes_usd').innerText = "$ " + fmt(normalizarAUsd(aportesEsteMes, 'GTQ'));
 
             let elCercanaTitulo = document.getElementById('ahorros_kpi_meta_cercana');
             let elCercanaSub = document.getElementById('ahorros_kpi_meta_cercana_sub');
@@ -3200,22 +3256,26 @@
                 if(p.cumplida) {
                     asesoriaHtml = `<span style="color:var(--color-success); font-weight:600;">🎉 ¡Meta cumplida!</span>`;
                 } else if(p.vencida) {
-                    asesoriaHtml = `<span style="color:var(--color-danger); font-weight:600;">La fecha meta ya pasó — te faltan Q ${fmt(p.restante)} para completarla.</span>`;
+                    asesoriaHtml = `<span style="color:var(--color-danger); font-weight:600;">La fecha meta ya pasó — te faltan Q ${fmt(p.restante)} ($ ${fmt(normalizarAUsd(p.restante, 'GTQ'))}) para completarla.</span>`;
                 } else if(p.mesesRestantes !== null) {
-                    asesoriaHtml = `Para llegar a tiempo, ahorra <b>Q ${fmt(p.aportarPorMes)}/mes</b> los próximos ${p.mesesRestantes} mes${p.mesesRestantes === 1 ? '' : 'es'}.`;
+                    asesoriaHtml = `Para llegar a tiempo, ahorra <b>Q ${fmt(p.aportarPorMes)}/mes ($ ${fmt(normalizarAUsd(p.aportarPorMes, 'GTQ'))}/mes)</b> los próximos ${p.mesesRestantes} mes${p.mesesRestantes === 1 ? '' : 'es'}.`;
                 } else {
-                    asesoriaHtml = `Te faltan Q ${fmt(p.restante)} — ponle fecha meta para que te diga cuánto ahorrar al mes.`;
+                    asesoriaHtml = `Te faltan Q ${fmt(p.restante)} ($ ${fmt(normalizarAUsd(p.restante, 'GTQ'))}) — ponle fecha meta para que te diga cuánto ahorrar al mes.`;
                 }
 
                 let aportesHtml = p.aportes.length > 0
-                    ? p.aportes.slice().sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).map(a => `
+                    ? p.aportes.slice().sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).map(a => {
+                        let montoGtq = normalizarAQuetzales(a.monto, a.moneda);
+                        let montoUsd = normalizarAUsd(a.monto, a.moneda);
+                        return `
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding:6px 0; border-bottom:1px dashed var(--borders);">
                             <span>${a.fecha}${a.nota ? ' · ' + escaparHtml(a.nota) : ''}</span>
                             <span style="display:flex; align-items:center; gap:8px;">
-                                <b style="color:var(--color-success);">+${a.moneda === 'USD' ? '$' : 'Q'} ${fmt(a.monto)}</b>
+                                <b style="color:var(--color-success);">+Q ${fmt(montoGtq)} <span style="color:var(--text-secondary); font-weight:600;">/ $ ${fmt(montoUsd)}</span></b>
                                 <i data-lucide="trash-2" style="width:12px; height:12px; cursor:pointer; color:var(--text-secondary);" onclick="eliminarRegistroAhorro('aportes_ahorro', '${a.id}')"></i>
                             </span>
-                        </div>`).join('')
+                        </div>`;
+                    }).join('')
                     : `<div style="font-size:12px; color:var(--text-secondary); padding:6px 0;">Sin aportes todavía.</div>`;
 
                 return `
@@ -3235,8 +3295,8 @@
                             </div>
                         </div>
 
-                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-top:14px; margin-bottom:4px;">
-                            <span>Q ${fmt(p.actual)} de Q ${fmt(p.objetivo)}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:13px; font-weight:600; margin-top:14px; margin-bottom:4px;">
+                            <span>Q ${fmt(p.actual)} de Q ${fmt(p.objetivo)} <span style="font-size:11px; color:var(--text-secondary); font-weight:600;">($ ${fmt(normalizarAUsd(p.actual, 'GTQ'))} de $ ${fmt(normalizarAUsd(p.objetivo, 'GTQ'))})</span></span>
                             <span style="color:${colorBarra};">${p.pct.toFixed(0)}%</span>
                         </div>
                         <div class="progress-bar-frame"><div class="progress-bar-fill" style="width:${p.pct.toFixed(0)}%; background-color:${colorBarra};"></div></div>
@@ -3448,19 +3508,29 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 && (categoriaFiltroIngresos === 'Todas' || (i.categoria || 'Sin categoría') === categoriaFiltroIngresos))
                 .reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
-            // ---- Datos del PERÍODO de la página Gastos: por fecha de PAGO efectivo, no de compra (misma lógica que Inicio) ----
-            let gastosPeriodo = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return estaEnRango(p.anio, p.mes, rangoGastos)
-                && (categoriaFiltroGastos === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltroGastos); });
+            // ---- Datos del PERÍODO de la página Gastos: por fecha de COMPRA/aplicación — "qué gasté" ----
+            let gastosPeriodo = (db_gastos || []).filter(g => estaEnRango(g.anio, g.mes, rangoGastos)
+                && (categoriaFiltroGastos === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltroGastos));
             let totalGastos = gastosPeriodo.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
             let mesPrevGas = rangoGastos.mesInicio - 1; let anioPrevGas = rangoGastos.anioInicio;
             if(mesPrevGas < 1) { mesPrevGas = 12; anioPrevGas -= 1; }
-            let totalGastosPeriodoPrev = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return p.anio === anioPrevGas && p.mes === mesPrevGas
+            let totalGastosPeriodoPrev = (db_gastos || []).filter(g => parseInt(g.anio) === anioPrevGas && parseInt(g.mes) === mesPrevGas
+                && (categoriaFiltroGastos === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltroGastos))
+                .reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
+
+            // ---- Mismo período de la página Gastos, pero por fecha de PAGO efectivo — "qué debo pagar" ----
+            let gastosPeriodoPago = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return estaEnRango(p.anio, p.mes, rangoGastos)
+                && (categoriaFiltroGastos === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltroGastos); });
+            let totalGastosPago = gastosPeriodoPago.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
+            let totalGastosPagoPeriodoPrev = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return p.anio === anioPrevGas && p.mes === mesPrevGas
                 && (categoriaFiltroGastos === 'Todas' || (g.categoria || 'Sin categoría') === categoriaFiltroGastos); })
                 .reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
 
-            // ---- Datos del PERÍODO de Inicio (para su propia dona "Distribución de gastos") ----
-            let gastosPeriodoInicio = (db_gastos || []).filter(g => estaEnRango(g.anio, g.mes, rangoInicio));
+            // ---- Datos del PERÍODO de Inicio (para su propia dona "Distribución de gastos") — por fecha
+            // de PAGO efectivo, igual que el KPI "Qué debo pagar" de esta misma página, para que el total
+            // de la dona siempre cuadre con el KPI de arriba (antes usaba fecha de compra y no cuadraban). ----
+            let gastosPeriodoInicio = (db_gastos || []).filter(g => { let p = obtenerMesPagoEfectivo(g); return estaEnRango(p.anio, p.mes, rangoInicio); });
             let totalGastosInicio = gastosPeriodoInicio.reduce((a, b) => a + normalizarAQuetzales(b.monto, b.moneda), 0);
             let gastosAgrupadosInicio = {};
             gastosPeriodoInicio.forEach(g => {
@@ -3514,11 +3584,20 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 ? `Efectivo Q${totalEfectivoHoy.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2})} • Tarjetas Q${totalTarjetaHoy.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2})}`
                 : 'Sin datos este mes';
 
-            // Gastos del período, para la card KPI de la página Gastos
+            // Gastos del período (por fecha de compra), para la card KPI "Gasté" de la página Gastos
             let kpiGasMesReal = document.getElementById('kpi_gas_mes_real');
             if(kpiGasMesReal) kpiGasMesReal.innerText = "Q " + totalGastos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
             let elGastosDelta = document.getElementById('kpi_gastos_mes_delta');
             if(elGastosDelta) elGastosDelta.innerText = rangoGastos.tipo === 'mes' ? formatearVariacionPct(totalGastos, totalGastosPeriodoPrev) : rangoGastos.etiqueta;
+
+            // Lo mismo, por fecha de pago efectivo, para la card KPI "Qué debo pagar"
+            let kpiGasDeboPagar = document.getElementById('kpi_gas_debo_pagar');
+            if(kpiGasDeboPagar) kpiGasDeboPagar.innerText = "Q " + totalGastosPago.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+            let elGastosDeboPagarDelta = document.getElementById('kpi_gas_debo_pagar_delta');
+            if(elGastosDeboPagarDelta) elGastosDeboPagarDelta.innerText = rangoGastos.tipo === 'mes' ? formatearVariacionPct(totalGastosPago, totalGastosPagoPeriodoPrev) : rangoGastos.etiqueta;
+            let tituloDeboPagarGastos = document.getElementById('titulo_tabla_debo_pagar_gastos');
+            if(tituloDeboPagarGastos) tituloDeboPagarGastos.innerText = etiquetaQueDeboPagar(rangoGastos);
+            renderTablaDeboPagarGastos(gastosPeriodoPago);
             let elIngDelta = document.getElementById('kpi_ing_mes_delta');
             if(elIngDelta) elIngDelta.innerText = rangoIngresos.tipo === 'mes' ? formatearVariacionPct(totalIngresos, totalIngresosPeriodoPrev) : rangoIngresos.etiqueta;
 
@@ -3535,25 +3614,29 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 else totalVariables += qVal;
             });
 
-            // Agrupación de gastos por categoría + separación fijo/variable (del período filtrado)
+            // Agrupación de gastos por categoría (del período filtrado, por fecha de compra — mismo criterio que "Gasté")
             let gastosAgrupados = {};
-            let totalGastosFijos = 0; let totalGastosVariables = 0;
             gastosPeriodo.forEach(g => {
                 let qVal = normalizarAQuetzales(g.monto, g.moneda);
                 let clave = g.categoria || "Sin categoría";
                 gastosAgrupados[clave] = (gastosAgrupados[clave] || 0) + qVal;
+            });
+
+            // Fijos vs Variables: desglose de "Qué debo pagar" (fecha de pago), no de "Gasté" — por eso
+            // se calcula sobre gastosPeriodoPago, no sobre gastosPeriodo.
+            let totalGastosFijos = 0; let totalGastosVariables = 0;
+            gastosPeriodoPago.forEach(g => {
+                let qVal = normalizarAQuetzales(g.monto, g.moneda);
                 if(g.tipo === 'fijo') totalGastosFijos += qVal;
                 else totalGastosVariables += qVal;
             });
 
             document.getElementById('kpi_gas_fijos').innerText = "Q " + totalGastosFijos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('kpi_gas_variables').innerText = "Q " + totalGastosVariables.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-            let pctGasFijo = totalGastos > 0 ? ((totalGastosFijos / totalGastos) * 100).toFixed(1) : "0.0";
-            let pctGasVar = totalGastos > 0 ? ((totalGastosVariables / totalGastos) * 100).toFixed(1) : "0.0";
+            let pctGasFijo = totalGastosPago > 0 ? ((totalGastosFijos / totalGastosPago) * 100).toFixed(1) : "0.0";
+            let pctGasVar = totalGastosPago > 0 ? ((totalGastosVariables / totalGastosPago) * 100).toFixed(1) : "0.0";
             document.getElementById('kpi_gas_fijos_pct').innerText = `${pctGasFijo}% del total`;
             document.getElementById('kpi_gas_variables_pct').innerText = `${pctGasVar}% del total`;
-            document.getElementById('kpi_gas_promedio').innerText = "Q " + calcularPromedioMensualGastos().toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-
             document.getElementById('kpi_ing_mes').innerText = "Q " + totalIngresos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('kpi_ing_recurrente').innerText = "Q " + totalFijos.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('kpi_ing_variable').innerText = "Q " + totalVariables.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -3596,13 +3679,14 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             renderCategoriasActivasTarjetas(gastosAgrupados);
             renderRecurrentesActivos();
             renderGastosRecurrentesActivos();
-            renderProximosPagosGenerales();
             renderProximosPagosCuotas();
 
             filtrarHistorialIngresosMecanismo();
             filtrarHistorialGastosMecanismo();
 
             renderBloqueTarjetasInicio(db_tarjetas);
+            let tituloCompromisosInicio = document.getElementById('titulo_tabla_compromisos_inicio');
+            if(tituloCompromisosInicio) tituloCompromisosInicio.innerText = etiquetaQueDeboPagar(rangoInicio);
             renderTablaCompromisos(db_tarjetas, rangoInicio);
 
             renderTablaBitacoraFiscal();
@@ -3636,26 +3720,24 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             return `${signo}${variacion.toFixed(1)}% vs. mes anterior`;
         }
 
+        // Ordena las claves "anio-mes" cronológicamente — Object.keys() no garantiza ese orden
+        // (depende del orden en que llegaron los registros), así que sin esto "últimos 6 meses"
+        // podía tomar meses que no eran realmente los más recientes.
+        function ordenarClavesAnioMes(claves) {
+            return claves.slice().sort((a, b) => {
+                let [aA, aM] = a.split('-').map(Number);
+                let [bA, bM] = b.split('-').map(Number);
+                return (aA * 12 + aM) - (bA * 12 + bM);
+            });
+        }
+
         function calcularPromedioMensualIngresos() {
             let porMes = {};
             (db_ingresos || []).forEach(i => {
                 let clave = `${i.anio}-${i.mes}`;
                 porMes[clave] = (porMes[clave] || 0) + normalizarAQuetzales(i.monto, i.moneda);
             });
-            let meses = Object.keys(porMes);
-            if(meses.length === 0) return 0;
-            let totalesUltimos6 = meses.slice(-6).map(k => porMes[k]);
-            return totalesUltimos6.reduce((a,b) => a+b, 0) / totalesUltimos6.length;
-        }
-
-        function calcularPromedioMensualGastos() {
-            let porMes = {};
-            (db_gastos || []).forEach(g => {
-                let p = obtenerMesPagoEfectivo(g);
-                let clave = `${p.anio}-${p.mes}`;
-                porMes[clave] = (porMes[clave] || 0) + normalizarAQuetzales(g.monto, g.moneda);
-            });
-            let meses = Object.keys(porMes);
+            let meses = ordenarClavesAnioMes(Object.keys(porMes));
             if(meses.length === 0) return 0;
             let totalesUltimos6 = meses.slice(-6).map(k => porMes[k]);
             return totalesUltimos6.reduce((a,b) => a+b, 0) / totalesUltimos6.length;
@@ -4078,26 +4160,6 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             return series;
         }
 
-        // Igual que calcularSeriesPorCategoria, pero agrupa cada gasto por su mes de PAGO efectivo
-        // (ciclo de corte/pago de la tarjeta), no por el mes en que se compró/generó.
-        function calcularSeriesPorCategoriaPagoEfectivo(registros, meses) {
-            let porMes = meses.map(m => {
-                let agrupado = {};
-                (registros || []).forEach(r => {
-                    let p = obtenerMesPagoEfectivo(r);
-                    if(p.anio !== m.anio || p.mes !== m.mes) return;
-                    let clave = r.categoria || 'Sin categoría';
-                    agrupado[clave] = (agrupado[clave] || 0) + normalizarAQuetzales(r.monto, r.moneda);
-                });
-                return agrupado;
-            });
-
-            let categorias = Array.from(new Set(porMes.flatMap(a => Object.keys(a))));
-            let series = {};
-            categorias.forEach(cat => { series[cat] = porMes.map(a => a[cat] || 0); });
-            return series;
-        }
-
         // "Gastos" por mes de PAGO EFECTIVO (mismo criterio que el trío de KPIs de Inicio), no por
         // mes en que se compró/generó el gasto.
         function sumarGastosPorMesPagoEfectivo(anio, mes) {
@@ -4143,7 +4205,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             let meses = obtenerMesesEnRango(rango);
             let categoriaFiltro = obtenerCategoriaFiltro('gastos');
             let gastosFiltrados = categoriaFiltro === 'Todas' ? db_gastos : (db_gastos || []).filter(g => (g.categoria || 'Sin categoría') === categoriaFiltro);
-            let series = calcularSeriesPorCategoriaPagoEfectivo(gastosFiltrados, meses);
+            let series = calcularSeriesPorCategoria(gastosFiltrados, meses);
             let totalesPorMes = meses.map((_, i) => Object.keys(series).reduce((s, c) => s + (series[c][i] || 0), 0));
             renderGraficoBarrasApiladas('cont_histograma_gastos_node', meses, series, {
                 mostrarLinea: true, serieLinea: calcularPromedioMovil(totalesPorMes, 3), tipo: 'gasto'
@@ -4550,92 +4612,6 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
         function alternarMostrarTodosGastosRecurrentes() {
             mostrarTodosGastosRecurrentes = !mostrarTodosGastosRecurrentes;
             renderGastosRecurrentesActivos();
-        }
-
-        // 💰 PRÓXIMOS PAGOS (cargos de tarjeta que NO son cuotas), calculado con día de compra + ciclo de la tarjeta
-        let ultimoProximosPagosGeneralesCalculado = [];
-
-        function renderProximosPagosGenerales() {
-            let candidatos = (db_gastos || []).filter(g => g.medio_pago === 'tarjeta' && !g.cuota_id && g.tarjeta_id);
-
-            if(candidatos.length === 0) {
-                ultimoProximosPagosGeneralesCalculado = [];
-                renderFilasProximosPagosGenerales([]);
-                return;
-            }
-
-            let hoy = new Date();
-            let claveHoy = hoy.getFullYear() * 12 + (hoy.getMonth() + 1);
-
-            let calculado = candidatos.map(g => {
-                let tarjeta = (db_tarjetas || []).find(t => String(t.id) === String(g.tarjeta_id));
-                let fechaPago = (tarjeta && g.dia_compra) ? calcularFechaPagoTarjeta(g.dia_compra, g.anio, g.mes, tarjeta) : null;
-                let clavePago = fechaPago ? (fechaPago.anio * 12 + fechaPago.mes) : null;
-                return { gasto: g, tarjeta, fechaPago, clavePago };
-            });
-
-            // Para gastos ligados a una regla recurrente, solo mostramos la ocurrencia más relevante:
-            // la próxima que aún no vence; si ya pasaron todas, la más reciente.
-            let porRecurrente = {};
-            let resultado = [];
-            calculado.forEach(item => {
-                if(item.gasto.recurrente_id) {
-                    let id = item.gasto.recurrente_id;
-                    if(!porRecurrente[id]) porRecurrente[id] = [];
-                    porRecurrente[id].push(item);
-                } else {
-                    resultado.push(item);
-                }
-            });
-
-            Object.values(porRecurrente).forEach(items => {
-                let futuros = items.filter(it => it.clavePago !== null && it.clavePago >= claveHoy).sort((a, b) => a.clavePago - b.clavePago);
-                let elegido = futuros[0] || items.slice().sort((a, b) => (b.clavePago ?? -1) - (a.clavePago ?? -1))[0];
-                resultado.push(elegido);
-            });
-
-            resultado.sort((a, b) => (a.clavePago ?? -1) - (b.clavePago ?? -1));
-            ultimoProximosPagosGeneralesCalculado = resultado;
-            renderFilasProximosPagosGenerales(resultado);
-        }
-
-        function renderFilasProximosPagosGenerales(filas) {
-            let tbody = document.getElementById('tabla_proximos_pagos_generales');
-            if(!tbody) return;
-
-            if(filas.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-secondary); padding:24px 0;">No se encontraron cargos de tarjeta (fuera de cuotas)</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = filas.map(f => {
-                let mGtq = normalizarAQuetzales(f.gasto.monto, f.gasto.moneda);
-                let mUsd = normalizarAUsd(f.gasto.monto, f.gasto.moneda);
-                let fechaCompraTexto = f.gasto.dia_compra
-                    ? `${f.gasto.dia_compra} ${nombresMesesCompleto[f.gasto.mes - 1]} ${f.gasto.anio}`
-                    : `${nombresMesesCompleto[f.gasto.mes - 1]} ${f.gasto.anio}`;
-                let fechaPagoTexto = f.fechaPago
-                    ? `${f.fechaPago.dia} ${nombresMesesCompleto[f.fechaPago.mes - 1]} ${f.fechaPago.anio}`
-                    : `<span style="color:var(--orange-warning); font-weight:600;">Falta día de compra</span>`;
-
-                return `
-                    <tr>
-                        <td>${fechaCompraTexto}</td>
-                        <td><b>${f.gasto.nombre}</b></td>
-                        <td><span class="badge purple">${f.gasto.categoria || 'General'}</span></td>
-                        <td style="text-align:right; font-weight:700; color:var(--red-negative);">Q ${mGtq.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-                        <td style="text-align:right; color:var(--text-secondary);">$ ${mUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-                        <td>${f.tarjeta ? f.tarjeta.nombre : '—'}</td>
-                        <td>${fechaPagoTexto}</td>
-                        <td style="text-align:center;"><i data-lucide="pencil" style="width:15px; height:15px; cursor:pointer; color:var(--text-secondary);" onclick="editarRegistro('gastos', ${f.gasto.id})"></i></td>
-                    </tr>`;
-            }).join('');
-        }
-
-        function filtrarProximosPagosGeneralesMecanismo() {
-            let busqueda = document.getElementById('busqueda_proximos_pagos_input').value.toLowerCase();
-            let filtrado = ultimoProximosPagosGeneralesCalculado.filter(f => f.gasto.nombre.toLowerCase().includes(busqueda));
-            renderFilasProximosPagosGenerales(filtrado);
         }
 
         // 🧾 PRÓXIMOS PAGOS DE CUOTAS (una fila por compra, calculado contra el mes actual real)
@@ -5161,6 +5137,52 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             renderHistorialTablaGastos(ultimoHistorialGastosRenderizado);
         }
 
+        // 💳 "Qué debo pagar [período]": el desglose que explica el KPI del mismo nombre — agrupa por fecha
+        // de PAGO efectivo, así que puede incluir compras de meses anteriores (se marcan con un badge) que
+        // el Historial de abajo (por fecha de compra) no muestra en este mismo período.
+        function renderTablaDeboPagarGastos(gastos) {
+            let tbody = document.getElementById('tabla_debo_pagar_gastos');
+            if(!tbody) return;
+
+            if(!gastos || gastos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-secondary); padding:24px 0;">Nada que pagar en este período</td></tr>`;
+                return;
+            }
+
+            let ordenado = gastos.slice().sort((a, b) => (parseInt(a.anio) * 12 + parseInt(a.mes)) - (parseInt(b.anio) * 12 + parseInt(b.mes)));
+
+            tbody.innerHTML = ordenado.map(gas => {
+                let mGtq = normalizarAQuetzales(gas.monto, gas.moneda);
+                let mUsd = normalizarAUsd(gas.monto, gas.moneda);
+                let pago = obtenerMesPagoEfectivo(gas);
+                let esCrossMes = parseInt(gas.anio) !== pago.anio || parseInt(gas.mes) !== pago.mes;
+                let tarjeta = gas.medio_pago === 'tarjeta' ? (db_tarjetas || []).find(t => String(t.id) === String(gas.tarjeta_id)) : null;
+                let medioTexto = gas.medio_pago === 'tarjeta' ? (tarjeta ? tarjeta.nombre : 'Tarjeta') : 'Efectivo';
+
+                // Fecha de compra: exacta (con día) solo si conocemos el día en que se compró — dato propio
+                // del gasto, no siempre disponible. Fecha de pago: el día de pago de una tarjeta es fijo
+                // (tarjeta.pago) y no depende de conocer el día de compra, así que siempre es exacta.
+                let fechaCompraTexto = (gas.medio_pago === 'tarjeta' && gas.dia_compra)
+                    ? `${gas.dia_compra} ${nombresMesesCompleto[gas.mes - 1]} ${gas.anio}`
+                    : `${nombresMesesCompleto[gas.mes - 1]} ${gas.anio}`;
+                fechaCompraTexto += esCrossMes ? ' <span class="badge orange">Compra de mes anterior</span>' : '';
+                let fechaPagoTexto = (gas.medio_pago === 'tarjeta' && tarjeta && tarjeta.pago)
+                    ? `${tarjeta.pago} ${nombresMesesCompleto[pago.mes - 1]} ${pago.anio}`
+                    : `${nombresMesesCompleto[pago.mes - 1]} ${pago.anio}`;
+
+                return `
+                    <tr>
+                        <td><b>${gas.nombre}</b></td>
+                        <td><span class="badge purple">${gas.categoria || 'General'}</span></td>
+                        <td style="text-align:right; font-weight:700; color:var(--red-negative);">Q ${mGtq.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                        <td style="text-align:right; color:var(--text-secondary);">$ ${mUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                        <td>${medioTexto}</td>
+                        <td>${fechaCompraTexto}</td>
+                        <td>${fechaPagoTexto}</td>
+                    </tr>`;
+            }).join('');
+        }
+
         function filtrarHistorialIngresosMecanismo() {
             let busqueda = document.getElementById('busqueda_ingreso_input').value.toLowerCase();
             let tipo = document.getElementById('filtro_tipo_ingreso').value;
@@ -5187,8 +5209,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 let matchesBusqueda = g.nombre.toLowerCase().includes(busqueda);
                 let matchesTipo = (tipo === "Todos" || g.tipo === tipo);
                 let matchesCategoria = (categoria === "Todas" || g.categoria === categoria);
-                let p = obtenerMesPagoEfectivo(g);
-                let matchesPeriodo = estaEnRango(p.anio, p.mes, rango);
+                let matchesPeriodo = estaEnRango(g.anio, g.mes, rango);
                 return matchesBusqueda && matchesTipo && matchesCategoria && matchesPeriodo;
             });
             renderHistorialTablaGastos(baseFiltrada);
@@ -5275,19 +5296,6 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                     r.nombre, `${nombresMesesCompleto[r.mes_inicio - 1]} ${r.anio_inicio}`, r.categoria || 'Sin categoría',
                     r.medio_pago === 'tarjeta' ? 'Tarjeta' : 'Efectivo',
                     (r.moneda === 'USD' ? '$' : 'Q') + r.monto.toFixed(2)
-                ])
-            ));
-
-            secciones.push('');
-            secciones.push('PRÓXIMOS PAGOS');
-            secciones.push(filasACSV(
-                ['Fecha de compra', 'Concepto', 'Categoría', 'Monto (GTQ)', 'Tarjeta', 'Fecha de pago'],
-                ultimoProximosPagosGeneralesCalculado.map(f => [
-                    f.gasto.dia_compra ? `${f.gasto.dia_compra} ${nombresMesesCompleto[f.gasto.mes - 1]} ${f.gasto.anio}` : `${nombresMesesCompleto[f.gasto.mes - 1]} ${f.gasto.anio}`,
-                    f.gasto.nombre, f.gasto.categoria || 'Sin categoría',
-                    normalizarAQuetzales(f.gasto.monto, f.gasto.moneda).toFixed(2),
-                    f.tarjeta ? f.tarjeta.nombre : '',
-                    f.fechaPago ? `${f.fechaPago.dia} ${nombresMesesCompleto[f.fechaPago.mes - 1]} ${f.fechaPago.anio}` : 'Falta día de compra'
                 ])
             ));
 
