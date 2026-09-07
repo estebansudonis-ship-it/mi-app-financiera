@@ -467,6 +467,9 @@
         /* TABLAS MAESTRAS */
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; }
+        .compact-table-frame th.th-ordenable { cursor: pointer; user-select: none; white-space: nowrap; }
+        .compact-table-frame th.th-ordenable:hover { color: var(--purple-main); }
+        .compact-table-frame th.th-ordenable span[data-columna] { display: inline-block; width: 10px; color: var(--purple-main); font-size: 10px; }
         .compact-table-frame td { font-size: 13px; padding: 14px 12px; border-bottom: 1px solid var(--borders); color: var(--text-primary); }
         
         .badge { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; display: inline-block; }
@@ -805,7 +808,16 @@
         </div>
         <input type="hidden" id="form_meta_id">
         <div class="form-group-field"><label>Nombre de la meta</label><input type="text" id="form_meta_nombre" placeholder="Ej. Viaje a Europa"></div>
-        <div class="form-group-field"><label>Emoji (opcional)</label><input type="text" id="form_meta_emoji" placeholder="🎯" maxlength="4"></div>
+        <div class="form-group-field" style="position:relative;">
+            <label>Emoji (opcional)</label>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="form_meta_emoji" placeholder="🎯" style="flex:1;">
+                <button type="button" class="month-selector" style="padding:0 14px; font-size:16px;" onclick="alternarPickerEmojiMeta(event)" title="Elegir de la biblioteca">😀</button>
+            </div>
+            <div id="popup_picker_emoji_meta" style="display:none; position:absolute; top:100%; right:0; z-index:10002; background:var(--surface); border:1px solid var(--borders); border-radius:10px; padding:10px; box-shadow:var(--shadow-subtle); width:264px; max-height:220px; overflow-y:auto;">
+                <div id="grid_picker_emoji_meta" style="display:grid; grid-template-columns:repeat(7,1fr); gap:2px;"></div>
+            </div>
+        </div>
         <div class="form-group-field"><label>Monto objetivo</label><input type="number" id="form_meta_monto" placeholder="0.00"></div>
         <div class="form-group-field"><label>Moneda</label><select id="form_meta_moneda"><option value="GTQ">Quetzales (GTQ)</option><option value="USD">Dólares (USD)</option></select></div>
         <div class="form-group-field"><label>Fecha meta (opcional)</label><input type="month" id="form_meta_fecha"></div>
@@ -1052,23 +1064,19 @@
                                 <option value="fijo">Recurrente</option>
                                 <option value="variable">Variable</option>
                             </select>
-                            <select id="filtro_estado_ingreso" style="height:36px; padding:0 8px; border:1px solid var(--borders); border-radius:8px; font-size:13px;" onchange="filtrarHistorialIngresosMecanismo()">
-                                <option value="Todos">Estado: Todos</option>
-                                <option value="Confirmado">Confirmado</option>
-                            </select>
                         </div>
                     </div>
                     <div style="width:100%; overflow-x:auto;">
                         <table class="compact-table-frame" style="width:100%;">
                             <thead>
                                 <tr>
-                                    <th>Fecha</th>
-                                    <th>Concepto</th>
-                                    <th>Fuente</th>
-                                    <th style="text-align:right;">Monto (GTQ)</th>
-                                    <th style="text-align:right;">Monto (USD)</th>
-                                    <th>Tipo</th>
-                                    <th>Estado</th>
+                                    <th class="th-ordenable" onclick="ordenarHistorial('ingresos','fecha')">Fecha<span class="orden-ind-ingresos" data-columna="fecha"></span></th>
+                                    <th class="th-ordenable" onclick="ordenarHistorial('ingresos','registro')">Fecha de registro<span class="orden-ind-ingresos" data-columna="registro"></span></th>
+                                    <th class="th-ordenable" onclick="ordenarHistorial('ingresos','concepto')">Concepto<span class="orden-ind-ingresos" data-columna="concepto"></span></th>
+                                    <th class="th-ordenable" onclick="ordenarHistorial('ingresos','fuente')">Fuente<span class="orden-ind-ingresos" data-columna="fuente"></span></th>
+                                    <th class="th-ordenable" style="text-align:right;" onclick="ordenarHistorial('ingresos','gtq')">Monto (GTQ)<span class="orden-ind-ingresos" data-columna="gtq"></span></th>
+                                    <th class="th-ordenable" style="text-align:right;" onclick="ordenarHistorial('ingresos','usd')">Monto (USD)<span class="orden-ind-ingresos" data-columna="usd"></span></th>
+                                    <th class="th-ordenable" onclick="ordenarHistorial('ingresos','tipo')">Tipo<span class="orden-ind-ingresos" data-columna="tipo"></span></th>
                                     <th style="text-align:center;">Acciones</th>
                                 </tr>
                             </thead>
@@ -1203,7 +1211,15 @@
                             </select>
                         </div>
                     </div>
-                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr><th>Periodo</th><th>Concepto / Detalle</th><th>Categoría</th><th style="text-align:right;">Monto (GTQ)</th><th style="text-align:right;">Monto (USD)</th><th>Tipo</th><th style="text-align:center;">Acciones</th></tr></thead><tbody id="tabla_historial_gastos_tbody"></tbody></table></div>
+                    <div style="width:100%; overflow-x:auto;"><table class="compact-table-frame" style="width:100%;"><thead><tr>
+                        <th class="th-ordenable" onclick="ordenarHistorial('gastos','fecha')">Periodo<span class="orden-ind-gastos" data-columna="fecha"></span></th>
+                        <th class="th-ordenable" onclick="ordenarHistorial('gastos','concepto')">Concepto / Detalle<span class="orden-ind-gastos" data-columna="concepto"></span></th>
+                        <th class="th-ordenable" onclick="ordenarHistorial('gastos','categoria')">Categoría<span class="orden-ind-gastos" data-columna="categoria"></span></th>
+                        <th class="th-ordenable" style="text-align:right;" onclick="ordenarHistorial('gastos','gtq')">Monto (GTQ)<span class="orden-ind-gastos" data-columna="gtq"></span></th>
+                        <th class="th-ordenable" style="text-align:right;" onclick="ordenarHistorial('gastos','usd')">Monto (USD)<span class="orden-ind-gastos" data-columna="usd"></span></th>
+                        <th class="th-ordenable" onclick="ordenarHistorial('gastos','tipo')">Tipo<span class="orden-ind-gastos" data-columna="tipo"></span></th>
+                        <th style="text-align:center;">Acciones</th>
+                    </tr></thead><tbody id="tabla_historial_gastos_tbody"></tbody></table></div>
                 </div>
             </div>
 
@@ -1510,6 +1526,29 @@
         let tasaCambioActual = 7.4;
         const nombresMesesCompleto = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         let moduloActivoGlobal = 'inicio';
+
+        // 📅 Formato de fecha estandarizado en toda la app: DD/MM/AAAA para fecha completa, MM/AA para
+        // mes/año — nunca texto ("Jul 2026") ni ISO crudo ("2026-07") en algo que el usuario lee.
+        // No aplica a los <input type="date"/"month"> nativos (su UI la controla el navegador/SO) ni a
+        // las etiquetas de eje de las gráficas (usan el mes abreviado por espacio).
+        function formatearFechaCorta(anio, mes, dia) {
+            return `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}/${anio}`;
+        }
+        function formatearMesAnio(anio, mes) {
+            return `${String(mes).padStart(2, '0')}/${String(anio).slice(-2)}`;
+        }
+        // Convierte un ISO "AAAA-MM-DD" (o con hora al final) a DD/MM/AAAA
+        function formatearFechaISO(iso) {
+            if(!iso) return '';
+            let [anio, mes, dia] = iso.slice(0, 10).split('-');
+            return `${dia}/${mes}/${anio}`;
+        }
+        // Convierte un ISO "AAAA-MM" a MM/AA
+        function formatearMesAnioISO(iso) {
+            if(!iso) return '';
+            let [anio, mes] = iso.split('-');
+            return `${mes}/${anio.slice(-2)}`;
+        }
         let registroEditando = null;
 
         function inyectarNombresIconosFijos() {
@@ -2253,7 +2292,7 @@
 
             if(path) return `<div style="display:flex; align-items:center; gap:6px; font-size:12px;">
                 <span style="cursor:pointer; color:var(--color-info-text); text-decoration:underline;" onclick="verArchivoFiscal('${path}')">📄 Ver</span>
-                <span style="color:var(--text-secondary);">${fecha || ''}</span>
+                <span style="color:var(--text-secondary);">${fecha ? formatearFechaISO(fecha) : ''}</span>
                 <i data-lucide="refresh-cw" style="width:13px; height:13px; cursor:pointer; color:var(--text-secondary);" onclick="dispararSubidaFiscal(${m.anio}, ${m.mes}, '${tipo}')" title="Reemplazar"></i>
             </div>`;
 
@@ -2309,7 +2348,7 @@
                     let celdaDeclaracion = renderCeldaArchivoFiscal(m, 'declaracion');
                     return `
                     <tr>
-                        <td><b>${nombresMesesCompleto[m.mes - 1]} ${m.anio}</b></td>
+                        <td><b>${formatearMesAnio(m.anio, m.mes)}</b></td>
                         <td style="text-align:right;">
                             <div>Q ${fmt(m.monto)}</div>
                             <div style="font-size:11px; color:var(--text-secondary);">$ ${fmt(normalizarAUsd(m.monto, 'GTQ'))}</div>
@@ -2366,17 +2405,17 @@
 
             elIngresos.innerText = `Q ${fmt(mesFoco.baseFacturable)}`;
             elIngresosSub.innerText = mesFoco.esMontoReal
-                ? `Real (Declaraguate) · ${nombresMesesCompleto[mesFoco.mes - 1]} ${mesFoco.anio}`
+                ? `Real (Declaraguate) · ${formatearMesAnio(mesFoco.anio, mesFoco.mes)}`
                 : mesFoco.descuentoNomina > 0
                     ? `Estimado: Q${fmt(mesFoco.monto)} − descuento Q${fmt(mesFoco.descuentoNomina)}`
-                    : `Estimado · ${nombresMesesCompleto[mesFoco.mes - 1]} ${mesFoco.anio}`;
+                    : `Estimado · ${formatearMesAnio(mesFoco.anio, mesFoco.mes)}`;
             elImpuesto.innerText = `Q ${fmt(mesFoco.impuesto)}`;
 
             let mesSig = mesFoco.mes === 12 ? 1 : mesFoco.mes + 1;
             let anioSig = mesFoco.mes === 12 ? mesFoco.anio + 1 : mesFoco.anio;
-            if(mesFoco.faltaFactura) { elProxima.innerText = 'Emitir factura'; elProximaSub.innerText = `${nombresMesesCompleto[mesFoco.mes - 1]} ${mesFoco.anio} · Pendiente`; }
-            else if(mesFoco.faltaDeclaracion) { elProxima.innerText = 'Presentar declaración'; elProximaSub.innerText = `Mes de declaración: ${nombresMesesCompleto[mesSig - 1]} ${anioSig}`; }
-            else if(mesFoco.esMesActual) { elProxima.innerText = 'Cierre de mes'; elProximaSub.innerText = `Factura al terminar ${nombresMesesCompleto[mesFoco.mes - 1]}`; }
+            if(mesFoco.faltaFactura) { elProxima.innerText = 'Emitir factura'; elProximaSub.innerText = `${formatearMesAnio(mesFoco.anio, mesFoco.mes)} · Pendiente`; }
+            else if(mesFoco.faltaDeclaracion) { elProxima.innerText = 'Presentar declaración'; elProximaSub.innerText = `Mes de declaración: ${formatearMesAnio(anioSig, mesSig)}`; }
+            else if(mesFoco.esMesActual) { elProxima.innerText = 'Cierre de mes'; elProximaSub.innerText = `Factura al terminar ${formatearMesAnio(mesFoco.anio, mesFoco.mes)}`; }
             else { elProxima.innerText = 'Sin pendientes'; elProximaSub.innerText = 'Todo al día'; }
         }
 
@@ -2390,10 +2429,10 @@
             let mesSig = mesFoco.mes === 12 ? 1 : mesFoco.mes + 1;
             let anioSig = mesFoco.mes === 12 ? mesFoco.anio + 1 : mesFoco.anio;
             let pasos = [
-                { titulo: 'Ingresos consolidados', ok: mesFoco.mesTerminado, fecha: mesFoco.mesTerminado ? `Fin de ${nombresMesesCompleto[mesFoco.mes - 1]}` : 'En curso' },
-                { titulo: 'Factura emitida', ok: !!mesFoco.registro?.archivo_factura_path, fecha: mesFoco.registro?.fecha_factura || 'Pendiente' },
-                { titulo: 'Declaración presentada', ok: !!mesFoco.registro?.archivo_declaracion_path, fecha: mesFoco.registro?.fecha_declaracion || `Mes de declaración: ${nombresMesesCompleto[mesSig - 1]} ${anioSig}` },
-                { titulo: 'Impuesto pagado', ok: !!mesFoco.registro?.gasto_id, fecha: mesFoco.registro?.fecha_declaracion || `${nombresMesesCompleto[mesSig - 1]} ${anioSig}` }
+                { titulo: 'Ingresos consolidados', ok: mesFoco.mesTerminado, fecha: mesFoco.mesTerminado ? `Fin de ${formatearMesAnio(mesFoco.anio, mesFoco.mes)}` : 'En curso' },
+                { titulo: 'Factura emitida', ok: !!mesFoco.registro?.archivo_factura_path, fecha: mesFoco.registro?.fecha_factura ? formatearFechaISO(mesFoco.registro.fecha_factura) : 'Pendiente' },
+                { titulo: 'Declaración presentada', ok: !!mesFoco.registro?.archivo_declaracion_path, fecha: mesFoco.registro?.fecha_declaracion ? formatearFechaISO(mesFoco.registro.fecha_declaracion) : `Mes de declaración: ${formatearMesAnio(anioSig, mesSig)}` },
+                { titulo: 'Impuesto pagado', ok: !!mesFoco.registro?.gasto_id, fecha: mesFoco.registro?.fecha_declaracion ? formatearFechaISO(mesFoco.registro.fecha_declaracion) : formatearMesAnio(anioSig, mesSig) }
             ];
             // Un paso posterior completado implica que los anteriores también lo están (ej. si ya emitiste
             // la factura a mitad de mes, "Ingresos consolidados" no puede verse como pendiente).
@@ -2435,7 +2474,7 @@
             wrapper.innerHTML = `
                 <div class="tarjetas-alerta-banner">
                     <div class="alerta-titulo"><i data-lucide="landmark" style="width:14px; height:14px;"></i> Bitácora fiscal pendiente</div>
-                    ${pendientes.map(m => `<div class="alerta-item">${nombresMesesCompleto[m.mes - 1]} ${m.anio}: ${m.faltaFactura ? 'falta emitir la factura' : 'falta adjuntar la declaración/pago'}</div>`).join('')}
+                    ${pendientes.map(m => `<div class="alerta-item">${formatearMesAnio(m.anio, m.mes)}: ${m.faltaFactura ? 'falta emitir la factura' : 'falta adjuntar la declaración/pago'}</div>`).join('')}
                     <button class="month-selector" style="margin-top:4px; align-self:flex-start;" onclick="cambiarSeccionVista('vista_fiscal', document.getElementById('btn_menu_fiscal'))">Ir a Bitácora fiscal</button>
                 </div>`;
         }
@@ -2823,7 +2862,7 @@
             boton.style.display = tipo === 'rango' ? '' : 'none';
             let guardado = filtroRangoFijoPorScope[scope];
             boton.innerText = guardado
-                ? `${nombresMesesCompleto[guardado.mesInicio - 1]} ${guardado.anioInicio} – ${nombresMesesCompleto[guardado.mesFin - 1]} ${guardado.anioFin}`
+                ? `${formatearMesAnio(guardado.anioInicio, guardado.mesInicio)} – ${formatearMesAnio(guardado.anioFin, guardado.mesFin)}`
                 : 'Selecciona un rango';
         }
 
@@ -2848,17 +2887,17 @@
             if(tipo === 'mes_anterior') {
                 let mesPrev = mesHoy - 1, anioPrev = anioHoy;
                 if(mesPrev < 1) { mesPrev = 12; anioPrev -= 1; }
-                return { tipo: 'mes', anioInicio: anioPrev, mesInicio: mesPrev, anioFin: anioPrev, mesFin: mesPrev, etiqueta: `${nombresMesesCompleto[mesPrev - 1]} ${anioPrev}` };
+                return { tipo: 'mes', anioInicio: anioPrev, mesInicio: mesPrev, anioFin: anioPrev, mesFin: mesPrev, etiqueta: formatearMesAnio(anioPrev, mesPrev) };
             }
             if(tipo === 'rango') {
                 let guardado = filtroRangoFijoPorScope[scope];
                 if(!guardado) return { tipo: 'rango', anioInicio: anioHoy, mesInicio: mesHoy, anioFin: anioHoy, mesFin: mesHoy, etiqueta: 'Selecciona un rango' };
-                let etiqueta = `${nombresMesesCompleto[guardado.mesInicio - 1]} ${guardado.anioInicio} – ${nombresMesesCompleto[guardado.mesFin - 1]} ${guardado.anioFin}`;
+                let etiqueta = `${formatearMesAnio(guardado.anioInicio, guardado.mesInicio)} – ${formatearMesAnio(guardado.anioFin, guardado.mesFin)}`;
                 return { tipo: 'rango', ...guardado, etiqueta };
             }
 
             // 'mes' = Este mes
-            return { tipo: 'mes', anioInicio: anioHoy, mesInicio: mesHoy, anioFin: anioHoy, mesFin: mesHoy, etiqueta: `${nombresMesesCompleto[mesHoy - 1]} ${anioHoy}` };
+            return { tipo: 'mes', anioInicio: anioHoy, mesInicio: mesHoy, anioFin: anioHoy, mesFin: mesHoy, etiqueta: formatearMesAnio(anioHoy, mesHoy) };
         }
 
         // 📅 Popup de calendario de meses para "Rango de fechas fijo"
@@ -2938,8 +2977,8 @@
 
             let texto = document.getElementById('calendario_rango_texto_seleccion');
             if(e.mesInicio === null) texto.innerText = 'Elige el mes de inicio';
-            else if(e.mesFin === null) texto.innerText = `Desde ${nombresMesesCompleto[e.mesInicio - 1]} ${e.anioInicio} — elige el mes final`;
-            else texto.innerText = `${nombresMesesCompleto[e.mesInicio - 1]} ${e.anioInicio} – ${nombresMesesCompleto[e.mesFin - 1]} ${e.anioFin}`;
+            else if(e.mesFin === null) texto.innerText = `Desde ${formatearMesAnio(e.anioInicio, e.mesInicio)} — elige el mes final`;
+            else texto.innerText = `${formatearMesAnio(e.anioInicio, e.mesInicio)} – ${formatearMesAnio(e.anioFin, e.mesFin)}`;
         }
 
         function aplicarCalendarioRango() {
@@ -2957,7 +2996,38 @@
             if(popup && popup.style.display === 'block' && !popup.contains(evento.target) && !evento.target.classList.contains('filtro_periodo_rango_boton')) {
                 popup.style.display = 'none';
             }
+            let popupEmoji = document.getElementById('popup_picker_emoji_meta');
+            if(popupEmoji && popupEmoji.style.display === 'block' && !popupEmoji.contains(evento.target) && !evento.target.closest('[onclick^="alternarPickerEmojiMeta"]')) {
+                popupEmoji.style.display = 'none';
+            }
         });
+
+        // 🎯 Biblioteca chica de emojis curados para metas de ahorro — viajes, hogar, transporte, educación,
+        // eventos de vida y banderas de destinos comunes. No es el set completo de Unicode (sería enorme e
+        // innecesario aquí), solo lo más probable para una meta de ahorro.
+        const EMOJIS_PICKER_META = [
+            '🎯','✈️','🏖️','🌎','🚗','🏠','🏡','🎓','💍','👶','🏥','💻','📱','🎮',
+            '📚','🐶','🐱','🎁','🎂','🏝️','⛷️','🚙','🛵','🚲','🏦','💰','💵','💳',
+            '📈','🩺','💊','🧳','⛺','🗽','🗼','🏔️','🚀','🛳️','🎉','🍼','🛠️','⚽',
+            '🇬🇹','🇺🇸','🇲🇽','🇪🇸','🇧🇷','🇫🇷','🇮🇹','🇯🇵','🇨🇦','🇬🇧','🇩🇪','🇦🇷','🇨🇴','🇨🇷'
+        ];
+
+        function alternarPickerEmojiMeta(evento) {
+            evento.stopPropagation();
+            let popup = document.getElementById('popup_picker_emoji_meta');
+            let abrir = popup.style.display !== 'block';
+            if(abrir) {
+                document.getElementById('grid_picker_emoji_meta').innerHTML = EMOJIS_PICKER_META.map(e =>
+                    `<span onclick="elegirEmojiMeta('${e}')" style="cursor:pointer; font-size:19px; text-align:center; padding:5px 0; border-radius:6px;" onmouseover="this.style.background='var(--bg-main)'" onmouseout="this.style.background='transparent'">${e}</span>`
+                ).join('');
+            }
+            popup.style.display = abrir ? 'block' : 'none';
+        }
+
+        function elegirEmojiMeta(emoji) {
+            document.getElementById('form_meta_emoji').value = emoji;
+            document.getElementById('popup_picker_emoji_meta').style.display = 'none';
+        }
 
         function estaEnRango(anio, mes, rango) {
             let clave = parseInt(anio) * 12 + parseInt(mes);
@@ -2984,7 +3054,7 @@
             let { anio: anioHoy, mes: mesHoy } = obtenerAnioMesReal();
             if(rango.tipo === 'mes') {
                 if(rango.anioInicio === anioHoy && rango.mesInicio === mesHoy) return 'Qué debo pagar este mes';
-                return `Qué debía pagar — ${nombresMesesCompleto[rango.mesInicio - 1]} ${rango.anioInicio}`;
+                return `Qué debía pagar — ${formatearMesAnio(rango.anioInicio, rango.mesInicio)}`;
             }
             if(rango.tipo === 'anio') return 'Qué debo pagar este año';
             return `Qué debo pagar — ${rango.etiqueta}`;
@@ -3192,19 +3262,36 @@
                 ? `Q ${fmt(totalAhorrado)} de Q ${fmt(totalObjetivo)}`
                 : 'Crea tu primera meta en Ahorros';
 
-            let todosAportes = [];
-            progresos.forEach(p => p.aportes.forEach(a => todosAportes.push({ ...a, metaNombre: p.meta.nombre, metaEmoji: p.meta.emoji })));
-            todosAportes.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-
+            // Una fila por META activa (no por aporte) — así una meta recién creada, aunque todavía no
+            // tenga ningún aporte, aparece en Inicio de inmediato en vez de quedar invisible hasta su
+            // primer aporte. Ordenadas por actividad más reciente; las que no tienen aportes van al final.
             let elLista = document.getElementById('lista_aportes_recientes_inicio');
-            if(todosAportes.length === 0) {
+            if(progresos.length === 0) {
                 elLista.innerHTML = '';
             } else {
-                elLista.innerHTML = todosAportes.slice(0, 3).map(a => `
-                    <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0;">
-                        <span>${a.metaEmoji || '🎯'} ${escaparHtml(a.metaNombre)}</span>
-                        <b style="color:var(--green-positive);">+${a.moneda === 'USD' ? '$' : 'Q'} ${fmt(a.monto)}</b>
-                    </div>`).join('');
+                let conUltimoAporte = progresos.map(p => {
+                    let ultimo = p.aportes.slice().sort((a, b) => new Date(b.fecha) - new Date(a.fecha))[0] || null;
+                    return { p, ultimo };
+                }).sort((a, b) => {
+                    if(!a.ultimo && !b.ultimo) return 0;
+                    if(!a.ultimo) return 1;
+                    if(!b.ultimo) return -1;
+                    return new Date(b.ultimo.fecha) - new Date(a.ultimo.fecha);
+                });
+
+                let aMostrar = conUltimoAporte.slice(0, 3);
+                elLista.innerHTML = aMostrar.map(({ p, ultimo }) => {
+                    let detalle = ultimo
+                        ? `<b style="color:var(--green-positive);">+${ultimo.moneda === 'USD' ? '$' : 'Q'} ${fmt(ultimo.monto)}</b>`
+                        : `<span style="color:var(--text-secondary); font-weight:600;">${p.pct.toFixed(0)}% · sin aportes</span>`;
+                    return `
+                        <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0;">
+                            <span>${p.meta.emoji || '🎯'} ${escaparHtml(p.meta.nombre)}</span>
+                            ${detalle}
+                        </div>`;
+                }).join('') + (progresos.length > 3
+                    ? `<div style="text-align:right; margin-top:2px;"><span onclick="cambiarSeccionVista('vista_ahorros', document.getElementById('btn_menu_ahorros'))" style="font-size:11px; color:var(--purple-main); cursor:pointer; font-weight:600;">Ver todas (${progresos.length})</span></div>`
+                    : '');
             }
         }
 
@@ -3250,7 +3337,7 @@
                 // p.actual/objetivo/restante/aportarPorMes vienen normalizados a quetzales (calcularProgresoMeta usa
                 // normalizarAQuetzales), así que siempre se muestran con Q — aunque la meta esté en USD.
                 let colorBarra = p.cumplida ? 'var(--color-success)' : (p.vencida ? 'var(--color-danger)' : 'var(--color-primary)');
-                let fechaTexto = (m.anio_meta && m.mes_meta) ? `Meta para ${nombresMesesCompleto[m.mes_meta - 1]} ${m.anio_meta}` : 'Sin fecha límite';
+                let fechaTexto = (m.anio_meta && m.mes_meta) ? `Meta para ${formatearMesAnio(m.anio_meta, m.mes_meta)}` : 'Sin fecha límite';
 
                 let asesoriaHtml;
                 if(p.cumplida) {
@@ -3269,7 +3356,7 @@
                         let montoUsd = normalizarAUsd(a.monto, a.moneda);
                         return `
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding:6px 0; border-bottom:1px dashed var(--borders);">
-                            <span>${a.fecha}${a.nota ? ' · ' + escaparHtml(a.nota) : ''}</span>
+                            <span>${formatearFechaISO(a.fecha)}${a.nota ? ' · ' + escaparHtml(a.nota) : ''}</span>
                             <span style="display:flex; align-items:center; gap:8px;">
                                 <b style="color:var(--color-success);">+Q ${fmt(montoGtq)} <span style="color:var(--text-secondary); font-weight:600;">/ $ ${fmt(montoUsd)}</span></b>
                                 <i data-lucide="trash-2" style="width:12px; height:12px; cursor:pointer; color:var(--text-secondary);" onclick="eliminarRegistroAhorro('aportes_ahorro', '${a.id}')"></i>
@@ -4459,7 +4546,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             let mesFinAnterior = mesDesde - 1, anioFinAnterior = anioDesde;
             if(mesFinAnterior < 1) { mesFinAnterior = 12; anioFinAnterior -= 1; }
 
-            let confirmado = await confirmarAccion(`¿Confirmas cambiar el monto de "${regla.nombre}" a ${regla.moneda} ${nuevoMonto.toFixed(2)} a partir de ${nombresMesesCompleto[mesDesde - 1]} ${anioDesde}? La regla actual se cierra en ${nombresMesesCompleto[mesFinAnterior - 1]} ${anioFinAnterior} — los meses ya generados no cambian.`);
+            let confirmado = await confirmarAccion(`¿Confirmas cambiar el monto de "${regla.nombre}" a ${regla.moneda} ${nuevoMonto.toFixed(2)} a partir de ${formatearMesAnio(anioDesde, mesDesde)}? La regla actual se cierra en ${formatearMesAnio(anioFinAnterior, mesFinAnterior)} — los meses ya generados no cambian.`);
             if(!confirmado) return;
 
             const { error: errorCierre } = await _supabase.from(tabla).update({ anio_fin: anioFinAnterior, mes_fin: mesFinAnterior }).eq('id', id);
@@ -4539,8 +4626,8 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                     </div>
                 </div>`;
             }
-            let textoFin = r.mes_fin ? ` hasta ${nombresMesesCompleto[r.mes_fin - 1]} ${r.anio_fin}` : '';
-            return `<span>Desde ${nombresMesesCompleto[r.mes_inicio - 1]} ${r.anio_inicio}${textoFin}</span>
+            let textoFin = r.mes_fin ? ` hasta ${formatearMesAnio(r.anio_fin, r.mes_fin)}` : '';
+            return `<span>Desde ${formatearMesAnio(r.anio_inicio, r.mes_inicio)}${textoFin}</span>
                 <i data-lucide="pencil" style="width:11px; height:11px; cursor:pointer; vertical-align:middle;" title="Editar fechas" onclick="activarEdicionFechasRecurrente('${r.id}')"></i>
                 <i data-lucide="trending-up" style="width:11px; height:11px; cursor:pointer; vertical-align:middle; margin-left:6px;" title="Cambiar monto desde una fecha" onclick="activarCambioMontoRecurrente('${r.id}')"></i>`;
         }
@@ -4668,10 +4755,10 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             ultimoProximosPagosCuotasCalculado = filas;
 
             tbody.innerHTML = filas.map(f => {
-                let fechaCompra = `${nombresMesesCompleto[f.regla.mes_inicio - 1]} ${f.regla.anio_inicio}`;
-                let fechaFin = `${nombresMesesCompleto[f.mesFin - 1]} ${f.anioFin}`;
+                let fechaCompra = formatearMesAnio(f.regla.anio_inicio, f.regla.mes_inicio);
+                let fechaFin = formatearMesAnio(f.anioFin, f.mesFin);
                 let proximaTexto = f.filaProxima
-                    ? `${nombresMesesCompleto[f.filaProxima.mes - 1]} ${f.filaProxima.anio} · ${f.filaProxima.moneda === 'USD' ? '$' : 'Q'} ${f.filaProxima.monto.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`
+                    ? `${formatearMesAnio(f.filaProxima.anio, f.filaProxima.mes)} · ${f.filaProxima.moneda === 'USD' ? '$' : 'Q'} ${f.filaProxima.monto.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`
                     : 'Completado';
 
                 return `
@@ -4710,12 +4797,12 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                     let anioProx = reglaActiva.mes_generado ? reglaActiva.anio_generado : reglaActiva.anio_inicio;
                     if(mesProx > 12) { mesProx = 1; anioProx += 1; }
                     etiquetaExtra = 'Próximo cargo';
-                    valorExtra = `${nombresMesesCompleto[mesProx - 1]} ${anioProx}`;
+                    valorExtra = formatearMesAnio(anioProx, mesProx);
                 } else {
                     let gastosCategoria = (db_gastos || []).filter(g => (g.categoria || 'Sin categoría') === categoria);
                     let ultimo = gastosCategoria.sort((a, b) => (b.anio * 12 + b.mes) - (a.anio * 12 + a.mes))[0];
                     etiquetaExtra = 'Último gasto';
-                    valorExtra = ultimo ? ultimo.fecha_orig : '—';
+                    valorExtra = ultimo ? formatearMesAnio(ultimo.anio, ultimo.mes) : '—';
                 }
 
                 block.innerHTML += `
@@ -4904,7 +4991,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 : cuotasActivas.map(c => `
                     <div style="border:1px solid var(--borders); border-radius:10px; padding:10px 12px; font-size:12px;">
                         <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><b>${c.regla.nombre}</b><span class="badge blue">${c.cuotasPagadas} de ${c.regla.num_cuotas}</span></div>
-                        <div style="color:var(--text-secondary);">Pendiente: ${c.regla.moneda === 'USD' ? '$' : 'Q'} ${fmt(normalizarAQuetzales(c.montoPendiente, c.regla.moneda))} · Termina ${nombresMesesCompleto[c.mesFin - 1]} ${c.anioFin}</div>
+                        <div style="color:var(--text-secondary);">Pendiente: ${c.regla.moneda === 'USD' ? '$' : 'Q'} ${fmt(normalizarAQuetzales(c.montoPendiente, c.regla.moneda))} · Termina ${formatearMesAnio(c.anioFin, c.mesFin)}</div>
                     </div>`).join('');
 
             document.getElementById('detalle_tarjeta_btn_editar').onclick = () => { conmutarDrawerDetalleTarjeta(false); editarRegistro('tarjetas', t.id); };
@@ -4969,7 +5056,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             tbody.innerHTML = filas.map(f => `
                 <tr>
                     <td><b>${f.tarjeta.nombre}</b></td>
-                    <td>${f.fechaPago.getDate()} ${nombresMesesCompleto[f.fechaPago.getMonth()]} ${f.fechaPago.getFullYear()}</td>
+                    <td>${formatearFechaCorta(f.fechaPago.getFullYear(), f.fechaPago.getMonth() + 1, f.fechaPago.getDate())}</td>
                     <td style="text-align:right; font-weight:700; color:var(--red-negative);">Q ${fmt(f.monto)}</td>
                     <td style="text-align:center;"><span class="badge ${f.diasFaltantes <= 5 ? 'purple' : 'blue'}">${f.diasFaltantes <= 5 ? 'Próximo' : 'Programado'}</span></td>
                 </tr>`).join('');
@@ -5076,15 +5163,17 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 let esRecu = ing.tipo === 'fijo' || ing.tipo === 'Recurrente';
                 let fuenteNombre = ing.categoria || "Sin categoría";
 
+                let fechaRegistroTexto = ing.created_at ? formatearFechaISO(ing.created_at) : '—';
+
                 tbody.innerHTML += `
                     <tr>
-                        <td>${ing.fecha_fact || '2026-07-01'}</td>
+                        <td>${ing.fecha_fact ? formatearMesAnioISO(ing.fecha_fact) : '—'}</td>
+                        <td style="color:var(--text-secondary);">${fechaRegistroTexto}</td>
                         <td><b>${ing.nombre}</b></td>
                         <td>${fuenteNombre}</td>
                         <td style="text-align:right; font-weight:700; color:var(--text-primary);">Q ${mGtq.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
                         <td style="text-align:right; color:var(--text-secondary);">$ ${mUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
                         <td><span class="badge ${esRecu ? 'green' : 'blue'}">${esRecu ? 'Recurrente' : 'Variable'}</span></td>
-                        <td><span class="badge green">✓ Confirmado</span></td>
                         <td style="text-align:center; white-space:nowrap;">
                             <i data-lucide="pencil" style="width:15px; height:15px; cursor:pointer; color:var(--text-secondary); margin-right:10px;" onclick="editarRegistro('ingresos', ${ing.id})"></i>
                             <i data-lucide="trash-2" style="width:15px; height:15px; cursor:pointer; color:var(--red-negative);" onclick="eliminarRegistro('ingresos', ${ing.id})"></i>
@@ -5114,7 +5203,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 let etiquetaTipo = reglaCuota ? `Cuota ${gas.numero_cuota}/${reglaCuota.num_cuotas}` : gas.tipo;
                 tbody.innerHTML += `
                     <tr>
-                        <td>${gas.fecha_orig}</td>
+                        <td>${gas.fecha_orig ? formatearMesAnioISO(gas.fecha_orig) : '—'}</td>
                         <td><b>${gas.nombre}</b></td>
                         <td><span class="badge purple">${gas.categoria || 'General'}</span></td>
                         <td style="text-align:right; font-weight:700; color:var(--red-negative);">Q ${mGtq.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
@@ -5163,12 +5252,12 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 // del gasto, no siempre disponible. Fecha de pago: el día de pago de una tarjeta es fijo
                 // (tarjeta.pago) y no depende de conocer el día de compra, así que siempre es exacta.
                 let fechaCompraTexto = (gas.medio_pago === 'tarjeta' && gas.dia_compra)
-                    ? `${gas.dia_compra} ${nombresMesesCompleto[gas.mes - 1]} ${gas.anio}`
-                    : `${nombresMesesCompleto[gas.mes - 1]} ${gas.anio}`;
+                    ? formatearFechaCorta(gas.anio, gas.mes, gas.dia_compra)
+                    : formatearMesAnio(gas.anio, gas.mes);
                 fechaCompraTexto += esCrossMes ? ' <span class="badge orange">Compra de mes anterior</span>' : '';
                 let fechaPagoTexto = (gas.medio_pago === 'tarjeta' && tarjeta && tarjeta.pago)
-                    ? `${tarjeta.pago} ${nombresMesesCompleto[pago.mes - 1]} ${pago.anio}`
-                    : `${nombresMesesCompleto[pago.mes - 1]} ${pago.anio}`;
+                    ? formatearFechaCorta(pago.anio, pago.mes, tarjeta.pago)
+                    : formatearMesAnio(pago.anio, pago.mes);
 
                 return `
                     <tr>
@@ -5181,6 +5270,54 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                         <td>${fechaPagoTexto}</td>
                     </tr>`;
             }).join('');
+        }
+
+        // 🔽 Orden por columna en las tablas de Historial — clic alterna ascendente/descendente;
+        // clic en otra columna la reemplaza. El estado persiste mientras no recargues la página.
+        let ordenTablaHistorial = { ingresos: { columna: null, dir: 1 }, gastos: { columna: null, dir: 1 } };
+
+        function ordenarHistorial(scope, columna) {
+            let estado = ordenTablaHistorial[scope];
+            if(estado.columna === columna) estado.dir *= -1;
+            else { estado.columna = columna; estado.dir = 1; }
+
+            document.querySelectorAll(`.orden-ind-${scope}`).forEach(el => {
+                el.innerText = el.dataset.columna === columna ? (estado.dir === 1 ? '▲' : '▼') : '';
+            });
+
+            if(scope === 'ingresos') filtrarHistorialIngresosMecanismo();
+            else filtrarHistorialGastosMecanismo();
+        }
+
+        function compararPorColumna(a, b, valorFn, dir) {
+            let va = valorFn(a), vb = valorFn(b);
+            let cmp = typeof va === 'string' ? va.localeCompare(vb, 'es') : va - vb;
+            return cmp * dir;
+        }
+
+        function valorOrdenIngreso(ing, columna) {
+            switch(columna) {
+                case 'fecha': return parseInt(ing.anio) * 12 + parseInt(ing.mes);
+                case 'registro': return ing.created_at ? new Date(ing.created_at).getTime() : 0;
+                case 'concepto': return (ing.nombre || '').toLowerCase();
+                case 'fuente': return (ing.categoria || 'Sin categoría').toLowerCase();
+                case 'gtq': return normalizarAQuetzales(ing.monto, ing.moneda);
+                case 'usd': return normalizarAUsd(ing.monto, ing.moneda);
+                case 'tipo': return ing.tipo || '';
+                default: return 0;
+            }
+        }
+
+        function valorOrdenGasto(gas, columna) {
+            switch(columna) {
+                case 'fecha': return parseInt(gas.anio) * 12 + parseInt(gas.mes);
+                case 'concepto': return (gas.nombre || '').toLowerCase();
+                case 'categoria': return (gas.categoria || 'General').toLowerCase();
+                case 'gtq': return normalizarAQuetzales(gas.monto, gas.moneda);
+                case 'usd': return normalizarAUsd(gas.monto, gas.moneda);
+                case 'tipo': return gas.tipo || '';
+                default: return 0;
+            }
         }
 
         function filtrarHistorialIngresosMecanismo() {
@@ -5196,6 +5333,10 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 let matchesPeriodo = estaEnRango(i.anio, i.mes, rango);
                 return matchesBusqueda && matchesTipo && matchesCategoria && matchesPeriodo;
             });
+
+            let ordenIng = ordenTablaHistorial.ingresos;
+            if(ordenIng.columna) baseFiltrada.sort((a, b) => compararPorColumna(a, b, x => valorOrdenIngreso(x, ordenIng.columna), ordenIng.dir));
+
             renderHistorialTablaIngresos(baseFiltrada);
         }
 
@@ -5212,6 +5353,10 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
                 let matchesPeriodo = estaEnRango(g.anio, g.mes, rango);
                 return matchesBusqueda && matchesTipo && matchesCategoria && matchesPeriodo;
             });
+
+            let ordenGas = ordenTablaHistorial.gastos;
+            if(ordenGas.columna) baseFiltrada.sort((a, b) => compararPorColumna(a, b, x => valorOrdenGasto(x, ordenGas.columna), ordenGas.dir));
+
             renderHistorialTablaGastos(baseFiltrada);
         }
 
@@ -5248,9 +5393,9 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             let secciones = [];
             secciones.push(`HISTORIAL DE INGRESOS - ${rango.etiqueta}`);
             secciones.push(filasACSV(
-                ['Fecha', 'Concepto', 'Fuente', 'Monto (GTQ)', 'Monto (USD)', 'Tipo'],
+                ['Fecha', 'Fecha de registro', 'Concepto', 'Fuente', 'Monto (GTQ)', 'Monto (USD)', 'Tipo'],
                 ingresosPeriodo.map(i => [
-                    i.fecha_fact || '', i.nombre, i.categoria || 'Sin categoría',
+                    i.fecha_fact ? formatearMesAnioISO(i.fecha_fact) : '', i.created_at ? formatearFechaISO(i.created_at) : '', i.nombre, i.categoria || 'Sin categoría',
                     normalizarAQuetzales(i.monto, i.moneda).toFixed(2),
                     normalizarAUsd(i.monto, i.moneda).toFixed(2),
                     i.tipo === 'fijo' ? 'Recurrente' : 'Variable'
@@ -5262,7 +5407,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             secciones.push(filasACSV(
                 ['Nombre', 'Desde', 'Categoría', 'Monto'],
                 (db_ingresos_recurrentes || []).filter(reglaRecurrenteVigente).map(r => [
-                    r.nombre, `${nombresMesesCompleto[r.mes_inicio - 1]} ${r.anio_inicio}`, r.categoria || 'Sin categoría',
+                    r.nombre, formatearMesAnio(r.anio_inicio, r.mes_inicio), r.categoria || 'Sin categoría',
                     (r.moneda === 'USD' ? '$' : 'Q') + r.monto.toFixed(2)
                 ])
             ));
@@ -5281,7 +5426,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             secciones.push(filasACSV(
                 ['Fecha', 'Concepto', 'Categoría', 'Monto (GTQ)', 'Monto (USD)', 'Tipo'],
                 gastosPeriodo.map(g => [
-                    g.fecha_orig || '', g.nombre, g.categoria || 'Sin categoría',
+                    g.fecha_orig ? formatearMesAnioISO(g.fecha_orig) : '', g.nombre, g.categoria || 'Sin categoría',
                     normalizarAQuetzales(g.monto, g.moneda).toFixed(2),
                     normalizarAUsd(g.monto, g.moneda).toFixed(2),
                     g.cuota_id ? `Cuota ${g.numero_cuota}` : (g.tipo === 'fijo' ? 'Recurrente' : 'Variable')
@@ -5293,7 +5438,7 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             secciones.push(filasACSV(
                 ['Nombre', 'Desde', 'Categoría', 'Medio de pago', 'Monto'],
                 (db_gastos_recurrentes || []).filter(reglaRecurrenteVigente).map(r => [
-                    r.nombre, `${nombresMesesCompleto[r.mes_inicio - 1]} ${r.anio_inicio}`, r.categoria || 'Sin categoría',
+                    r.nombre, formatearMesAnio(r.anio_inicio, r.mes_inicio), r.categoria || 'Sin categoría',
                     r.medio_pago === 'tarjeta' ? 'Tarjeta' : 'Efectivo',
                     (r.moneda === 'USD' ? '$' : 'Q') + r.monto.toFixed(2)
                 ])
@@ -5304,12 +5449,12 @@ Tarjetas disponibles (usar EXACTAMENTE el id numérico correspondiente): ${tarje
             secciones.push(filasACSV(
                 ['Fecha de compra', 'Concepto', 'Categoría', 'Monto total (GTQ)', 'Tarjeta', 'Cuotas pagadas', 'Cuotas totales', 'Finaliza'],
                 ultimoProximosPagosCuotasCalculado.map(f => [
-                    `${nombresMesesCompleto[f.regla.mes_inicio - 1]} ${f.regla.anio_inicio}`,
+                    formatearMesAnio(f.regla.anio_inicio, f.regla.mes_inicio),
                     f.regla.nombre, f.regla.categoria || 'Sin categoría',
                     f.montoTotalGtq.toFixed(2),
                     f.tarjeta ? f.tarjeta.nombre : '',
                     f.cuotasPagadas, f.regla.num_cuotas,
-                    `${nombresMesesCompleto[f.mesFin - 1]} ${f.anioFin}`
+                    formatearMesAnio(f.anioFin, f.mesFin)
                 ])
             ));
 
@@ -5331,6 +5476,7 @@ Reglas de comportamiento:
 8. Eres también asesor de metas de ahorro: si el usuario quiere ahorrar para algo (un viaje, un fondo de emergencia, etc.), ayúdalo a definir un monto objetivo y una fecha razonable, usa crear_meta_ahorro para registrarla, y calcula cuánto debería ahorrar por mes considerando el DISPONIBLE DEL MES actual — si la cifra requerida no es realista contra ese disponible, dilo directamente en vez de suavizarlo. Usa registrar_aporte_ahorro cuando el usuario diga que ya apartó o depositó dinero hacia una meta existente.
 9. El contexto de abajo SOLO trae el mes en curso y lo recurrente/activo — es un resumen, no el histórico completo. Tienes herramientas de consulta (consultar_gastos, consultar_ingresos, consultar_resumen_mensual, consultar_compras_en_cuotas, consultar_bitacora_fiscal) que buscan sobre TODO el historial del usuario, sin límite de fecha. Úsalas SIEMPRE que la pregunta mencione un mes/año distinto al actual, pida buscar algo específico del pasado, o requiera comparar periodos — nunca respondas "no tengo esa información" sin antes intentar la consulta correspondiente. Son de solo lectura: no piden confirmación y puedes usarlas todas las veces que necesites en un mismo turno.
 10. Cuando cites una cifra concreta, indica de forma natural (dentro de la misma frase, sin secciones aparte) de qué módulo viene — Ingresos, Gastos, Tarjetas, Ahorros o Bitácora fiscal — para que el usuario sepa de dónde sale el dato. Ej. "según Tarjetas, tu disponible de cuotas en Amex es..." en vez de solo dar el número.
+11. Si citas una fecha concreta (no un nombre de mes en prosa, como "en agosto"), usa siempre el formato DD/MM/AAAA para fecha completa o MM/AA para mes y año — nunca ISO ("2026-08") ni "Aug 2026".
 
 A continuación tienes el contexto financiero actual del usuario (mes en curso), recalculado en cada turno — es siempre la fuente de verdad para el presente; para cualquier otro periodo, usa las herramientas de consulta antes de responder:`;
 
@@ -5694,7 +5840,7 @@ A continuación tienes el contexto financiero actual del usuario (mes en curso),
         }
 
         function renderFilaConversacionIA(c) {
-            let fecha = new Date(c.updated_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+            let fecha = formatearFechaISO(c.updated_at);
             let activa = c.id === conversacionActivaId ? 'activa' : '';
             let icono = iconoParaConversacion(c.titulo);
             let enRenombre = conversacionEnRenombreId === c.id;
@@ -6051,7 +6197,7 @@ A continuación tienes el contexto financiero actual del usuario (mes en curso),
             let medioPagoTxt = mapa.tabla === 'gastos' ? (args.medio_pago === 'tarjeta' ? `, pagado con la tarjeta ${tarjetaNombre}${mapa.tipo === 'variable' ? ` el día ${args.dia_compra}` : ''}` : ', pagado en efectivo') : '';
 
             let resumen = mapa.tipo === 'fijo'
-                ? `¿Confirmas crear el ${mapa.tabla === 'gastos' ? 'gasto fijo' : 'ingreso fijo'} recurrente "${args.nombre}" por ${args.moneda} ${Number(args.monto).toFixed(2)}/mes en la categoría "${args.categoria}"${medioPagoTxt}, empezando ${nombresMesesCompleto[mes - 1]} ${anio}?`
+                ? `¿Confirmas crear el ${mapa.tabla === 'gastos' ? 'gasto fijo' : 'ingreso fijo'} recurrente "${args.nombre}" por ${args.moneda} ${Number(args.monto).toFixed(2)}/mes en la categoría "${args.categoria}"${medioPagoTxt}, empezando ${formatearMesAnio(anio, mes)}?`
                 : `¿Confirmas registrar el ${mapa.tabla === 'gastos' ? 'gasto' : 'ingreso'} "${args.nombre}" por ${args.moneda} ${Number(args.monto).toFixed(2)} en la categoría "${args.categoria}"${medioPagoTxt}?`;
 
             let confirmado = await confirmarAccion(resumen);
@@ -6087,7 +6233,7 @@ A continuación tienes el contexto financiero actual del usuario (mes en curso),
             }
 
             let montoCuota = Math.round((args.monto_total / args.num_cuotas) * 100) / 100;
-            let resumen = `¿Confirmas la compra "${args.nombre}" por un total de ${args.moneda} ${Number(args.monto_total).toFixed(2)} en ${args.num_cuotas} cuotas de ${args.moneda} ${montoCuota.toFixed(2)}, con la tarjeta ${tarjeta.nombre}, empezando ${nombresMesesCompleto[args.mes_inicio - 1]} ${args.anio_inicio}?`;
+            let resumen = `¿Confirmas la compra "${args.nombre}" por un total de ${args.moneda} ${Number(args.monto_total).toFixed(2)} en ${args.num_cuotas} cuotas de ${args.moneda} ${montoCuota.toFixed(2)}, con la tarjeta ${tarjeta.nombre}, empezando ${formatearMesAnio(args.anio_inicio, args.mes_inicio)}?`;
 
             let confirmado = await confirmarAccion(resumen);
             if(!confirmado) {
@@ -6108,7 +6254,7 @@ A continuación tienes el contexto financiero actual del usuario (mes en curso),
         }
 
         async function manejarCrearMetaAhorroIA(args) {
-            let fechaTxt = (args.anio_meta && args.mes_meta) ? `, con fecha meta ${nombresMesesCompleto[args.mes_meta - 1]} ${args.anio_meta}` : '';
+            let fechaTxt = (args.anio_meta && args.mes_meta) ? `, con fecha meta ${formatearMesAnio(args.anio_meta, args.mes_meta)}` : '';
             let resumen = `¿Confirmas crear la meta de ahorro "${args.nombre}" por ${args.moneda} ${Number(args.monto_objetivo).toFixed(2)}${fechaTxt}?`;
 
             let confirmado = await confirmarAccion(resumen);
