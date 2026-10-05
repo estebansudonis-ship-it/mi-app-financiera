@@ -467,6 +467,10 @@
         /* TABLAS MAESTRAS */
         .compact-table-frame { width: 100%; border-collapse: collapse; }
         .compact-table-frame th { text-align: left; font-size: 12px; color: var(--text-secondary); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--borders); text-transform: uppercase; }
+        .opcion-modal-btn { display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--borders); background: var(--surface); color: var(--text-primary); cursor: pointer; font-family: inherit; }
+        .opcion-modal-btn b { font-size: 14px; }
+        .opcion-modal-btn span { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+        .opcion-modal-btn:hover { border-color: var(--purple-main); background: var(--purple-light); }
         .compact-table-frame th.th-ordenable { cursor: pointer; user-select: none; white-space: nowrap; }
         .compact-table-frame th.th-ordenable:hover { color: var(--purple-main); }
         .compact-table-frame th.th-ordenable span[data-columna] { display: inline-block; width: 10px; color: var(--purple-main); font-size: 10px; }
@@ -858,6 +862,17 @@
             <div style="display:flex; gap:10px; justify-content:flex-end;">
                 <button type="button" onclick="cerrarModalConfirmacion(false)" style="padding:10px 16px; border-radius:8px; border:1px solid var(--borders); background:var(--surface); cursor:pointer; font-size:13px; font-weight:600; color:var(--text-primary);">Cancelar</button>
                 <button type="button" id="btn_confirmar_modal_confirmacion" onclick="cerrarModalConfirmacion(true)" style="padding:10px 16px; border-radius:8px; border:none; color:#fff; cursor:pointer; font-size:13px; font-weight:600;">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_elegir_opcion" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(16,24,40,0.45); z-index:999999; justify-content:center; align-items:center;">
+        <div style="background:var(--surface); border-radius:16px; padding:24px; max-width:420px; width:90%; box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+            <h3 id="titulo_modal_opcion" style="font-size:16px; font-weight:700; margin:0 0 8px; color:var(--text-primary);"></h3>
+            <p id="texto_modal_opcion" style="font-size:13px; color:var(--text-secondary); margin:0 0 16px; line-height:1.5;"></p>
+            <div id="lista_modal_opcion" style="display:flex; flex-direction:column; gap:10px;"></div>
+            <div style="text-align:center; margin-top:14px;">
+                <span onclick="cerrarModalOpcion(null)" style="font-size:12px; color:var(--text-secondary); cursor:pointer; text-decoration:underline;">Cancelar</span>
             </div>
         </div>
     </div>
@@ -2666,6 +2681,30 @@
             if(_resolverConfirmacion) { _resolverConfirmacion(resultado); _resolverConfirmacion = null; }
         }
 
+        // Variante con varias acciones (en vez de solo Confirmar/Cancelar): devuelve la `clave` de la
+        // opción elegida, o null si el usuario cancela. opciones: [{ clave, titulo, descripcion }]
+        let _resolverOpcion = null;
+
+        function elegirOpcionAccion(titulo, mensaje, opciones) {
+            document.getElementById('titulo_modal_opcion').innerText = titulo;
+            document.getElementById('texto_modal_opcion').innerText = mensaje;
+            document.getElementById('lista_modal_opcion').innerHTML = opciones.map(o => `
+                <button type="button" class="opcion-modal-btn" onclick="cerrarModalOpcion('${o.clave}')">
+                    <b>${escaparHtml(o.titulo)}</b>
+                    <span>${escaparHtml(o.descripcion)}</span>
+                </button>`).join('');
+
+            return new Promise(resolve => {
+                document.getElementById('modal_elegir_opcion').style.display = 'flex';
+                _resolverOpcion = resolve;
+            });
+        }
+
+        function cerrarModalOpcion(clave) {
+            document.getElementById('modal_elegir_opcion').style.display = 'none';
+            if(_resolverOpcion) { _resolverOpcion(clave); _resolverOpcion = null; }
+        }
+
         // El día de la compra sirve para dos cosas distintas según el tipo: en un gasto puntual
         // (variable) es UNA fecha concreta -> un solo calendario junto con mes/año. En un recurrente
         // (fijo) es "qué día del mes se cobra" cada vez -> sigue siendo un campo de día aparte, porque
@@ -3476,14 +3515,128 @@
             if(!monto || monto <= 0) { errorBox.innerText = 'El monto debe ser mayor a 0.'; return; }
             if(!fecha) { errorBox.innerText = 'Elige una fecha.'; return; }
 
-            const { error } = await _supabase.from('aportes_ahorro').insert([{
-                meta_id: metaId, monto, moneda, fecha, nota, user_id: activeSessionUser.id
-            }]);
+            let meta = (db_metas_ahorro || []).find(m => String(m.id) === String(metaId));
+            if(!meta) { errorBox.innerText = 'La meta ya no existe.'; return; }
 
-            if(error) { errorBox.innerText = 'Error: ' + error.message; return; }
+            let estrategia = await decidirEstrategiaAporte(meta, monto, moneda);
+            if(estrategia === null) return; // canceló: el drawer queda abierto para corregir el monto
+
+            let resultado = await ejecutarAporteConEstrategia(meta, monto, moneda, fecha, nota, estrategia);
+            if(resultado.error) { errorBox.innerText = 'Error: ' + resultado.error; return; }
 
             conmutarDrawerAporteAhorro(false);
             await descargarEstructuresCloud();
+        }
+
+        // 💰 APORTES QUE EXCEDEN LA META — si el aporte es más de lo que le falta a la meta, el usuario elige:
+        // ampliar el monto objetivo, o cerrar esta meta y pasar el excedente a la(s) siguiente(s) meta(s).
+        function formatearMontoAhorro(v) {
+            return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Reparte el aporte (en su moneda original): lo que cabe en esta meta, y el excedente cascada a las
+        // siguientes metas activas sin cumplir (más cercana primero). Si no cabe en ninguna, la última se pasa del 100%.
+        function planificarAporteSiguienteMeta(meta, monto, moneda) {
+            let redondear = v => Math.round(v * 100) / 100;
+            let deGtq = v => moneda === 'USD' ? v / tasaCambioActual : v;
+
+            let restanteEstaMeta = redondear(deGtq(calcularProgresoMeta(meta).restante));
+            let partes = [];
+            let aEstaMeta = Math.min(monto, restanteEstaMeta);
+            if(aEstaMeta > 0.004) partes.push({ meta, monto: redondear(aEstaMeta), esExcedente: false });
+            let excedente = redondear(monto - Math.max(aEstaMeta, 0));
+
+            let siguientes = obtenerMetasAhorroActivas()
+                .filter(p => String(p.meta.id) !== String(meta.id) && !p.cumplida)
+                .sort((a, b) => {
+                    let ca = a.meta.anio_meta && a.meta.mes_meta ? a.meta.anio_meta * 12 + a.meta.mes_meta : Infinity;
+                    let cb = b.meta.anio_meta && b.meta.mes_meta ? b.meta.anio_meta * 12 + b.meta.mes_meta : Infinity;
+                    return ca === cb ? String(a.meta.id).localeCompare(String(b.meta.id), undefined, { numeric: true }) : ca - cb;
+                });
+
+            for(let i = 0; i < siguientes.length && excedente > 0.004; i++) {
+                let capacidad = redondear(deGtq(siguientes[i].restante));
+                let esUltima = i === siguientes.length - 1;
+                let asignar = redondear(esUltima ? excedente : Math.min(excedente, capacidad));
+                partes.push({ meta: siguientes[i].meta, monto: asignar, esExcedente: true });
+                excedente = redondear(excedente - asignar);
+            }
+
+            return { partes, haySiguiente: siguientes.length > 0 };
+        }
+
+        // Devuelve 'normal' (cabe en la meta), 'ampliar', 'siguiente', 'tal_cual', o null si el usuario canceló.
+        async function decidirEstrategiaAporte(meta, monto, moneda) {
+            let p = calcularProgresoMeta(meta);
+            let aporteGtq = normalizarAQuetzales(monto, moneda);
+            let excedenteGtq = aporteGtq - p.restante;
+            if(excedenteGtq <= 0.005) return 'normal';
+
+            let simbolo = moneda === 'USD' ? '$' : 'Q';
+            let excedenteMoneda = moneda === 'USD' ? excedenteGtq / tasaCambioActual : excedenteGtq;
+            let faltaTexto = p.restante > 0.005
+                ? `a "${meta.nombre}" solo le faltan Q ${formatearMontoAhorro(p.restante)}`
+                : `"${meta.nombre}" ya está completa`;
+            let mensaje = `Tu aporte de ${simbolo} ${formatearMontoAhorro(monto)} supera la meta: ${faltaTexto}. Te sobran ${simbolo} ${formatearMontoAhorro(excedenteMoneda)}. ¿Qué quieres hacer con el excedente?`;
+
+            let nuevoObjetivoGtq = p.actual + aporteGtq;
+            let nuevoObjetivoMeta = meta.moneda === 'USD' ? nuevoObjetivoGtq / tasaCambioActual : nuevoObjetivoGtq;
+            let simboloMeta = meta.moneda === 'USD' ? '$' : 'Q';
+
+            let opciones = [{
+                clave: 'ampliar',
+                titulo: '📈 Ampliar esta meta',
+                descripcion: `El monto objetivo sube de ${simboloMeta} ${formatearMontoAhorro(meta.monto_objetivo)} a ${simboloMeta} ${formatearMontoAhorro(Math.ceil(nuevoObjetivoMeta * 100) / 100)} y todo el aporte se queda en "${meta.nombre}".`
+            }];
+
+            let plan = planificarAporteSiguienteMeta(meta, monto, moneda);
+            let destinos = plan.partes.filter(x => x.esExcedente).map(x => `"${x.meta.nombre}"`);
+            if(plan.haySiguiente) {
+                opciones.push({
+                    clave: 'siguiente',
+                    titulo: '➡️ Completar y seguir con la siguiente',
+                    descripcion: `"${meta.nombre}" se cierra al 100% y el excedente (${simbolo} ${formatearMontoAhorro(excedenteMoneda)}) pasa a ${destinos.join(' y luego a ')}.`
+                });
+            } else {
+                opciones.push({
+                    clave: 'tal_cual',
+                    titulo: '📌 Registrarlo tal cual',
+                    descripcion: `Todo el aporte se queda en "${meta.nombre}" (pasará del 100%). No tienes otra meta activa donde pasar el excedente.`
+                });
+            }
+
+            return await elegirOpcionAccion('Tu aporte excede la meta', mensaje, opciones);
+        }
+
+        // Inserta el aporte según la estrategia elegida. Devuelve { error } (texto) o { ok:true, resumen }.
+        async function ejecutarAporteConEstrategia(meta, monto, moneda, fecha, nota, estrategia) {
+            let base = { moneda, fecha, user_id: activeSessionUser.id };
+            let filas, resumen;
+
+            if(estrategia === 'siguiente') {
+                let plan = planificarAporteSiguienteMeta(meta, monto, moneda);
+                filas = plan.partes.map(x => ({
+                    ...base, meta_id: x.meta.id, monto: x.monto,
+                    nota: x.esExcedente ? `${nota ? nota + ' · ' : ''}Excedente de "${meta.nombre}"` : nota
+                }));
+                resumen = plan.partes.map(x => `${moneda} ${formatearMontoAhorro(x.monto)} a "${x.meta.nombre}"`).join(', ');
+            } else {
+                filas = [{ ...base, meta_id: meta.id, monto, nota }];
+                resumen = `${moneda} ${formatearMontoAhorro(monto)} a "${meta.nombre}"`;
+            }
+
+            const { error } = await _supabase.from('aportes_ahorro').insert(filas);
+            if(error) return { error: error.message };
+
+            if(estrategia === 'ampliar') {
+                let totalGtq = calcularProgresoMeta(meta).actual + normalizarAQuetzales(monto, moneda);
+                let nuevoObjetivo = Math.ceil((meta.moneda === 'USD' ? totalGtq / tasaCambioActual : totalGtq) * 100) / 100;
+                const { error: errorMeta } = await _supabase.from('metas_ahorro').update({ monto_objetivo: nuevoObjetivo }).eq('id', meta.id);
+                if(errorMeta) return { error: 'El aporte se guardó, pero no se pudo ampliar la meta: ' + errorMeta.message };
+                resumen += ` y la meta se amplió a ${meta.moneda} ${formatearMontoAhorro(nuevoObjetivo)}`;
+            }
+
+            return { ok: true, resumen };
         }
 
         async function eliminarRegistroAhorro(tabla, id) {
@@ -6281,21 +6434,23 @@ A continuación tienes el contexto financiero actual del usuario (mes en curso),
                 return;
             }
 
-            let resumen = `¿Confirmas registrar un aporte de ${args.moneda} ${Number(args.monto).toFixed(2)} a la meta "${meta.nombre}"?`;
-            let confirmado = await confirmarAccion(resumen);
-            if(!confirmado) {
+            // Si el aporte excede lo que le falta a la meta, el usuario elige qué hacer con el excedente
+            // (esa pantalla ya sirve de confirmación); si cabe, se confirma como siempre.
+            let estrategia = await decidirEstrategiaAporte(meta, Number(args.monto), args.moneda);
+            if(estrategia === 'normal') {
+                let resumen = `¿Confirmas registrar un aporte de ${args.moneda} ${Number(args.monto).toFixed(2)} a la meta "${meta.nombre}"?`;
+                if(!(await confirmarAccion(resumen))) estrategia = null;
+            }
+            if(estrategia === null) {
                 await enviarRespuestaFuncionIA('registrar_aporte_ahorro', { ok: false, error: 'cancelado_por_usuario' });
                 return;
             }
 
-            const { error } = await _supabase.from('aportes_ahorro').insert([{
-                meta_id: meta.id, monto: args.monto, moneda: args.moneda, fecha: args.fecha, nota: args.nota || null, user_id: activeSessionUser.id
-            }]);
-
-            if(!error) await descargarEstructuresCloud();
-            await enviarRespuestaFuncionIA('registrar_aporte_ahorro', !error
-                ? { ok: true, mensaje: 'El usuario ya confirmó y el aporte quedó registrado exitosamente.' }
-                : { ok: false, error: error.message });
+            let resultado = await ejecutarAporteConEstrategia(meta, Number(args.monto), args.moneda, args.fecha, args.nota || null, estrategia);
+            if(!resultado.error) await descargarEstructuresCloud();
+            await enviarRespuestaFuncionIA('registrar_aporte_ahorro', !resultado.error
+                ? { ok: true, mensaje: `El usuario ya confirmó y el aporte quedó registrado exitosamente: ${resultado.resumen}.` }
+                : { ok: false, error: resultado.error });
         }
 
         // 🔎 Herramientas de CONSULTA para la IA — de solo lectura, nunca piden confirmación, y buscan
